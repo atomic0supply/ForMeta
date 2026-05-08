@@ -1,6 +1,6 @@
 "use client";
 
-import { collectionGroup, onSnapshot, orderBy, query } from "firebase/firestore";
+import { collectionGroup, onSnapshot, query } from "firebase/firestore";
 import { Folder, Search, Users, X } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -38,7 +38,7 @@ export function SearchView() {
   // Tasks via collection group
   useEffect(() => {
     if (!db) return;
-    const q = query(collectionGroup(db, "tasks"), orderBy("createdAt", "desc"));
+    const q = query(collectionGroup(db, "tasks"));
     const unsub = onSnapshot(q, (snap) => {
       const result: TaskWithProject[] = snap.docs.map((d) => ({
         id: d.id,
