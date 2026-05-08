@@ -42,6 +42,10 @@ service cloud.firestore {
       match /externalApis/{apiId} {
         allow read, write: if isAuth();
       }
+
+      match /wiki/{pageId} {
+        allow read, write: if isAuth();
+      }
     }
 
     // Entradas de tiempo

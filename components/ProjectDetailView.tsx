@@ -28,9 +28,10 @@ import { ProjectBudgetTab } from "@/components/ProjectBudgetTab";
 import { ProjectKanbanTab } from "@/components/ProjectKanbanTab";
 import { ProjectLinksTab } from "@/components/ProjectLinksTab";
 import { ProjectTimeTab } from "@/components/ProjectTimeTab";
+import { ProjectWikiTab } from "@/components/ProjectWikiTab";
 import styles from "@/styles/intranet-projects.module.css";
 
-type Tab = "info" | "links" | "apis" | "endpoints" | "tareas" | "tiempo" | "budget";
+type Tab = "info" | "links" | "apis" | "endpoints" | "tareas" | "tiempo" | "budget" | "wiki";
 
 const STATUS_LABELS: Record<ProjectStatus, string> = {
   activo: "Activo",
@@ -252,7 +253,7 @@ export function ProjectDetailView({ id }: { id: string }) {
 
       {/* Tabs */}
       <div className={styles.tabs}>
-        {(["info", "links", "apis", "endpoints", "tareas", "tiempo", "budget"] as Tab[]).map((tab) => (
+        {(["info", "links", "apis", "endpoints", "tareas", "tiempo", "budget", "wiki"] as Tab[]).map((tab) => (
           <button
             key={tab}
             type="button"
@@ -266,6 +267,7 @@ export function ProjectDetailView({ id }: { id: string }) {
             {tab === "tareas" && "Tareas"}
             {tab === "tiempo" && "Tiempo"}
             {tab === "budget" && "Budget"}
+            {tab === "wiki" && "Wiki"}
           </button>
         ))}
       </div>
@@ -445,6 +447,13 @@ export function ProjectDetailView({ id }: { id: string }) {
             project={project}
             onProjectUpdate={(updated) => setProject((p) => p ? { ...p, ...updated } : p)}
           />
+        </div>
+      )}
+
+      {/* Wiki tab */}
+      {activeTab === "wiki" && (
+        <div className={styles.tabContent} style={{ padding: 0 }}>
+          <ProjectWikiTab projectId={project.id} />
         </div>
       )}
 

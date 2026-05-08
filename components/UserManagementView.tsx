@@ -140,6 +140,28 @@ export function UserManagementView() {
         </form>
       </section>
 
+      <section className={styles.settingsCard}>
+        <div className={styles.settingsHeader}>
+          <div>
+            <p className={styles.sectionKicker}>Recursos</p>
+            <h2 className={styles.sectionTitle}>Sistema de diseño</h2>
+          </div>
+        </div>
+        <p className={styles.settingsCopy}>
+          Guía de marca, tipografía, colores, componentes y demás elementos del design system de FMETA.
+        </p>
+        <div className={styles.settingsActions}>
+          <a
+            href="/api/design/index.html"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.secondaryBtn}
+          >
+            Abrir sistema de diseño
+          </a>
+        </div>
+      </section>
+
       {isAdmin && users.length === 0 && (
         <p className={styles.empty}>No hay usuarios registrados.</p>
       )}
