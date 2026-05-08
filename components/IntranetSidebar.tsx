@@ -7,6 +7,7 @@ import {
   Clock,
   Folder,
   LayoutGrid,
+  Lightbulb,
   Link2,
   Play,
   Search,
@@ -27,6 +28,7 @@ const navItems = [
   { href: "/intranet/proyectos", label: "Proyectos", exact: false, icon: Folder },
   { href: "/intranet/tiempo", label: "Tiempo", exact: false, icon: Clock },
   { href: "/intranet/links", label: "Links", exact: false, icon: Link2 },
+  { href: "/intranet/ideas", label: "Ideas", exact: false, icon: Lightbulb },
   { href: "/intranet/buscar", label: "Buscar", exact: false, icon: Search },
 ];
 

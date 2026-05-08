@@ -22,7 +22,7 @@ service cloud.firestore {
     match /projects/{projectId} {
       allow read: if isAuth();
       allow create, update: if isAuth();
-      allow delete: if isAdmin();
+      allow delete: if isAuth();
 
       match /endpoints/{endpointId} {
         allow read, write: if isAuth();
@@ -54,6 +54,14 @@ service cloud.firestore {
     // Links globales (bookmarks)
     match /links/{linkId} {
       allow read, write: if isAuth();
+    }
+
+    // Ideas de negocio/desarrollo con análisis IA
+    match /ideas/{ideaId} {
+      allow read: if isAuth() && resource.data.userId == request.auth.uid;
+      allow create: if isAuth();
+      allow update: if isAuth() && resource.data.userId == request.auth.uid;
+      allow delete: if isAuth() && resource.data.userId == request.auth.uid;
     }
 
     // Log de actividad — inmutable salvo lectura
