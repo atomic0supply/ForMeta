@@ -15,3 +15,13 @@
     padding: 28px 24px 60px;
   }
 }
+
+@media (max-width: 768px) {
+  .shell {
+    display: block;
+  }
+
+  .content {
+    padding: 76px 20px 48px;
+  }
+}

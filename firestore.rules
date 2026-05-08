@@ -68,6 +68,11 @@ service cloud.firestore {
       allow delete: if isAuth() && resource.data.userId == request.auth.uid;
     }
 
+    // Búsqueda global: collectionGroup("tasks") requiere regla con wildcard de ruta
+    match /{path=**}/tasks/{taskId} {
+      allow read: if isAuth();
+    }
+
     // Log de actividad — inmutable salvo lectura
     match /activityLog/{eventId} {
       allow read: if isAuth();

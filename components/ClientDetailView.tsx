@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { X } from "lucide-react";
+import { Mail, Phone, X } from "lucide-react";
 
 import {
   deleteClient,
@@ -97,6 +97,26 @@ export function ClientDetailView({ id }: { id: string }) {
           ← Clientes
         </Link>
         <div className={styles.detailActions}>
+          {client.phone && (
+            <a
+              href={`tel:${client.phone}`}
+              className={`${styles.btnAction} ${styles.btnContact}`}
+              title={`Llamar a ${client.phone}`}
+            >
+              <Phone width={13} height={13} />
+              Llamar
+            </a>
+          )}
+          {client.email && (
+            <a
+              href={`mailto:${client.email}`}
+              className={`${styles.btnAction} ${styles.btnContact}`}
+              title={`Enviar correo a ${client.email}`}
+            >
+              <Mail width={13} height={13} />
+              Email
+            </a>
+          )}
           <button type="button" onClick={openEdit} className={styles.btnAction}>
             Editar
           </button>

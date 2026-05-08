@@ -6,10 +6,10 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  border-right: 1px solid var(--line);
-  background: rgba(244, 240, 232, 0.72);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  border-right: 1px solid rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.80);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
 }
 
 /* Brand */
@@ -223,4 +223,203 @@
   color: var(--ink);
   border-color: var(--ink);
   background: rgba(44, 44, 40, 0.04);
+}
+
+/* ── Mobile: hide desktop sidebar ──────────────────────────────────────── */
+.mobileTopBar,
+.mobileBackdrop,
+.mobileDrawer {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    display: none;
+  }
+
+  /* Top bar */
+  .mobileTopBar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    height: 56px;
+    padding: 0 20px;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid var(--line-soft);
+  }
+
+  .mobileTopBrand {
+    display: flex;
+    align-items: center;
+  }
+
+  .mobileTopRight {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .mobileTimerBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono), monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    color: #5a8a5e;
+  }
+
+  .mobileTimerDot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #5a8a5e;
+    animation: pulse 1.8s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.35; }
+  }
+
+  .mobileMenuBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: none;
+    background: none;
+    color: var(--ink);
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background var(--motion-fast) var(--ease-smooth);
+  }
+
+  .mobileMenuBtn:hover {
+    background: rgba(44, 44, 40, 0.06);
+  }
+
+  /* Backdrop */
+  .mobileBackdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(44, 44, 40, 0.4);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+
+  .mobileBackdropVisible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Drawer */
+  .mobileDrawer {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 300;
+    width: 280px;
+    background: rgba(255, 255, 255, 0.97);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-right: 1px solid var(--line-soft);
+    transform: translateX(-100%);
+    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow-y: auto;
+  }
+
+  .mobileDrawerOpen {
+    transform: translateX(0);
+  }
+
+  .mobileDrawerHeader {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 24px 20px 20px;
+    border-bottom: 1px solid var(--line-soft);
+    flex-shrink: 0;
+  }
+
+  .mobileDrawerClose {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: none;
+    color: var(--muted);
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background var(--motion-fast) var(--ease-smooth);
+    flex-shrink: 0;
+  }
+
+  .mobileDrawerClose:hover {
+    background: rgba(44, 44, 40, 0.06);
+    color: var(--ink);
+  }
+
+  .mobileDrawerNav {
+    flex: 1;
+    padding: 16px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .mobileDrawerItem {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 24px;
+    font-family: var(--font-mono), monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-left: 2px solid transparent;
+    transition:
+      color var(--motion-fast) var(--ease-smooth),
+      background var(--motion-fast) var(--ease-smooth),
+      border-color var(--motion-fast) var(--ease-smooth);
+  }
+
+  .mobileDrawerItem:hover {
+    color: var(--ink);
+    background: rgba(44, 44, 40, 0.04);
+  }
+
+  .mobileDrawerItemActive {
+    color: var(--ink);
+    border-left-color: var(--terracotta);
+    background: rgba(184, 137, 106, 0.07);
+  }
+
+  .mobileDrawerFooter {
+    padding: 16px 20px 32px;
+    border-top: 1px solid var(--line-soft);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    flex-shrink: 0;
+  }
 }
