@@ -168,7 +168,7 @@
 
 .listHeader {
   display: grid;
-  grid-template-columns: 1.8fr 1fr 100px 1fr 160px;
+  grid-template-columns: 1.6fr 1fr 100px 1fr 110px 160px;
   gap: 16px;
   padding: 10px 20px;
   background: rgba(244, 240, 232, 0.9);
@@ -182,12 +182,43 @@
 
 .row {
   display: grid;
-  grid-template-columns: 1.8fr 1fr 100px 1fr 160px;
+  grid-template-columns: 1.6fr 1fr 100px 1fr 110px 160px;
   gap: 16px;
   align-items: center;
   padding: 14px 20px;
   border-bottom: 1px solid var(--line-soft);
   transition: background var(--motion-fast) var(--ease-smooth);
+}
+
+.linkIcons {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.linkIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  color: rgba(44, 44, 40, 0.18);
+  border: 1px solid transparent;
+  transition:
+    color var(--motion-fast) var(--ease-smooth),
+    background var(--motion-fast) var(--ease-smooth),
+    border-color var(--motion-fast) var(--ease-smooth);
+}
+
+.linkIconActive {
+  color: var(--ink);
+}
+
+.linkIconActive:hover {
+  color: var(--terracotta);
+  background: rgba(184, 137, 106, 0.1);
+  border-color: rgba(184, 137, 106, 0.3);
 }
 
 .row:last-child {
@@ -623,7 +654,7 @@
 @media (max-width: 860px) {
   .listHeader,
   .row {
-    grid-template-columns: 1.4fr 100px 140px;
+    grid-template-columns: 1.4fr 100px 110px 140px;
   }
 
   .listHeader span:nth-child(2),

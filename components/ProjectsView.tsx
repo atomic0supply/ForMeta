@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { Plus, X } from "lucide-react";
+import { Code, Folder, GitBranch, Globe, Plus, X } from "lucide-react";
 
 import { subscribeToClients, type Client } from "@/lib/clients";
 import {
@@ -21,6 +21,22 @@ const STATUS_LABELS: Record<ProjectStatus, string> = {
   pausado: "Pausado",
   cerrado: "Cerrado",
 };
+
+const LINK_ICONS = [
+  { key: "githubUrl", label: "GitHub", icon: GitBranch, isPath: false },
+  { key: "localPath", label: "Carpeta local", icon: Folder, isPath: true },
+  { key: "devUrl", label: "Dev / Staging", icon: Code, isPath: false },
+  { key: "externalUrl", label: "Web pública", icon: Globe, isPath: false },
+] as const;
+
+function buildHref(value: string, isPath: boolean) {
+  if (!value) return null;
+  if (isPath) {
+    if (/^[a-z]+:\/\//i.test(value) || value.startsWith("file://")) return value;
+    return `file://${value}`;
+  }
+  return value;
+}
 
 const emptyForm: ProjectInput = {
   name: "",
@@ -174,6 +190,7 @@ export function ProjectsView() {
             <span>Cliente</span>
             <span>Estado</span>
             <span>Tags</span>
+            <span>Enlaces</span>
             <span />
           </div>
           {projects.map((project) => (
@@ -201,6 +218,38 @@ export function ProjectsView() {
                     {tag}
                   </span>
                 ))}
+              </div>
+              <div className={styles.linkIcons}>
+                {LINK_ICONS.map(({ key, label, icon: Icon, isPath }) => {
+                  const value = (project[key] ?? "").trim();
+                  const href = buildHref(value, isPath);
+                  if (href) {
+                    return (
+                      <a
+                        key={key}
+                        href={href}
+                        target="_blank"
+                        rel="noreferrer"
+                        title={`${label}: ${value}`}
+                        aria-label={`${label} de ${project.name}`}
+                        className={`${styles.linkIcon} ${styles.linkIconActive}`}
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <Icon width={14} height={14} strokeWidth={1.6} />
+                      </a>
+                    );
+                  }
+                  return (
+                    <span
+                      key={key}
+                      title={`${label}: sin guardar`}
+                      aria-label={`${label} no guardado`}
+                      className={styles.linkIcon}
+                    >
+                      <Icon width={14} height={14} strokeWidth={1.6} />
+                    </span>
+                  );
+                })}
               </div>
               <div className={styles.rowActions}>
                 <button
