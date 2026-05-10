@@ -168,7 +168,7 @@
 
 .listHeader {
   display: grid;
-  grid-template-columns: 1.6fr 1fr 100px 1fr 110px 160px;
+  grid-template-columns: 1.6fr 1fr 100px 1fr 140px 160px;
   gap: 16px;
   padding: 10px 20px;
   background: rgba(244, 240, 232, 0.9);
@@ -182,7 +182,7 @@
 
 .row {
   display: grid;
-  grid-template-columns: 1.6fr 1fr 100px 1fr 110px 160px;
+  grid-template-columns: 1.6fr 1fr 100px 1fr 140px 160px;
   gap: 16px;
   align-items: center;
   padding: 14px 20px;

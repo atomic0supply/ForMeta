@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { Code, Folder, GitBranch, Globe, Plus, X } from "lucide-react";
+import { Code, Database, Folder, GitBranch, Globe, Plus, X } from "lucide-react";
 
 import { subscribeToClients, type Client } from "@/lib/clients";
 import {
@@ -24,6 +24,7 @@ const STATUS_LABELS: Record<ProjectStatus, string> = {
 
 const LINK_ICONS = [
   { key: "githubUrl", label: "GitHub", icon: GitBranch, isPath: false },
+  { key: "firebaseUrl", label: "Firebase Console", icon: Database, isPath: false },
   { key: "localPath", label: "Carpeta local", icon: Folder, isPath: true },
   { key: "devUrl", label: "Dev / Staging", icon: Code, isPath: false },
   { key: "externalUrl", label: "Web pública", icon: Globe, isPath: false },
