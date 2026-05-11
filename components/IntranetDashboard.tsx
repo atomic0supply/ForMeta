@@ -224,6 +224,9 @@ export function IntranetDashboard() {
         {/* Side column */}
         <aside className={styles.sideCol}>
 
+          {/* Section label aligned with activity feed title */}
+          <p className={styles.sideColLabel}>Atajos</p>
+
           {/* Command palette trigger */}
           <button
             type="button"
