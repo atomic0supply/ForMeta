@@ -239,6 +239,79 @@
   margin: 0;
 }
 
+/* ── Domain alerts widget ───────────────────────────────────────── */
+.domainAlertList {
+  padding: 4px 0;
+}
+
+.domainAlertRow {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 20px;
+  border-bottom: 1px solid rgba(44, 44, 40, 0.04);
+  text-decoration: none;
+  color: inherit;
+  transition: background var(--motion-fast) var(--ease-smooth);
+}
+
+.domainAlertRow:last-child {
+  border-bottom: none;
+}
+
+.domainAlertRow:hover {
+  background: rgba(44, 44, 40, 0.03);
+}
+
+.domainAlertDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.domainAlertDot[data-status="ok"]       { background: var(--sage); }
+.domainAlertDot[data-status="warning"]  { background: #d4900a; }
+.domainAlertDot[data-status="critical"] { background: var(--danger); }
+.domainAlertDot[data-status="expired"]  { background: var(--danger); opacity: 0.65; }
+
+.domainAlertName {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.75rem;
+  color: var(--ink);
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: 0.01em;
+}
+
+.domainAlertExpiry {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.68rem;
+  flex-shrink: 0;
+}
+
+.domainAlertExpiry[data-status="ok"]       { color: var(--muted); }
+.domainAlertExpiry[data-status="warning"]  { color: #b07a0a; }
+.domainAlertExpiry[data-status="critical"] { color: var(--danger); font-weight: 500; }
+.domainAlertExpiry[data-status="expired"]  { color: var(--danger); font-weight: 500; }
+
+.domainAlertMore {
+  display: block;
+  padding: 8px 20px;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.65rem;
+  color: var(--muted);
+  text-decoration: none;
+  letter-spacing: 0.06em;
+  transition: color var(--motion-fast) var(--ease-smooth);
+}
+
+.domainAlertMore:hover {
+  color: var(--ink);
+}
+
 /* ── Quick access 2×3 grid ──────────────────────────────────────── */
 .accessGrid {
   display: grid;

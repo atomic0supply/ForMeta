@@ -5,6 +5,12 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { ActivityFeed } from "@/components/ActivityFeed";
 import { TimeHeatmap } from "@/components/TimeHeatmap";
+import {
+  expiryLabel,
+  expiryStatus,
+  subscribeToExpiringDomains,
+  type Domain,
+} from "@/lib/domains";
 import { listIdeas } from "@/lib/ideas";
 import { subscribeToProjects, type Project } from "@/lib/projects";
 import { subscribeToAllTimeEntries, type TimeEntry } from "@/lib/timeEntries";
@@ -28,14 +34,16 @@ const modules = [
 export function IntranetDashboard() {
   const { activeTimer, elapsed, stop } = useTimer();
   const user = useCurrentUser();
-  const [projects, setProjects]   = useState<Project[]>([]);
-  const [entries, setEntries]     = useState<TimeEntry[]>([]);
-  const [ideasCount, setIdeasCount] = useState<number | null>(null);
+  const [projects, setProjects]         = useState<Project[]>([]);
+  const [entries, setEntries]           = useState<TimeEntry[]>([]);
+  const [ideasCount, setIdeasCount]     = useState<number | null>(null);
+  const [expiringDomains, setExpiringDomains] = useState<Domain[]>([]);
 
   useEffect(() => {
     const unsubP = subscribeToProjects(setProjects);
     const unsubT = subscribeToAllTimeEntries(setEntries, 365);
-    return () => { unsubP(); unsubT(); };
+    const unsubD = subscribeToExpiringDomains(setExpiringDomains, 60);
+    return () => { unsubP(); unsubT(); unsubD(); };
   }, []);
 
   const loadIdeas = useCallback(async (uid: string) => {
@@ -154,6 +162,38 @@ export function IntranetDashboard() {
               )}
             </div>
           </div>
+
+          {/* Widget dominios próximos a vencer */}
+          {expiringDomains.length > 0 && (
+            <div className={styles.widget}>
+              <div className={styles.widgetHeader}>
+                <p className={styles.widgetTitle}>Dominios · próximos 60 días</p>
+              </div>
+              <div className={styles.domainAlertList}>
+                {expiringDomains.slice(0, 5).map((d) => {
+                  const st = expiryStatus(d.expiryDate);
+                  return (
+                    <Link
+                      key={d.id}
+                      href="/intranet/dominios"
+                      className={styles.domainAlertRow}
+                    >
+                      <span className={styles.domainAlertDot} data-status={st} />
+                      <span className={styles.domainAlertName}>{d.name}</span>
+                      <span className={styles.domainAlertExpiry} data-status={st}>
+                        {expiryLabel(d.expiryDate)}
+                      </span>
+                    </Link>
+                  );
+                })}
+                {expiringDomains.length > 5 && (
+                  <Link href="/intranet/dominios" className={styles.domainAlertMore}>
+                    +{expiringDomains.length - 5} más · Ver todos →
+                  </Link>
+                )}
+              </div>
+            </div>
+          )}
 
           {/* Acceso rápido 2×3 */}
           <div className={styles.widget}>
