@@ -242,9 +242,9 @@
 
 .rowMeta {
   font-family: var(--font-mono), monospace;
-  font-size: 0.7rem;
+  font-size: 0.76rem;
   color: var(--muted);
-  letter-spacing: 0.04em;
+  letter-spacing: 0.03em;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -297,8 +297,8 @@
 
 .clientChip {
   font-family: var(--font-mono), monospace;
-  font-size: 0.62rem;
-  letter-spacing: 0.14em;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--muted);
 }
@@ -353,15 +353,16 @@
   gap: 10px;
   margin-bottom: 28px;
   padding: 24px;
-  border: 1px solid var(--line-soft);
+  border: 1px solid rgba(44, 44, 40, 0.06);
   border-radius: var(--radius-sm);
-  background: rgba(244, 240, 232, 0.5);
+  background: var(--card-bg);
+  box-shadow: var(--shadow);
 }
 
 .detailFieldLabel {
   font-family: var(--font-mono), monospace;
-  font-size: 0.62rem;
-  letter-spacing: 0.2em;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--muted);
 }

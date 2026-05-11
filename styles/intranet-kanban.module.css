@@ -530,8 +530,8 @@
 
 .columnTitle {
   font-family: var(--font-mono), monospace;
-  font-size: 0.6rem;
-  letter-spacing: 0.2em;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--muted);
 }
@@ -548,23 +548,22 @@
 .card {
   padding: 12px 14px;
   border-radius: var(--radius-sm);
-  background: var(--sand-soft);
-  border: 1px solid var(--line-soft);
+  background: var(--card-bg);
+  border: 1px solid rgba(44, 44, 40, 0.06);
   cursor: pointer;
   display: flex;
   flex-direction: column;
   gap: 8px;
+  box-shadow: var(--shadow);
   transition:
-    background var(--motion-fast) var(--ease-smooth),
     box-shadow var(--motion-fast) var(--ease-smooth),
     border-color var(--motion-fast) var(--ease-smooth);
   user-select: none;
 }
 
 .card:hover {
-  background: #fff;
-  box-shadow: 0 2px 10px rgba(44, 44, 40, 0.08);
-  border-color: var(--line);
+  box-shadow: var(--shadow-hover);
+  border-color: rgba(44, 44, 40, 0.1);
 }
 
 .cardDragging {
@@ -598,8 +597,8 @@
 
 .dueDate {
   font-family: var(--font-mono), monospace;
-  font-size: 0.6rem;
-  letter-spacing: 0.08em;
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
   color: var(--muted);
 }
 

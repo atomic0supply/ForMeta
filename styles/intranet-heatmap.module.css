@@ -23,8 +23,8 @@
   position: absolute;
   top: 0;
   font-family: var(--font-mono), monospace;
-  font-size: 0.55rem;
-  letter-spacing: 0.1em;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--muted);
   white-space: nowrap;
@@ -50,7 +50,7 @@
 .dayLabel {
   height: 11px;
   font-family: var(--font-mono), monospace;
-  font-size: 0.52rem;
+  font-size: 0.62rem;
   color: var(--muted);
   display: flex;
   align-items: center;
@@ -144,9 +144,9 @@
 
 .legendText {
   font-family: var(--font-mono), monospace;
-  font-size: 0.52rem;
+  font-size: 0.62rem;
   color: var(--muted);
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
 }
 
 .legendCell {

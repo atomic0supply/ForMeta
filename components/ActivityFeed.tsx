@@ -43,11 +43,27 @@ function eventText(event: ActivityEvent): string {
   }
 }
 
+function actionBadge(event: ActivityEvent): string {
+  switch (event.type) {
+    case "task_created":
+    case "project_created":
+      return "＋";
+    case "time_saved":
+      return "◷";
+    case "comment_added":
+      return "◉";
+    case "task_moved":
+      return "→";
+    default:
+      return "·";
+  }
+}
+
 export function ActivityFeed() {
   const [events, setEvents] = useState<ActivityEvent[]>([]);
 
   useEffect(() => {
-    const unsub = subscribeToRecentActivity(setEvents, 15);
+    const unsub = subscribeToRecentActivity(setEvents, 30);
     return unsub;
   }, []);
 
@@ -59,7 +75,10 @@ export function ActivityFeed() {
       <div className={styles.feedList}>
         {events.map((event) => (
           <div key={event.id} className={styles.feedRow}>
-            <span className={styles.feedAvatar}>{initials(event.actorName)}</span>
+            <span className={styles.feedAvatarWrap}>
+              <span className={styles.feedAvatar}>{initials(event.actorName)}</span>
+              <span className={styles.feedActionBadge}>{actionBadge(event)}</span>
+            </span>
             <span className={styles.feedText}>
               <strong>{event.actorName}</strong>{" "}
               {eventText(event)}
