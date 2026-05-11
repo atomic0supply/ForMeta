@@ -73,6 +73,11 @@ service cloud.firestore {
       allow read: if isAuth();
     }
 
+    // Dominios
+    match /domains/{domainId} {
+      allow read, write: if isAuth();
+    }
+
     // Log de actividad — inmutable salvo lectura
     match /activityLog/{eventId} {
       allow read: if isAuth();
