@@ -18,13 +18,17 @@ type ActiveTimer = {
   projectId: string;
   projectName: string;
   startedAt: number;
+  pausedAt: number | null;
 };
 
 type TimerContextValue = {
   activeTimer: ActiveTimer | null;
   elapsed: number;
+  isPaused: boolean;
   pendingStop: boolean;
   start: (projectId?: string, projectName?: string) => void;
+  pause: () => void;
+  resume: () => void;
   stop: () => void;
   confirmStop: (notes: string, projectId: string, projectName: string) => Promise<void>;
   cancelStop: () => void;
@@ -33,8 +37,11 @@ type TimerContextValue = {
 const TimerContext = createContext<TimerContextValue>({
   activeTimer: null,
   elapsed: 0,
+  isPaused: false,
   pendingStop: false,
   start: () => {},
+  pause: () => {},
+  resume: () => {},
   stop: () => {},
   confirmStop: async () => {},
   cancelStop: () => {},
@@ -55,8 +62,15 @@ export function TimerProvider({ children }: { children: React.ReactNode }) {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {
-        const parsed = JSON.parse(stored) as ActiveTimer;
-        if (parsed.projectId && parsed.startedAt) setActiveTimer(parsed);
+        const parsed = JSON.parse(stored) as Partial<ActiveTimer>;
+        if (parsed.projectId !== undefined && parsed.startedAt) {
+          setActiveTimer({
+            projectId: parsed.projectId,
+            projectName: parsed.projectName ?? "Sin asignar",
+            startedAt: parsed.startedAt,
+            pausedAt: parsed.pausedAt ?? null,
+          });
+        }
       }
     } catch {
       localStorage.removeItem(STORAGE_KEY);
@@ -69,6 +83,12 @@ export function TimerProvider({ children }: { children: React.ReactNode }) {
       setElapsed(0);
       return;
     }
+    // If paused, freeze elapsed to the pause moment
+    if (activeTimer.pausedAt) {
+      setElapsed(Math.floor((activeTimer.pausedAt - activeTimer.startedAt) / 1000));
+      if (intervalRef.current) clearInterval(intervalRef.current);
+      return;
+    }
     setElapsed(Math.floor((Date.now() - activeTimer.startedAt) / 1000));
     intervalRef.current = setInterval(() => {
       setElapsed(Math.floor((Date.now() - activeTimer.startedAt) / 1000));
@@ -79,13 +99,38 @@ export function TimerProvider({ children }: { children: React.ReactNode }) {
   }, [activeTimer]);
 
   const start = useCallback((projectId = "", projectName = "Sin asignar") => {
-    const timer: ActiveTimer = { projectId, projectName, startedAt: Date.now() };
+    const timer: ActiveTimer = { projectId, projectName, startedAt: Date.now(), pausedAt: null };
     setActiveTimer(timer);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(timer));
   }, []);
 
+  const pause = useCallback(() => {
+    setActiveTimer((cur) => {
+      if (!cur || cur.pausedAt) return cur;
+      const next = { ...cur, pausedAt: Date.now() };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+      return next;
+    });
+  }, []);
+
+  const resume = useCallback(() => {
+    setActiveTimer((cur) => {
+      if (!cur || !cur.pausedAt) return cur;
+      // Shift startedAt forward by the paused duration so elapsed continues from the freeze
+      const pausedFor = Date.now() - cur.pausedAt;
+      const next: ActiveTimer = {
+        ...cur,
+        startedAt: cur.startedAt + pausedFor,
+        pausedAt: null,
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+      return next;
+    });
+  }, []);
+
   const stop = useCallback(() => {
     if (!activeTimer) return;
+    // If paused, resume the timestamps to a frozen state but still allow save (use pausedAt as effective endedAt)
     pendingTimerRef.current = { ...activeTimer };
     setPendingStop(true);
   }, [activeTimer]);
@@ -93,7 +138,8 @@ export function TimerProvider({ children }: { children: React.ReactNode }) {
   const confirmStop = useCallback(async (notes: string, projectId: string, projectName: string) => {
     const snapshot = pendingTimerRef.current;
     if (!snapshot) return;
-    const endedAt = Date.now();
+    // If the timer was paused, use the pausedAt as the effective end time so paused minutes are not counted
+    const endedAt = snapshot.pausedAt ?? Date.now();
     const userId = auth?.currentUser?.uid;
     const userDisplayName = auth?.currentUser?.displayName ?? auth?.currentUser?.email ?? undefined;
     setPendingStop(false);
@@ -108,9 +154,11 @@ export function TimerProvider({ children }: { children: React.ReactNode }) {
     setPendingStop(false);
   }, []);
 
+  const isPaused = activeTimer?.pausedAt != null;
+
   return (
     <TimerContext.Provider
-      value={{ activeTimer, elapsed, pendingStop, start, stop, confirmStop, cancelStop }}
+      value={{ activeTimer, elapsed, isPaused, pendingStop, start, pause, resume, stop, confirmStop, cancelStop }}
     >
       {children}
     </TimerContext.Provider>

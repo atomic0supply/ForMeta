@@ -12,10 +12,11 @@ import {
   Lightbulb,
   Link2,
   MoreHorizontal,
+  Pause,
   Play,
+  Save,
   Search,
   Shield,
-  Square,
   Users,
   X,
 } from "lucide-react";
@@ -74,7 +75,7 @@ const moreItems = [
 export function IntranetSidebar() {
   const pathname = usePathname();
   const router = useRouter();
-  const { activeTimer, elapsed, start, stop } = useTimer();
+  const { activeTimer, elapsed, isPaused, start, pause, resume, stop } = useTimer();
   const [sheetOpen, setSheetOpen] = useState(false);
 
   function isActive(href: string, exact: boolean) {
@@ -99,29 +100,64 @@ export function IntranetSidebar() {
 
   /* ── Timer widget (desktop sidebar only) ───────────────────────────────── */
   function TimerWidget() {
+    const state = !activeTimer ? "idle" : isPaused ? "paused" : "running";
+
     return (
-      <div className={`${styles.timerSlot} ${activeTimer ? styles.timerActive : ""}`}>
+      <div className={`${styles.timerSlot} ${styles[`timer_${state}`]}`}>
         <div className={styles.timerHeader}>
-          <span className={styles.timerLabel}>Timer</span>
+          <span className={styles.timerLabel}>
+            {state === "idle"    && "Timer"}
+            {state === "running" && "En curso"}
+            {state === "paused"  && "Pausado"}
+          </span>
           <Link href="/intranet/tiempo" className={styles.timerLink}>Ver tiempo</Link>
         </div>
+
         {activeTimer ? (
           <>
             <p className={styles.timerProject}>{activeTimer.projectName || "Sin asignar"}</p>
-            <div className={styles.timerRow}>
-              <span className={styles.timerElapsed}>{formatElapsed(elapsed)}</span>
-              <button type="button" onClick={() => stop()} className={styles.timerStop} aria-label="Detener timer">
-                <Square width={10} height={10} strokeWidth={0} fill="currentColor" />
-                Stop
+            <p className={styles.timerElapsedBig}>{formatElapsed(elapsed)}</p>
+
+            <div className={styles.timerControls}>
+              {state === "running" ? (
+                <button
+                  type="button"
+                  onClick={() => pause()}
+                  className={styles.timerSecondary}
+                  aria-label="Pausar timer"
+                >
+                  <Pause width={13} height={13} strokeWidth={2} fill="currentColor" />
+                  Pausa
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => resume()}
+                  className={styles.timerSecondary}
+                  aria-label="Reanudar timer"
+                >
+                  <Play width={13} height={13} strokeWidth={2} fill="currentColor" />
+                  Reanudar
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={() => stop()}
+                className={styles.timerSave}
+                aria-label="Guardar y detener"
+              >
+                <Save width={13} height={13} strokeWidth={2} />
+                Guardar
               </button>
             </div>
+
             {!activeTimer.projectId && (
-              <p className={styles.timerHint}>Lo podrás asignar a un proyecto al detenerlo.</p>
+              <p className={styles.timerHint}>Lo podrás asignar a un proyecto al guardarlo.</p>
             )}
           </>
         ) : (
           <>
-            <p className={styles.timerIdle}>Empieza ahora y asigna el proyecto al parar.</p>
+            <p className={styles.timerIdle}>Empieza ahora y asigna el proyecto al guardar.</p>
             <button type="button" onClick={() => start()} className={styles.timerStart}>
               <Play width={12} height={12} strokeWidth={2} fill="currentColor" />
               Iniciar ahora

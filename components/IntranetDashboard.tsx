@@ -79,7 +79,12 @@ export function IntranetDashboard() {
   );
 
   const activeProjectsList = useMemo(
-    () => projects.filter((p) => p.status === "activo").slice(0, 10),
+    () => projects.filter((p) => p.status === "activo").slice(0, 6),
+    [projects],
+  );
+
+  const totalActiveProjects = useMemo(
+    () => projects.filter((p) => p.status === "activo").length,
     [projects],
   );
 
@@ -238,6 +243,7 @@ export function IntranetDashboard() {
           <div className={styles.widget}>
             <div className={styles.widgetHeader}>
               <p className={styles.widgetTitle}>Proyectos activos</p>
+              <span className={styles.widgetCount}>{totalActiveProjects}</span>
             </div>
             <div className={styles.projectList}>
               {activeProjectsList.length > 0 ? (
@@ -258,6 +264,11 @@ export function IntranetDashboard() {
                 <p className={styles.projectListEmpty}>Sin proyectos activos.</p>
               )}
             </div>
+            {totalActiveProjects > activeProjectsList.length && (
+              <Link href="/intranet/proyectos" className={styles.widgetMore}>
+                Ver los {totalActiveProjects} proyectos →
+              </Link>
+            )}
           </div>
 
           {/* Widget dominios próximos a vencer */}

@@ -114,9 +114,48 @@
   margin-bottom: 8px;
 }
 
-.timerActive {
-  border-color: rgba(90, 138, 94, 0.35);
-  background: rgba(143, 168, 146, 0.1);
+/* State variants */
+.timer_idle {
+  /* default look */
+}
+
+.timer_running {
+  border-color: rgba(90, 138, 94, 0.40);
+  background: linear-gradient(
+    180deg,
+    rgba(143, 168, 146, 0.16) 0%,
+    rgba(143, 168, 146, 0.08) 100%
+  );
+}
+
+.timer_running .timerLabel {
+  color: #5a8a5e;
+}
+
+.timer_running .timerLabel::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #5a8a5e;
+  margin-right: 6px;
+  vertical-align: 1px;
+  animation: timerPulse 1.6s ease-in-out infinite;
+}
+
+@keyframes timerPulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
+.timer_paused {
+  border-color: rgba(184, 137, 106, 0.35);
+  background: rgba(184, 137, 106, 0.06);
+}
+
+.timer_paused .timerLabel {
+  color: var(--terracotta);
 }
 
 .timerLabel {
@@ -151,77 +190,107 @@
 }
 
 .timerProject {
-  margin: 0 0 10px;
+  margin: 0 0 4px;
   font-family: var(--font-sans), system-ui, sans-serif;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   color: var(--ink);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.timerRow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-}
-
-.timerElapsed {
+.timerElapsedBig {
+  margin: 0 0 12px;
   font-family: var(--font-mono), monospace;
-  font-size: 1.1rem;
-  letter-spacing: 0.06em;
+  font-size: 1.55rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
   color: var(--ink);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
 }
 
-.timerHint {
-  margin: 10px 0 0;
-  font-size: 0.76rem;
-  color: var(--muted);
-  line-height: 1.55;
+.timer_paused .timerElapsedBig {
+  color: var(--terracotta);
 }
 
-.timerStart,
-.timerStop {
+.timerControls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.timerControls button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 7px;
-  border-radius: 999px;
-  font-family: var(--font-mono), monospace;
-  font-size: 0.58rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  gap: 6px;
+  padding: 8px 8px;
+  border-radius: 8px;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  border: 1px solid transparent;
   transition:
     background var(--motion-fast) var(--ease-smooth),
     border-color var(--motion-fast) var(--ease-smooth),
     color var(--motion-fast) var(--ease-smooth);
 }
 
+.timerSecondary {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: var(--line);
+  color: var(--ink);
+}
+
+.timerSecondary:hover {
+  background: var(--card-bg);
+  border-color: rgba(44, 44, 40, 0.22);
+}
+
+.timerSave {
+  background: var(--ink);
+  color: var(--sand);
+}
+
+.timerSave:hover {
+  background: var(--terracotta);
+}
+
+.timerHint {
+  margin: 10px 0 0;
+  font-size: 0.74rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
 .timerStart {
   width: 100%;
   margin-top: 12px;
-  padding: 9px 12px;
+  padding: 10px 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border-radius: 10px;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
   border: 1px solid var(--ink);
   background: var(--ink);
   color: var(--sand);
+  cursor: pointer;
+  transition:
+    background var(--motion-fast) var(--ease-smooth),
+    border-color var(--motion-fast) var(--ease-smooth);
 }
 
 .timerStart:hover {
   background: var(--terracotta);
   border-color: var(--terracotta);
-}
-
-.timerStop {
-  background: none;
-  border: 1px solid rgba(208, 90, 90, 0.35);
-  padding: 4px 10px;
-  color: var(--danger);
-}
-
-.timerStop:hover {
-  background: rgba(208, 90, 90, 0.08);
-  border-color: var(--danger);
 }
 
 .signOut {
