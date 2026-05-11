@@ -66,6 +66,46 @@ export function subscribeToAllTimeEntries(
   });
 }
 
+/**
+ * Subscribe to all time entries for a given set of project IDs.
+ * Useful for client-level aggregations (sum hours across all of a
+ * client's projects). Performs an "in" query if the set is small
+ * enough; otherwise falls back to a client-side filter on all entries.
+ */
+export function subscribeToTimeEntriesByProjectIds(
+  projectIds: string[],
+  callback: (entries: TimeEntry[]) => void,
+): Unsubscribe {
+  if (!db || projectIds.length === 0) {
+    callback([]);
+    return () => {};
+  }
+  // Firestore "in" supports up to 30 values
+  if (projectIds.length <= 30) {
+    const q = query(
+      collection(db, "timeEntries"),
+      where("projectId", "in", projectIds),
+      orderBy("startedAt", "desc"),
+    );
+    return onSnapshot(q, (snap) => {
+      const entries = snap.docs.map((d) => ({
+        id: d.id,
+        ...(d.data() as Omit<TimeEntry, "id">),
+      }));
+      callback(entries);
+    });
+  }
+  // Fallback: subscribe to recent and filter locally
+  const q = query(collection(db, "timeEntries"), orderBy("startedAt", "desc"));
+  return onSnapshot(q, (snap) => {
+    const set = new Set(projectIds);
+    const entries = snap.docs
+      .map((d) => ({ id: d.id, ...(d.data() as Omit<TimeEntry, "id">) }))
+      .filter((e) => set.has(e.projectId));
+    callback(entries);
+  });
+}
+
 export async function deleteTimeEntry(entryId: string): Promise<void> {
   if (!db) throw new Error("Firebase no disponible");
   await deleteDoc(doc(db, "timeEntries", entryId));
