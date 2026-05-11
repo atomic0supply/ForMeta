@@ -1,5 +1,62 @@
 .page {
-  max-width: 1100px;
+  max-width: 1280px;
+}
+
+/* ── Action zone ─────────────────────────────────────────────────── */
+.actionZone {
+  padding: 16px 20px;
+  background: var(--card-bg);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--line-soft);
+  box-shadow: var(--shadow);
+  margin-bottom: 20px;
+}
+
+.actionGreeting {
+  margin: 0 0 4px;
+  font-family: var(--font-display), serif;
+  font-size: 1.25rem;
+  color: var(--ink);
+  line-height: 1.3;
+}
+
+.actionSummary {
+  margin: 0 0 12px;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 0.85rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.actionBtns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.actionBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-family: var(--font-mono), monospace;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  transition:
+    border-color var(--motion-fast) var(--ease-smooth),
+    color var(--motion-fast) var(--ease-smooth),
+    background var(--motion-fast) var(--ease-smooth);
+}
+
+.actionBtn:hover {
+  color: var(--ink);
+  border-color: rgba(44, 44, 40, 0.4);
+  background: rgba(44, 44, 40, 0.04);
 }
 
 /* Page header */
@@ -130,13 +187,23 @@
 }
 
 .statPillLabel {
-  font-family: var(--font-mono), monospace;
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
   color: var(--muted);
   font-weight: 500;
 }
+
+.statPillDelta {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 0.68rem;
+  color: var(--muted);
+  margin-top: 2px;
+  line-height: 1.3;
+}
+
+.statPillDeltaPos { color: var(--sage); }
+.statPillDeltaNeg { color: var(--terracotta); }
 
 /* ── Body: two-column layout ────────────────────────────────────── */
 .body {
@@ -175,9 +242,9 @@
 }
 
 .widgetTitle {
-  font-family: var(--font-mono), monospace;
-  font-size: 10px;
-  letter-spacing: 0.12em;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--muted);
   font-weight: 500;
@@ -217,6 +284,7 @@
 }
 
 .projectListName {
+  font-family: var(--font-sans), system-ui, sans-serif;
   font-size: 0.85rem;
   color: var(--ink);
   flex: 1;
@@ -328,9 +396,11 @@
   border-bottom: 1px solid rgba(44, 44, 40, 0.04);
   transition:
     background var(--motion-fast) var(--ease-smooth),
-    color var(--motion-fast) var(--ease-smooth);
+    border-color var(--motion-fast) var(--ease-smooth);
   text-decoration: none;
   color: inherit;
+  position: relative;
+  cursor: pointer;
 }
 
 .accessCard:nth-child(3n) {
@@ -342,13 +412,44 @@
 }
 
 .accessCard:hover {
-  background: rgba(44, 44, 40, 0.03);
+  background: rgba(44, 44, 40, 0.05);
+}
+
+.accessCard::after {
+  content: "→";
+  position: absolute;
+  bottom: 12px;
+  right: 14px;
+  font-size: 0.72rem;
+  color: var(--muted);
+  opacity: 0;
+  transform: translateX(-4px);
+  transition:
+    opacity var(--motion-fast) var(--ease-smooth),
+    transform var(--motion-fast) var(--ease-smooth);
+}
+
+.accessCard:hover::after {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.accessCardPrimary {
+  background: rgba(184, 137, 106, 0.06);
+}
+
+.accessCardPrimary:hover {
+  background: rgba(184, 137, 106, 0.12);
+}
+
+.accessCardPrimary .accessCardLabel {
+  color: var(--terracotta);
 }
 
 .accessCardLabel {
-  font-family: var(--font-mono), monospace;
+  font-family: var(--font-sans), system-ui, sans-serif;
   font-size: 9px;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--sea);
   font-weight: 500;

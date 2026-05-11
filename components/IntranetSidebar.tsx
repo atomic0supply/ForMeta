@@ -26,15 +26,31 @@ import { BrandWordmark } from "@/components/BrandWordmark";
 import { clearSessionCookie } from "@/lib/session";
 import styles from "@/styles/intranet-sidebar.module.css";
 
-const navItems = [
-  { href: "/intranet", label: "Dashboard", exact: true, icon: LayoutGrid },
-  { href: "/intranet/clientes", label: "Clientes", exact: false, icon: Users },
-  { href: "/intranet/proyectos", label: "Proyectos", exact: false, icon: Folder },
-  { href: "/intranet/tiempo", label: "Tiempo", exact: false, icon: Clock },
-  { href: "/intranet/links", label: "Links", exact: false, icon: Link2 },
-  { href: "/intranet/dominios", label: "Dominios", exact: false, icon: Globe },
-  { href: "/intranet/ideas", label: "Ideas", exact: false, icon: Lightbulb },
-  { href: "/intranet/buscar", label: "Buscar", exact: false, icon: Search },
+const navGroups = [
+  {
+    label: "Principal",
+    items: [
+      { href: "/intranet",           label: "Dashboard", exact: true,  icon: LayoutGrid },
+      { href: "/intranet/proyectos", label: "Proyectos", exact: false, icon: Folder     },
+      { href: "/intranet/clientes",  label: "Clientes",  exact: false, icon: Users      },
+    ],
+  },
+  {
+    label: "Operativa",
+    items: [
+      { href: "/intranet/tiempo",    label: "Tiempo",    exact: false, icon: Clock      },
+      { href: "/intranet/ideas",     label: "Ideas",     exact: false, icon: Lightbulb  },
+      { href: "/intranet/links",     label: "Links",     exact: false, icon: Link2      },
+      { href: "/intranet/dominios",  label: "Dominios",  exact: false, icon: Globe      },
+    ],
+  },
+  {
+    label: "Sistema",
+    items: [
+      { href: "/intranet/equipo",    label: "Equipo",    exact: false, icon: Shield     },
+      { href: "/intranet/buscar",    label: "Buscar",    exact: false, icon: Search     },
+    ],
+  },
 ];
 
 export function IntranetSidebar() {
@@ -63,10 +79,7 @@ export function IntranetSidebar() {
     router.refresh();
   }
 
-  const allNavItems = [
-    ...navItems,
-    { href: "/intranet/equipo", label: "Equipo", exact: false, icon: Shield },
-  ];
+  // navGroups defined at module level above
 
   /* ── Timer widget (shared between sidebar and drawer) ─────────────────── */
   function TimerWidget() {
@@ -113,15 +126,21 @@ export function IntranetSidebar() {
         </div>
 
         <nav className={styles.nav} aria-label="Navegación intranet">
-          {allNavItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`${styles.navItem} ${isActive(item.href, item.exact) ? styles.navActive : ""}`}
-            >
-              <item.icon width={16} height={16} strokeWidth={1.75} />
-              {item.label}
-            </Link>
+          {navGroups.map((group, gi) => (
+            <div key={group.label} className={styles.navGroup}>
+              <span className={styles.navGroupLabel}>{group.label}</span>
+              {group.items.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`${styles.navItem} ${isActive(item.href, item.exact) ? styles.navActive : ""}`}
+                >
+                  <item.icon width={16} height={16} strokeWidth={1.75} />
+                  {item.label}
+                </Link>
+              ))}
+              {gi < navGroups.length - 1 && <div className={styles.navDivider} />}
+            </div>
           ))}
         </nav>
 
@@ -182,15 +201,21 @@ export function IntranetSidebar() {
         </div>
 
         <nav className={styles.mobileDrawerNav}>
-          {allNavItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`${styles.mobileDrawerItem} ${isActive(item.href, item.exact) ? styles.mobileDrawerItemActive : ""}`}
-            >
-              <item.icon width={18} height={18} strokeWidth={1.75} />
-              {item.label}
-            </Link>
+          {navGroups.map((group, gi) => (
+            <div key={group.label} className={styles.navGroup}>
+              <span className={styles.navGroupLabel}>{group.label}</span>
+              {group.items.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`${styles.mobileDrawerItem} ${isActive(item.href, item.exact) ? styles.mobileDrawerItemActive : ""}`}
+                >
+                  <item.icon width={18} height={18} strokeWidth={1.75} />
+                  {item.label}
+                </Link>
+              ))}
+              {gi < navGroups.length - 1 && <div className={styles.navDivider} />}
+            </div>
           ))}
         </nav>
 

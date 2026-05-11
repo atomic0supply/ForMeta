@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { Clock, Lightbulb, Plus, Search } from "lucide-react";
 
 import { ActivityFeed } from "@/components/ActivityFeed";
 import { TimeHeatmap } from "@/components/TimeHeatmap";
@@ -11,7 +12,7 @@ import {
   subscribeToExpiringDomains,
   type Domain,
 } from "@/lib/domains";
-import { listIdeas } from "@/lib/ideas";
+import { listIdeas, type Idea } from "@/lib/ideas";
 import { subscribeToProjects, type Project } from "@/lib/projects";
 import { subscribeToAllTimeEntries, type TimeEntry } from "@/lib/timeEntries";
 import { formatDuration, formatElapsed, useTimer } from "@/lib/timerContext";
@@ -23,20 +24,20 @@ const DAY_MS = 86400000;
 function dayKey(d: Date) { return d.toISOString().slice(0, 10); }
 
 const modules = [
-  { href: "/intranet/clientes",  label: "Directorio",    title: "Clientes"  },
-  { href: "/intranet/tiempo",    label: "Registro",       title: "Tiempo"    },
-  { href: "/intranet/links",     label: "Accesos",        title: "Links"     },
-  { href: "/intranet/proyectos", label: "Trabajo activo", title: "Proyectos" },
-  { href: "/intranet/ideas",     label: "Pipeline",       title: "Ideas"     },
-  { href: "/intranet/buscar",    label: "Búsqueda",       title: "Buscar"    },
+  { href: "/intranet/clientes",          label: "Directorio",    title: "Clientes",   primary: false },
+  { href: "/intranet/tiempo",            label: "Registro",      title: "Tiempo",     primary: false },
+  { href: "/intranet/links",             label: "Accesos",       title: "Links",      primary: false },
+  { href: "/intranet/proyectos?nuevo=1", label: "+ Nuevo",       title: "Proyecto",   primary: true  },
+  { href: "/intranet/ideas",             label: "Pipeline",      title: "Ideas",      primary: false },
+  { href: "/intranet/buscar",            label: "Búsqueda",      title: "Buscar",     primary: false },
 ];
 
 export function IntranetDashboard() {
   const { activeTimer, elapsed, stop } = useTimer();
   const user = useCurrentUser();
-  const [projects, setProjects]         = useState<Project[]>([]);
-  const [entries, setEntries]           = useState<TimeEntry[]>([]);
-  const [ideasCount, setIdeasCount]     = useState<number | null>(null);
+  const [projects, setProjects]               = useState<Project[]>([]);
+  const [entries, setEntries]                 = useState<TimeEntry[]>([]);
+  const [ideas, setIdeas]                     = useState<Idea[]>([]);
   const [expiringDomains, setExpiringDomains] = useState<Domain[]>([]);
 
   useEffect(() => {
@@ -48,10 +49,10 @@ export function IntranetDashboard() {
 
   const loadIdeas = useCallback(async (uid: string) => {
     try {
-      const ideas = await listIdeas(uid);
-      setIdeasCount(ideas.filter((i) => i.status !== "archived").length);
+      const all = await listIdeas(uid);
+      setIdeas(all);
     } catch {
-      setIdeasCount(null);
+      setIdeas([]);
     }
   }, []);
 
@@ -59,7 +60,27 @@ export function IntranetDashboard() {
     if (user) void loadIdeas(user.uid);
   }, [user, loadIdeas]);
 
-  // Stats
+  // Greeting
+  const greeting = useMemo(() => {
+    const h = new Date().getHours();
+    if (h < 13) return "Buenos días";
+    if (h < 20) return "Buenas tardes";
+    return "Buenas noches";
+  }, []);
+
+  const firstName = user?.displayName?.split(" ")[0] ?? user?.email?.split("@")[0] ?? "";
+
+  // Stats — ideas
+  const ideasCount = useMemo(
+    () => ideas.filter((i) => i.status !== "archived").length,
+    [ideas],
+  );
+  const ideasUnclassified = useMemo(
+    () => ideas.filter((i) => i.status === "draft").length,
+    [ideas],
+  );
+
+  // Stats — projects
   const activeProjects = useMemo(
     () => projects.filter((p) => p.status === "activo").length,
     [projects],
@@ -70,12 +91,28 @@ export function IntranetDashboard() {
     [projects],
   );
 
+  // Stats — time
   const weekSec = useMemo(() => {
     const cutoff = Date.now() - 7 * DAY_MS;
     return entries
       .filter((e) => e.startedAt.seconds * 1000 >= cutoff)
       .reduce((a, e) => a + e.durationSeconds, 0);
   }, [entries]);
+
+  const prevWeekSec = useMemo(() => {
+    const end   = Date.now() - 7 * DAY_MS;
+    const start = end - 7 * DAY_MS;
+    return entries
+      .filter((e) => {
+        const ms = e.startedAt.seconds * 1000;
+        return ms >= start && ms < end;
+      })
+      .reduce((a, e) => a + e.durationSeconds, 0);
+  }, [entries]);
+
+  const weekDeltaPct = prevWeekSec > 0
+    ? Math.round(((weekSec - prevWeekSec) / prevWeekSec) * 100)
+    : null;
 
   const todaySec = useMemo(() => {
     const key = dayKey(new Date());
@@ -84,11 +121,39 @@ export function IntranetDashboard() {
       .reduce((a, e) => a + e.durationSeconds, 0);
   }, [entries]);
 
+  const todayGoalPct = Math.round((todaySec / (8 * 3600)) * 100);
+
   return (
     <main className={styles.page}>
       <div className={styles.pageHeader}>
         <p className={styles.kicker}>Dashboard</p>
         <h1>Roqueta</h1>
+      </div>
+
+      {/* Action zone — greeting + summary + quick actions */}
+      <div className={styles.actionZone}>
+        <p className={styles.actionGreeting}>
+          {greeting}{firstName ? `, ${firstName}` : ""}.
+        </p>
+        <p className={styles.actionSummary}>
+          Tienes {activeProjects} proyecto{activeProjects !== 1 ? "s" : ""} activo{activeProjects !== 1 ? "s" : ""}
+          {ideasUnclassified > 0 ? `, ${ideasUnclassified} idea${ideasUnclassified !== 1 ? "s" : ""} sin revisar` : ""}
+          {activeTimer ? " y un timer activo" : ""}.
+        </p>
+        <div className={styles.actionBtns}>
+          <Link href="/intranet/proyectos?nuevo=1" className={styles.actionBtn}>
+            <Plus width={11} height={11} strokeWidth={2.5} /> Nuevo proyecto
+          </Link>
+          <Link href="/intranet/tiempo" className={styles.actionBtn}>
+            <Clock width={11} height={11} strokeWidth={2} /> Tiempo
+          </Link>
+          <Link href="/intranet/ideas?nuevo=1" className={styles.actionBtn}>
+            <Lightbulb width={11} height={11} strokeWidth={2} /> Nueva idea
+          </Link>
+          <Link href="/intranet/buscar" className={styles.actionBtn}>
+            <Search width={11} height={11} strokeWidth={2} /> Buscar
+          </Link>
+        </div>
       </div>
 
       {/* Timer banner — full width, solo si hay sesión activa */}
@@ -115,14 +180,25 @@ export function IntranetDashboard() {
         <div className={styles.statPill}>
           <span className={styles.statPillValue}>{todaySec > 0 ? formatDuration(todaySec) : "—"}</span>
           <span className={styles.statPillLabel}>hoy</span>
+          {todaySec > 0 && (
+            <span className={styles.statPillDelta}>{todayGoalPct}% del objetivo (8h)</span>
+          )}
         </div>
         <div className={styles.statPill}>
           <span className={styles.statPillValue}>{weekSec > 0 ? formatDuration(weekSec) : "—"}</span>
           <span className={styles.statPillLabel}>esta semana</span>
+          {weekDeltaPct !== null && (
+            <span className={`${styles.statPillDelta} ${weekDeltaPct >= 0 ? styles.statPillDeltaPos : styles.statPillDeltaNeg}`}>
+              {weekDeltaPct >= 0 ? "+" : ""}{weekDeltaPct}% vs semana anterior
+            </span>
+          )}
         </div>
         <div className={styles.statPill}>
-          <span className={styles.statPillValue}>{ideasCount ?? "—"}</span>
+          <span className={styles.statPillValue}>{ideasCount > 0 ? ideasCount : "—"}</span>
           <span className={styles.statPillLabel}>ideas</span>
+          {ideasUnclassified > 0 && (
+            <span className={styles.statPillDelta}>{ideasUnclassified} sin revisar</span>
+          )}
         </div>
       </div>
 
@@ -202,7 +278,11 @@ export function IntranetDashboard() {
             </div>
             <div className={styles.accessGrid}>
               {modules.map((mod) => (
-                <Link key={mod.href} href={mod.href} className={styles.accessCard}>
+                <Link
+                  key={mod.href}
+                  href={mod.href}
+                  className={`${styles.accessCard} ${mod.primary ? styles.accessCardPrimary : ""}`}
+                >
                   <span className={styles.accessCardLabel}>{mod.label}</span>
                   <span className={styles.accessCardTitle}>{mod.title}</span>
                 </Link>

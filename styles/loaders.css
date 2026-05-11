@@ -1,0 +1,162 @@
+/**
+ * loaders.css — ForMeta / Roqueta
+ *
+ * 5 indeterminate loading indicators extracted from the design system
+ * (design/13_recursos.html). Pure CSS, no JavaScript required.
+ *
+ * Usage:
+ *   import "@/styles/loaders.css";   // in globals or layout
+ *   <div class="loader-blob" />
+ *
+ * All indicators use currentColor so they adapt to any text color context.
+ * Wrap in a container sized to your needs — the indicator fills it.
+ *
+ * Variants:
+ *   .loader-blob      → organic blob morph  (pages, full-screen loading)
+ *   .loader-pulse     → concentric rings    (cards, widgets)
+ *   .loader-ripple    → expanding rings     (submit / save feedback)
+ *   .loader-breathe   → breathing shape     (image / avatar placeholder)
+ *   .loader-thinking  → blur pulse          (AI "thinking" state)
+ */
+
+/* ── Shared wrapper ──────────────────────────────────────────────────────── */
+.loader-blob,
+.loader-pulse,
+.loader-ripple,
+.loader-breathe,
+.loader-thinking {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* ── 01 · blob-morph  (page-level loading) ──────────────────────────────── */
+@keyframes fm-blobMorph {
+  0%,100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; transform: rotate(0deg); }
+  25%      { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; transform: rotate(90deg); }
+  50%      { border-radius: 50% 60% 30% 60% / 30% 70% 70% 30%; transform: rotate(180deg); }
+  75%      { border-radius: 40% 60% 60% 40% / 60% 30% 40% 60%; transform: rotate(270deg); }
+}
+
+.loader-blob::before {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 40px;
+  background: currentColor;
+  opacity: 0.85;
+  animation: fm-blobMorph 4s ease-in-out infinite;
+}
+
+/* Larger variant: wrap in a container and add class="loader-blob loader-blob--lg" */
+.loader-blob--lg::before { width: 72px; height: 72px; }
+.loader-blob--sm::before { width: 24px; height: 24px; }
+
+/* ── 02 · pulse-circle  (card / widget loading) ──────────────────────────── */
+@keyframes fm-pulseScale {
+  0%,100% { transform: scale(1);   opacity: 0.9; }
+  50%      { transform: scale(1.4); opacity: 0.2; }
+}
+
+.loader-pulse {
+  width: 48px;
+  height: 48px;
+}
+
+.loader-pulse span {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  animation: fm-pulseScale 2s ease-in-out infinite;
+}
+
+.loader-pulse span:nth-child(1) { width: 16px; height: 16px; animation-delay: 0s; }
+.loader-pulse span:nth-child(2) { width: 30px; height: 30px; animation-delay: -0.5s; }
+.loader-pulse span:nth-child(3) { width: 44px; height: 44px; animation-delay: -1s; }
+
+/* Usage: <div class="loader-pulse"><span/><span/><span/></div> */
+
+/* ── 03 · ripple-rings  (submit / save feedback) ─────────────────────────── */
+@keyframes fm-ripple {
+  0%   { transform: scale(0); opacity: 0.7; }
+  100% { transform: scale(2.6); opacity: 0; }
+}
+
+.loader-ripple {
+  width: 32px;
+  height: 32px;
+}
+
+.loader-ripple span {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  animation: fm-ripple 2s ease-out infinite;
+}
+
+.loader-ripple span:nth-child(1) { animation-delay: 0s; }
+.loader-ripple span:nth-child(2) { animation-delay: 0.6s; }
+.loader-ripple span:nth-child(3) { animation-delay: 1.2s; }
+
+/* Usage: <div class="loader-ripple"><span/><span/><span/></div> */
+
+/* ── 04 · breathing-shape  (image / avatar placeholder) ──────────────────── */
+@keyframes fm-breathe {
+  0%,100% { transform: scale(0.82) rotate(-4deg); border-radius: 40% 60% 55% 45% / 55% 45% 60% 40%; }
+  50%      { transform: scale(1.12) rotate(4deg);  border-radius: 55% 45% 40% 60% / 40% 60% 45% 55%; }
+}
+
+.loader-breathe::before {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 40px;
+  background: currentColor;
+  opacity: 0.15;
+  animation: fm-breathe 3s ease-in-out infinite;
+}
+
+/* For a full placeholder block, set explicit width/height on the wrapper */
+.loader-breathe--fill {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+}
+
+.loader-breathe--fill::before {
+  width: 100%;
+  height: 100%;
+}
+
+/* ── 05 · blur-pulse  (AI "thinking" state) ──────────────────────────────── */
+@keyframes fm-blurPulse {
+  0%,100% { filter: blur(1px);  transform: scale(0.9); opacity: 0.7; }
+  50%      { filter: blur(8px);  transform: scale(1.1); opacity: 1; }
+}
+
+.loader-thinking::before {
+  content: '';
+  display: block;
+  width: 36px;
+  height: 36px;
+  background: currentColor;
+  border-radius: 40% 60% 55% 45% / 55% 45% 60% 40%;
+  opacity: 0.75;
+  animation: fm-blurPulse 2.4s ease-in-out infinite;
+}
+
+/* ── Accessibility ────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .loader-blob::before,
+  .loader-breathe::before,
+  .loader-thinking::before {
+    animation: none;
+  }
+  .loader-pulse span,
+  .loader-ripple span {
+    animation: none;
+    opacity: 0.5;
+  }
+}

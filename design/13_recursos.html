@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>13. Recursos - ForMeta Guía de Estilo</title>
+    <title>13. Recursos · Indicadores de carga - ForMeta Guía de Estilo</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
-    <style>:root {
+    <style>
+        :root {
             --font-mono: 'DM Mono', 'Courier New', Courier, monospace;
             --font-serif: 'Cormorant Garamond', Garamond, Georgia, serif;
             --color-ink: #2C2C28;
@@ -30,8 +31,22 @@
             --spacing-lg: 6rem;
             --spacing-xl: 10rem;
         }
+
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background-color: var(--color-sand); color: var(--color-text); font-family: var(--font-serif); font-weight: 300; font-size: 1.15rem; line-height: 1.8; -webkit-font-smoothing: antialiased; display: flex; flex-direction: column; min-height: 100vh; }
+
+        body {
+            background-color: var(--color-sand);
+            color: var(--color-text);
+            font-family: var(--font-serif);
+            font-weight: 300;
+            font-size: 1.15rem;
+            line-height: 1.8;
+            -webkit-font-smoothing: antialiased;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
         .container { max-width: 1200px; margin: 0 auto; padding: var(--spacing-md) var(--spacing-sm); flex: 1; }
         h1 { font-family: var(--font-serif); font-size: 3.5rem; font-weight: 300; margin-bottom: var(--spacing-xs); color: var(--color-ink); }
         h2 { font-family: var(--font-serif); font-size: 2.5rem; font-weight: 300; margin-bottom: var(--spacing-sm); padding-bottom: 1rem; border-bottom: 1px solid var(--color-border-secondary); }
@@ -41,7 +56,418 @@
         .lbl { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-text-secondary); margin-top: 1rem; margin-bottom: 0.5rem; }
         section { margin-bottom: var(--spacing-xl); }
         footer { text-align: center; margin-top: var(--spacing-xl); padding: var(--spacing-md) 0; border-top: 1px solid var(--color-border-secondary); }
-</style>
+
+        /* ── Loader grid ─────────────────────────────────────────── */
+        .loader-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+        }
+
+        .loader-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .loader-stage {
+            width: 200px;
+            height: 200px;
+            background: var(--color-white);
+            border: 1px solid var(--color-stone);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .loader-name {
+            font-family: var(--font-mono);
+            font-size: 9px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--color-muted);
+        }
+
+        /* ── 01 blob-morph ────────────────────────────────────────── */
+        @keyframes blobMorph {
+            0%,100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; transform: rotate(0deg); }
+            25%      { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; transform: rotate(90deg); }
+            50%      { border-radius: 50% 60% 30% 60% / 30% 70% 70% 30%; transform: rotate(180deg); }
+            75%      { border-radius: 40% 60% 60% 40% / 60% 30% 40% 60%; transform: rotate(270deg); }
+        }
+        .blob-morph {
+            width: 80px; height: 80px;
+            background: var(--color-ink);
+            animation: blobMorph 4s ease-in-out infinite;
+        }
+
+        /* ── 02 wave-fill ─────────────────────────────────────────── */
+        @keyframes waveFill {
+            0%   { clip-path: inset(100% 0 0 0); }
+            50%  { clip-path: inset(0 0 0 0); }
+            100% { clip-path: inset(100% 0 0 0); }
+        }
+        .wave-fill-wrap {
+            width: 70px; height: 100px;
+            border: 2px solid var(--color-ink);
+            border-radius: 35px;
+            overflow: hidden;
+            position: relative;
+        }
+        .wave-fill-wrap::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: var(--color-ink);
+            animation: waveFill 2.4s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+        }
+
+        /* ── 03 orbit-ring ────────────────────────────────────────── */
+        @keyframes orbitRotate {
+            to { transform: rotate(360deg); }
+        }
+        .orbit-ring {
+            width: 72px; height: 72px;
+            border: 2px solid var(--color-ink);
+            border-radius: 50%;
+            position: relative;
+            animation: orbitRotate 1.8s linear infinite;
+        }
+        .orbit-ring::before {
+            content: '';
+            position: absolute;
+            width: 16px; height: 16px;
+            background: var(--color-ink);
+            border-radius: 50%;
+            top: -9px; left: 50%; transform: translateX(-50%);
+        }
+        .orbit-ring::after {
+            content: '';
+            position: absolute;
+            width: 10px; height: 10px;
+            background: var(--color-ink);
+            border-radius: 50%;
+            bottom: -6px; left: 50%; transform: translateX(-50%);
+            opacity: 0.35;
+        }
+
+        /* ── 04 pulse-circle ──────────────────────────────────────── */
+        @keyframes pulseScale {
+            0%,100% { transform: scale(1);   opacity: 1; }
+            50%      { transform: scale(1.4); opacity: 0.3; }
+        }
+        .pulse-circle { position: relative; width: 90px; height: 90px; display: flex; align-items: center; justify-content: center; }
+        .pulse-circle span {
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid var(--color-ink);
+            animation: pulseScale 2s ease-in-out infinite;
+        }
+        .pulse-circle span:nth-child(1) { width: 30px; height: 30px; animation-delay: 0s; }
+        .pulse-circle span:nth-child(2) { width: 55px; height: 55px; animation-delay: -0.5s; }
+        .pulse-circle span:nth-child(3) { width: 80px; height: 80px; animation-delay: -1s; }
+
+        /* ── 05 growing-dots ──────────────────────────────────────── */
+        @keyframes growDot {
+            0%,40%,100% { transform: scaleY(0.4); }
+            20%          { transform: scaleY(1); }
+        }
+        .growing-dots {
+            display: flex; gap: 6px; align-items: center; height: 60px;
+        }
+        .growing-dots span {
+            display: block;
+            width: 10px; height: 50px;
+            background: var(--color-ink);
+            border-radius: 5px;
+            animation: growDot 1.2s ease-in-out infinite;
+        }
+        .growing-dots span:nth-child(1) { animation-delay: 0s; }
+        .growing-dots span:nth-child(2) { animation-delay: 0.1s; }
+        .growing-dots span:nth-child(3) { animation-delay: 0.2s; }
+        .growing-dots span:nth-child(4) { animation-delay: 0.3s; }
+        .growing-dots span:nth-child(5) { animation-delay: 0.4s; }
+
+        /* ── 06 breathing-shape ───────────────────────────────────── */
+        @keyframes breathe {
+            0%,100% { transform: scale(0.82) rotate(-4deg); border-radius: 40% 60% 55% 45% / 55% 45% 60% 40%; }
+            50%      { transform: scale(1.12) rotate(4deg);  border-radius: 55% 45% 40% 60% / 40% 60% 45% 55%; }
+        }
+        .breathing-shape {
+            width: 80px; height: 80px;
+            background: var(--color-ink);
+            animation: breathe 3s ease-in-out infinite;
+        }
+
+        /* ── 07 ripple-rings ──────────────────────────────────────── */
+        @keyframes ripple {
+            0%   { transform: scale(0); opacity: 0.8; }
+            100% { transform: scale(2.4); opacity: 0; }
+        }
+        .ripple-rings { position: relative; width: 40px; height: 40px; }
+        .ripple-rings span {
+            position: absolute; inset: 0;
+            border-radius: 50%;
+            border: 2px solid var(--color-ink);
+            animation: ripple 2s ease-out infinite;
+        }
+        .ripple-rings span:nth-child(1) { animation-delay: 0s; }
+        .ripple-rings span:nth-child(2) { animation-delay: 0.6s; }
+        .ripple-rings span:nth-child(3) { animation-delay: 1.2s; }
+
+        /* ── 08 figure-eight ──────────────────────────────────────── */
+        @keyframes figX {
+            0%,100% { transform: translateX(30px); }
+            50%      { transform: translateX(-30px); }
+        }
+        @keyframes figY {
+            0%,100% { transform: translateY(0px); }
+            25%      { transform: translateY(-20px); }
+            75%      { transform: translateY(20px); }
+        }
+        .figure-eight-wrap { position: relative; width: 100px; height: 60px; display: flex; align-items: center; justify-content: center; }
+        .figure-eight-dot {
+            width: 16px; height: 16px;
+            background: var(--color-ink);
+            border-radius: 50%;
+            position: absolute;
+            animation: figX 2s ease-in-out infinite, figY 1s ease-in-out infinite;
+        }
+
+        /* ── 09 spinning-blob ─────────────────────────────────────── */
+        @keyframes spinBlob {
+            0%   { transform: rotate(0deg);   border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+            33%  { transform: rotate(120deg); border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+            66%  { transform: rotate(240deg); border-radius: 50% 60% 30% 60% / 30% 70% 70% 30%; }
+            100% { transform: rotate(360deg); border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+        }
+        .spinning-blob {
+            width: 72px; height: 72px;
+            background: var(--color-ink);
+            animation: spinBlob 2.4s linear infinite;
+        }
+
+        /* ── 10 ink-drop ──────────────────────────────────────────── */
+        @keyframes inkDrop {
+            0%   { clip-path: circle(0% at 50% 50%); }
+            50%  { clip-path: circle(70% at 50% 50%); }
+            100% { clip-path: circle(0% at 50% 50%); }
+        }
+        .ink-drop {
+            width: 100px; height: 100px;
+            background: var(--color-ink);
+            border-radius: 50%;
+            animation: inkDrop 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        /* ── 11 radial-burst ──────────────────────────────────────── */
+        @keyframes radialSpin {
+            to { transform: rotate(360deg); }
+        }
+        .radial-burst {
+            width: 90px; height: 90px;
+            border-radius: 50%;
+            background: conic-gradient(
+                var(--color-ink) 0deg 30deg,
+                transparent 30deg 60deg,
+                var(--color-ink) 60deg 90deg,
+                transparent 90deg 120deg,
+                var(--color-ink) 120deg 150deg,
+                transparent 150deg 180deg,
+                var(--color-ink) 180deg 210deg,
+                transparent 210deg 240deg,
+                var(--color-ink) 240deg 270deg,
+                transparent 270deg 300deg,
+                var(--color-ink) 300deg 330deg,
+                transparent 330deg 360deg
+            );
+            mask: radial-gradient(circle at center, transparent 40%, black 42%);
+            -webkit-mask: radial-gradient(circle at center, transparent 40%, black 42%);
+            animation: radialSpin 1.6s linear infinite;
+        }
+
+        /* ── 12 blur-pulse ────────────────────────────────────────── */
+        @keyframes blurPulse {
+            0%,100% { filter: blur(1px);  transform: scale(0.92); }
+            50%      { filter: blur(10px); transform: scale(1.1); }
+        }
+        .blur-pulse {
+            width: 70px; height: 70px;
+            background: var(--color-ink);
+            border-radius: 40% 60% 55% 45% / 55% 45% 60% 40%;
+            animation: blurPulse 2.4s ease-in-out infinite;
+        }
+
+        /* ── 13 corner-morph ──────────────────────────────────────── */
+        @keyframes cornerMorph {
+            0%,100% { border-radius: 4px; transform: rotate(0deg); }
+            25%      { border-radius: 50%; transform: rotate(90deg); }
+            50%      { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; transform: rotate(180deg); }
+            75%      { border-radius: 50% 20% 50% 20% / 20% 50% 20% 50%; transform: rotate(270deg); }
+        }
+        .corner-morph {
+            width: 72px; height: 72px;
+            background: var(--color-ink);
+            animation: cornerMorph 3s ease-in-out infinite;
+        }
+
+        /* ── 14 wave-lines ────────────────────────────────────────── */
+        @keyframes waveLine {
+            0%,100% { transform: scaleX(0.3); }
+            50%      { transform: scaleX(1); }
+        }
+        .wave-lines {
+            display: flex; flex-direction: column; gap: 8px; width: 80px;
+        }
+        .wave-lines span {
+            display: block;
+            height: 3px;
+            background: var(--color-ink);
+            border-radius: 2px;
+            transform-origin: left center;
+            animation: waveLine 1.4s ease-in-out infinite;
+        }
+        .wave-lines span:nth-child(1) { animation-delay: 0s; }
+        .wave-lines span:nth-child(2) { animation-delay: 0.12s; }
+        .wave-lines span:nth-child(3) { animation-delay: 0.24s; }
+        .wave-lines span:nth-child(4) { animation-delay: 0.36s; }
+        .wave-lines span:nth-child(5) { animation-delay: 0.48s; }
+
+        /* ── 15 blend-orbs ────────────────────────────────────────── */
+        @keyframes orbA {
+            0%,100% { transform: translateX(18px); }
+            50%      { transform: translateX(-18px); }
+        }
+        @keyframes orbB {
+            0%,100% { transform: translateX(-18px); }
+            50%      { transform: translateX(18px); }
+        }
+        .blend-orbs {
+            position: relative; width: 100px; height: 60px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .blend-orbs span {
+            position: absolute;
+            width: 46px; height: 46px;
+            border-radius: 50%;
+            background: var(--color-ink);
+            mix-blend-mode: multiply;
+        }
+        .blend-orbs span:nth-child(1) { opacity: 0.55; animation: orbA 2s ease-in-out infinite; }
+        .blend-orbs span:nth-child(2) { opacity: 0.55; animation: orbB 2s ease-in-out infinite; }
+
+        /* ── 16 liquid-fill ───────────────────────────────────────── */
+        @keyframes liquidRise {
+            0%,100% { clip-path: polygon(0% 100%, 100% 100%, 100% 20%, 80% 15%, 60% 20%, 40% 15%, 20% 20%, 0% 15%); }
+            50%      { clip-path: polygon(0% 100%, 100% 100%, 100% 20%, 80% 25%, 60% 18%, 40% 25%, 20% 18%, 0% 25%); }
+        }
+        .liquid-fill-wrap {
+            width: 72px; height: 90px;
+            border: 2px solid var(--color-ink);
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+        .liquid-fill-wrap::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: var(--color-ink);
+            animation: liquidRise 2s ease-in-out infinite;
+        }
+
+        /* ── 17 marquee-ovals ─────────────────────────────────────── */
+        @keyframes marqueeMove {
+            from { transform: translateX(-160px); }
+            to   { transform: translateX(160px); }
+        }
+        .marquee-ovals {
+            width: 160px; height: 60px;
+            overflow: hidden;
+            position: relative;
+        }
+        .marquee-ovals-track {
+            display: flex; gap: 20px; align-items: center;
+            height: 100%;
+            animation: marqueeMove 2s linear infinite;
+        }
+        .marquee-ovals span {
+            flex-shrink: 0;
+            width: 50px; height: 30px;
+            background: var(--color-ink);
+            border-radius: 50%;
+            opacity: 0.85;
+        }
+        .marquee-ovals span:nth-child(2) { opacity: 0.5; }
+        .marquee-ovals span:nth-child(3) { opacity: 0.25; }
+
+        /* ── 18 eccentric-ellipse ─────────────────────────────────── */
+        @keyframes eccentricSpin {
+            0%   { border-radius: 50% 50% / 80% 20%; transform: rotate(0deg) scaleX(1); }
+            25%  { border-radius: 80% 20% / 50% 50%; transform: rotate(90deg) scaleX(0.7); }
+            50%  { border-radius: 50% 50% / 20% 80%; transform: rotate(180deg) scaleX(1.3); }
+            75%  { border-radius: 20% 80% / 50% 50%; transform: rotate(270deg) scaleX(0.7); }
+            100% { border-radius: 50% 50% / 80% 20%; transform: rotate(360deg) scaleX(1); }
+        }
+        .eccentric-ellipse {
+            width: 80px; height: 80px;
+            background: var(--color-ink);
+            animation: eccentricSpin 2.8s ease-in-out infinite;
+        }
+
+        /* ── 19 concentric-pulse ──────────────────────────────────── */
+        @keyframes concentricGrow {
+            0%,100% { background-size: 20% 20%, 60% 60%, 100% 100%; }
+            50%      { background-size: 40% 40%, 80% 80%, 120% 120%; }
+        }
+        .concentric-pulse {
+            width: 100px; height: 100px;
+            border-radius: 50%;
+            background:
+                radial-gradient(circle at center, var(--color-ink) 0%, var(--color-ink) 50%, transparent 50%) center/20% 20% no-repeat,
+                radial-gradient(circle at center, transparent 40%, var(--color-ink) 40%, var(--color-ink) 60%, transparent 60%) center/60% 60% no-repeat,
+                radial-gradient(circle at center, transparent 70%, var(--color-ink) 70%, var(--color-ink) 90%, transparent 90%) center/100% 100% no-repeat;
+            animation: concentricGrow 2s ease-in-out infinite;
+        }
+
+        /* ── 20 chase-arcs ────────────────────────────────────────── */
+        @keyframes chaseA {
+            to { transform: rotate(360deg); }
+        }
+        @keyframes chaseB {
+            to { transform: rotate(-360deg); }
+        }
+        .chase-arcs {
+            position: relative; width: 80px; height: 80px;
+        }
+        .chase-arcs span {
+            position: absolute; inset: 0;
+            border-radius: 50%;
+            border: 3px solid transparent;
+        }
+        .chase-arcs span:nth-child(1) {
+            border-top-color: var(--color-ink);
+            border-right-color: var(--color-ink);
+            animation: chaseA 1.4s linear infinite;
+        }
+        .chase-arcs span:nth-child(2) {
+            inset: 12px;
+            border-bottom-color: var(--color-ink);
+            border-left-color: var(--color-ink);
+            animation: chaseB 1.4s linear infinite;
+            animation-delay: -0.7s;
+        }
+
+        /* ── Accessibility ────────────────────────────────────────── */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+            }
+        }
+    </style>
 </head>
 <body>
 <div class="container">
@@ -49,16 +475,208 @@
         <div class="lbl">Sección 13</div>
         <h1>Recursos</h1>
     </div>
-    
+
     <section>
-        <p style="opacity: 0.6; font-style: italic;">Esta sección (Assets y librerías) se desarrollará en la siguiente iteración de la guía de estilo.</p>
+        <h2>Indicadores de carga</h2>
+        <p>
+            20 animaciones indeterminadas en blanco y negro puro. Sin texto, sin color.
+            Todas implementadas en CSS puro — sin JavaScript ni librerías externas.
+            El carácter es orgánico, fluido y blobby, coherente con la identidad visual de ForMeta.
+        </p>
+        <p>
+            Cada indicador ocupa un espacio de 200&thinsp;×&thinsp;200 px y puede integrarse
+            directamente en la aplicación mediante las clases exportadas en <code style="font-family:var(--font-mono);font-size:0.85em">styles/loaders.css</code>.
+        </p>
+
+        <div class="loader-grid">
+
+            <!-- 01 blob-morph -->
+            <div class="loader-card">
+                <div class="loader-stage">
+                    <div class="blob-morph"></div>
+                </div>
+                <span class="loader-name">01 · blob morph</span>
+            </div>
+
+            <!-- 02 wave-fill -->
+            <div class="loader-card">
+                <div class="loader-stage">
+                    <div class="wave-fill-wrap"></div>
+                </div>
+                <span class="loader-name">02 · wave fill</span>
+            </div>
+
+            <!-- 03 orbit-ring -->
+            <div class="loader-card">
+                <div class="loader-stage">
+                    <div class="orbit-ring"></div>
+                </div>
+                <span class="loader-name">03 · orbit ring</span>
+            </div>
+
+            <!-- 04 pulse-circle -->
+            <div class="loader-card">
+                <div class="loader-stage">
+                    <div class="pulse-circle">
+                        <span></span><span></span><span></span>
+                    </div>
+                </div>
+                <span class="loader-name">04 · pulse circle</span>
+            </div>
+
+            <!-- 05 growing-dots -->
+            <div class="loader-card">
+                <div class="loader-stage">
+                    <div class="growing-dots">
+                        <span></span><span></span><span></span><span></span><span></span>
+                    </div>
+                </div>
+                <span class="loader-name">05 · growing dots</span>
+            </div>
+
+            <!-- 06 breathing-shape -->
+            <div class="loader-card">
+                <div class="loader-stage">
+                    <div class="breathing-shape"></div>
+                </div>
+                <span class="loader-name">06 · breathing shape</span>
+            </div>
+
+            <!-- 07 ripple-rings -->
+            <div class="loader-card">
+                <div class="loader-stage">
+                    <div class="ripple-rings">
+                        <span></span><span></span><span></span>
+                    </div>
+                </div>
+                <span class="loader-name">07 · ripple rings</span>
+            </div>
+
+            <!-- 08 figure-eight -->
+            <div class="loader-card">
+                <div class="loader-stage">
+                    <div class="figure-eight-wrap">
+                        <div class="figure-eight-dot"></div>
+                    </div>
+                </div>
+                <span class="loader-name">08 · figure eight</span>
+            </div>
+
+            <!-- 09 spinning-blob -->
+            <div class="loader-card">
+                <div class="loader-stage">
+                    <div class="spinning-blob"></div>
+                </div>
+                <span class="loader-name">09 · spinning blob</span>
+            </div>
+
+            <!-- 10 ink-drop -->
+            <div class="loader-card">
+                <div class="loader-stage">
+                    <div class="ink-drop"></div>
+                </div>
+                <span class="loader-name">10 · ink drop</span>
+            </div>
+
+            <!-- 11 radial-burst -->
+            <div class="loader-card">
+                <div class="loader-stage">
+                    <div class="radial-burst"></div>
+                </div>
+                <span class="loader-name">11 · radial burst</span>
+            </div>
+
+            <!-- 12 blur-pulse -->
+            <div class="loader-card">
+                <div class="loader-stage">
+                    <div class="blur-pulse"></div>
+                </div>
+                <span class="loader-name">12 · blur pulse</span>
+            </div>
+
+            <!-- 13 corner-morph -->
+            <div class="loader-card">
+                <div class="loader-stage">
+                    <div class="corner-morph"></div>
+                </div>
+                <span class="loader-name">13 · corner morph</span>
+            </div>
+
+            <!-- 14 wave-lines -->
+            <div class="loader-card">
+                <div class="loader-stage">
+                    <div class="wave-lines">
+                        <span></span><span></span><span></span><span></span><span></span>
+                    </div>
+                </div>
+                <span class="loader-name">14 · wave lines</span>
+            </div>
+
+            <!-- 15 blend-orbs -->
+            <div class="loader-card">
+                <div class="loader-stage">
+                    <div class="blend-orbs">
+                        <span></span><span></span>
+                    </div>
+                </div>
+                <span class="loader-name">15 · blend orbs</span>
+            </div>
+
+            <!-- 16 liquid-fill -->
+            <div class="loader-card">
+                <div class="loader-stage">
+                    <div class="liquid-fill-wrap"></div>
+                </div>
+                <span class="loader-name">16 · liquid fill</span>
+            </div>
+
+            <!-- 17 marquee-ovals -->
+            <div class="loader-card">
+                <div class="loader-stage">
+                    <div class="marquee-ovals">
+                        <div class="marquee-ovals-track">
+                            <span></span><span></span><span></span>
+                        </div>
+                    </div>
+                </div>
+                <span class="loader-name">17 · marquee ovals</span>
+            </div>
+
+            <!-- 18 eccentric-ellipse -->
+            <div class="loader-card">
+                <div class="loader-stage">
+                    <div class="eccentric-ellipse"></div>
+                </div>
+                <span class="loader-name">18 · eccentric ellipse</span>
+            </div>
+
+            <!-- 19 concentric-pulse -->
+            <div class="loader-card">
+                <div class="loader-stage">
+                    <div class="concentric-pulse"></div>
+                </div>
+                <span class="loader-name">19 · concentric pulse</span>
+            </div>
+
+            <!-- 20 chase-arcs -->
+            <div class="loader-card">
+                <div class="loader-stage">
+                    <div class="chase-arcs">
+                        <span></span><span></span>
+                    </div>
+                </div>
+                <span class="loader-name">20 · chase arcs</span>
+            </div>
+
+        </div><!-- /.loader-grid -->
     </section>
-  
-</div>
+
+</div><!-- /.container -->
+
 <footer>
     <svg width="24" height="30" viewBox="0 0 160 200" style="opacity: 0.8; margin: 0 auto;">
-         <path d="M80 12 C80 12 104 52 116 88 C126 118 122 152 102 168 C92 176 80 178 80 178 C80 178 68 176 58 168 C38 152 34 118 44 88 C56 52 80 12 80 12 Z" fill="none" stroke="var(--color-terra)" stroke-width="4"/>
-         <circle cx="80" cy="130" r="6" fill="var(--color-terra)"/>
+        <path d="M80 12 C80 12 104 52 116 88 C126 118 122 152 102 168 C92 176 80 178 80 178 C80 178 68 176 58 168 C38 152 34 118 44 88 C56 52 80 12 80 12 Z" fill="none" stroke="var(--color-terra)" stroke-width="4"/>
+        <circle cx="80" cy="130" r="6" fill="var(--color-terra)"/>
     </svg>
 </footer>
 </body>
