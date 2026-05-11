@@ -197,7 +197,7 @@ export function DomainsView() {
       ) : domains.length === 0 ? (
         <p className={styles.empty}>
           Sin dominios registrados.<br />
-          Añade el primero con el botón "Nuevo dominio".
+          Añade el primero con el botón &ldquo;Nuevo dominio&rdquo;.
         </p>
       ) : (
         <div className={styles.tableWrap}>
