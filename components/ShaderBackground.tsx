@@ -51,8 +51,8 @@ const BRUMA_FRAG = `
     float t = u_time * 0.035;
     float n = fbm(uv * 2.2 + vec2(t, t * 0.72));
     n = n * 0.5 + 0.5;
-    float alpha = n * 0.048;
-    gl_FragColor = vec4(0.98, 0.96, 0.93, alpha);
+    float alpha = n * 0.14;
+    gl_FragColor = vec4(0.86, 0.78, 0.68, alpha);
   }
 `;
 
@@ -78,8 +78,8 @@ const FLUJO_FRAG = `
       sin(w.y * 3.8 - t * 0.74) * 0.5;
     wave = wave * 0.5 + 0.5;
 
-    float alpha = wave * 0.04;
-    gl_FragColor = vec4(0.91, 0.94, 0.97, alpha);
+    float alpha = wave * 0.12;
+    gl_FragColor = vec4(0.65, 0.75, 0.82, alpha);
   }
 `;
 

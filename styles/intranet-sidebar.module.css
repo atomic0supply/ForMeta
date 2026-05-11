@@ -4,6 +4,7 @@
   position: sticky;
   top: 0;
   height: 100vh;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   border-right: 1px solid rgba(255, 255, 255, 0.6);
@@ -245,10 +246,11 @@
   background: rgba(44, 44, 40, 0.04);
 }
 
-/* ── Mobile: hide desktop sidebar ──────────────────────────────────────── */
+/* ── Mobile: hide desktop sidebar, show bottom nav ─────────────────────── */
 .mobileTopBar,
-.mobileBackdrop,
-.mobileDrawer {
+.bottomBar,
+.sheetBackdrop,
+.sheet {
   display: none;
 }
 
@@ -257,7 +259,7 @@
     display: none;
   }
 
-  /* Top bar */
+  /* ── Top bar (brand + timer + search) ──────────────────────────── */
   .mobileTopBar {
     display: flex;
     align-items: center;
@@ -278,27 +280,41 @@
   .mobileTopBrand {
     display: flex;
     align-items: center;
+    gap: 10px;
+  }
+
+  .mobileTopSuite {
+    font-family: var(--font-mono), monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--terracotta);
   }
 
   .mobileTopRight {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
   }
 
   .mobileTimerBadge {
     display: inline-flex;
     align-items: center;
     gap: 6px;
+    padding: 5px 10px;
+    border: 1px solid rgba(90, 138, 94, 0.30);
+    background: rgba(143, 168, 146, 0.10);
+    border-radius: 999px;
     font-family: var(--font-mono), monospace;
-    font-size: 0.72rem;
-    letter-spacing: 0.06em;
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
     color: #5a8a5e;
+    cursor: pointer;
   }
 
   .mobileTimerDot {
-    width: 7px;
-    height: 7px;
+    width: 6px;
+    height: 6px;
     border-radius: 50%;
     background: #5a8a5e;
     animation: pulse 1.8s ease-in-out infinite;
@@ -309,7 +325,7 @@
     50%       { opacity: 0.35; }
   }
 
-  .mobileMenuBtn {
+  .mobileSearchBtn {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -323,62 +339,140 @@
     transition: background var(--motion-fast) var(--ease-smooth);
   }
 
-  .mobileMenuBtn:hover {
+  .mobileSearchBtn:hover,
+  .mobileSearchBtn:active {
     background: rgba(44, 44, 40, 0.06);
   }
 
-  /* Backdrop */
-  .mobileBackdrop {
+  /* ── Bottom nav ────────────────────────────────────────────────── */
+  .bottomBar {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    height: 64px;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-top: 1px solid var(--line-soft);
+  }
+
+  .bottomItem {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    border: none;
+    background: none;
+    color: var(--muted);
+    text-decoration: none;
+    cursor: pointer;
+    padding: 8px 4px 6px;
+    position: relative;
+    transition: color var(--motion-fast) var(--ease-smooth);
+  }
+
+  .bottomItem:active {
+    color: var(--ink);
+  }
+
+  .bottomItemActive {
+    color: var(--terracotta);
+  }
+
+  .bottomItemActive::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 24px;
+    height: 2px;
+    background: var(--terracotta);
+    border-radius: 0 0 2px 2px;
+  }
+
+  .bottomLabel {
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.02em;
+    font-weight: 500;
+  }
+
+  /* ── "Más" sheet ───────────────────────────────────────────────── */
+  .sheetBackdrop {
     display: block;
     position: fixed;
     inset: 0;
     z-index: 200;
-    background: rgba(44, 44, 40, 0.4);
-    backdrop-filter: blur(3px);
-    -webkit-backdrop-filter: blur(3px);
+    background: rgba(44, 44, 40, 0.42);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.25s ease;
   }
 
-  .mobileBackdropVisible {
+  .sheetBackdropVisible {
     opacity: 1;
     pointer-events: auto;
   }
 
-  /* Drawer */
-  .mobileDrawer {
+  .sheet {
     display: flex;
     flex-direction: column;
     position: fixed;
-    top: 0;
     left: 0;
+    right: 0;
     bottom: 0;
     z-index: 300;
-    width: 280px;
-    background: rgba(255, 255, 255, 0.97);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-right: 1px solid var(--line-soft);
-    transform: translateX(-100%);
+    max-height: 75vh;
+    background: var(--card-bg);
+    border-radius: 18px 18px 0 0;
+    border-top: 1px solid var(--line-soft);
+    box-shadow: 0 -12px 36px rgba(44, 44, 40, 0.18);
+    transform: translateY(100%);
     transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
-    overflow-y: auto;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
   }
 
-  .mobileDrawerOpen {
-    transform: translateX(0);
+  .sheetOpen {
+    transform: translateY(0);
   }
 
-  .mobileDrawerHeader {
+  .sheetHandle {
+    width: 36px;
+    height: 4px;
+    border-radius: 2px;
+    background: rgba(44, 44, 40, 0.18);
+    margin: 10px auto 4px;
+    flex-shrink: 0;
+  }
+
+  .sheetHeader {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: space-between;
-    padding: 24px 20px 20px;
+    padding: 8px 20px 12px;
     border-bottom: 1px solid var(--line-soft);
     flex-shrink: 0;
   }
 
-  .mobileDrawerClose {
+  .sheetTitle {
+    font-family: var(--font-mono), monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  .sheetClose {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -390,56 +484,50 @@
     cursor: pointer;
     border-radius: 6px;
     transition: background var(--motion-fast) var(--ease-smooth);
-    flex-shrink: 0;
   }
 
-  .mobileDrawerClose:hover {
+  .sheetClose:hover,
+  .sheetClose:active {
     background: rgba(44, 44, 40, 0.06);
     color: var(--ink);
   }
 
-  .mobileDrawerNav {
+  .sheetNav {
     flex: 1;
-    padding: 16px 0;
+    padding: 12px 0;
     display: flex;
     flex-direction: column;
     gap: 2px;
+    overflow-y: auto;
   }
 
-  .mobileDrawerItem {
+  .sheetItem {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 12px 24px;
+    gap: 14px;
+    padding: 14px 24px;
     font-family: var(--font-sans), system-ui, sans-serif;
-    font-size: 0.9rem;
-    letter-spacing: 0.02em;
-    color: var(--muted);
-    border-left: 3px solid transparent;
-    transition:
-      color var(--motion-fast) var(--ease-smooth),
-      background var(--motion-fast) var(--ease-smooth),
-      border-color var(--motion-fast) var(--ease-smooth);
+    font-size: 0.95rem;
+    color: var(--ink);
+    text-decoration: none;
+    transition: background var(--motion-fast) var(--ease-smooth);
   }
 
-  .mobileDrawerItem:hover {
-    color: var(--ink);
+  .sheetItem:active {
     background: rgba(44, 44, 40, 0.04);
   }
 
-  .mobileDrawerItemActive {
-    color: var(--ink);
-    font-weight: 500;
-    border-left-color: var(--terracotta);
+  .sheetItemActive {
     background: rgba(184, 137, 106, 0.12);
+    color: var(--terracotta);
   }
 
-  .mobileDrawerFooter {
-    padding: 16px 20px 32px;
+  .sheetFooter {
+    padding: 14px 20px 24px;
     border-top: 1px solid var(--line-soft);
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 12px;
     flex-shrink: 0;
   }
 }

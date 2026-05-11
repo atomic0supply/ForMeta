@@ -8,6 +8,8 @@
   min-width: 0;
   padding: 40px 48px 80px;
   overflow-x: hidden;
+  position: relative;
+  z-index: 1;
 }
 
 @media (max-width: 900px) {
@@ -22,6 +24,7 @@
   }
 
   .content {
-    padding: 76px 20px 48px;
+    /* top 76px = mobile top bar; bottom 96px = bottom nav (64) + safe area */
+    padding: 76px 20px calc(96px + env(safe-area-inset-bottom, 0px));
   }
 }

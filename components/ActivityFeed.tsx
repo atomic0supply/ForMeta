@@ -78,18 +78,26 @@ function actionBadge(event: ActivityEvent): string {
   }
 }
 
+const COMPACT_LIMIT = 6;
+
 export function ActivityFeed() {
   const [events, setEvents] = useState<ActivityEvent[]>([]);
+  const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
     const unsub = subscribeToRecentActivity(setEvents, 25);
     return unsub;
   }, []);
 
-  // Group events by day
+  const visibleEvents = useMemo(
+    () => (expanded ? events : events.slice(0, COMPACT_LIMIT)),
+    [events, expanded],
+  );
+
+  // Group visible events by day
   const grouped = useMemo(() => {
     const groups: { label: string; events: ActivityEvent[] }[] = [];
-    for (const event of events) {
+    for (const event of visibleEvents) {
       const label = dayLabel(event.createdAt);
       const last = groups[groups.length - 1];
       if (last?.label === label) {
@@ -99,9 +107,12 @@ export function ActivityFeed() {
       }
     }
     return groups;
-  }, [events]);
+  }, [visibleEvents]);
 
   if (events.length === 0) return null;
+
+  const hiddenCount = events.length - COMPACT_LIMIT;
+  const canExpand = events.length > COMPACT_LIMIT;
 
   return (
     <section className={styles.feed}>
@@ -125,6 +136,15 @@ export function ActivityFeed() {
             ))}
           </div>
         ))}
+        {canExpand && (
+          <button
+            type="button"
+            onClick={() => setExpanded((v) => !v)}
+            className={styles.feedToggle}
+          >
+            {expanded ? "Ver menos" : `Ver más · ${hiddenCount} eventos`}
+          </button>
+        )}
       </div>
     </section>
   );

@@ -113,3 +113,24 @@
   color: var(--muted);
   flex-shrink: 0;
 }
+
+.feedToggle {
+  width: 100%;
+  padding: 10px 16px;
+  background: none;
+  border: none;
+  border-top: 1px solid var(--line-soft);
+  font-family: var(--font-mono), monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  cursor: pointer;
+  transition: background var(--motion-fast) var(--ease-smooth),
+              color var(--motion-fast) var(--ease-smooth);
+}
+
+.feedToggle:hover {
+  color: var(--ink);
+  background: rgba(184, 137, 106, 0.05);
+}

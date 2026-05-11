@@ -2,10 +2,11 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Clock, Lightbulb, Plus, Search } from "lucide-react";
+import { Clock, Command, Lightbulb, Plus, Search } from "lucide-react";
 
 import { ActivityFeed } from "@/components/ActivityFeed";
 import { TimeHeatmap } from "@/components/TimeHeatmap";
+import { openCommandPalette } from "@/lib/commandPalette";
 import {
   expiryLabel,
   expiryStatus,
@@ -22,15 +23,6 @@ import styles from "@/styles/intranet-dashboard.module.css";
 const DAY_MS = 86400000;
 
 function dayKey(d: Date) { return d.toISOString().slice(0, 10); }
-
-const modules = [
-  { href: "/intranet/clientes",          label: "Directorio",    title: "Clientes",   primary: false },
-  { href: "/intranet/tiempo",            label: "Registro",      title: "Tiempo",     primary: false },
-  { href: "/intranet/links",             label: "Accesos",       title: "Links",      primary: false },
-  { href: "/intranet/proyectos?nuevo=1", label: "+ Nuevo",       title: "Proyecto",   primary: true  },
-  { href: "/intranet/ideas",             label: "Pipeline",      title: "Ideas",      primary: false },
-  { href: "/intranet/buscar",            label: "Búsqueda",      title: "Buscar",     primary: false },
-];
 
 export function IntranetDashboard() {
   const { activeTimer, elapsed, stop } = useTimer();
@@ -123,11 +115,19 @@ export function IntranetDashboard() {
 
   const todayGoalPct = Math.round((todaySec / (8 * 3600)) * 100);
 
+  const platformKey = useMemo(() => {
+    if (typeof navigator === "undefined") return "Ctrl";
+    return /Mac|iPhone|iPad/i.test(navigator.platform) ? "⌘" : "Ctrl";
+  }, []);
+
   return (
     <main className={styles.page}>
       <div className={styles.pageHeader}>
         <p className={styles.kicker}>Dashboard</p>
-        <h1>Roqueta</h1>
+        <h1 className={styles.brandHeading}>
+          <span className={styles.brandRoqueta}>Roqueta</span>
+          <span className={styles.brandDot} aria-hidden="true" />
+        </h1>
       </div>
 
       {/* Action zone — greeting + summary + quick actions */}
@@ -202,6 +202,12 @@ export function IntranetDashboard() {
         </div>
       </div>
 
+      {/* Heatmap — debajo del bloque de stats, antes del resto */}
+      <section className={styles.heatmapSection}>
+        <p className={styles.heatmapTitle}>Actividad · último año</p>
+        <TimeHeatmap entries={entries} />
+      </section>
+
       {/* Body: activity (left) + side widgets (right) */}
       <div className={styles.body}>
 
@@ -212,6 +218,21 @@ export function IntranetDashboard() {
 
         {/* Side column */}
         <aside className={styles.sideCol}>
+
+          {/* Command palette trigger */}
+          <button
+            type="button"
+            onClick={() => openCommandPalette()}
+            className={styles.paletteTrigger}
+            aria-label="Abrir paleta de comandos"
+          >
+            <Search width={14} height={14} strokeWidth={1.75} />
+            <span className={styles.paletteTriggerText}>Buscar acciones, proyectos…</span>
+            <span className={styles.paletteTriggerShortcut}>
+              <Command width={10} height={10} strokeWidth={2} /> K
+              <span className={styles.paletteTriggerShortcutAlt}>{platformKey}+K</span>
+            </span>
+          </button>
 
           {/* Proyectos activos */}
           <div className={styles.widget}>
@@ -271,33 +292,8 @@ export function IntranetDashboard() {
             </div>
           )}
 
-          {/* Acceso rápido 2×3 */}
-          <div className={styles.widget}>
-            <div className={styles.widgetHeader}>
-              <p className={styles.widgetTitle}>Acceso rápido</p>
-            </div>
-            <div className={styles.accessGrid}>
-              {modules.map((mod) => (
-                <Link
-                  key={mod.href}
-                  href={mod.href}
-                  className={`${styles.accessCard} ${mod.primary ? styles.accessCardPrimary : ""}`}
-                >
-                  <span className={styles.accessCardLabel}>{mod.label}</span>
-                  <span className={styles.accessCardTitle}>{mod.title}</span>
-                </Link>
-              ))}
-            </div>
-          </div>
-
         </aside>
       </div>
-
-      {/* Heatmap — ancho completo al fondo */}
-      <section className={styles.heatmapSection}>
-        <p className={styles.heatmapTitle}>Actividad · último año</p>
-        <TimeHeatmap entries={entries} />
-      </section>
     </main>
   );
 }

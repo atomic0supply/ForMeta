@@ -1,3 +1,4 @@
+import { CommandPalette } from "@/components/CommandPalette";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { IntranetSidebar } from "@/components/IntranetSidebar";
 import { PWARegister } from "@/components/PWARegister";
@@ -20,6 +21,7 @@ export default function IntranetLayout({
           <ErrorBoundary>{children}</ErrorBoundary>
         </div>
       </div>
+      <CommandPalette />
       <StopModal />
       <PWARegister />
     </TimerProvider>

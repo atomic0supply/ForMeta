@@ -81,6 +81,119 @@
   line-height: 1.02;
 }
 
+/* ── Brand heading: Roqueta nameplate ───────────────────────────── */
+.brandHeading {
+  margin: 0;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 14px;
+  font-family: var(--font-display), serif;
+  font-size: clamp(2.4rem, 4.6vw, 4rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.brandRoqueta {
+  background: linear-gradient(
+    135deg,
+    var(--ink) 0%,
+    var(--ink) 55%,
+    var(--terracotta) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  position: relative;
+}
+
+.brandRoqueta::after {
+  /* Subtle italic accent on the trailing letter via underline shimmer */
+  content: "";
+  display: block;
+  height: 1px;
+  margin-top: 4px;
+  width: 36%;
+  margin-left: auto;
+  background: linear-gradient(90deg, transparent 0%, rgba(184, 137, 106, 0.55) 100%);
+}
+
+.brandDot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--terracotta);
+  align-self: center;
+  margin-bottom: 0.35em;
+  box-shadow:
+    0 0 0 4px rgba(184, 137, 106, 0.10),
+    0 0 14px rgba(184, 137, 106, 0.55);
+  animation: brandDotPulse 3.4s ease-in-out infinite;
+}
+
+@keyframes brandDotPulse {
+  0%, 100% {
+    box-shadow:
+      0 0 0 4px rgba(184, 137, 106, 0.10),
+      0 0 14px rgba(184, 137, 106, 0.55);
+  }
+  50% {
+    box-shadow:
+      0 0 0 6px rgba(184, 137, 106, 0.06),
+      0 0 22px rgba(184, 137, 106, 0.75);
+  }
+}
+
+/* ── Command palette trigger ────────────────────────────────────── */
+.paletteTrigger {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  cursor: pointer;
+  color: var(--muted);
+  text-align: left;
+  transition:
+    border-color var(--motion-fast) var(--ease-smooth),
+    background var(--motion-fast) var(--ease-smooth),
+    color var(--motion-fast) var(--ease-smooth);
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+.paletteTrigger:hover {
+  color: var(--ink);
+  background: var(--card-bg);
+  border-color: rgba(44, 44, 40, 0.18);
+}
+
+.paletteTriggerText {
+  flex: 1;
+  font-size: 0.85rem;
+}
+
+.paletteTriggerShortcut {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: rgba(44, 44, 40, 0.06);
+  font-family: var(--font-mono), monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.paletteTriggerShortcutAlt {
+  display: none;
+}
+
 /* ── Timer full-width banner ─────────────────────────────────────── */
 .timerFull {
   display: flex;
@@ -380,89 +493,7 @@
   color: var(--ink);
 }
 
-/* ── Quick access 2×3 grid ──────────────────────────────────────── */
-.accessGrid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0;
-}
-
-.accessCard {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 16px 18px;
-  border-right: 1px solid rgba(44, 44, 40, 0.04);
-  border-bottom: 1px solid rgba(44, 44, 40, 0.04);
-  transition:
-    background var(--motion-fast) var(--ease-smooth),
-    border-color var(--motion-fast) var(--ease-smooth);
-  text-decoration: none;
-  color: inherit;
-  position: relative;
-  cursor: pointer;
-}
-
-.accessCard:nth-child(3n) {
-  border-right: none;
-}
-
-.accessCard:nth-child(n+4) {
-  border-bottom: none;
-}
-
-.accessCard:hover {
-  background: rgba(44, 44, 40, 0.05);
-}
-
-.accessCard::after {
-  content: "→";
-  position: absolute;
-  bottom: 12px;
-  right: 14px;
-  font-size: 0.72rem;
-  color: var(--muted);
-  opacity: 0;
-  transform: translateX(-4px);
-  transition:
-    opacity var(--motion-fast) var(--ease-smooth),
-    transform var(--motion-fast) var(--ease-smooth);
-}
-
-.accessCard:hover::after {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-.accessCardPrimary {
-  background: rgba(184, 137, 106, 0.06);
-}
-
-.accessCardPrimary:hover {
-  background: rgba(184, 137, 106, 0.12);
-}
-
-.accessCardPrimary .accessCardLabel {
-  color: var(--terracotta);
-}
-
-.accessCardLabel {
-  font-family: var(--font-sans), system-ui, sans-serif;
-  font-size: 9px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--sea);
-  font-weight: 500;
-}
-
-.accessCardTitle {
-  font-family: var(--font-display), serif;
-  font-size: 1.15rem;
-  color: var(--ink);
-  line-height: 1.2;
-}
-
-/* ── Heatmap section (bottom, full width) ───────────────────────── */
+/* ── Heatmap section ────────────────────────────────────────────── */
 .heatmapSection {
   padding: 22px 24px;
   border: 1px solid rgba(44, 44, 40, 0.06);
@@ -490,10 +521,6 @@
   .body {
     grid-template-columns: 1fr;
   }
-
-  .accessGrid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
 }
 
 @media (max-width: 560px) {
@@ -502,19 +529,7 @@
     gap: 10px;
   }
 
-  .accessGrid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .accessCard:nth-child(3n) {
-    border-right: 1px solid rgba(44, 44, 40, 0.04);
-  }
-
-  .accessCard:nth-child(2n) {
-    border-right: none;
-  }
-
-  .accessCard:nth-child(n+5) {
-    border-bottom: none;
+  .brandHeading {
+    font-size: 2.4rem;
   }
 }

@@ -11,7 +11,7 @@ import {
   LayoutGrid,
   Lightbulb,
   Link2,
-  Menu,
+  MoreHorizontal,
   Play,
   Search,
   Shield,
@@ -24,6 +24,7 @@ import { auth } from "@/lib/firebase";
 import { formatElapsed, useTimer } from "@/lib/timerContext";
 import { BrandWordmark } from "@/components/BrandWordmark";
 import { clearSessionCookie } from "@/lib/session";
+import { openCommandPalette } from "@/lib/commandPalette";
 import styles from "@/styles/intranet-sidebar.module.css";
 
 const navGroups = [
@@ -53,24 +54,41 @@ const navGroups = [
   },
 ];
 
+// Bottom nav primary items (mobile)
+const bottomPrimary = [
+  { href: "/intranet",           label: "Inicio",    exact: true,  icon: LayoutGrid },
+  { href: "/intranet/proyectos", label: "Proyectos", exact: false, icon: Folder     },
+  { href: "/intranet/tiempo",    label: "Tiempo",    exact: false, icon: Clock      },
+  { href: "/intranet/ideas",     label: "Ideas",     exact: false, icon: Lightbulb  },
+];
+
+// "Más" sheet items (the rest)
+const moreItems = [
+  { href: "/intranet/clientes",  label: "Clientes",  exact: false, icon: Users  },
+  { href: "/intranet/links",     label: "Links",     exact: false, icon: Link2  },
+  { href: "/intranet/dominios",  label: "Dominios",  exact: false, icon: Globe  },
+  { href: "/intranet/buscar",    label: "Buscar",    exact: false, icon: Search },
+  { href: "/intranet/equipo",    label: "Equipo",    exact: false, icon: Shield },
+];
+
 export function IntranetSidebar() {
   const pathname = usePathname();
   const router = useRouter();
   const { activeTimer, elapsed, start, stop } = useTimer();
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [sheetOpen, setSheetOpen] = useState(false);
 
   function isActive(href: string, exact: boolean) {
     return exact ? pathname === href : pathname.startsWith(href);
   }
 
-  // Close drawer on navigation
-  useEffect(() => { setDrawerOpen(false); }, [pathname]);
+  // Close sheet on navigation
+  useEffect(() => { setSheetOpen(false); }, [pathname]);
 
-  // Lock body scroll when drawer is open
+  // Lock body scroll when sheet is open
   useEffect(() => {
-    document.body.style.overflow = drawerOpen ? "hidden" : "";
+    document.body.style.overflow = sheetOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
-  }, [drawerOpen]);
+  }, [sheetOpen]);
 
   async function handleSignOut() {
     if (auth) await signOut(auth);
@@ -79,9 +97,7 @@ export function IntranetSidebar() {
     router.refresh();
   }
 
-  // navGroups defined at module level above
-
-  /* ── Timer widget (shared between sidebar and drawer) ─────────────────── */
+  /* ── Timer widget (desktop sidebar only) ───────────────────────────────── */
   function TimerWidget() {
     return (
       <div className={`${styles.timerSlot} ${activeTimer ? styles.timerActive : ""}`}>
@@ -153,74 +169,96 @@ export function IntranetSidebar() {
         </div>
       </aside>
 
-      {/* ── Mobile top bar ────────────────────────────────────────────────── */}
+      {/* ── Mobile top bar (brand + timer badge) ──────────────────────────── */}
       <header className={styles.mobileTopBar}>
         <div className={styles.mobileTopBrand}>
           <BrandWordmark small />
+          <span className={styles.mobileTopSuite}>Roqueta</span>
         </div>
         <div className={styles.mobileTopRight}>
           {activeTimer && (
-            <span className={styles.mobileTimerBadge}>
+            <button
+              type="button"
+              onClick={() => stop()}
+              className={styles.mobileTimerBadge}
+              aria-label="Detener timer"
+            >
               <span className={styles.mobileTimerDot} />
               {formatElapsed(elapsed)}
-            </span>
+            </button>
           )}
           <button
             type="button"
-            className={styles.mobileMenuBtn}
-            onClick={() => setDrawerOpen(true)}
-            aria-label="Abrir menú"
+            onClick={() => openCommandPalette()}
+            className={styles.mobileSearchBtn}
+            aria-label="Abrir búsqueda"
           >
-            <Menu width={22} height={22} strokeWidth={1.5} />
+            <Search width={20} height={20} strokeWidth={1.75} />
           </button>
         </div>
       </header>
 
-      {/* ── Mobile drawer backdrop ────────────────────────────────────────── */}
+      {/* ── Mobile bottom nav ─────────────────────────────────────────────── */}
+      <nav className={styles.bottomBar} aria-label="Navegación inferior">
+        {bottomPrimary.map((item) => {
+          const active = isActive(item.href, item.exact);
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`${styles.bottomItem} ${active ? styles.bottomItemActive : ""}`}
+            >
+              <item.icon width={20} height={20} strokeWidth={active ? 2 : 1.6} />
+              <span className={styles.bottomLabel}>{item.label}</span>
+            </Link>
+          );
+        })}
+        <button
+          type="button"
+          onClick={() => setSheetOpen(true)}
+          className={`${styles.bottomItem} ${sheetOpen ? styles.bottomItemActive : ""}`}
+          aria-label="Más opciones"
+        >
+          <MoreHorizontal width={20} height={20} strokeWidth={1.75} />
+          <span className={styles.bottomLabel}>Más</span>
+        </button>
+      </nav>
+
+      {/* ── Mobile "Más" sheet ────────────────────────────────────────────── */}
       <div
-        className={`${styles.mobileBackdrop} ${drawerOpen ? styles.mobileBackdropVisible : ""}`}
-        onClick={() => setDrawerOpen(false)}
+        className={`${styles.sheetBackdrop} ${sheetOpen ? styles.sheetBackdropVisible : ""}`}
+        onClick={() => setSheetOpen(false)}
         aria-hidden="true"
       />
-
-      {/* ── Mobile drawer ─────────────────────────────────────────────────── */}
-      <aside className={`${styles.mobileDrawer} ${drawerOpen ? styles.mobileDrawerOpen : ""}`}>
-        <div className={styles.mobileDrawerHeader}>
-          <div>
-            <BrandWordmark small />
-            <span className={styles.suiteName}>Roqueta</span>
-          </div>
+      <aside
+        className={`${styles.sheet} ${sheetOpen ? styles.sheetOpen : ""}`}
+        aria-label="Menú adicional"
+      >
+        <div className={styles.sheetHandle} aria-hidden="true" />
+        <div className={styles.sheetHeader}>
+          <span className={styles.sheetTitle}>Más opciones</span>
           <button
             type="button"
-            className={styles.mobileDrawerClose}
-            onClick={() => setDrawerOpen(false)}
-            aria-label="Cerrar menú"
+            onClick={() => setSheetOpen(false)}
+            className={styles.sheetClose}
+            aria-label="Cerrar"
           >
-            <X width={20} height={20} strokeWidth={1.5} />
+            <X width={18} height={18} strokeWidth={1.75} />
           </button>
         </div>
-
-        <nav className={styles.mobileDrawerNav}>
-          {navGroups.map((group, gi) => (
-            <div key={group.label} className={styles.navGroup}>
-              <span className={styles.navGroupLabel}>{group.label}</span>
-              {group.items.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={`${styles.mobileDrawerItem} ${isActive(item.href, item.exact) ? styles.mobileDrawerItemActive : ""}`}
-                >
-                  <item.icon width={18} height={18} strokeWidth={1.75} />
-                  {item.label}
-                </Link>
-              ))}
-              {gi < navGroups.length - 1 && <div className={styles.navDivider} />}
-            </div>
+        <nav className={styles.sheetNav}>
+          {moreItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`${styles.sheetItem} ${isActive(item.href, item.exact) ? styles.sheetItemActive : ""}`}
+            >
+              <item.icon width={18} height={18} strokeWidth={1.75} />
+              {item.label}
+            </Link>
           ))}
         </nav>
-
-        <div className={styles.mobileDrawerFooter}>
-          <TimerWidget />
+        <div className={styles.sheetFooter}>
           <Link href="/" className={styles.footerLink}>Web pública</Link>
           <button type="button" onClick={() => void handleSignOut()} className={styles.signOut}>
             Salir
