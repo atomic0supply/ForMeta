@@ -5,8 +5,8 @@ export function MethodSection() {
   return (
     <section className={styles.section} id="identidad">
       <Reveal className={styles.intro}>
-        <p className={styles.label}>01 — Identidad</p>
-        <div className={styles.number}>01</div>
+        <p className={styles.label}>Identidad</p>
+        <div className={styles.number} aria-hidden="true">01</div>
       </Reveal>
 
       <div className={styles.layout}>

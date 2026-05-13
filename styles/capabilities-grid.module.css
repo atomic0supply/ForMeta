@@ -1,5 +1,5 @@
 .section {
-  padding: 5.5rem var(--section-inset) 7rem;
+  padding: var(--section-pad) var(--section-inset);
 }
 
 .heading {
@@ -12,11 +12,23 @@
 
 .label {
   margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
   font-family: var(--font-mono), monospace;
   font-size: 0.65rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--terracotta);
+}
+
+.label::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--terracotta);
+  opacity: 0.85;
 }
 
 .heading h2 {
@@ -59,6 +71,7 @@
   transition: opacity var(--motion-base) var(--ease-smooth);
 }
 
+/* Dotted bottom line that fills on hover */
 .card::after {
   content: "";
   position: absolute;
@@ -66,14 +79,18 @@
   right: 0;
   bottom: 0;
   height: 2px;
-  background: linear-gradient(90deg, var(--terracotta), rgba(184, 137, 106, 0));
+  background-image: radial-gradient(var(--terracotta) 1px, transparent 1.4px);
+  background-size: 8px 2px;
+  background-repeat: repeat-x;
+  background-position: 0 50%;
   transform: scaleX(0);
   transform-origin: left;
-  transition: transform var(--motion-base) var(--ease-smooth);
+  opacity: 0.85;
+  transition: transform var(--motion-slow) var(--ease-smooth);
 }
 
 .card:hover {
-  background: rgba(248, 244, 237, 0.82);
+  background: rgba(248, 244, 237, 0.86);
 }
 
 .card:hover::before {
@@ -85,13 +102,24 @@
 }
 
 .index {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   margin-bottom: 1.8rem;
   font-family: var(--font-mono), monospace;
   font-size: 0.6rem;
   letter-spacing: 0.24em;
   text-transform: uppercase;
   color: var(--sage);
+}
+
+.index::before {
+  content: "";
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--sage);
+  opacity: 0.7;
 }
 
 .card h3 {
@@ -107,18 +135,13 @@
   margin: 0;
   color: var(--muted);
   font-size: 0.98rem;
-  line-height: 1.84;
+  line-height: 1.78;
 }
 
 @media (max-width: 900px) {
   .heading {
     flex-direction: column;
     align-items: flex-start;
-  }
-
-  .section {
-    padding-top: 4.5rem;
-    padding-bottom: 5.5rem;
   }
 
   .heading h2 {

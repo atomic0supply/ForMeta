@@ -1,36 +1,52 @@
 import styles from "@/styles/brand-wordmark.module.css";
 
+type Variant = "sand" | "mono" | "negative";
+type Size = "sm" | "md" | "lg";
+
 type BrandWordmarkProps = {
-  small?: boolean;
+  variant?: Variant;
+  size?: Size;
   iconOnly?: boolean;
   animated?: boolean;
+  /** @deprecated use size="sm" */
+  small?: boolean;
+};
+
+const WORDMARK_SRC: Record<Variant, string> = {
+  sand: "/brand/wordmark-dots.svg",
+  mono: "/brand/wordmark-dots-mono.svg",
+  negative: "/brand/wordmark-dots-negative.svg",
+};
+
+const ISOTYPE_SRC: Record<Variant, string> = {
+  sand: "/brand/isotipo-f-dots.svg",
+  mono: "/brand/isotipo-f-dots.svg",
+  negative: "/brand/isotipo-f-dots-negative.svg",
 };
 
 export function BrandWordmark({
-  small = false,
+  variant = "sand",
+  size,
   iconOnly = false,
   animated = false,
+  small = false,
 }: BrandWordmarkProps) {
+  const resolvedSize: Size = size ?? (small ? "sm" : "md");
+  const src = iconOnly ? ISOTYPE_SRC[variant] : WORDMARK_SRC[variant];
+
   return (
     <span
       className={styles.wordmark}
-      data-size={small ? "small" : "default"}
+      data-size={resolvedSize}
+      data-variant={variant}
       data-icon-only={iconOnly ? "true" : "false"}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src="/brand/simbolo_mono_blanco.svg"
-        alt=""
-        aria-hidden="true"
+        src={src}
+        alt="ForMeta"
         className={`${styles.mark} ${animated ? styles.animated : ""}`}
       />
-      {!iconOnly && (
-        <span className={styles.text}>
-          <span>F</span>
-          <em>or</em>
-          <span>Meta</span>
-        </span>
-      )}
     </span>
   );
 }

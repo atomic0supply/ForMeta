@@ -1,18 +1,56 @@
 .section {
-  padding: 7rem var(--section-inset) 5.5rem;
+  padding: var(--section-pad) var(--section-inset);
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(300px, 0.88fr);
   gap: 5rem;
   align-items: start;
+  position: relative;
+  overflow: hidden;
+}
+
+.section::before {
+  content: "";
+  position: absolute;
+  top: -8%;
+  right: -6%;
+  width: 38vw;
+  max-width: 540px;
+  aspect-ratio: 200 / 240;
+  background-image: url("/brand/isotipo-f-dots.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.06;
+  pointer-events: none;
+  mask-image: radial-gradient(closest-side, black 40%, transparent 100%);
+  -webkit-mask-image: radial-gradient(closest-side, black 40%, transparent 100%);
+  z-index: 0;
+}
+
+.section > * {
+  position: relative;
+  z-index: 1;
 }
 
 .label {
   margin: 0 0 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
   font-family: var(--font-mono), monospace;
   font-size: 0.65rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--terracotta);
+}
+
+.label::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--terracotta);
+  opacity: 0.85;
 }
 
 .section h2 {
@@ -37,7 +75,7 @@
   max-width: 38ch;
   color: var(--muted);
   font-size: 1.02rem;
-  line-height: 1.92;
+  line-height: 1.85;
 }
 
 .closing {
@@ -61,11 +99,23 @@
 }
 
 .contactLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
   font-family: var(--font-mono), monospace;
   font-size: 0.6rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--sage);
+}
+
+.contactLabel::before {
+  content: "";
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--sage);
+  opacity: 0.7;
 }
 
 .link {
@@ -94,7 +144,12 @@
   .section {
     grid-template-columns: 1fr;
     gap: 2rem;
-    padding-top: 5.5rem;
+  }
+
+  .section::before {
+    width: 80vw;
+    top: -4%;
+    right: -10%;
   }
 
   .panel {

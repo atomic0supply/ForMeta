@@ -1,6 +1,7 @@
 import { BrandMark } from "@/components/BrandMark";
 import { CapabilitiesGrid } from "@/components/CapabilitiesGrid";
 import { ContactBlock } from "@/components/ContactBlock";
+import { DotDivider } from "@/components/DotDivider";
 import { FooterAccess } from "@/components/FooterAccess";
 import { HeroManifesto } from "@/components/HeroManifesto";
 import { LandingLoader } from "@/components/LandingLoader";
@@ -19,6 +20,7 @@ export default function HomePage() {
       <main className={styles.main}>
         <section className={styles.heroWrap} id="top">
           <div className={styles.heroBackdrop} />
+          <div className={styles.heroDots} />
           <div className={styles.heroGrid}>
             <HeroManifesto />
             <div className={styles.brandColumn}>
@@ -50,15 +52,15 @@ export default function HomePage() {
           </div>
         </Reveal>
 
-        <div className={styles.divider} />
+        <DotDivider accent="terracotta" />
         <MethodSection />
-        <div className={styles.divider} />
+        <DotDivider accent="sage" />
         <CapabilitiesGrid />
-        <div className={styles.divider} />
+        <DotDivider accent="sea" />
         <StackSection />
-        <div className={styles.divider} />
+        <DotDivider accent="terracotta" />
         <ScenariosSection />
-        <div className={styles.divider} />
+        <DotDivider accent="terracotta" width="lg" />
         <ContactBlock />
       </main>
       <FooterAccess />

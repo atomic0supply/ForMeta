@@ -4,19 +4,21 @@ import { useEffect, useMemo, useState } from "react";
 
 import styles from "@/styles/landing-loader.module.css";
 
-type Variant = "1" | "2" | "3";
+type Variant = "1" | "2" | "3" | "drop";
 type Phase = "hidden" | "enter" | "leave";
 
 const durations: Record<Variant, number> = {
   "1": 820,
   "2": 980,
   "3": 2450,
+  drop: 3200,
 };
 
 const leaveLead: Record<Variant, number> = {
   "1": 220,
   "2": 220,
   "3": 420,
+  drop: 420,
 };
 
 export function LandingLoader() {
@@ -32,12 +34,17 @@ export function LandingLoader() {
       return null;
     }
 
-    if (loaderParam === "1" || loaderParam === "2" || loaderParam === "3") {
+    if (
+      loaderParam === "1" ||
+      loaderParam === "2" ||
+      loaderParam === "3" ||
+      loaderParam === "drop"
+    ) {
       return loaderParam;
     }
 
-    // Default home experience: cinematic loader 3.
-    return "3";
+    // Default home experience: cinematic drop loader.
+    return "drop";
   }, [loaderParam]);
 
   const [phase, setPhase] = useState<Phase>("hidden");
@@ -105,6 +112,28 @@ export function LandingLoader() {
             <p>action layer ...... online</p>
             <p>output layer ...... ready</p>
             <div className={styles.monoRule} />
+          </div>
+        )}
+
+        {variant === "drop" && (
+          <div className={styles.dropWrap} aria-hidden="true">
+            <svg viewBox="0 0 160 200" fill="none" className={styles.dropSvg}>
+              <path
+                d="M80 12 C80 12 104 52 116 88 C126 118 122 152 102 168 C92 176 80 178 80 178 C80 178 68 176 58 168 C38 152 34 118 44 88 C56 52 80 12 80 12 Z"
+                stroke="var(--ink)"
+                strokeWidth="3.5"
+                strokeLinejoin="round"
+                strokeLinecap="round"
+                className={styles.dropPath}
+              />
+              <circle cx="80" cy="130" r="6" fill="var(--terracotta)" className={styles.dropDot} />
+            </svg>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/brand/wordmark-dots.svg"
+              alt=""
+              className={styles.dropWordmark}
+            />
           </div>
         )}
       </div>

@@ -44,6 +44,29 @@
   --motion-fast: 220ms;
   --motion-base: 420ms;
   --motion-slow: 760ms;
+  --dot-size: 1.5px;
+  --dot-gap: 8px;
+  --dot-color: rgba(44, 44, 40, 0.22);
+  --dot-color-soft: rgba(44, 44, 40, 0.1);
+  --section-pad: clamp(96px, 12vw, 160px);
+}
+
+.dot-grid {
+  background-image: radial-gradient(var(--dot-color) var(--dot-size), transparent calc(var(--dot-size) + 0.4px));
+  background-size: var(--dot-gap) var(--dot-gap);
+}
+
+.dot-grid-soft {
+  background-image: radial-gradient(var(--dot-color-soft) var(--dot-size), transparent calc(var(--dot-size) + 0.4px));
+  background-size: var(--dot-gap) var(--dot-gap);
+}
+
+.dot-leader::before {
+  content: "···";
+  margin-right: 0.6em;
+  color: var(--terracotta);
+  letter-spacing: 0.18em;
+  font-family: var(--font-mono), monospace;
 }
 
 *,

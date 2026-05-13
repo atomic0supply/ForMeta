@@ -1,65 +1,72 @@
 .wordmark {
   display: inline-flex;
   align-items: center;
-  gap: 0.52rem;
-  color: var(--ink);
+  line-height: 0;
 }
 
 .mark {
-  width: 0.88rem;
-  aspect-ratio: 4 / 5;
+  display: block;
   object-fit: contain;
   flex: 0 0 auto;
 }
 
-.text {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 0;
-  font-family: var(--font-display), serif;
-  font-size: 1.28rem;
-  line-height: 1;
-  letter-spacing: 0.08em;
-  font-weight: 300;
+/* Default: full wordmark (340 x 160) */
+.wordmark[data-icon-only="false"] .mark {
+  aspect-ratio: 340 / 160;
+  height: auto;
 }
 
-.text em {
-  color: var(--terracotta);
-  font-style: italic;
+.wordmark[data-size="sm"][data-icon-only="false"] .mark {
+  width: 92px;
 }
 
-.wordmark[data-size="small"] .mark {
-  width: 0.76rem;
+.wordmark[data-size="md"][data-icon-only="false"] .mark {
+  width: 140px;
 }
 
-.wordmark[data-size="small"] .text {
-  font-size: 1.06rem;
-  letter-spacing: 0.075em;
+.wordmark[data-size="lg"][data-icon-only="false"] .mark {
+  width: 200px;
 }
 
-.wordmark[data-icon-only="true"] {
-  gap: 0;
-}
-
+/* Icon-only: isotype F (200 x 240) */
 .wordmark[data-icon-only="true"] .mark {
-  width: 2.0rem;
+  aspect-ratio: 200 / 240;
+  height: auto;
 }
 
-.wordmark[data-size="small"][data-icon-only="true"] .mark {
-  width: 1.7rem;
+.wordmark[data-size="sm"][data-icon-only="true"] .mark {
+  width: 28px;
+}
+
+.wordmark[data-size="md"][data-icon-only="true"] .mark {
+  width: 42px;
+}
+
+.wordmark[data-size="lg"][data-icon-only="true"] .mark {
+  width: 72px;
 }
 
 .animated {
   animation: breathe 4.5s ease-in-out infinite;
+  transform-origin: center;
 }
 
 @keyframes breathe {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.06); }
+  0%, 100% { transform: scale(1); opacity: 0.94; }
+  50% { transform: scale(1.018); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animated {
+    animation: none;
+  }
 }
 
 @media (max-width: 720px) {
-  .wordmark[data-size="small"][data-icon-only="true"] .mark {
-    width: 1.5rem;
+  .wordmark[data-size="md"][data-icon-only="false"] .mark {
+    width: 120px;
+  }
+  .wordmark[data-size="lg"][data-icon-only="false"] .mark {
+    width: 160px;
   }
 }

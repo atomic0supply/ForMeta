@@ -1,5 +1,5 @@
 .section {
-  padding: 7rem var(--section-inset);
+  padding: var(--section-pad) var(--section-inset);
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(360px, 0.92fr);
   gap: 6rem;
@@ -8,11 +8,23 @@
 
 .label {
   margin: 0 0 1.3rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
   font-family: var(--font-mono), monospace;
   font-size: 0.65rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--terracotta);
+}
+
+.label::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--terracotta);
+  opacity: 0.85;
 }
 
 .side h2 {
@@ -28,7 +40,7 @@
   max-width: 44ch;
   color: var(--muted);
   font-size: 1.04rem;
-  line-height: 1.9;
+  line-height: 1.82;
 }
 
 .bridge {
@@ -36,7 +48,7 @@
   max-width: 42ch;
   color: var(--ink);
   font-size: 1rem;
-  line-height: 1.8;
+  line-height: 1.78;
 }
 
 .visual {
@@ -48,14 +60,26 @@
 
 .block {
   position: relative;
-  padding: 1.35rem 0 1.35rem 1.25rem;
+  padding: 1.4rem 0 1.4rem 1.5rem;
   border-bottom: 1px solid var(--panel-border);
   background: transparent;
   font-family: var(--font-mono), monospace;
   font-size: 0.67rem;
   letter-spacing: 0.12em;
   color: var(--muted);
-  line-height: 1.85;
+  line-height: 1.8;
+}
+
+.block::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 1.85rem;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--terracotta);
+  opacity: 0.85;
 }
 
 .block:nth-child(1) {
@@ -95,8 +119,6 @@
   .section {
     grid-template-columns: 1fr;
     gap: 3rem;
-    padding-top: 5.5rem;
-    padding-bottom: 5.5rem;
   }
 
   .visual {
@@ -105,6 +127,6 @@
 
   .block {
     margin: 0 !important;
-    padding-left: 1.05rem;
+    padding-left: 1.25rem;
   }
 }

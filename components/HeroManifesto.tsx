@@ -5,7 +5,12 @@ export function HeroManifesto() {
   return (
     <div className={styles.hero}>
       <div className={styles.intro}>
-        <p className={styles.eyebrow}>Mallorca · Software a medida · AI aplicada</p>
+        <p className={styles.eyebrow}>
+          <span className={styles.eyebrowDots} aria-hidden="true">
+            <i /><i /><i />
+          </span>
+          Mallorca · Software a medida · AI aplicada
+        </p>
         <h1>
           Software con <em>forma</em>
           <br />propia para
@@ -18,9 +23,10 @@ export function HeroManifesto() {
         </p>
       </div>
 
-      <Reveal className={styles.actions} delay={240}>
+      <Reveal className={styles.actions} delay={320}>
         <a href="#contacto" className={styles.primary}>
-          Explicar vuestro caso
+          <span className={styles.primaryDot} aria-hidden="true" />
+          <span className={styles.primaryLabel}>Explicar vuestro caso</span>
         </a>
         <span className={styles.meta}>Software, estructura e IA sin ruido</span>
       </Reveal>

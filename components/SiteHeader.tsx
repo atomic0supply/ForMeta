@@ -60,11 +60,11 @@ export function SiteHeader() {
       <a className={styles.wordmark} href="#top" aria-label="ForMeta - inicio">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/brand/formeta_01_sand.svg"
+          src="/brand/wordmark-dots.svg"
           alt="ForMeta"
           className={styles.wordmarkImg}
-          width={170}
-          height={80}
+          width={160}
+          height={75}
         />
       </a>
       <nav className={styles.nav} aria-label="Principal">

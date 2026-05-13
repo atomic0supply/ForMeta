@@ -8,7 +8,7 @@ export function FooterAccess() {
     <footer className={styles.footer}>
       <p className={styles.kicker}>© 2025 ForMeta · Mallorca, Illes Balears</p>
       <span className={styles.brandWrap}>
-        <BrandWordmark small />
+        <BrandWordmark variant="sand" size="sm" />
       </span>
       <p className={styles.note}>
         Software &amp; AI · formeta.es ·{" "}
