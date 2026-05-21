@@ -2,9 +2,9 @@
   position: fixed;
   inset: 0;
   z-index: 200;
-  background: rgba(44, 44, 40, 0.4);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  background: rgba(44, 44, 40, 0.36);
+  -webkit-backdrop-filter: blur(var(--glass-blur-sm)) saturate(120%);
+  backdrop-filter: blur(var(--glass-blur-sm)) saturate(120%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -17,14 +17,42 @@
 }
 
 .modal {
-  background: var(--sand-soft);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-md);
+  position: relative;
+  isolation: isolate;
+  background: var(--glass-bg-frosted-strong);
+  border: var(--glass-border-strong);
+  border-radius: var(--glass-radius-lg);
   padding: 32px 36px;
   width: 440px;
   max-width: calc(100vw - 40px);
-  box-shadow: 0 8px 40px rgba(44, 44, 40, 0.18);
+  -webkit-backdrop-filter: blur(var(--glass-blur-xl)) saturate(var(--glass-saturate-strong));
+  backdrop-filter: blur(var(--glass-blur-xl)) saturate(var(--glass-saturate-strong));
+  box-shadow: var(--glass-inset-strong), var(--glass-shadow-lg);
   animation: slideUp 200ms var(--ease-smooth);
+}
+
+.modal::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--glass-specular-radial);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.modal > * {
+  position: relative;
+  z-index: 1;
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .backdrop {
+    background: rgba(44, 44, 40, 0.6);
+  }
+  .modal {
+    background: var(--sand-soft);
+  }
 }
 
 @keyframes slideUp {

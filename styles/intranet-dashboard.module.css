@@ -4,12 +4,37 @@
 
 /* ── Action zone ─────────────────────────────────────────────────── */
 .actionZone {
-  padding: 16px 20px;
-  background: var(--card-bg);
-  border-radius: var(--radius-md);
-  border: 1px solid var(--line-soft);
-  box-shadow: var(--shadow);
+  position: relative;
+  isolation: isolate;
+  padding: 18px 22px;
+  background: var(--glass-bg-frosted);
+  border-radius: var(--glass-radius-md);
+  border: var(--glass-border-soft);
+  -webkit-backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-saturate));
+  backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-saturate));
+  box-shadow: var(--glass-inset), var(--glass-shadow);
   margin-bottom: 20px;
+}
+
+.actionZone::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--glass-specular-soft);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.actionZone > * {
+  position: relative;
+  z-index: 1;
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .actionZone {
+    background: var(--card-bg);
+  }
 }
 
 .actionGreeting {

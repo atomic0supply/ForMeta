@@ -17,13 +17,36 @@
 .card {
   position: relative;
   z-index: 1;
+  isolation: isolate;
   width: min(100%, 560px);
-  padding: 32px;
-  border-radius: 32px;
-  background: rgba(248, 244, 237, 0.82);
-  border: 1px solid rgba(44, 44, 40, 0.1);
-  backdrop-filter: blur(18px);
-  box-shadow: var(--shadow);
+  padding: 36px;
+  border-radius: var(--glass-radius-lg);
+  background: var(--glass-bg-frosted-strong);
+  border: var(--glass-border-strong);
+  -webkit-backdrop-filter: blur(var(--glass-blur-lg)) saturate(var(--glass-saturate-strong));
+  backdrop-filter: blur(var(--glass-blur-lg)) saturate(var(--glass-saturate-strong));
+  box-shadow: var(--glass-inset-strong), var(--glass-shadow-lg);
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--glass-specular);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.card > * {
+  position: relative;
+  z-index: 1;
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .card {
+    background: var(--sand);
+  }
 }
 
 .heading h1 {
@@ -78,7 +101,17 @@
   padding: 0 14px;
   border-radius: 14px;
   border: 1px solid rgba(44, 44, 40, 0.12);
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.62);
+  -webkit-backdrop-filter: blur(var(--glass-blur-xs));
+  backdrop-filter: blur(var(--glass-blur-xs));
+  color: var(--ink);
+  transition: border-color var(--motion-fast) var(--ease-smooth), background var(--motion-fast) var(--ease-smooth);
+}
+
+.field input:focus {
+  border-color: var(--terracotta);
+  background: rgba(255, 255, 255, 0.85);
+  outline: none;
 }
 
 .actions {

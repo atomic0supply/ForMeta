@@ -4,8 +4,8 @@
   inset: 0;
   z-index: 1000;
   background: rgba(44, 44, 40, 0.42);
-  backdrop-filter: blur(6px) saturate(140%);
-  -webkit-backdrop-filter: blur(6px) saturate(140%);
+  -webkit-backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-saturate));
+  backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-saturate));
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -20,19 +20,42 @@
 
 /* ── Panel ──────────────────────────────────────────────────────── */
 .panel {
+  position: relative;
+  isolation: isolate;
   width: 100%;
   max-width: 600px;
   max-height: 70vh;
   display: flex;
   flex-direction: column;
-  background: var(--card-bg);
-  border: 1px solid rgba(44, 44, 40, 0.10);
-  border-radius: 14px;
-  box-shadow:
-    0 12px 32px rgba(44, 44, 40, 0.12),
-    0 32px 80px rgba(44, 44, 40, 0.22);
+  background: var(--glass-bg-frosted-strong);
+  border: var(--glass-border-strong);
+  border-radius: var(--glass-radius-md);
+  -webkit-backdrop-filter: blur(var(--glass-blur-xl)) saturate(var(--glass-saturate-strong));
+  backdrop-filter: blur(var(--glass-blur-xl)) saturate(var(--glass-saturate-strong));
+  box-shadow: var(--glass-inset-strong), var(--glass-shadow-lg);
   overflow: hidden;
   animation: panelIn 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--glass-specular-radial);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.panel > * {
+  position: relative;
+  z-index: 1;
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .panel {
+    background: var(--card-bg);
+  }
 }
 
 @keyframes panelIn {

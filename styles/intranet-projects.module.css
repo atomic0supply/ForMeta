@@ -476,8 +476,8 @@
   inset: 0;
   z-index: 40;
   background: rgba(44, 44, 40, 0.28);
-  backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(var(--glass-blur-xs)) saturate(120%);
+  backdrop-filter: blur(var(--glass-blur-xs)) saturate(120%);
   animation: fadeIn 220ms var(--ease-smooth);
 }
 
@@ -494,13 +494,41 @@
   z-index: 50;
   width: 480px;
   max-width: calc(100vw - 40px);
-  background: var(--sand-soft);
-  border-left: 1px solid var(--line);
+  isolation: isolate;
+  background: var(--glass-bg-frosted-strong);
+  border-left: var(--glass-border-strong);
+  -webkit-backdrop-filter: blur(var(--glass-blur-lg)) saturate(var(--glass-saturate));
+  backdrop-filter: blur(var(--glass-blur-lg)) saturate(var(--glass-saturate));
+  box-shadow: var(--glass-inset-strong), var(--glass-shadow-lg);
   display: flex;
   flex-direction: column;
   transform: translateX(100%);
   transition: transform var(--motion-base) var(--ease-smooth);
   overflow-y: auto;
+}
+
+.drawer::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 480px;
+  max-width: calc(100vw - 40px);
+  background: var(--glass-specular-soft);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.drawer > * {
+  position: relative;
+  z-index: 1;
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .drawer {
+    background: var(--sand-soft);
+  }
 }
 
 .drawerOpen {

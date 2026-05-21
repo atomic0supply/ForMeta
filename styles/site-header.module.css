@@ -17,9 +17,33 @@
 }
 
 .header[data-scrolled="true"] {
-  background: linear-gradient(180deg, rgba(248, 244, 237, 0.84), rgba(248, 244, 237, 0.46));
-  border-bottom: 1px solid rgba(212, 205, 193, 0.64);
-  backdrop-filter: blur(12px);
+  position: sticky;
+  isolation: isolate;
+  background: var(--glass-bg-strong);
+  border-bottom: 1px solid rgba(212, 205, 193, 0.6);
+  -webkit-backdrop-filter: blur(var(--glass-blur-md)) saturate(var(--glass-saturate));
+  backdrop-filter: blur(var(--glass-blur-md)) saturate(var(--glass-saturate));
+  box-shadow: var(--glass-inset), 0 2px 16px rgba(44, 44, 40, 0.04);
+}
+
+.header[data-scrolled="true"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--glass-specular);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.header > * {
+  position: relative;
+  z-index: 1;
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .header[data-scrolled="true"] {
+    background: var(--sand);
+  }
 }
 
 .wordmark {

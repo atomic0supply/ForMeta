@@ -6,6 +6,7 @@
   --stone: #e2ddd4;
   --stone-strong: #d4cdc1;
   --terracotta: #b8896a;
+  --terracotta-strong: #8d6448; /* AA-normal on sand (4.56:1) — use for text/links */
   --terracotta-soft: rgba(184, 137, 106, 0.18);
   --sage: #8fa892;
   --sea: #7a9aaa;
@@ -49,6 +50,68 @@
   --dot-color: rgba(44, 44, 40, 0.22);
   --dot-color-soft: rgba(44, 44, 40, 0.1);
   --section-pad: clamp(96px, 12vw, 160px);
+
+  /* ───────── Liquid Glass system ─────────
+     Tokens used by every translucent surface (header, sidebar, modals,
+     drawers, cards). Avoid hard-coding rgba()s in modules; reference these
+     instead so the brand reads as one fluid material across surfaces. */
+
+  /* Blur intensities — pair with saturate for "liquid" feel */
+  --glass-blur-xs: 8px;
+  --glass-blur-sm: 14px;
+  --glass-blur-md: 22px;
+  --glass-blur-lg: 36px;
+  --glass-blur-xl: 52px;
+  --glass-saturate: 180%;
+  --glass-saturate-strong: 200%;
+
+  /* Adaptive translucent backgrounds (sand-tinted) */
+  --glass-bg: rgba(248, 244, 237, 0.62);
+  --glass-bg-soft: rgba(248, 244, 237, 0.42);
+  --glass-bg-strong: rgba(248, 244, 237, 0.82);
+  --glass-bg-frosted: rgba(255, 255, 255, 0.55);
+  --glass-bg-frosted-strong: rgba(255, 255, 255, 0.78);
+  --glass-bg-ink: rgba(44, 44, 40, 0.62);
+  --glass-bg-ink-strong: rgba(44, 44, 40, 0.82);
+  --glass-bg-tint-terracotta: rgba(184, 137, 106, 0.08);
+  --glass-bg-tint-sea: rgba(122, 154, 170, 0.08);
+
+  /* Frosted edges — top-edge sheen mimics the meniscus of a glass pane */
+  --glass-border: 1px solid rgba(255, 255, 255, 0.55);
+  --glass-border-soft: 1px solid rgba(255, 255, 255, 0.32);
+  --glass-border-strong: 1px solid rgba(255, 255, 255, 0.72);
+  --glass-border-ink: 1px solid rgba(255, 255, 255, 0.12);
+
+  /* Specular highlights — gradient overlay for top-edge light */
+  --glass-specular: linear-gradient(180deg,
+    rgba(255, 255, 255, 0.42) 0%,
+    rgba(255, 255, 255, 0.08) 30%,
+    rgba(255, 255, 255, 0) 60%);
+  --glass-specular-soft: linear-gradient(180deg,
+    rgba(255, 255, 255, 0.25) 0%,
+    rgba(255, 255, 255, 0) 40%);
+  --glass-specular-radial: radial-gradient(ellipse 80% 50% at 50% 0%,
+    rgba(255, 255, 255, 0.32) 0%,
+    rgba(255, 255, 255, 0) 70%);
+
+  /* Inner refraction + depth */
+  --glass-inset: inset 0 1px 0 rgba(255, 255, 255, 0.55),
+                 inset 0 -1px 0 rgba(44, 44, 40, 0.04);
+  --glass-inset-strong: inset 0 1px 0 rgba(255, 255, 255, 0.7),
+                        inset 0 -1px 0 rgba(44, 44, 40, 0.06);
+
+  /* Drop shadows tuned for translucent surfaces */
+  --glass-shadow: 0 8px 32px rgba(44, 44, 40, 0.08),
+                  0 1px 2px rgba(44, 44, 40, 0.04);
+  --glass-shadow-md: 0 14px 44px rgba(44, 44, 40, 0.12),
+                     0 1px 2px rgba(44, 44, 40, 0.04);
+  --glass-shadow-lg: 0 24px 72px rgba(44, 44, 40, 0.16),
+                     0 2px 4px rgba(44, 44, 40, 0.05);
+
+  /* Radii reused for glass surfaces */
+  --glass-radius-sm: 12px;
+  --glass-radius-md: 18px;
+  --glass-radius-lg: 26px;
 }
 
 .dot-grid {
@@ -67,6 +130,162 @@
   color: var(--terracotta);
   letter-spacing: 0.18em;
   font-family: var(--font-mono), monospace;
+}
+
+/* ───────── Liquid Glass — utility classes ─────────
+   Apply to a surface for a coherent translucent material treatment.
+   Each variant pairs background + blur + saturate + border + specular
+   highlight + drop shadow. The specular sheen is rendered via ::before
+   so it sits above the backdrop but below content (the parent must use
+   `position: relative` if not already). */
+
+.glass,
+.glass-soft,
+.glass-strong,
+.glass-frosted,
+.glass-modal,
+.glass-nav,
+.glass-card,
+.glass-dark {
+  position: relative;
+  isolation: isolate;
+  -webkit-backdrop-filter: blur(var(--glass-blur-md)) saturate(var(--glass-saturate));
+  backdrop-filter: blur(var(--glass-blur-md)) saturate(var(--glass-saturate));
+  background: var(--glass-bg);
+  border: var(--glass-border);
+  box-shadow: var(--glass-inset), var(--glass-shadow);
+}
+
+.glass::before,
+.glass-soft::before,
+.glass-strong::before,
+.glass-frosted::before,
+.glass-modal::before,
+.glass-nav::before,
+.glass-card::before,
+.glass-dark::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--glass-specular);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.glass > *,
+.glass-soft > *,
+.glass-strong > *,
+.glass-frosted > *,
+.glass-modal > *,
+.glass-nav > *,
+.glass-card > *,
+.glass-dark > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Variants */
+.glass-soft {
+  background: var(--glass-bg-soft);
+  -webkit-backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-saturate));
+  backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-saturate));
+}
+
+.glass-strong {
+  background: var(--glass-bg-strong);
+  -webkit-backdrop-filter: blur(var(--glass-blur-md)) saturate(var(--glass-saturate-strong));
+  backdrop-filter: blur(var(--glass-blur-md)) saturate(var(--glass-saturate-strong));
+  border: var(--glass-border-strong);
+  box-shadow: var(--glass-inset-strong), var(--glass-shadow-md);
+}
+
+.glass-frosted {
+  background: var(--glass-bg-frosted);
+  -webkit-backdrop-filter: blur(var(--glass-blur-lg)) saturate(var(--glass-saturate));
+  backdrop-filter: blur(var(--glass-blur-lg)) saturate(var(--glass-saturate));
+  border: var(--glass-border-strong);
+}
+
+.glass-modal {
+  background: var(--glass-bg-frosted-strong);
+  -webkit-backdrop-filter: blur(var(--glass-blur-xl)) saturate(var(--glass-saturate-strong));
+  backdrop-filter: blur(var(--glass-blur-xl)) saturate(var(--glass-saturate-strong));
+  border: var(--glass-border-strong);
+  box-shadow: var(--glass-inset-strong), var(--glass-shadow-lg);
+}
+
+.glass-modal::before {
+  background: var(--glass-specular-radial);
+}
+
+.glass-nav {
+  background: var(--glass-bg-strong);
+  -webkit-backdrop-filter: blur(var(--glass-blur-md)) saturate(var(--glass-saturate));
+  backdrop-filter: blur(var(--glass-blur-md)) saturate(var(--glass-saturate));
+  border: 0;
+  border-bottom: 1px solid rgba(212, 205, 193, 0.6);
+  box-shadow: var(--glass-inset), 0 2px 16px rgba(44, 44, 40, 0.04);
+}
+
+.glass-card {
+  background: var(--glass-bg-frosted);
+  -webkit-backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-saturate));
+  backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-saturate));
+  border: var(--glass-border-soft);
+  box-shadow: var(--glass-inset), var(--glass-shadow);
+  border-radius: var(--glass-radius-md);
+}
+
+.glass-card::before {
+  background: var(--glass-specular-soft);
+}
+
+.glass-dark {
+  background: var(--glass-bg-ink-strong);
+  border: var(--glass-border-ink);
+  color: var(--sand);
+}
+
+.glass-dark::before {
+  background: linear-gradient(180deg,
+    rgba(255, 255, 255, 0.12) 0%,
+    rgba(255, 255, 255, 0) 50%);
+}
+
+/* Fallback for browsers without backdrop-filter support */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass,
+  .glass-soft {
+    background: var(--sand-soft);
+  }
+  .glass-strong,
+  .glass-frosted,
+  .glass-nav,
+  .glass-card {
+    background: var(--sand);
+  }
+  .glass-modal {
+    background: var(--sand-soft);
+    box-shadow: var(--glass-shadow-lg);
+  }
+  .glass-dark {
+    background: var(--ink);
+  }
+}
+
+/* Performance hint — promote glass surfaces to their own layer so backdrop
+   blur is GPU-accelerated and doesn't repaint on parent updates. */
+.glass,
+.glass-soft,
+.glass-strong,
+.glass-frosted,
+.glass-modal,
+.glass-nav,
+.glass-card,
+.glass-dark {
+  will-change: backdrop-filter;
+  transform: translateZ(0);
 }
 
 *,
@@ -125,8 +344,9 @@ button {
 }
 
 :focus-visible {
-  outline: 2px solid var(--terracotta);
+  outline: 2px solid var(--terracotta-strong);
   outline-offset: 3px;
+  border-radius: 4px;
 }
 
 ::selection {
