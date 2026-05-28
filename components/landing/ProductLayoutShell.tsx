@@ -4,6 +4,7 @@ import Link from "next/link";
 
 import styles from "@/styles/productos.module.css";
 
+import { FluidBackdrop } from "./FluidBackdrop";
 import { useAnimatedCounter } from "./hooks/useAnimatedCounter";
 import { useMagnetic } from "./hooks/useMagnetic";
 import { useReveal } from "./hooks/useReveal";
@@ -82,37 +83,7 @@ export function ProductEffects() {
 export function ProductShell({ children }: { children: React.ReactNode }) {
   return (
     <div className={styles.root}>
-      <svg
-        className={styles.irisDefs}
-        xmlns="http://www.w3.org/2000/svg"
-        aria-hidden="true"
-        focusable="false"
-      >
-        <defs>
-          <filter id="iris-liquid-p" x="-20%" y="-20%" width="140%" height="140%">
-            <feTurbulence
-              type="fractalNoise"
-              baseFrequency="0.014"
-              numOctaves="2"
-              seed="11"
-              result="noise"
-            >
-              <animate
-                attributeName="baseFrequency"
-                values="0.012;0.022;0.012"
-                dur="24s"
-                repeatCount="indefinite"
-              />
-            </feTurbulence>
-            <feDisplacementMap in="SourceGraphic" in2="noise" scale="55" />
-          </filter>
-        </defs>
-      </svg>
-      <div className={styles.iris} aria-hidden="true">
-        <div className={`${styles.irisBlob} ${styles.irisBlob1}`} />
-        <div className={`${styles.irisBlob} ${styles.irisBlob2}`} />
-        <div className={`${styles.irisBlob} ${styles.irisBlob3}`} />
-      </div>
+      <FluidBackdrop />
       <div className={styles.bgGrid} aria-hidden="true" />
       <div className={styles.scrollProgress} aria-hidden="true">
         <div className={styles.bar} id="sp-bar" />

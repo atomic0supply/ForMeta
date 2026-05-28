@@ -5,67 +5,14 @@
 .root { width: 100%; }
 .root :global(::selection) { background: var(--color-terra); color: var(--color-sand); }
 
-/* ── Iridescent backdrop ── */
-.irisDefs {
-  position: absolute;
-  width: 0; height: 0;
-  pointer-events: none;
-  overflow: hidden;
-}
-.iris {
+/* ── Fluid WebGL backdrop (paleta de marca) ── */
+.fluidCanvas {
   position: fixed;
-  inset: -10%;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   z-index: 0;
   pointer-events: none;
-  overflow: hidden;
-  filter: url(#iris-liquid-p) saturate(1.05);
-  opacity: 0.42;
-}
-.irisBlob {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(40px);
-  will-change: transform;
-}
-.irisBlob1 {
-  top: -10%; left: -10%;
-  width: 70vmax; height: 70vmax;
-  background: conic-gradient(from 0deg at 50% 50%,
-    var(--iris-1) 0deg, var(--iris-2) 72deg, var(--iris-3) 144deg,
-    var(--iris-4) 216deg, var(--iris-5) 288deg, var(--iris-1) 360deg);
-  animation: irisFloat1 28s ease-in-out infinite;
-  opacity: 0.6;
-}
-.irisBlob2 {
-  top: 5%; right: -25%;
-  width: 60vmax; height: 60vmax;
-  background: linear-gradient(135deg, var(--iris-3) 0%, var(--iris-4) 45%, var(--iris-5) 100%);
-  animation: irisFloat2 34s ease-in-out infinite reverse;
-  opacity: 0.55;
-}
-.irisBlob3 {
-  bottom: -25%; left: 20%;
-  width: 65vmax; height: 65vmax;
-  background: radial-gradient(circle at 50% 50%, var(--iris-2) 0%, var(--iris-1) 55%, transparent 90%);
-  animation: irisFloat3 30s ease-in-out infinite;
-  opacity: 0.5;
-}
-@keyframes irisFloat1 {
-  0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
-  33%      { transform: translate(15vw, 18vh) rotate(120deg) scale(1.15); }
-  66%      { transform: translate(5vw, 32vh) rotate(240deg) scale(0.95); }
-}
-@keyframes irisFloat2 {
-  0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
-  50%      { transform: translate(-22vw, 24vh) rotate(180deg) scale(1.2); }
-}
-@keyframes irisFloat3 {
-  0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
-  50%      { transform: translate(-15vw, -22vh) rotate(-180deg) scale(1.1); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .irisBlob1, .irisBlob2, .irisBlob3 { animation: none; }
-  .iris { filter: none; opacity: 0.28; }
 }
 
 /* ── Ambient grid ── */

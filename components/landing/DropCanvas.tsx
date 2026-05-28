@@ -153,7 +153,6 @@ export function DropCanvas() {
           varying vec2 vUv;
           void main() {
             vUv = uv;
-            // Position directly in clip space → siempre fullscreen
             gl_Position = vec4(position.xy, 0.999, 1.0);
           }
         `,
@@ -168,52 +167,56 @@ export function DropCanvas() {
 
           void main() {
             float aspect = uResolution.x / max(uResolution.y, 1.0);
-            vec2 p = (vUv - 0.5) * vec2(aspect, 1.0) * 1.7;
+            vec2 p = (vUv - 0.5) * vec2(aspect, 1.0) * 1.35;
 
-            float t = mix(uTime * 0.085, 0.5, uReduced);
+            // Motion sobrio: ritmo editorial (~half de la versión iris).
+            float t = mix(uTime * 0.038, 0.5, uReduced);
 
-            // 3 octavas de simplex 3D → liquid flow
-            float n1 = snoise(vec3(p * 1.15, t));
-            float n2 = snoise(vec3(p * 2.4 + vec2(34.7, 12.1), t * 1.32)) * 0.55;
-            float n3 = snoise(vec3(p * 4.6 - vec2(67.3, 21.7), t * 1.71)) * 0.28;
-            float n = (n1 + n2 + n3) / 1.83;
+            // 2 octavas, frecuencias bajas → shapes amplias, calmas.
+            float n1 = snoise(vec3(p * 0.62, t));
+            float n2 = snoise(vec3(p * 1.28 + vec2(34.7, 12.1), t * 1.18)) * 0.42;
+            float n = (n1 + n2) / 1.42;
 
-            // Paleta iris ForMeta (--iris-1..5)
-            vec3 c1 = vec3(0.557, 0.365, 0.749); // #8e5dbf
-            vec3 c2 = vec3(0.816, 0.290, 0.761); // #d04ac2
-            vec3 c3 = vec3(0.290, 0.749, 0.816); // #4abfd0
-            vec3 c4 = vec3(0.290, 0.816, 0.651); // #4ad0a6
-            vec3 c5 = vec3(0.816, 0.694, 0.290); // #d0b14a
+            // PALETA DE MARCA — Capa 1 (mediterránea, baja saturación).
+            // Tonos prestados de la piedra caliza, pinar y mar balear.
+            vec3 sand  = vec3(0.957, 0.941, 0.910); // #F4F0E8 — base universal
+            vec3 stone = vec3(0.886, 0.867, 0.831); // #E2DDD4 — neutro cálido
+            vec3 terra = vec3(0.722, 0.537, 0.416); // #B8896A — acento cálido
+            vec3 sea   = vec3(0.478, 0.604, 0.667); // #7A9AAA — contrapunto frío
+            vec3 sage  = vec3(0.561, 0.659, 0.573); // #8FA892 — verde calmo
 
-            // Mapa de hue → ciclo 5 colores + shift temporal sutil
-            float h = n * 0.5 + 0.5;
-            h = fract(h + uTime * 0.012 * (1.0 - uReduced));
+            // Drift estacional muy lento (~130s) — modula el balance cálido/frío.
+            float drift = sin(uTime * 0.048) * 0.12;
+            float h = clamp(n * 0.5 + 0.5 + drift, 0.0, 1.0);
 
             vec3 col;
-            if (h < 0.2)      col = mix(c1, c2, h / 0.2);
-            else if (h < 0.4) col = mix(c2, c3, (h - 0.2) / 0.2);
-            else if (h < 0.6) col = mix(c3, c4, (h - 0.4) / 0.2);
-            else if (h < 0.8) col = mix(c4, c5, (h - 0.6) / 0.2);
-            else              col = mix(c5, c1, (h - 0.8) / 0.2);
+            if (h < 0.18) {
+              // Zonas frías profundas: sea → stone
+              col = mix(sea, stone, h / 0.18);
+            } else if (h < 0.42) {
+              // Neutros calmos: stone → sand (transición ancha)
+              col = mix(stone, sand, (h - 0.18) / 0.24);
+            } else if (h < 0.66) {
+              // Dominio sand (base universal — la mayor parte del tiempo aquí)
+              col = sand;
+            } else if (h < 0.88) {
+              // Calidez: stone → terra (el acento de marca)
+              col = mix(stone, terra, (h - 0.66) / 0.22);
+            } else {
+              // Acento orgánico raro: terra → sage
+              col = mix(terra, sage, (h - 0.88) / 0.12);
+            }
 
-            // Thin-film interference: shift por gradiente local de noise
-            float eps = 0.012;
-            float dx = snoise(vec3((p + vec2(eps, 0.0)) * 1.15, t)) - n1;
-            float dy = snoise(vec3((p + vec2(0.0, eps)) * 1.15, t)) - n1;
-            float grad = length(vec2(dx, dy)) * 28.0;
-            col += vec3(0.18, 0.14, 0.22) * grad;
+            // Bloom cálido muy sutil en picos luminosos (tono terra).
+            float bright = clamp(h - 0.55, 0.0, 1.0);
+            col += pow(bright, 4.0) * vec3(0.10, 0.06, 0.03);
 
-            // Bloom suave en zonas brillantes
-            float bright = clamp(n * 0.5 + 0.5, 0.0, 1.0);
-            col += pow(bright, 4.0) * vec3(0.28, 0.22, 0.34);
-
-            // Vignette radial — foco central
+            // Vignette amplio — el centro respira, las esquinas se asientan.
             float d = length((vUv - 0.5) * vec2(aspect, 1.0));
-            float vig = smoothstep(1.25, 0.15, d);
-            col *= 0.55 + 0.6 * vig;
+            float vig = smoothstep(1.45, 0.18, d);
+            col *= 0.72 + 0.4 * vig;
 
-            // Base sand de marca debajo (donde el shader pasa por areas oscuras)
-            vec3 sand = vec3(0.957, 0.941, 0.910);
+            // Mezcla final con sand → controla la intensidad global.
             col = mix(sand, col, uOpacity);
 
             gl_FragColor = vec4(col, 1.0);
