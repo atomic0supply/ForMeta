@@ -2,12 +2,17 @@
 
 import { useEffect, useRef } from "react";
 
-import productosStyles from "@/styles/productos.module.css";
-
 /**
- * Backdrop fluido WebGL para páginas sin gota (productos).
- * Solo el quad fullscreen con shader de fluido en paleta de marca.
- * Mismo lenguaje visual que DropCanvas pero sin partículas.
+ * Backdrop fluido WebGL — único motor visual del hero/landing
+ * y del shell de productos.
+ *
+ * Quad fullscreen renderizado con shader de simplex noise (2 octavas
+ * en frecuencias bajas) que mapea el ruido a la paleta Capa 1 de la
+ * marca: sand dominante, stone neutro, terra cálido, sea contrapunto,
+ * sage acento raro. Drift estacional ~130s que rota el balance
+ * cálido/frío. Bloom warm sutil + vignette amplio.
+ *
+ * Respeta prefers-reduced-motion: render estático sin time tick.
  */
 
 const SIMPLEX_GLSL = `
@@ -199,7 +204,14 @@ export function FluidBackdrop() {
     <canvas
       ref={canvasRef}
       aria-hidden="true"
-      className={productosStyles.fluidCanvas}
+      style={{
+        position: "fixed",
+        inset: 0,
+        width: "100%",
+        height: "100%",
+        zIndex: 0,
+        pointerEvents: "none",
+      }}
     />
   );
 }

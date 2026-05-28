@@ -1,6 +1,6 @@
 import { AmbientBackdrop } from "@/components/landing/AmbientBackdrop";
 import { ContactoSection } from "@/components/landing/ContactoSection";
-import { DropCanvas } from "@/components/landing/DropCanvas";
+import { FluidBackdrop } from "@/components/landing/FluidBackdrop";
 import { Footer } from "@/components/landing/Footer";
 import { HeroSection } from "@/components/landing/HeroSection";
 import { HudChrome } from "@/components/landing/HudChrome";
@@ -42,7 +42,7 @@ const TICKER_2 = [
 export default function HomePage() {
   return (
     <div className={styles.root}>
-      <DropCanvas />
+      <FluidBackdrop />
       <AmbientBackdrop />
       <ScrollProgress />
       <SectionCounter />

@@ -101,21 +101,6 @@
 }
 
 /* ============================================================
-   CANVAS — Three.js particle surface
-   ============================================================ */
-.dropCanvas {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 1;
-  transition: opacity var(--duration-short) var(--easing-standard);
-}
-.dropCanvas.faded { opacity: 0.35; }
-
-/* ============================================================
    SCROLL PROGRESS — vertical terra line on left edge
    ============================================================ */
 .scrollProgress {
