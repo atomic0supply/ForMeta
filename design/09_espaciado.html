@@ -4,12 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>09. Espaciado y Grid - ForMeta Guía de Estilo</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
-    <style>:root {
-            --font-mono: 'DM Mono', 'Courier New', Courier, monospace;
-            --font-serif: 'Cormorant Garamond', Garamond, Georgia, serif;
+
+    <style>
+        @font-face { font-family: 'Canela Trial'; src: url('typo/Canela_Collection/Canela Family/Canela-Light-Trial.otf') format('opentype'); font-weight: 300; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Canela Trial'; src: url('typo/Canela_Collection/Canela Family/Canela-LightItalic-Trial.otf') format('opentype'); font-weight: 300; font-style: italic; font-display: swap; }
+        @font-face { font-family: 'Canela Deck Trial'; src: url('typo/Canela_Collection/Canela Deck Family/CanelaDeck-Light-Trial.otf') format('opentype'); font-weight: 300; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Canela Deck Trial'; src: url('typo/Canela_Collection/Canela Deck Family/CanelaDeck-LightItalic-Trial.otf') format('opentype'); font-weight: 300; font-style: italic; font-display: swap; }
+        @font-face { font-family: 'Canela Deck Trial'; src: url('typo/Canela_Collection/Canela Deck Family/CanelaDeck-Medium-Trial.otf') format('opentype'); font-weight: 500; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Canela Text Trial'; src: url('typo/Canela_Collection/Canela Text Family/CanelaText-Regular-Trial.otf') format('opentype'); font-weight: 400; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Canela Text Trial'; src: url('typo/Canela_Collection/Canela Text Family/CanelaText-RegularItalic-Trial.otf') format('opentype'); font-weight: 400; font-style: italic; font-display: swap; }
+        @font-face { font-family: 'Canela Text Trial'; src: url('typo/Canela_Collection/Canela Text Family/CanelaText-Medium-Trial.otf') format('opentype'); font-weight: 500; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'IBM Plex Mono'; src: url('typo/IBM_PLEX/IBMPlexMono-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'IBM Plex Mono'; src: url('typo/IBM_PLEX/IBMPlexMono-Medium.ttf') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
+
+        :root {
+            --font-display: 'Canela Trial', Georgia, serif;
+            --font-deck:    'Canela Deck Trial', Georgia, serif;
+            --font-text:    'Canela Text Trial', Georgia, serif;
+            --font-mono:    'IBM Plex Mono', 'Courier New', monospace;
+
             --color-ink: #2C2C28;
             --color-terra: #B8896A;
             --color-sand: #F4F0E8;
@@ -19,47 +32,1230 @@
             --color-white: #FFFFFF;
             --color-offblack: #1A1A18;
             --color-muted: #7A7870;
-            --color-alert: #d05a5a;
+            --color-alert: #D05A5A;
+
             --color-bg: var(--color-sand);
             --color-text: var(--color-ink);
             --color-text-secondary: var(--color-muted);
             --color-border-secondary: rgba(44, 44, 40, 0.1);
-            --spacing-xs: 0.5rem;
-            --spacing-sm: 1.5rem;
-            --spacing-md: 3rem;
-            --spacing-lg: 6rem;
-            --spacing-xl: 10rem;
+
+            /* ============================================================
+               SPACING TOKENS — escala canónica v1.0
+               Base unit: 8px (= 0.5rem). Resto: múltiplos × 1, 3, 6, 12, 20.
+               ============================================================ */
+            --space-xs: 0.5rem;   /* 8px  · unidad base */
+            --space-sm: 1.5rem;   /* 24px · entre elementos */
+            --space-md: 3rem;     /* 48px · entre bloques */
+            --space-lg: 6rem;     /* 96px · entre secciones cortas */
+            --space-xl: 10rem;    /* 160px · entre secciones largas */
+
+            /* Aliases legacy (mantenidos para retrocompatibilidad con capítulos previos) */
+            --spacing-xs: var(--space-xs);
+            --spacing-sm: var(--space-sm);
+            --spacing-md: var(--space-md);
+            --spacing-lg: var(--space-lg);
+            --spacing-xl: var(--space-xl);
+
+            /* Containers */
+            --container-narrow:    720px;   /* long-form / lectura */
+            --container-default: 1200px;   /* layouts generales */
+            --container-wide:    1440px;   /* dashboard / wide screen */
+
+            /* Grid */
+            --grid-cols-desktop: 12;
+            --grid-cols-tablet:   8;
+            --grid-cols-mobile:   4;
+            --grid-gutter:        var(--space-sm);
+
+            /* Breakpoints (informativos — usar en @media) */
+            --bp-mobile:  600px;
+            --bp-tablet:  900px;
+            --bp-desktop: 1200px;
         }
+
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background-color: var(--color-sand); color: var(--color-text); font-family: var(--font-serif); font-weight: 300; font-size: 1.15rem; line-height: 1.8; -webkit-font-smoothing: antialiased; display: flex; flex-direction: column; min-height: 100vh; }
-        .container { max-width: 1200px; margin: 0 auto; padding: var(--spacing-md) var(--spacing-sm); flex: 1; }
-        h1 { font-family: var(--font-serif); font-size: 3.5rem; font-weight: 300; margin-bottom: var(--spacing-xs); color: var(--color-ink); }
-        h2 { font-family: var(--font-serif); font-size: 2.5rem; font-weight: 300; margin-bottom: var(--spacing-sm); padding-bottom: 1rem; border-bottom: 1px solid var(--color-border-secondary); }
-        h3 { font-family: var(--font-serif); font-size: 1.5rem; font-weight: 400; margin-bottom: 1rem; color: var(--color-ink); }
-        p { color: var(--color-text-secondary); max-width: 650px; margin-bottom: var(--spacing-sm); }
-        .intro { margin-bottom: var(--spacing-xl); }
-        .lbl { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-text-secondary); margin-top: 1rem; margin-bottom: 0.5rem; }
-        section { margin-bottom: var(--spacing-xl); }
-        footer { text-align: center; margin-top: var(--spacing-xl); padding: var(--spacing-md) 0; border-top: 1px solid var(--color-border-secondary); }
-</style>
+
+        body {
+            background-color: var(--color-sand);
+            color: var(--color-text);
+            font-family: var(--font-text);
+            font-weight: 400;
+            font-size: 17px;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: var(--space-md) var(--space-sm); flex: 1; }
+
+        h1 { font-family: var(--font-display); font-weight: 300; font-size: 5rem; line-height: 1.05; letter-spacing: -0.02em; color: var(--color-ink); margin-bottom: var(--space-xs); }
+        h2 { font-family: var(--font-deck); font-weight: 300; font-size: 2.5rem; line-height: 1.15; letter-spacing: -0.01em; color: var(--color-ink); margin-bottom: var(--space-sm); padding-bottom: 1rem; border-bottom: 1px solid var(--color-border-secondary); }
+        h3 { font-family: var(--font-deck); font-weight: 400; font-size: 1.5rem; line-height: 1.3; color: var(--color-ink); margin-top: 2rem; margin-bottom: 1rem; }
+
+        p { font-family: var(--font-text); color: var(--color-text-secondary); max-width: 720px; margin-bottom: var(--space-sm); }
+        p strong { color: var(--color-ink); font-weight: 500; }
+        p em { font-style: italic; color: var(--color-ink); }
+        code { font-family: var(--font-mono); font-size: 0.85em; background: var(--color-stone); padding: 0.1em 0.4em; border-radius: 3px; color: var(--color-ink); }
+
+        .intro { margin-bottom: var(--space-xl); display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: end; }
+        .intro-text { max-width: 720px; }
+        .intro p.lead { font-family: var(--font-deck); font-style: italic; font-weight: 300; font-size: 1.5rem; line-height: 1.4; color: var(--color-ink); max-width: 720px; margin-top: var(--space-sm); }
+        .intro-mark { color: var(--color-terra); --core-color: var(--color-ink); }
+        .intro-mark svg { width: 120px; height: 150px; display: block; }
+        @media (max-width: 720px) {
+            .intro { grid-template-columns: 1fr; }
+            .intro-mark { order: -1; }
+            .intro-mark svg { width: 80px; height: 100px; }
+        }
+
+        .lbl { font-family: var(--font-mono); font-size: 11px; font-weight: 400; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-text-secondary); margin-top: 1rem; margin-bottom: 0.5rem; }
+
+        section { margin-bottom: var(--space-xl); }
+        .section-tag { font-family: var(--font-mono); font-size: 0.7rem; font-weight: 400; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-terra); margin-bottom: 0.5rem; }
+
+        .manifest-statement {
+            font-family: var(--font-display);
+            font-weight: 300;
+            font-size: 2.4rem;
+            line-height: 1.15;
+            letter-spacing: -0.015em;
+            color: var(--color-ink);
+            max-width: 880px;
+            margin-bottom: var(--space-md);
+        }
+        @media (max-width: 720px) { .manifest-statement { font-size: 1.8rem; } }
+
+        /* -------- Scale visualization -------- */
+        .scale-board {
+            background: var(--color-white);
+            border: 1px solid var(--color-border-secondary);
+            border-radius: 8px;
+            padding: 2.5rem 2rem 2rem;
+            display: flex;
+            align-items: flex-end;
+            gap: 3rem;
+            overflow-x: auto;
+            min-height: 360px;
+        }
+        .scale-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.6rem;
+            flex-shrink: 0;
+        }
+        .scale-bar {
+            width: 60px;
+            background: var(--color-terra);
+            border-radius: 4px 4px 0 0;
+            position: relative;
+        }
+        .scale-bar.xs { height: 8px; }
+        .scale-bar.sm { height: 24px; }
+        .scale-bar.md { height: 48px; }
+        .scale-bar.lg { height: 96px; }
+        .scale-bar.xl { height: 160px; }
+        .scale-bar::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: -10px;
+            right: -10px;
+            height: 1px;
+            background: var(--color-muted);
+            opacity: 0.5;
+        }
+        .scale-bar::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: -10px;
+            right: -10px;
+            height: 1px;
+            background: var(--color-muted);
+            opacity: 0.5;
+        }
+        .scale-name {
+            font-family: var(--font-deck);
+            font-weight: 500;
+            font-size: 1.05rem;
+            color: var(--color-ink);
+        }
+        .scale-px {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--color-terra);
+            font-weight: 500;
+        }
+        .scale-rem {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--color-muted);
+            letter-spacing: 0.04em;
+        }
+        .scale-use {
+            font-family: var(--font-text);
+            font-size: 0.82rem;
+            color: var(--color-text-secondary);
+            max-width: 120px;
+            text-align: center;
+            line-height: 1.4;
+            margin-top: 0.3rem;
+        }
+
+        /* -------- Token table -------- */
+        .table-wrapper { width: 100%; overflow-x: auto; background: var(--color-white); border-radius: 8px; border: 1px solid var(--color-border-secondary); margin-top: 1.5rem; }
+        table { width: 100%; border-collapse: collapse; font-family: var(--font-mono); font-size: 0.85rem; }
+        th, td { text-align: left; padding: 1rem 1.2rem; border-bottom: 1px solid var(--color-border-secondary); vertical-align: middle; }
+        th { font-weight: 400; color: var(--color-muted); background: rgba(0,0,0,0.02); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em; }
+        tr:last-child td { border-bottom: none; }
+        .tok-name { color: var(--color-ink); font-weight: 500; }
+        .tok-var { color: var(--color-terra); }
+        .tok-px { color: var(--color-ink); }
+        .tok-rem { color: var(--color-muted); }
+        .tok-use { color: var(--color-text-secondary); font-family: var(--font-text); font-size: 1rem; letter-spacing: 0; }
+
+        /* -------- Grid visualization -------- */
+        .grid-stage {
+            background: var(--color-white);
+            border: 1px solid var(--color-border-secondary);
+            border-radius: 8px;
+            padding: 2rem;
+            position: relative;
+        }
+        .grid-toggle {
+            background: var(--color-ink);
+            color: var(--color-sand);
+            border: none;
+            padding: 0.5rem 0.9rem;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            font-weight: 500;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            cursor: pointer;
+            margin-bottom: 1.5rem;
+            transition: background 0.3s;
+        }
+        .grid-toggle:hover { background: var(--color-terra); }
+        .grid-toggle.active { background: var(--color-terra); }
+        .grid-container {
+            position: relative;
+            background: var(--color-sand);
+            padding: 1.5rem;
+            border-radius: 6px;
+            min-height: 280px;
+        }
+        .grid-overlay {
+            position: absolute;
+            inset: 1.5rem;
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: var(--space-sm);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .grid-stage.grid-on .grid-overlay { opacity: 1; }
+        .grid-col {
+            background: rgba(184, 137, 106, 0.18);
+            border: 1px dashed rgba(184, 137, 106, 0.5);
+            border-radius: 2px;
+        }
+        .grid-content {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: var(--space-sm);
+            position: relative;
+        }
+        .grid-content .item {
+            background: var(--color-white);
+            border: 1px solid var(--color-border-secondary);
+            border-radius: 6px;
+            padding: 1rem;
+            font-family: var(--font-deck);
+            font-size: 1rem;
+            color: var(--color-ink);
+        }
+        .grid-content .item .item-label {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--color-terra);
+            margin-bottom: 0.4rem;
+        }
+        .col-12 { grid-column: span 12; }
+        .col-8  { grid-column: span 8;  }
+        .col-6  { grid-column: span 6;  }
+        .col-4  { grid-column: span 4;  }
+        .col-3  { grid-column: span 3;  }
+        @media (max-width: 700px) {
+            .col-12, .col-8, .col-6, .col-4, .col-3 { grid-column: span 12; }
+            .grid-overlay { display: none; }
+        }
+
+        /* -------- Container widths -------- */
+        .container-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            background: var(--color-white);
+            border: 1px solid var(--color-border-secondary);
+            border-radius: 8px;
+            padding: 2rem;
+        }
+        .container-row {
+            display: grid;
+            grid-template-columns: 180px 1fr 120px;
+            gap: 1.5rem;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--color-border-secondary);
+        }
+        .container-row:last-child { border-bottom: none; }
+        @media (max-width: 720px) {
+            .container-row { grid-template-columns: 1fr; }
+        }
+        .container-name { font-family: var(--font-deck); font-weight: 500; font-size: 1.05rem; color: var(--color-ink); }
+        .container-name small { display: block; font-family: var(--font-mono); font-size: 0.65rem; color: var(--color-muted); margin-top: 0.2rem; letter-spacing: 0.08em; }
+        .container-bar {
+            height: 14px;
+            background: var(--color-sand);
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+        }
+        .container-bar .fill {
+            position: absolute; left: 0; top: 0; bottom: 0;
+            background: var(--color-terra);
+            border-radius: 4px;
+        }
+        .container-bar .fill.narrow  { width: 50%; }
+        .container-bar .fill.default { width: 83%; }
+        .container-bar .fill.wide    { width: 100%; }
+        .container-px { font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-terra); font-weight: 500; }
+        .container-use {
+            font-family: var(--font-text);
+            font-size: 0.95rem;
+            color: var(--color-text-secondary);
+            grid-column: 1 / -1;
+            padding-top: 0.4rem;
+            line-height: 1.5;
+        }
+
+        /* -------- Vertical rhythm demo -------- */
+        .rhythm-card {
+            background: var(--color-white);
+            border: 1px solid var(--color-border-secondary);
+            border-radius: 8px;
+            padding: 2.5rem;
+            position: relative;
+        }
+        .rhythm-doc {
+            position: relative;
+            max-width: 580px;
+            padding-left: 4rem;
+        }
+        .rhythm-doc::before {
+            content: '';
+            position: absolute;
+            left: 1.5rem;
+            top: 0; bottom: 0;
+            width: 1px;
+            background: repeating-linear-gradient(
+                to bottom,
+                rgba(184, 137, 106, 0.5) 0,
+                rgba(184, 137, 106, 0.5) 4px,
+                transparent 4px,
+                transparent 8px
+            );
+        }
+        .rhythm-doc .r-eyebrow {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--color-terra);
+            margin-bottom: var(--space-xs);
+        }
+        .rhythm-doc .r-h2 {
+            font-family: var(--font-deck);
+            font-weight: 300;
+            font-size: 2rem;
+            line-height: 1.15;
+            color: var(--color-ink);
+            margin-bottom: var(--space-sm);
+            position: relative;
+        }
+        .rhythm-doc .r-p {
+            font-family: var(--font-text);
+            font-size: 1rem;
+            line-height: 1.7;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-sm);
+        }
+        .rhythm-doc .r-h3 {
+            font-family: var(--font-deck);
+            font-weight: 400;
+            font-size: 1.3rem;
+            line-height: 1.3;
+            color: var(--color-ink);
+            margin-top: var(--space-md);
+            margin-bottom: var(--space-xs);
+        }
+        .rhythm-label {
+            position: absolute;
+            left: -4rem;
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            letter-spacing: 0.12em;
+            color: var(--color-terra);
+            opacity: 0.85;
+            white-space: nowrap;
+        }
+        .rhythm-doc > *::before {
+            counter-increment: r-count;
+        }
+        .r-h2 .rhythm-label   { top: 0.2em; }
+        .r-p .rhythm-label    { top: 0; }
+        .r-h3 .rhythm-label   { top: 0.2em; }
+
+        /* -------- Application mocks -------- */
+        .app-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-md);
+        }
+        @media (max-width: 800px) { .app-grid { grid-template-columns: 1fr; } }
+        .app-card {
+            background: var(--color-white);
+            border: 1px solid var(--color-border-secondary);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .app-stage { background: var(--color-sand); padding: var(--space-md); }
+        .app-body { padding: 1.2rem 1.5rem 1.5rem; }
+        .app-body h4 { font-family: var(--font-deck); font-weight: 500; font-size: 1.05rem; color: var(--color-ink); margin-bottom: 0.3rem; }
+        .app-body p { font-size: 0.9rem; margin: 0; max-width: 100%; }
+        .app-body .app-spec { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.1em; color: var(--color-sea); text-transform: uppercase; margin-top: 0.6rem; }
+
+        /* Layout 1: 3-card row */
+        .mock-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-sm);
+        }
+        .mock-cards .c {
+            background: var(--color-white);
+            border-radius: 6px;
+            padding: var(--space-sm);
+            font-family: var(--font-deck);
+            font-size: 0.95rem;
+            color: var(--color-ink);
+        }
+        .mock-cards .c-label {
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--color-terra);
+            display: block;
+            margin-bottom: var(--space-xs);
+        }
+
+        /* Layout 2: editorial spread 8+4 */
+        .mock-spread {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: var(--space-md);
+            align-items: start;
+        }
+        .mock-spread .main { background: var(--color-white); padding: var(--space-md) var(--space-sm); border-radius: 6px; min-height: 120px; font-family: var(--font-display); font-weight: 300; font-size: 1.5rem; line-height: 1.15; color: var(--color-ink); }
+        .mock-spread .side { background: var(--color-white); padding: var(--space-sm); border-radius: 6px; font-family: var(--font-mono); font-size: 0.7rem; color: var(--color-muted); letter-spacing: 0.08em; }
+
+        /* Layout 3: long-form column */
+        .mock-longform { max-width: 100%; }
+        .mock-longform .doc {
+            background: var(--color-white);
+            border-radius: 6px;
+            padding: var(--space-md);
+            max-width: 100%;
+        }
+        .mock-longform h5 {
+            font-family: var(--font-deck);
+            font-weight: 300;
+            font-size: 1.4rem;
+            color: var(--color-ink);
+            margin-bottom: var(--space-sm);
+        }
+        .mock-longform p {
+            font-family: var(--font-text);
+            font-size: 0.9rem;
+            line-height: 1.65;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-sm);
+        }
+
+        /* Layout 4: dashboard sidebar */
+        .mock-dash {
+            display: grid;
+            grid-template-columns: 80px 1fr;
+            gap: var(--space-sm);
+            min-height: 200px;
+        }
+        .mock-dash .sidebar { background: var(--color-ink); border-radius: 6px; padding: var(--space-sm); display: flex; flex-direction: column; gap: var(--space-sm); }
+        .mock-dash .sidebar .dot { width: 8px; height: 8px; background: var(--color-sand); border-radius: 50%; opacity: 0.5; }
+        .mock-dash .sidebar .dot.active { background: var(--color-terra); opacity: 1; }
+        .mock-dash .main { background: var(--color-white); border-radius: 6px; padding: var(--space-sm); display: flex; flex-direction: column; gap: var(--space-xs); }
+        .mock-dash .main .h { height: 14px; width: 50%; background: var(--color-ink); border-radius: 3px; }
+        .mock-dash .main .l { height: 8px; width: 80%; background: var(--color-stone); border-radius: 2px; }
+        .mock-dash .main .l.short { width: 60%; }
+
+        /* -------- Breakpoints table -------- */
+        .bp-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: var(--space-sm);
+        }
+        .bp-card {
+            background: var(--color-white);
+            border: 1px solid var(--color-border-secondary);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+        .bp-name { font-family: var(--font-deck); font-weight: 500; font-size: 1.1rem; color: var(--color-ink); margin-bottom: 0.3rem; }
+        .bp-range { font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-terra); margin-bottom: 0.8rem; }
+        .bp-spec { font-family: var(--font-text); font-size: 0.9rem; color: var(--color-text-secondary); line-height: 1.55; }
+        .bp-cols { display: flex; gap: 3px; margin-top: 0.8rem; }
+        .bp-cols .c { flex: 1; height: 20px; background: var(--color-terra); border-radius: 2px; opacity: 0.7; }
+
+        /* -------- Rules / Don'ts -------- */
+        .rule-list { list-style: none; counter-reset: rule-counter; margin-top: 1rem; }
+        .rule-list li {
+            position: relative;
+            padding-left: 3rem;
+            margin-bottom: 1.4rem;
+            font-family: var(--font-text);
+            font-size: 1.0625rem;
+            line-height: 1.55;
+            color: var(--color-ink);
+            max-width: 820px;
+        }
+        .rule-list li::before {
+            counter-increment: rule-counter;
+            content: "0" counter(rule-counter);
+            position: absolute; left: 0; top: 0.1rem;
+            font-family: var(--font-mono); font-size: 13px;
+            color: var(--color-terra);
+        }
+        .rule-list strong { color: var(--color-ink); font-weight: 500; }
+
+        .dont-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1.5rem; }
+        .dont {
+            background: var(--color-white); border: 1px solid var(--color-border-secondary);
+            border-radius: 8px; padding: 1.3rem; position: relative;
+        }
+        .dont::before {
+            content: 'NO'; position: absolute; top: -10px; left: 1rem;
+            background: var(--color-sand); padding: 0 0.5rem;
+            font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.16em;
+            color: var(--color-alert); font-weight: 500;
+        }
+        .dont-display {
+            height: 90px; display: flex; align-items: center; justify-content: center;
+            background: var(--color-sand); border-radius: 4px; margin-bottom: 0.8rem; padding: 0.6rem;
+        }
+        .dont-reason { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.05em; color: var(--color-text-secondary); margin: 0; }
+
+        .dont-arbitrary {
+            display: flex; flex-direction: column; gap: 11px;
+            font-family: var(--font-mono); font-size: 0.6rem; color: var(--color-ink);
+        }
+        .dont-arbitrary .b { background: var(--color-terra); height: 6px; width: 60px; border-radius: 2px; }
+        .dont-arbitrary .gap-1 { margin-top: 7px; }
+        .dont-arbitrary .gap-2 { margin-top: 19px; }
+        .dont-arbitrary .gap-3 { margin-top: 13px; }
+
+        .dont-tight {
+            display: flex; flex-direction: column; gap: 2px;
+        }
+        .dont-tight .b { background: var(--color-terra); height: 6px; width: 60px; border-radius: 2px; }
+
+        .dont-clamp {
+            font-family: var(--font-display); font-style: italic; font-size: 1rem;
+            color: var(--color-ink); max-width: 100%;
+            line-height: 1.3;
+        }
+
+        /* -------- Download / pack -------- */
+        .download-section { background: var(--color-ink); color: var(--color-sand); border-radius: 8px; padding: 2.5rem; }
+        .download-section h3 { color: var(--color-sand); margin-top: 0; }
+        .download-section p { color: var(--color-stone); }
+        .download-cta {
+            display: inline-flex; align-items: center; gap: 0.8rem;
+            background: var(--color-terra); color: var(--color-sand); border: none;
+            padding: 1rem 1.6rem; border-radius: 6px;
+            font-family: var(--font-mono); font-size: 0.8rem; font-weight: 500;
+            letter-spacing: 0.16em; text-transform: uppercase; cursor: pointer;
+            transition: background 0.3s, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            margin-top: 1rem;
+        }
+        .download-cta:hover { background: #A37A5A; transform: translateY(-2px); }
+        .download-cta:disabled { opacity: 0.5; cursor: wait; }
+        .download-cta svg { width: 14px; height: 14px; }
+        .download-status { margin-top: 1rem; font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-sage); min-height: 1.2em; }
+        .download-status.error { color: var(--color-alert); }
+
+        /* -------- Meta / footer -------- */
+        .meta-strip { background: var(--color-offblack); color: var(--color-sand); padding: 1.2rem 1.6rem; border-radius: 4px; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.16em; text-transform: uppercase; display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: var(--space-md); }
+        .meta-strip span { color: var(--color-stone); }
+        .meta-strip .sep { color: var(--color-terra); }
+        .meta-strip .tag { color: var(--color-terra); font-weight: 500; }
+
+        footer { text-align: center; margin-top: var(--space-xl); padding: var(--space-md) 0; border-top: 1px solid var(--color-border-secondary); }
+        .chapter-nav { display: flex; justify-content: space-between; align-items: center; max-width: 800px; margin: 0 auto var(--space-md); padding: 0 var(--space-sm); }
+        .chapter-nav a { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-text-secondary); text-decoration: none; transition: color 0.3s ease; }
+        .chapter-nav a:hover { color: var(--color-terra); }
+        @media (max-width: 600px) { .chapter-nav { flex-direction: column; gap: 1rem; text-align: center; } }
+        .footer-mark { color: var(--color-terra); display: inline-block; opacity: 0.7; }
+    </style>
 </head>
 <body>
+
+<svg style="position:absolute; width:0; height:0; overflow:hidden" aria-hidden="true">
+    <defs>
+        <symbol id="drop-halftone" viewBox="0 0 160 200"></symbol>
+        <symbol id="drop-simple" viewBox="0 0 160 200">
+            <path d="M80 12 C80 12 104 52 116 88 C126 118 122 152 102 168 C92 176 80 178 80 178 C80 178 68 176 58 168 C38 152 34 118 44 88 C56 52 80 12 80 12 Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>
+            <circle cx="80" cy="130" r="6" fill="currentColor"/>
+        </symbol>
+    </defs>
+</svg>
+
+<script>
+(function() {
+    const FX = 80, FY = 130;
+    const GD = "M80 12 C80 12 104 52 116 88 C126 118 122 152 102 168 C92 176 80 178 80 178 C80 178 68 176 58 168 C38 152 34 118 44 88 C56 52 80 12 80 12 Z";
+    function gen(symbolEl) {
+        while (symbolEl.firstChild) symbolEl.removeChild(symbolEl.firstChild);
+        const cv = document.createElement('canvas'); cv.width = 160; cv.height = 200;
+        const ctx = cv.getContext('2d');
+        const path = new Path2D(GD);
+        const NS = 'http://www.w3.org/2000/svg';
+        const sp = 8;
+        for (let y = sp/2; y < 200; y += sp) {
+            const ri = Math.round((y - sp/2) / sp);
+            const xo = (ri % 2 === 0) ? 0 : sp/2;
+            for (let x = sp/2 + xo; x < 160; x += sp) {
+                if (!ctx.isPointInPath(path, x, y)) continue;
+                const dx = x - FX, dy = y - FY;
+                const d = Math.sqrt(dx*dx + dy*dy);
+                const r = Math.max(0.4, 2.8 - d/38 * 2.8);
+                if (r < 0.35 || d < 6) continue;
+                const c = document.createElementNS(NS, 'circle');
+                c.setAttribute('cx', x.toFixed(2));
+                c.setAttribute('cy', y.toFixed(2));
+                c.setAttribute('r', r.toFixed(2));
+                c.setAttribute('fill', 'currentColor');
+                symbolEl.appendChild(c);
+            }
+        }
+        const core = document.createElementNS(NS, 'circle');
+        core.setAttribute('cx', FX); core.setAttribute('cy', FY); core.setAttribute('r', 4);
+        core.setAttribute('fill', 'var(--core-color, #B8896A)');
+        symbolEl.appendChild(core);
+    }
+    const s = document.getElementById('drop-halftone');
+    if (s) gen(s);
+})();
+</script>
+
 <div class="container">
+
     <div class="intro">
-        <div class="lbl">Sección 09</div>
-        <h1>Espaciado y Grid</h1>
+        <div class="intro-text">
+            <div class="lbl">Sección 09</div>
+            <h1>Espaciado y Grid</h1>
+            <p class="lead">El espacio es contenido. Donde no hay nada es donde respira la marca.</p>
+        </div>
+        <div class="intro-mark">
+            <svg viewBox="0 0 160 200"><use href="#drop-halftone"/></svg>
+        </div>
     </div>
-    
+
+    <!-- ============================================================ -->
+    <!-- 09.0 — Principio -->
+    <!-- ============================================================ -->
     <section>
-        <p style="opacity: 0.6; font-style: italic;">Esta sección (Sistemas y columnas) se desarrollará en la siguiente iteración de la guía de estilo.</p>
+        <div class="section-tag">09.0 · principio</div>
+        <h2>Principio</h2>
+
+        <div class="manifest-statement">
+            El espacio no es lo que sobra. Es lo que el contenido necesita para <em>sostenerse</em>. La generosidad espacial es voz de marca.
+        </div>
+
+        <p>ForMeta diseña con cinco unidades. Solo cinco. No hay <code>14px</code>, no hay <code>22px</code>, no hay <code>"un poco más"</code>. Cada decisión espacial sale de la escala. Esa restricción no limita — <strong>libera</strong>. Una pieza compuesta con la escala correcta nunca se ve apretada ni descuidada, porque la coherencia rítmica lo impide.</p>
+
+        <p>La base es <code>8px</code>. Todo lo demás son múltiplos: <code>×1</code>, <code>×3</code>, <code>×6</code>, <code>×12</code>, <code>×20</code>. Trabajamos en <code>rem</code> — el espacio escala con la tipografía del usuario. Accesibilidad por defecto.</p>
     </section>
-  
+
+    <!-- ============================================================ -->
+    <!-- 09.1 — Escala -->
+    <!-- ============================================================ -->
+    <section>
+        <div class="section-tag">09.1 · escala</div>
+        <h2>Escala de spacing</h2>
+        <p>Cinco tokens. La distancia entre ellos crece geométricamente — la diferencia entre <code>md</code> y <code>lg</code> es mayor que entre <code>xs</code> y <code>sm</code>. Esto refleja cómo percibe el ojo: el contraste de espacio debe ser visible para que jerarquice.</p>
+
+        <div class="scale-board">
+            <div class="scale-step">
+                <div class="scale-bar xs"></div>
+                <div class="scale-name">xs</div>
+                <div class="scale-px">8 px</div>
+                <div class="scale-rem">0.5 rem</div>
+                <div class="scale-use">Entre etiqueta y elemento</div>
+            </div>
+            <div class="scale-step">
+                <div class="scale-bar sm"></div>
+                <div class="scale-name">sm</div>
+                <div class="scale-px">24 px</div>
+                <div class="scale-rem">1.5 rem</div>
+                <div class="scale-use">Entre elementos del mismo bloque</div>
+            </div>
+            <div class="scale-step">
+                <div class="scale-bar md"></div>
+                <div class="scale-name">md</div>
+                <div class="scale-px">48 px</div>
+                <div class="scale-rem">3 rem</div>
+                <div class="scale-use">Entre bloques relacionados</div>
+            </div>
+            <div class="scale-step">
+                <div class="scale-bar lg"></div>
+                <div class="scale-name">lg</div>
+                <div class="scale-px">96 px</div>
+                <div class="scale-rem">6 rem</div>
+                <div class="scale-use">Entre secciones cortas</div>
+            </div>
+            <div class="scale-step">
+                <div class="scale-bar xl"></div>
+                <div class="scale-name">xl</div>
+                <div class="scale-px">160 px</div>
+                <div class="scale-rem">10 rem</div>
+                <div class="scale-use">Entre secciones largas / capítulos</div>
+            </div>
+        </div>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr><th>Token</th><th>Variable CSS</th><th>px</th><th>rem</th><th>Uso canónico</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td class="tok-name">xs</td><td class="tok-var">--space-xs</td><td class="tok-px">8</td><td class="tok-rem">0.5</td><td class="tok-use">Etiqueta-elemento, gap mínimo, dot pulse</td></tr>
+                    <tr><td class="tok-name">sm</td><td class="tok-var">--space-sm</td><td class="tok-px">24</td><td class="tok-rem">1.5</td><td class="tok-use">Padding card, gap grid, párrafo→párrafo</td></tr>
+                    <tr><td class="tok-name">md</td><td class="tok-var">--space-md</td><td class="tok-px">48</td><td class="tok-rem">3</td><td class="tok-use">Padding container, gap bloque, h2 margin</td></tr>
+                    <tr><td class="tok-name">lg</td><td class="tok-var">--space-lg</td><td class="tok-px">96</td><td class="tok-rem">6</td><td class="tok-use">Margen sección, hero padding</td></tr>
+                    <tr><td class="tok-name">xl</td><td class="tok-var">--space-xl</td><td class="tok-px">160</td><td class="tok-rem">10</td><td class="tok-use">Margen entre capítulos, hero superior, footer</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 09.2 — Grid -->
+    <!-- ============================================================ -->
+    <section>
+        <div class="section-tag">09.2 · grid</div>
+        <h2>Grid de 12 columnas</h2>
+        <p>El layout vive sobre una rejilla de 12 columnas con gutter <code>sm</code> (24px). Las medidas comunes: <code>col-12</code> (full), <code>col-8</code> (2/3), <code>col-6</code> (mitad), <code>col-4</code> (tercio), <code>col-3</code> (cuarto). En tablet colapsa a 8 columnas; en mobile a 4. Por debajo de <code>600px</code> todo es full-width.</p>
+
+        <div class="grid-stage" id="grid-stage">
+            <button class="grid-toggle" id="grid-toggle">Mostrar grid overlay</button>
+            <div class="grid-container">
+                <div class="grid-overlay">
+                    <div class="grid-col"></div><div class="grid-col"></div><div class="grid-col"></div><div class="grid-col"></div>
+                    <div class="grid-col"></div><div class="grid-col"></div><div class="grid-col"></div><div class="grid-col"></div>
+                    <div class="grid-col"></div><div class="grid-col"></div><div class="grid-col"></div><div class="grid-col"></div>
+                </div>
+                <div class="grid-content">
+                    <div class="item col-8"><div class="item-label">col-8 · main</div>Contenido principal</div>
+                    <div class="item col-4"><div class="item-label">col-4 · aside</div>Sidebar</div>
+                    <div class="item col-4"><div class="item-label">col-4 · card</div>Tercio</div>
+                    <div class="item col-4"><div class="item-label">col-4 · card</div>Tercio</div>
+                    <div class="item col-4"><div class="item-label">col-4 · card</div>Tercio</div>
+                    <div class="item col-6"><div class="item-label">col-6 · mitad</div>Bloque editorial izquierda</div>
+                    <div class="item col-6"><div class="item-label">col-6 · mitad</div>Bloque editorial derecha</div>
+                    <div class="item col-12"><div class="item-label">col-12 · full</div>Hero, footer, divider</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 09.3 — Containers -->
+    <!-- ============================================================ -->
+    <section>
+        <div class="section-tag">09.3 · containers</div>
+        <h2>Anchos de contenedor</h2>
+        <p>Tres containers canónicos según el tipo de contenido. El ancho no es decisión estética — es función del tipo de lectura.</p>
+
+        <div class="container-grid">
+            <div class="container-row">
+                <div class="container-name">Narrow<small>--container-narrow</small></div>
+                <div class="container-bar"><div class="fill narrow"></div></div>
+                <div class="container-px">720px</div>
+                <div class="container-use">Long-form. Lectura editorial densa — manifiesto, ensayo, documentación. <strong>El ancho de un párrafo cómodo en Canela Text: 60-75 caracteres por línea.</strong></div>
+            </div>
+            <div class="container-row">
+                <div class="container-name">Default<small>--container-default</small></div>
+                <div class="container-bar"><div class="fill default"></div></div>
+                <div class="container-px">1200px</div>
+                <div class="container-use">Layouts generales. Páginas con grid, cards, secciones combinadas. <strong>El ancho de este manual.</strong></div>
+            </div>
+            <div class="container-row">
+                <div class="container-name">Wide<small>--container-wide</small></div>
+                <div class="container-bar"><div class="fill wide"></div></div>
+                <div class="container-px">1440px</div>
+                <div class="container-use">Dashboards y wide screens. Aplicaciones internas con tablas amplias, paneles laterales, vistas data-dense.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 09.4 — Ritmo tipográfico -->
+    <!-- ============================================================ -->
+    <section>
+        <div class="section-tag">09.4 · ritmo</div>
+        <h2>Ritmo vertical</h2>
+        <p>El espacio entre elementos tipográficos sigue la misma escala. Nunca margen arbitrario. La regla es simple: <strong>el espacio entre dos elementos es el token que corresponde al nivel del más cercano</strong>.</p>
+
+        <div class="rhythm-card">
+            <div class="rhythm-doc">
+                <div class="r-eyebrow">eyebrow · plex mono <span class="rhythm-label">↓ xs (8)</span></div>
+                <h2 class="r-h2">Cabecera editorial <span class="rhythm-label">↓ sm (24)</span></h2>
+                <p class="r-p">Primer párrafo de cuerpo. El espacio que lo separa de la cabecera es <code>sm</code> — suficiente para respirar, no tanto como para romper la unión semántica. <span class="rhythm-label">↓ sm (24)</span></p>
+                <p class="r-p">Segundo párrafo. Mantiene el mismo espacio entre párrafos hermanos. Cualquier desviación rompe el ritmo y hace al lector dudar dónde acaba un pensamiento.<span class="rhythm-label">↓ md (48)</span></p>
+                <h3 class="r-h3">Subsección <span class="rhythm-label">↓ xs (8)</span></h3>
+                <p class="r-p">Una nueva subsección abre con espacio <code>md</code> respecto al párrafo anterior — la distancia mayor anuncia cambio de tema. La cabecera baja a su propio párrafo con <code>xs</code>.</p>
+            </div>
+        </div>
+
+        <p style="margin-top: 1.5rem; font-size: 0.95rem;"><strong>Excepción aceptable:</strong> al final de un párrafo antes de un bloque visual (imagen, gráfico, callout), el espacio sube a <code>md</code> para distinguir contenido textual de contenido visual.</p>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 09.5 — Aplicación -->
+    <!-- ============================================================ -->
+    <section>
+        <div class="section-tag">09.5 · aplicación</div>
+        <h2>Layouts canónicos</h2>
+        <p>Cuatro composiciones que aparecen una y otra vez. Cada una usa solo los tokens definidos.</p>
+
+        <div class="app-grid">
+            <div class="app-card">
+                <div class="app-stage">
+                    <div class="mock-cards">
+                        <div class="c"><span class="c-label">A</span>Card uno</div>
+                        <div class="c"><span class="c-label">B</span>Card dos</div>
+                        <div class="c"><span class="c-label">C</span>Card tres</div>
+                    </div>
+                </div>
+                <div class="app-body">
+                    <h4>Cards · 3 columnas</h4>
+                    <p>Grid <code>col-4 col-4 col-4</code> con gap <code>sm</code> dentro de container default.</p>
+                    <div class="app-spec">grid · gap sm · padding-card sm</div>
+                </div>
+            </div>
+
+            <div class="app-card">
+                <div class="app-stage">
+                    <div class="mock-spread">
+                        <div class="main">Headline editorial generoso</div>
+                        <div class="side">META<br>2026<br>FMTA</div>
+                    </div>
+                </div>
+                <div class="app-body">
+                    <h4>Spread editorial · 8 + 4</h4>
+                    <p>Bloque <code>col-8</code> con headline, <code>col-4</code> con metadata. Gap <code>md</code> entre columnas.</p>
+                    <div class="app-spec">grid 8+4 · gap md · padding-block md</div>
+                </div>
+            </div>
+
+            <div class="app-card">
+                <div class="app-stage">
+                    <div class="mock-longform">
+                        <div class="doc">
+                            <h5>Lectura larga</h5>
+                            <p>Párrafo de cuerpo dentro de container narrow. Línea cómoda de 60-75 caracteres.</p>
+                            <p>Segundo párrafo con el mismo ritmo. Espacio sm entre ellos.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="app-body">
+                    <h4>Long-form · narrow</h4>
+                    <p>Container <code>narrow</code> (720px max). Padding <code>md</code>. Ritmo vertical estricto.</p>
+                    <div class="app-spec">container narrow · padding md · gap sm</div>
+                </div>
+            </div>
+
+            <div class="app-card">
+                <div class="app-stage">
+                    <div class="mock-dash">
+                        <div class="sidebar">
+                            <div class="dot active"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                        </div>
+                        <div class="main">
+                            <div class="h"></div>
+                            <div class="l"></div>
+                            <div class="l short"></div>
+                            <div class="l"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="app-body">
+                    <h4>Dashboard · sidebar fijo</h4>
+                    <p>Sidebar fijo 80px, main responsive. Gap <code>sm</code>. Container <code>wide</code> para apps internas.</p>
+                    <div class="app-spec">sidebar 80px · gap sm · container wide</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 09.6 — Breakpoints -->
+    <!-- ============================================================ -->
+    <section>
+        <div class="section-tag">09.6 · breakpoints</div>
+        <h2>Breakpoints</h2>
+        <p>Tres breakpoints. Mobile-first: cada uno extiende al anterior. El grid de columnas se reduce, el container se adapta, el padding lateral disminuye.</p>
+
+        <div class="bp-grid">
+            <div class="bp-card">
+                <div class="bp-name">Mobile</div>
+                <div class="bp-range">&lt; 600px</div>
+                <div class="bp-spec">4 columnas. Todo full-width. Padding lateral <code>sm</code>. Container = ancho de pantalla.</div>
+                <div class="bp-cols"><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div></div>
+            </div>
+            <div class="bp-card">
+                <div class="bp-name">Tablet</div>
+                <div class="bp-range">600 – 900px</div>
+                <div class="bp-spec">8 columnas. Layouts 2-col aparecen. Padding lateral <code>sm</code>. Container fluido.</div>
+                <div class="bp-cols"><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div></div>
+            </div>
+            <div class="bp-card">
+                <div class="bp-name">Desktop</div>
+                <div class="bp-range">&gt; 900px</div>
+                <div class="bp-spec">12 columnas. Sistema completo. Padding lateral <code>md</code>. Container según tipo (narrow / default / wide).</div>
+                <div class="bp-cols"><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- Reglas -->
+    <!-- ============================================================ -->
+    <section>
+        <div class="section-tag">reglas</div>
+        <h2>Reglas de uso</h2>
+        <ul class="rule-list">
+            <li><strong>Solo cinco tokens.</strong> Si una distancia no encaja en xs/sm/md/lg/xl, no es ForMeta. La restricción es el sistema.</li>
+            <li><strong>rem, no px.</strong> Todos los valores espaciales se definen en <code>rem</code>. El espacio escala con la tipografía del usuario. Accesibilidad por defecto.</li>
+            <li><strong>Gap antes que margin.</strong> Los gaps de grid y flex son preferidos sobre margins entre items hermanos. Menos reglas que sobrescribir.</li>
+            <li><strong>Padding del container, no del hijo.</strong> El container define su padding lateral. Los hijos llegan al borde del container interior — no añaden su propio margin lateral.</li>
+            <li><strong>Container según contenido, no estética.</strong> Long-form va a narrow porque la línea de 70 caracteres es cómoda. Dashboard va a wide porque las tablas necesitan ancho. No se elige por gusto.</li>
+            <li><strong>Spacing crece, no decrece.</strong> El usuario nunca debería sentir que algo está apretado. Si una pieza se ve densa, sube un token, no bajes.</li>
+            <li><strong>Mismo token en toda la pieza.</strong> Dentro de una card, un solo gap. Dentro de una sección, una sola escala vertical. Mezclar tokens dentro de un mismo nivel rompe el ritmo.</li>
+            <li><strong>Mobile primero, simplificación al subir.</strong> En mobile todo es <code>col-12</code>. En tablet/desktop, los layouts complejos aparecen. La pieza tiene que funcionar primero en pantalla pequeña.</li>
+        </ul>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- Don'ts -->
+    <!-- ============================================================ -->
+    <section>
+        <div class="section-tag">usos incorrectos</div>
+        <h2>Lo que no se hace</h2>
+        <div class="dont-grid">
+            <div class="dont">
+                <div class="dont-display">
+                    <div class="dont-arbitrary">
+                        <div class="b"></div>
+                        <div class="b gap-1"></div>
+                        <div class="b gap-2"></div>
+                        <div class="b gap-3"></div>
+                    </div>
+                </div>
+                <p class="dont-reason">Spacing arbitrario (7, 19, 13 px). Romper la escala.</p>
+            </div>
+            <div class="dont">
+                <div class="dont-display">
+                    <div class="dont-tight">
+                        <div class="b"></div><div class="b"></div><div class="b"></div><div class="b"></div>
+                    </div>
+                </div>
+                <p class="dont-reason">Demasiado denso. La marca respira, no se ahoga.</p>
+            </div>
+            <div class="dont">
+                <div class="dont-display">
+                    <span style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--color-ink);">padding: 17.5px 23px 14px 21px;</span>
+                </div>
+                <p class="dont-reason">Padding asimétrico ajustado a ojo.</p>
+            </div>
+            <div class="dont">
+                <div class="dont-display">
+                    <div class="dont-clamp">Un párrafo de lectura larga muy ancho que cruza toda la pantalla y obliga al ojo a saltar líneas perdiéndose en el camino.</div>
+                </div>
+                <p class="dont-reason">Long-form en container default o wide. Ilegible.</p>
+            </div>
+            <div class="dont">
+                <div class="dont-display">
+                    <span style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--color-ink);">margin: 11px;<br>padding: 13px;<br>gap: 9px;</span>
+                </div>
+                <p class="dont-reason">Valores en px en lugar de tokens.</p>
+            </div>
+            <div class="dont">
+                <div class="dont-display" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px;">
+                    <div style="background: var(--color-terra); height: 30px; border-radius: 3px;"></div>
+                    <div style="background: var(--color-terra); height: 30px; border-radius: 3px;"></div>
+                    <div style="background: var(--color-terra); height: 30px; border-radius: 3px;"></div>
+                </div>
+                <p class="dont-reason">Grid sin colapso mobile. 3 cols a 320px = ilegible.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 09.7 — Descarga -->
+    <!-- ============================================================ -->
+    <section>
+        <div class="section-tag">09.7 · descarga</div>
+        <h2>Descarga</h2>
+
+        <div class="download-section">
+            <h3>Pack spacing · CSS tokens + grid</h3>
+            <p>Las variables de spacing, containers, grid y breakpoints listas para importar. <code>spacing-tokens.css</code> define todas las variables del sistema. <code>grid-system.css</code> trae las clases <code>.col-12</code>, <code>.col-8</code>, etc. con sus media-queries. <code>README</code> con ejemplos de uso.</p>
+
+            <button class="download-cta" id="downloadSpacingBtn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                Descargar pack spacing (.zip)
+            </button>
+            <div class="download-status" id="downloadSpacingStatus"></div>
+        </div>
+
+        <div class="meta-strip">
+            <span class="tag">v1.0</span><span class="sep">·</span>
+            <span>2026.05.15</span><span class="sep">·</span>
+            <span>Mallorca / 39.5696° N</span><span class="sep">·</span>
+            <span>FMTA—09—Espaciado</span><span class="sep">·</span>
+            <span>5 tokens · 12 cols · 3 breakpoints</span>
+        </div>
+    </section>
+
 </div>
+
 <footer>
-    <svg width="24" height="30" viewBox="0 0 160 200" style="opacity: 0.8; margin: 0 auto;">
-         <path d="M80 12 C80 12 104 52 116 88 C126 118 122 152 102 168 C92 176 80 178 80 178 C80 178 68 176 58 168 C38 152 34 118 44 88 C56 52 80 12 80 12 Z" fill="none" stroke="var(--color-terra)" stroke-width="4"/>
-         <circle cx="80" cy="130" r="6" fill="var(--color-terra)"/>
-    </svg>
+    <nav class="chapter-nav">
+        <a href="08_animacion.html">← Anterior: 08 Animación</a>
+        <a href="index.html">Índice</a>
+        <a href="10_componentes.html">Siguiente: 10 Componentes →</a>
+    </nav>
+    <span class="footer-mark">
+        <svg width="24" height="30" viewBox="0 0 160 200" aria-hidden="true"><use href="#drop-simple"/></svg>
+    </span>
 </footer>
+
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+<script>
+// Grid overlay toggle
+(function() {
+    const btn = document.getElementById('grid-toggle');
+    const stage = document.getElementById('grid-stage');
+    if (!btn || !stage) return;
+    btn.addEventListener('click', () => {
+        const on = stage.classList.toggle('grid-on');
+        btn.classList.toggle('active', on);
+        btn.textContent = on ? 'Ocultar grid overlay' : 'Mostrar grid overlay';
+    });
+})();
+
+// Pack download
+(function() {
+    const btn = document.getElementById('downloadSpacingBtn');
+    const status = document.getElementById('downloadSpacingStatus');
+    if (!btn) return;
+
+    const spacingTokensCSS = [
+        '/* ============================================================',
+        '   ForMeta · spacing-tokens.css · v1.0 · 2026.05.15',
+        '   Escala canónica de spacing, containers, grid y breakpoints.',
+        '   Base unit: 8px (0.5rem). Múltiplos × 1, 3, 6, 12, 20.',
+        '   ============================================================ */',
+        '',
+        ':root {',
+        '  /* Spacing scale */',
+        '  --space-xs: 0.5rem;   /* 8px  · base unit */',
+        '  --space-sm: 1.5rem;   /* 24px · entre elementos */',
+        '  --space-md: 3rem;     /* 48px · entre bloques */',
+        '  --space-lg: 6rem;     /* 96px · entre secciones cortas */',
+        '  --space-xl: 10rem;    /* 160px · entre secciones largas */',
+        '',
+        '  /* Container widths */',
+        '  --container-narrow:   720px;   /* long-form · lectura */',
+        '  --container-default: 1200px;   /* layouts generales */',
+        '  --container-wide:    1440px;   /* dashboard · wide screen */',
+        '',
+        '  /* Grid */',
+        '  --grid-cols-desktop: 12;',
+        '  --grid-cols-tablet:   8;',
+        '  --grid-cols-mobile:   4;',
+        '  --grid-gutter:        var(--space-sm);',
+        '',
+        '  /* Breakpoints (referencia · usar en @media) */',
+        '  --bp-mobile:   600px;',
+        '  --bp-tablet:   900px;',
+        '  --bp-desktop: 1200px;',
+        '}',
+        '',
+        '/* Container utilities */',
+        '.container-narrow  { max-width: var(--container-narrow);  margin: 0 auto; padding: 0 var(--space-sm); }',
+        '.container         { max-width: var(--container-default); margin: 0 auto; padding: 0 var(--space-sm); }',
+        '.container-wide    { max-width: var(--container-wide);    margin: 0 auto; padding: 0 var(--space-sm); }',
+        '',
+        '@media (min-width: 900px) {',
+        '  .container-narrow, .container, .container-wide { padding: 0 var(--space-md); }',
+        '}'
+    ].join('\n');
+
+    const gridSystemCSS = [
+        '/* ============================================================',
+        '   ForMeta · grid-system.css · v1.0',
+        '   12 cols desktop · 8 cols tablet · 4 cols mobile.',
+        '   Mobile-first: por defecto col-12, expande hacia arriba.',
+        '   Depende de spacing-tokens.css.',
+        '   ============================================================ */',
+        '',
+        '.grid {',
+        '  display: grid;',
+        '  grid-template-columns: repeat(4, 1fr);',
+        '  gap: var(--space-sm);',
+        '}',
+        '',
+        '@media (min-width: 600px) {',
+        '  .grid { grid-template-columns: repeat(8, 1fr); }',
+        '}',
+        '',
+        '@media (min-width: 900px) {',
+        '  .grid { grid-template-columns: repeat(12, 1fr); }',
+        '}',
+        '',
+        '/* Spans · mobile default = full-width */',
+        '.col-1, .col-2, .col-3, .col-4, .col-5, .col-6,',
+        '.col-7, .col-8, .col-9, .col-10, .col-11, .col-12 {',
+        '  grid-column: 1 / -1;',
+        '}',
+        '',
+        '@media (min-width: 600px) {',
+        '  .col-1  { grid-column: span 1; }',
+        '  .col-2  { grid-column: span 2; }',
+        '  .col-3  { grid-column: span 3; }',
+        '  .col-4  { grid-column: span 4; }',
+        '  .col-5  { grid-column: span 5; }',
+        '  .col-6  { grid-column: span 6; }',
+        '  .col-7  { grid-column: span 7; }',
+        '  .col-8  { grid-column: span 8; }',
+        '}',
+        '',
+        '@media (min-width: 900px) {',
+        '  .col-9  { grid-column: span 9;  }',
+        '  .col-10 { grid-column: span 10; }',
+        '  .col-11 { grid-column: span 11; }',
+        '  .col-12 { grid-column: span 12; }',
+        '}',
+        '',
+        '/* Stack utility — flex column con gap variable */',
+        '.stack-xs { display: flex; flex-direction: column; gap: var(--space-xs); }',
+        '.stack-sm { display: flex; flex-direction: column; gap: var(--space-sm); }',
+        '.stack-md { display: flex; flex-direction: column; gap: var(--space-md); }',
+        '.stack-lg { display: flex; flex-direction: column; gap: var(--space-lg); }'
+    ].join('\n');
+
+    const readmeTxt = [
+        'ForMeta · Pack Spacing · v1.0 · 2026.05.15',
+        '',
+        'Contenido:',
+        '  spacing-tokens.css  — variables CSS (escala, containers, breakpoints)',
+        '  grid-system.css     — clases .grid, .col-N, .stack-N',
+        '  README.txt          — esto',
+        '',
+        'Uso básico:',
+        '',
+        '  <link rel="stylesheet" href="spacing-tokens.css">',
+        '  <link rel="stylesheet" href="grid-system.css">',
+        '',
+        '  <div class="container">',
+        '    <div class="grid">',
+        '      <div class="col-8">Contenido principal</div>',
+        '      <div class="col-4">Sidebar</div>',
+        '    </div>',
+        '  </div>',
+        '',
+        'Para long-form usar container-narrow:',
+        '',
+        '  <article class="container-narrow stack-sm">',
+        '    <h2>Título</h2>',
+        '    <p>Párrafo de cuerpo.</p>',
+        '    <p>Otro párrafo.</p>',
+        '  </article>',
+        '',
+        'Reglas:',
+        '  · Solo los 5 tokens del sistema (xs/sm/md/lg/xl).',
+        '  · rem, no px.',
+        '  · Gap antes que margin entre items hermanos.',
+        '  · Mobile-first: todo es col-12 por defecto.',
+        '  · Long-form → container-narrow (720px).',
+        '  · Dashboard → container-wide (1440px).',
+        '',
+        'El sistema completo está documentado en el capítulo 09 del manual de marca.'
+    ].join('\n');
+
+    btn.addEventListener('click', async function() {
+        if (typeof JSZip === 'undefined') {
+            status.textContent = 'JSZip no cargado.';
+            status.classList.add('error'); return;
+        }
+        btn.disabled = true; status.classList.remove('error');
+        status.textContent = 'Empaquetando…';
+        try {
+            const zip = new JSZip();
+            const root = zip.folder('formeta-spacing-v1.0');
+            root.file('spacing-tokens.css', spacingTokensCSS);
+            root.file('grid-system.css', gridSystemCSS);
+            root.file('README.txt', readmeTxt);
+
+            const blob = await zip.generateAsync({ type: 'blob' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url; a.download = 'formeta-spacing-v1.0.zip';
+            document.body.appendChild(a); a.click(); document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            status.textContent = '✓ Pack descargado · 3 archivos';
+        } catch (err) {
+            console.error(err); status.classList.add('error');
+            status.textContent = '✗ ' + (err.message || 'Error');
+        } finally { btn.disabled = false; }
+    });
+})();
+</script>
+
 </body>
 </html>

@@ -17,32 +17,32 @@
   font-size: 0.62rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--color-muted-strong);
 }
 
 .btnEdit {
   flex-shrink: 0;
   background: none;
-  border: 1px solid var(--line);
+  border: 1px solid var(--color-border);
   border-radius: 999px;
   padding: 6px 16px;
   font-family: var(--font-mono), monospace;
   font-size: 0.62rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--color-muted-strong);
   transition:
     color var(--motion-fast) var(--ease-smooth),
     border-color var(--motion-fast) var(--ease-smooth);
 }
 
 .btnEdit:hover {
-  color: var(--ink);
+  color: var(--color-ink);
   border-color: rgba(44, 44, 40, 0.4);
 }
 
 .empty {
-  color: var(--muted);
+  color: var(--color-muted-strong);
   font-size: 0.95rem;
   line-height: 1.8;
 }
@@ -59,7 +59,7 @@
   align-items: center;
   gap: 16px;
   padding: 16px 20px;
-  border: 1px solid var(--line-soft);
+  border: 1px solid var(--color-border-soft);
   border-radius: var(--radius-sm);
   background: rgba(244, 240, 232, 0.5);
   text-decoration: none;
@@ -70,12 +70,12 @@
 
 .linkCard:hover {
   background: rgba(244, 240, 232, 0.9);
-  border-color: var(--line);
+  border-color: var(--color-border);
 }
 
 .linkIcon {
   flex-shrink: 0;
-  color: var(--terracotta);
+  color: var(--color-terra);
 }
 
 .linkInfo {
@@ -91,13 +91,13 @@
   font-size: 0.62rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--color-muted-strong);
 }
 
 .linkUrl {
   font-family: var(--font-mono), monospace;
   font-size: 0.75rem;
-  color: var(--ink);
+  color: var(--color-ink);
   letter-spacing: 0.02em;
   white-space: nowrap;
   overflow: hidden;
@@ -106,7 +106,7 @@
 
 .linkArrow {
   flex-shrink: 0;
-  color: var(--muted);
+  color: var(--color-muted-strong);
   opacity: 0.5;
 }
 
@@ -116,7 +116,7 @@
   flex-direction: column;
   gap: 20px;
   padding: 24px;
-  border: 1px solid var(--line-soft);
+  border: 1px solid var(--color-border-soft);
   border-radius: var(--radius-md);
   background: rgba(244, 240, 232, 0.4);
 }
@@ -129,7 +129,7 @@
 
 .editIcon {
   flex-shrink: 0;
-  color: var(--terracotta);
+  color: var(--color-terra);
   margin-top: 26px;
 }
 
@@ -145,29 +145,29 @@
   font-size: 0.6rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--terracotta);
+  color: var(--color-terra);
 }
 
 .editInput {
   background: none;
   border: none;
-  border-bottom: 1px solid var(--stone-strong);
+  border-bottom: 1px solid var(--color-stone-strong);
   border-radius: 0;
   padding: 6px 0;
   font-family: var(--font-mono), monospace;
   font-size: 0.78rem;
-  color: var(--ink);
+  color: var(--color-ink);
   transition: border-color var(--motion-fast) var(--ease-smooth);
   width: 100%;
 }
 
 .editInput:focus {
   outline: none;
-  border-bottom-color: var(--terracotta);
+  border-bottom-color: var(--color-terra);
 }
 
 .editInput::placeholder {
-  color: var(--muted);
+  color: var(--color-muted-strong);
   opacity: 0.5;
 }
 
@@ -180,30 +180,30 @@
 
 .btnCancel {
   background: none;
-  border: 1px solid var(--line);
+  border: 1px solid var(--color-border);
   border-radius: 999px;
   padding: 8px 20px;
   font-family: var(--font-mono), monospace;
   font-size: 0.62rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--color-muted-strong);
   transition:
     color var(--motion-fast) var(--ease-smooth),
     border-color var(--motion-fast) var(--ease-smooth);
 }
 
 .btnCancel:hover {
-  color: var(--ink);
+  color: var(--color-ink);
   border-color: rgba(44, 44, 40, 0.4);
 }
 
 .btnSave {
   padding: 8px 22px;
-  border: 1px solid var(--ink);
+  border: 1px solid var(--color-ink);
   border-radius: 999px;
-  background: var(--ink);
-  color: var(--sand);
+  background: var(--color-ink);
+  color: var(--color-sand);
   font-family: var(--font-mono), monospace;
   font-size: 0.62rem;
   letter-spacing: 0.14em;
@@ -214,8 +214,8 @@
 }
 
 .btnSave:hover:not(:disabled) {
-  background: var(--terracotta);
-  border-color: var(--terracotta);
+  background: var(--color-terra);
+  border-color: var(--color-terra);
 }
 
 .btnSave:disabled {

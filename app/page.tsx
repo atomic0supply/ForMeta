@@ -1,69 +1,66 @@
-import { BrandMark } from "@/components/BrandMark";
-import { CapabilitiesGrid } from "@/components/CapabilitiesGrid";
-import { ContactBlock } from "@/components/ContactBlock";
-import { DotDivider } from "@/components/DotDivider";
-import { FooterAccess } from "@/components/FooterAccess";
-import { HeroManifesto } from "@/components/HeroManifesto";
-import { LandingLoader } from "@/components/LandingLoader";
-import { MethodSection } from "@/components/MethodSection";
-import { ScenariosSection } from "@/components/ScenariosSection";
-import { SiteHeader } from "@/components/SiteHeader";
-import { StackSection } from "@/components/StackSection";
-import { Reveal } from "@/components/Reveal";
-import styles from "@/styles/home.module.css";
+import { AmbientBackdrop } from "@/components/landing/AmbientBackdrop";
+import { ContactoSection } from "@/components/landing/ContactoSection";
+import { DropCanvas } from "@/components/landing/DropCanvas";
+import { Footer } from "@/components/landing/Footer";
+import { HeroSection } from "@/components/landing/HeroSection";
+import { HudChrome } from "@/components/landing/HudChrome";
+import { IappSection } from "@/components/landing/IappSection";
+import { LandingEffects } from "@/components/landing/LandingEffects";
+import { ManifiestoSection } from "@/components/landing/ManifiestoSection";
+import { ProcesoSection } from "@/components/landing/ProcesoSection";
+import { ProductosSection } from "@/components/landing/ProductosSection";
+import { ScrollProgress } from "@/components/landing/ScrollProgress";
+import { SectionCounter } from "@/components/landing/SectionCounter";
+import { StackSection } from "@/components/landing/StackSection";
+import { Ticker } from "@/components/landing/Ticker";
+import styles from "@/styles/landing.module.css";
+
+const TICKER_1 = [
+  "Formita — dar forma a las cosas",
+  "IApp Studio",
+  "Mallorca · 39.5696° N",
+  "Hacer menos para hacer más",
+  "AI-first · desde 2024",
+  "10 clientes con nombre",
+  "Sin sinergias · sin ecosistemas",
+  "Sin formularios de 14 campos",
+  "Conversación → software",
+  "Google Cloud · Anthropic · OpenAI",
+];
+
+const TICKER_2 = [
+  "FMTA—STOCK · anticipación por SKU",
+  "FMTA—VOZ · manos libres",
+  "FMTA—FLOW · orquestación viva",
+  "40 → 3 min/día",
+  "cliente nº 11 · Q3 2026",
+  "soporte continuo",
+  "café incluido en visita",
+  "v1.0 · 2026.05.27",
+];
 
 export default function HomePage() {
   return (
-    <>
-      <LandingLoader />
-      <SiteHeader />
-      <main className={styles.main}>
-        <section className={styles.heroWrap} id="top">
-          <div className={styles.heroBackdrop} />
-          <div className={styles.heroDots} />
-          <div className={styles.heroGrid}>
-            <HeroManifesto />
-            <div className={styles.brandColumn}>
-              <Reveal className={styles.brandFrame} delay={320}>
-                <BrandMark />
-              </Reveal>
-            </div>
-          </div>
-        </section>
+    <div className={styles.root}>
+      <AmbientBackdrop />
+      <DropCanvas />
+      <ScrollProgress />
+      <SectionCounter />
+      <HudChrome />
 
-        <Reveal as="section" className={styles.statement}>
-          <div className={styles.statementIntro}>
-            <p className={styles.statementLabel}>Qué hacemos</p>
-            <p>
-              Diseñamos software a medida, automatizaciones e inteligencia
-              aplicada para empresas que ya han superado las herramientas
-              genéricas y necesitan una estructura propia.
-            </p>
-          </div>
-          <div className={styles.statementSupport}>
-            <p>
-              Trabajamos con pocas colaboraciones a la vez, desde el problema
-              real hasta la operación, para que la solución sea legible,
-              mantenible y útil desde el inicio.
-            </p>
-            <a href="#contacto" className={styles.statementLink}>
-              Ver si encaja con vuestro caso
-            </a>
-          </div>
-        </Reveal>
+      <HeroSection />
+      <ManifiestoSection />
+      <Ticker variant="dark" items={TICKER_1} />
+      <IappSection />
+      <ProcesoSection />
+      <Ticker variant="light" reverse items={TICKER_2} />
+      <StackSection />
+      <ProductosSection />
+      <ContactoSection />
 
-        <DotDivider accent="terracotta" />
-        <MethodSection />
-        <DotDivider accent="sage" />
-        <CapabilitiesGrid />
-        <DotDivider accent="sea" />
-        <StackSection />
-        <DotDivider accent="terracotta" />
-        <ScenariosSection />
-        <DotDivider accent="terracotta" width="lg" />
-        <ContactBlock />
-      </main>
-      <FooterAccess />
-    </>
+      <Footer />
+
+      <LandingEffects />
+    </div>
   );
 }

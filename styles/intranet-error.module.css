@@ -1,8 +1,8 @@
 .errorCard {
   padding: 32px 28px;
-  border: 1px solid var(--line);
+  border: 1px solid var(--color-border);
   border-radius: 12px;
-  background: var(--sand, #f4f0e8);
+  background: var(--color-sand);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -14,22 +14,22 @@
 .errorTitle {
   font-size: 0.95rem;
   font-weight: 600;
-  color: var(--ink);
+  color: var(--color-ink);
 }
 
 .errorMessage {
   font-family: var(--font-mono), monospace;
   font-size: 0.72rem;
-  color: var(--muted);
+  color: var(--color-muted-strong);
 }
 
 .reloadBtn {
   margin-top: 8px;
   padding: 7px 16px;
-  border: 1px solid var(--line);
+  border: 1px solid var(--color-border);
   border-radius: 8px;
-  background: var(--ink);
-  color: #fff;
+  background: var(--color-ink);
+  color: var(--color-white);
   font-family: var(--font-mono), monospace;
   font-size: 0.68rem;
   cursor: pointer;

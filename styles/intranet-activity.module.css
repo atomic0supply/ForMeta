@@ -9,7 +9,7 @@
   font-size: 10px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--color-muted-strong);
   font-weight: 500;
   margin: 0 0 12px;
 }
@@ -35,9 +35,9 @@
   font-size: 9px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--muted-soft);
+  color: var(--color-muted-soft);
   padding: 8px 16px 5px;
-  border-bottom: 1px solid var(--line-soft);
+  border-bottom: 1px solid var(--color-border-soft);
   background: rgba(244, 240, 232, 0.45);
 }
 
@@ -46,7 +46,7 @@
   align-items: center;
   gap: 12px;
   padding: 9px 16px;
-  border-bottom: 1px solid var(--line-soft);
+  border-bottom: 1px solid var(--color-border-soft);
   transition: background 0.12s;
 }
 
@@ -69,8 +69,8 @@
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  background: var(--terracotta, #b8896a);
-  color: #fff;
+  background: var(--color-terra);
+  color: var(--color-white);
   font-size: 0.58rem;
   font-weight: 600;
   display: flex;
@@ -86,7 +86,7 @@
   height: 13px;
   border-radius: 50%;
   background: var(--card-bg);
-  border: 1px solid var(--line-soft);
+  border: 1px solid var(--color-border-soft);
   font-size: 7px;
   display: flex;
   align-items: center;
@@ -97,7 +97,7 @@
 .feedText {
   flex: 1;
   font-size: 0.8rem;
-  color: var(--ink);
+  color: var(--color-ink);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -110,7 +110,7 @@
 .feedTime {
   font-family: var(--font-mono), monospace;
   font-size: 0.62rem;
-  color: var(--muted);
+  color: var(--color-muted-strong);
   flex-shrink: 0;
 }
 
@@ -119,18 +119,18 @@
   padding: 10px 16px;
   background: none;
   border: none;
-  border-top: 1px solid var(--line-soft);
+  border-top: 1px solid var(--color-border-soft);
   font-family: var(--font-mono), monospace;
   font-size: 0.66rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--color-muted-strong);
   cursor: pointer;
   transition: background var(--motion-fast) var(--ease-smooth),
               color var(--motion-fast) var(--ease-smooth);
 }
 
 .feedToggle:hover {
-  color: var(--ink);
+  color: var(--color-ink);
   background: rgba(184, 137, 106, 0.05);
 }

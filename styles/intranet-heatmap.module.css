@@ -26,7 +26,7 @@
   font-size: 0.65rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--color-muted-strong);
   white-space: nowrap;
   line-height: 1;
 }
@@ -51,7 +51,7 @@
   height: 11px;
   font-family: var(--font-mono), monospace;
   font-size: 0.62rem;
-  color: var(--muted);
+  color: var(--color-muted-strong);
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -125,7 +125,7 @@
 
 /* Today */
 .cellToday {
-  outline: 1.5px solid var(--terracotta) !important;
+  outline: 1.5px solid var(--color-terra) !important;
   outline-offset: 1px;
 }
 
@@ -145,7 +145,7 @@
 .legendText {
   font-family: var(--font-mono), monospace;
   font-size: 0.62rem;
-  color: var(--muted);
+  color: var(--color-muted-strong);
   letter-spacing: 0.06em;
 }
 

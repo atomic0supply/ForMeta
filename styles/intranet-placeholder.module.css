@@ -8,7 +8,7 @@
   font-size: 0.68rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--terracotta);
+  color: var(--color-terra);
 }
 
 .title {
@@ -21,7 +21,7 @@
 .lead {
   margin: 0;
   max-width: 52ch;
-  color: var(--muted);
+  color: var(--color-muted-strong);
   font-size: 1.08rem;
   line-height: 1.86;
 }

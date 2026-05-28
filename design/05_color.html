@@ -3,15 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>5. Color - ForMeta Guía de Estilo</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+    <title>05. Color - ForMeta Guía de Estilo</title>
+
     <style>
+        /* ============================================================
+           BLOQUE TIPOGRÁFICO (extraer a assets/style.css en migración global).
+           Las fuentes Canela están en Trial: licenciar antes de publicar.
+           ============================================================ */
+        @font-face {
+            font-family: 'Canela Trial';
+            src: url('typo/Canela_Collection/Canela Family/Canela-Light-Trial.otf') format('opentype');
+            font-weight: 300; font-style: normal; font-display: swap;
+        }
+        @font-face {
+            font-family: 'Canela Trial';
+            src: url('typo/Canela_Collection/Canela Family/Canela-LightItalic-Trial.otf') format('opentype');
+            font-weight: 300; font-style: italic; font-display: swap;
+        }
+        @font-face {
+            font-family: 'Canela Trial';
+            src: url('typo/Canela_Collection/Canela Family/Canela-Medium-Trial.otf') format('opentype');
+            font-weight: 500; font-style: normal; font-display: swap;
+        }
+        @font-face {
+            font-family: 'Canela Deck Trial';
+            src: url('typo/Canela_Collection/Canela Deck Family/CanelaDeck-Light-Trial.otf') format('opentype');
+            font-weight: 300; font-style: normal; font-display: swap;
+        }
+        @font-face {
+            font-family: 'Canela Deck Trial';
+            src: url('typo/Canela_Collection/Canela Deck Family/CanelaDeck-LightItalic-Trial.otf') format('opentype');
+            font-weight: 300; font-style: italic; font-display: swap;
+        }
+        @font-face {
+            font-family: 'Canela Deck Trial';
+            src: url('typo/Canela_Collection/Canela Deck Family/CanelaDeck-Medium-Trial.otf') format('opentype');
+            font-weight: 500; font-style: normal; font-display: swap;
+        }
+        @font-face {
+            font-family: 'Canela Text Trial';
+            src: url('typo/Canela_Collection/Canela Text Family/CanelaText-Regular-Trial.otf') format('opentype');
+            font-weight: 400; font-style: normal; font-display: swap;
+        }
+        @font-face {
+            font-family: 'Canela Text Trial';
+            src: url('typo/Canela_Collection/Canela Text Family/CanelaText-RegularItalic-Trial.otf') format('opentype');
+            font-weight: 400; font-style: italic; font-display: swap;
+        }
+        @font-face {
+            font-family: 'Canela Text Trial';
+            src: url('typo/Canela_Collection/Canela Text Family/CanelaText-Medium-Trial.otf') format('opentype');
+            font-weight: 500; font-style: normal; font-display: swap;
+        }
+        @font-face {
+            font-family: 'Canela Condensed Trial';
+            src: url('typo/Canela_Collection/Canela Condensed Family/CanelaCondensed-Medium-Trial.otf') format('opentype');
+            font-weight: 500; font-style: normal; font-display: swap;
+        }
+        @font-face {
+            font-family: 'IBM Plex Mono';
+            src: url('typo/IBM_PLEX/IBMPlexMono-Regular.ttf') format('truetype');
+            font-weight: 400; font-style: normal; font-display: swap;
+        }
+        @font-face {
+            font-family: 'IBM Plex Mono';
+            src: url('typo/IBM_PLEX/IBMPlexMono-Italic.ttf') format('truetype');
+            font-weight: 400; font-style: italic; font-display: swap;
+        }
+        @font-face {
+            font-family: 'IBM Plex Mono';
+            src: url('typo/IBM_PLEX/IBMPlexMono-Medium.ttf') format('truetype');
+            font-weight: 500; font-style: normal; font-display: swap;
+        }
+
         :root {
-            --font-mono: 'DM Mono', 'Courier New', Courier, monospace;
-            --font-serif: 'Cormorant Garamond', Garamond, Georgia, serif;
-            
+            --font-display: 'Canela Trial', 'Cormorant Garamond', Garamond, Georgia, serif;
+            --font-deck:    'Canela Deck Trial', 'Cormorant Garamond', Garamond, Georgia, serif;
+            --font-text:    'Canela Text Trial', 'Cormorant Garamond', Garamond, Georgia, serif;
+            --font-cond:    'Canela Condensed Trial', 'Cormorant Garamond', Garamond, Georgia, serif;
+            --font-mono:    'IBM Plex Mono', 'DM Mono', 'Courier New', Courier, monospace;
+
+            /* CAPA 1 — Paleta principal */
             --color-ink: #2C2C28;
             --color-terra: #B8896A;
             --color-sand: #F4F0E8;
@@ -21,13 +93,41 @@
             --color-white: #FFFFFF;
             --color-offblack: #1A1A18;
             --color-muted: #7A7870;
-            --color-alert: #d05a5a;
-            
+
+            /* Estados */
+            --color-alert: #D05A5A;
+            --color-warning: #D9A35A;
+            --color-success: #7A9F7E;
+            --color-info: #6F8FA0;
+
+            /* Roles */
             --color-bg: var(--color-sand);
             --color-text: var(--color-ink);
             --color-text-secondary: var(--color-muted);
             --color-border-secondary: rgba(44, 44, 40, 0.1);
-            
+
+            /* CAPA 2 — Gradientes editoriales (solo brand) */
+            --g-sunset: linear-gradient(135deg, #B8896A 0%, #E2DDD4 60%, #F4F0E8 100%);
+            --g-deepwater: linear-gradient(180deg, #7A9AAA 0%, #2C2C28 100%);
+            --g-pinar: linear-gradient(160deg, #8FA892 0%, #E2DDD4 100%);
+            --g-night: linear-gradient(180deg, #2C2C28 0%, #1A1A18 100%);
+            --g-dawn: linear-gradient(120deg, #F4F0E8 0%, #B8896A 70%, #7A9AAA 100%);
+
+            /* CAPA 4 — Espectro generativo (expresivo, fuera de marca) */
+            --iris-1: #8E5DBF;
+            --iris-2: #D04AC2;
+            --iris-3: #4ABFD0;
+            --iris-4: #4AD0A6;
+            --iris-5: #D0B14A;
+            --g-iris: conic-gradient(from 180deg at 50% 50%,
+                #8E5DBF 0deg, #D04AC2 72deg, #4ABFD0 144deg,
+                #4AD0A6 216deg, #D0B14A 288deg, #8E5DBF 360deg);
+            --g-chrome: linear-gradient(135deg,
+                #F5F5F2 0%, #C8C8C5 25%, #A8A8A5 50%,
+                #D5D5D2 75%, #F5F5F2 100%);
+            --g-aurora: linear-gradient(135deg,
+                #F5C8A3 0%, #D1A5C8 35%, #A5C5D1 70%, #F4F0E8 100%);
+
             --spacing-xs: 0.5rem;
             --spacing-sm: 1.5rem;
             --spacing-md: 3rem;
@@ -35,177 +135,190 @@
             --spacing-xl: 10rem;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        body {background-color: var(--color-sand);
+        body {
+            background-color: var(--color-sand);
             color: var(--color-text);
-            font-family: var(--font-serif);
-            font-weight: 300;
-            font-size: 1.15rem;
-            line-height: 1.6;
+            font-family: var(--font-text);
+            font-weight: 400;
+            font-size: 17px;
+            line-height: 1.7;
             -webkit-font-smoothing: antialiased;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: var(--spacing-md) var(--spacing-sm);
+            flex: 1;
         }
 
-        /* Typography */
         h1 {
-            font-family: var(--font-serif);
-            font-size: 3.5rem;
+            font-family: var(--font-display);
             font-weight: 300;
-            margin-bottom: var(--spacing-xs);
+            font-size: 5rem;
+            line-height: 1.05;
+            letter-spacing: -0.02em;
             color: var(--color-ink);
+            margin-bottom: var(--spacing-xs);
         }
-
         h2 {
-            font-family: var(--font-serif);
-            font-size: 2.5rem;
+            font-family: var(--font-deck);
             font-weight: 300;
+            font-size: 2.5rem;
+            line-height: 1.15;
+            letter-spacing: -0.01em;
+            color: var(--color-ink);
             margin-bottom: var(--spacing-sm);
             padding-bottom: 1rem;
             border-bottom: 1px solid var(--color-border-secondary);
         }
-
         h3 {
-            font-family: var(--font-serif);
-            font-size: 1.25rem;
+            font-family: var(--font-deck);
             font-weight: 400;
+            font-size: 1.5rem;
+            line-height: 1.3;
+            color: var(--color-ink);
+            margin-top: 2rem;
             margin-bottom: 1rem;
         }
 
         p {
-            font-size: 1.1rem;
+            font-family: var(--font-text);
             color: var(--color-text-secondary);
-            max-width: 650px;
+            max-width: 720px;
             margin-bottom: var(--spacing-sm);
-            font-weight: 300;
         }
 
-        .intro {
-            margin-bottom: var(--spacing-xl);
+        .intro { margin-bottom: var(--spacing-xl); }
+        .intro p.lead {
+            font-family: var(--font-deck);
+            font-style: italic;
+            font-weight: 300;
+            font-size: 1.5rem;
+            line-height: 1.4;
+            color: var(--color-ink);
+            max-width: 720px;
+            margin-top: var(--spacing-sm);
         }
 
         .lbl {
             font-family: var(--font-mono);
             font-size: 11px;
+            font-weight: 400;
             letter-spacing: 0.16em;
             text-transform: uppercase;
             color: var(--color-text-secondary);
             margin-top: 1rem;
-        }
-        
-        .lbl-dark {
-            color: var(--color-ink);
+            margin-bottom: 0.5rem;
         }
 
-        .sub {
+        section { margin-bottom: var(--spacing-xl); }
+
+        .section-tag {
             font-family: var(--font-mono);
-            font-size: 10px;
-            letter-spacing: 0.12em;
-            color: var(--color-text-secondary);
-            opacity: 0.6;
-            margin-top: 0.25rem;
+            font-size: 0.7rem;
+            font-weight: 400;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--color-terra);
+            margin-bottom: 0.5rem;
         }
 
-        /* Section Layouts */
-        section {
-            margin-bottom: var(--spacing-xl);
+        /* -------- Grids -------- */
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
         }
-
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
         .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: var(--spacing-md);
+            gap: 1.5rem;
+        }
+        @media (max-width: 800px) {
+            .grid-2 { grid-template-columns: 1fr; }
         }
 
-        .grid-3 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: var(--spacing-md);
-        }
-        
-        .grid-4 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: var(--spacing-md);
-        }
-
-        /* Color Cards */
-        .color-card {
+        /* -------- Color swatches -------- */
+        .swatch {
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 0.75rem;
         }
-        
-        .color-swatch {
+        .swatch-block {
             width: 100%;
-            height: 160px;
+            height: 180px;
             border-radius: 8px;
             border: 1px solid var(--color-border-secondary);
             box-shadow: 0 4px 12px rgba(0,0,0,0.03);
             display: flex;
             align-items: flex-end;
             padding: 1rem;
-            transition: transform 0.3s ease;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        
-        .color-card:hover .color-swatch {
-            transform: translateY(-4px);
-        }
-        
+        .swatch:hover .swatch-block { transform: translateY(-4px); }
         .swatch-hex {
             font-family: var(--font-mono);
-            font-size: 12px;
-            letter-spacing: 0.1em;
-            opacity: 0.8;
-            background: rgba(0, 0, 0, 0.15);
+            font-size: 11px;
+            letter-spacing: 0.08em;
+            background: rgba(0, 0, 0, 0.25);
+            color: rgba(255, 255, 255, 0.95);
             padding: 4px 8px;
             border-radius: 4px;
         }
-        
-        .color-swatch.light .swatch-hex {
-            background: rgba(255, 255, 255, 0.5);
+        .swatch-block.light .swatch-hex {
+            background: rgba(255, 255, 255, 0.6);
             color: var(--color-ink);
         }
-        
-        .color-info h3 {
-            margin-bottom: 0.25rem;
-            font-size: 1.1rem;
+        .swatch-info h3 {
+            font-family: var(--font-deck);
             font-weight: 500;
+            font-size: 1.1rem;
+            margin: 0 0 0.25rem 0;
+            color: var(--color-ink);
         }
-        
-        .color-desc {
-            font-size: 0.95rem;
+        .swatch-desc {
+            font-family: var(--font-text);
+            font-size: 0.9rem;
             color: var(--color-text-secondary);
             line-height: 1.4;
+            margin: 0;
             max-width: 100%;
-            margin-bottom: 0;
+        }
+        .swatch-tech {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            letter-spacing: 0.08em;
+            color: var(--color-muted);
+            margin-top: 0.25rem;
         }
 
-        /* Rules Cards */
+        /* -------- Rules -------- */
         .rule-list {
             list-style: none;
             counter-reset: rule-counter;
+            margin-top: 1rem;
         }
-        
         .rule-list li {
             position: relative;
             padding-left: 3rem;
             margin-bottom: 1.5rem;
-            font-size: 1.1rem;
+            font-family: var(--font-text);
+            font-size: 1.0625rem;
+            line-height: 1.6;
             color: var(--color-ink);
-            font-weight: 300;
             max-width: 800px;
         }
-        
         .rule-list li::before {
             counter-increment: rule-counter;
             content: "0" counter(rule-counter);
@@ -213,283 +326,807 @@
             left: 0;
             top: 0.1rem;
             font-family: var(--font-mono);
-            font-size: 14px;
+            font-size: 13px;
             color: var(--color-terra);
         }
+        .rule-list code {
+            font-family: var(--font-mono);
+            font-size: 0.85em;
+            background: var(--color-stone);
+            padding: 0.1em 0.35em;
+            border-radius: 3px;
+            color: var(--color-ink);
+        }
 
-        /* Accessibility info */
+        /* -------- Gradient cards (capa 2) -------- */
+        .grad-card {
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--color-border-secondary);
+            background: var(--color-white);
+        }
+        .grad-fill {
+            height: 200px;
+            position: relative;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            padding: 1.2rem;
+        }
+        .grad-name {
+            font-family: var(--font-deck);
+            font-weight: 500;
+            font-size: 1.1rem;
+            color: var(--color-white);
+            text-shadow: 0 1px 12px rgba(0,0,0,0.25);
+        }
+        .grad-name.dark { color: var(--color-ink); text-shadow: 0 1px 6px rgba(255,255,255,0.4); }
+        .grad-stops {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            letter-spacing: 0.08em;
+            color: rgba(255,255,255,0.85);
+            background: rgba(0,0,0,0.25);
+            padding: 3px 7px;
+            border-radius: 3px;
+            text-transform: uppercase;
+        }
+        .grad-stops.dark { background: rgba(255,255,255,0.5); color: var(--color-ink); }
+        .grad-body {
+            padding: 1.2rem 1.5rem 1.5rem;
+        }
+        .grad-body p {
+            font-family: var(--font-text);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: var(--color-text-secondary);
+            margin: 0 0 0.6rem;
+            max-width: 100%;
+        }
+        .grad-css {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            letter-spacing: 0;
+            color: var(--color-sea);
+            word-break: break-all;
+        }
+
+        /* -------- Liquid glass cards (capa 3) -------- */
+        .glass-stage {
+            border-radius: 8px;
+            padding: 2rem;
+            min-height: 280px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--color-border-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .glass-stage.aurora-bg { background: var(--g-aurora); }
+        .glass-stage.dark-bg { background: var(--color-offblack); }
+        .glass-stage.image-bg {
+            background:
+                radial-gradient(circle at 30% 20%, rgba(184, 137, 106, 0.6), transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(122, 154, 170, 0.7), transparent 55%),
+                radial-gradient(circle at 50% 50%, rgba(143, 168, 146, 0.4), transparent 60%),
+                var(--color-offblack);
+        }
+
+        .glass-card {
+            background: rgba(244, 240, 232, 0.18);
+            backdrop-filter: blur(28px) saturate(160%);
+            -webkit-backdrop-filter: blur(28px) saturate(160%);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            box-shadow:
+                inset 0 1px 0 rgba(255,255,255,0.35),
+                0 8px 32px rgba(0,0,0,0.12);
+            border-radius: 12px;
+            padding: 1.6rem 1.8rem;
+            max-width: 320px;
+            color: var(--color-white);
+        }
+        .glass-card.warm {
+            background: rgba(184, 137, 106, 0.18);
+            border-color: rgba(244, 240, 232, 0.3);
+        }
+        .glass-card.dark {
+            background: rgba(26, 26, 24, 0.35);
+            backdrop-filter: blur(28px) saturate(140%);
+            -webkit-backdrop-filter: blur(28px) saturate(140%);
+            border-color: rgba(255, 255, 255, 0.12);
+            box-shadow:
+                inset 0 1px 0 rgba(255,255,255,0.08),
+                0 8px 32px rgba(0,0,0,0.3);
+        }
+        .glass-card .g-eyebrow {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--color-terra);
+            margin-bottom: 0.6rem;
+        }
+        .glass-card .g-title {
+            font-family: var(--font-display);
+            font-weight: 300;
+            font-size: 1.8rem;
+            line-height: 1.1;
+            margin-bottom: 0.6rem;
+            color: inherit;
+            letter-spacing: -0.01em;
+        }
+        .glass-card .g-body {
+            font-family: var(--font-text);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            opacity: 0.9;
+        }
+
+        /* -------- Generative spectrum (capa 4) -------- */
+        .gen-card {
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--color-border-secondary);
+            background: var(--color-offblack);
+            color: var(--color-sand);
+        }
+        .gen-fill {
+            height: 220px;
+            position: relative;
+        }
+        .gen-fill.iris {
+            background: var(--g-iris);
+            filter: saturate(0.9);
+        }
+        .gen-fill.chrome { background: var(--g-chrome); }
+        .gen-fill.aurora { background: var(--g-aurora); }
+
+        .gen-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 1.2rem 1.4rem;
+        }
+        .gen-overlay .gen-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        .gen-name {
+            font-family: var(--font-cond);
+            font-weight: 500;
+            font-size: 2rem;
+            line-height: 1;
+            letter-spacing: -0.01em;
+            text-transform: uppercase;
+            color: var(--color-offblack);
+            mix-blend-mode: overlay;
+        }
+        .gen-name.light { color: var(--color-white); mix-blend-mode: normal; text-shadow: 0 1px 12px rgba(0,0,0,0.3); }
+        .gen-tag {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            letter-spacing: 0.16em;
+            color: var(--color-offblack);
+            background: rgba(255,255,255,0.7);
+            padding: 3px 7px;
+            border-radius: 3px;
+            text-transform: uppercase;
+        }
+        .gen-body {
+            padding: 1.2rem 1.4rem 1.5rem;
+            background: var(--color-offblack);
+        }
+        .gen-body .gen-rule {
+            font-family: var(--font-text);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: var(--color-stone);
+            margin-bottom: 0.8rem;
+        }
+        .gen-body .gen-rule strong { color: var(--color-sand); font-weight: 500; }
+        .gen-body .gen-allowed {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            letter-spacing: 0.08em;
+            color: var(--color-sage);
+            margin-top: 0.4rem;
+        }
+        .gen-body .gen-forbidden {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            letter-spacing: 0.08em;
+            color: var(--color-alert);
+        }
+
+        /* -------- Mode comparison -------- */
+        .mode-stage {
+            border-radius: 8px;
+            padding: 2.5rem;
+            min-height: 260px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .mode-stage.light { background: var(--color-sand); color: var(--color-ink); }
+        .mode-stage.dark  { background: var(--color-offblack); color: var(--color-sand); }
+        .mode-stage .m-eyebrow {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--color-terra);
+        }
+        .mode-stage .m-title {
+            font-family: var(--font-display);
+            font-weight: 300;
+            font-size: 2.2rem;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+        .mode-stage .m-body {
+            font-family: var(--font-text);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            opacity: 0.85;
+        }
+        .mode-stage.dark .m-body { color: var(--color-stone); }
+
+        /* -------- WCAG table -------- */
         .wcag-box {
             background: var(--color-white);
             border: 1px solid var(--color-border-secondary);
             border-radius: 8px;
-            padding: 2rem;
-            margin-top: 2rem;
+            padding: 0.5rem 2rem;
         }
-        
         .wcag-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 1rem 0;
-            border-bottom: 1px solid var(--color-stone);
-        }
-        
-        .wcag-item:last-child {
-            border-bottom: none;
-            padding-bottom: 0;
-        }
-        
-        .wcag-combo {
-            display: flex;
-            align-items: center;
             gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(44, 44, 40, 0.06);
         }
-        
-        .wcag-swatches {
-            display: flex;
-        }
-        
+        .wcag-item:last-child { border-bottom: none; }
+        .wcag-combo { display: flex; align-items: center; gap: 1rem; flex: 1; }
+        .wcag-swatches { display: flex; }
         .w-swatch {
-            width: 24px;
-            height: 24px;
+            width: 26px;
+            height: 26px;
             border-radius: 50%;
             border: 1px solid rgba(0,0,0,0.1);
         }
-        
-        .w-swatch-1 { z-index: 2; }
-        .w-swatch-2 { z-index: 1; margin-left: -8px; }
-        
+        .w-swatch:nth-child(2) { margin-left: -10px; }
         .wcag-text {
-            font-family: var(--font-serif);
+            font-family: var(--font-text);
             font-size: 1rem;
+            color: var(--color-ink);
         }
-        
+        .wcag-text small {
+            color: var(--color-text-secondary);
+            font-size: 0.85em;
+            margin-left: 0.3em;
+        }
         .wcag-score {
             font-family: var(--font-mono);
-            font-size: 1.1rem;
+            font-size: 0.95rem;
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.8rem;
+            color: var(--color-ink);
         }
-        
         .wcag-badge {
-            background: #e6f4ea;
-            color: #1e8e3e;
+            font-family: var(--font-mono);
+            background: #E6F4EA;
+            color: #1E6E3E;
             padding: 3px 8px;
             border-radius: 4px;
-            font-size: 10px;
-            font-weight: 600;
-            letter-spacing: 0.05em;
+            font-size: 9px;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
         }
-        
-        .wcag-badge.warning {
-            background: #fef0db;
-            color: #e5a03d;
-        }
+        .wcag-badge.aaa { background: #D8EDDF; color: #14542E; }
+        .wcag-badge.warning { background: #FDEFD7; color: #A8762B; }
+        .wcag-badge.fail { background: #FAE0E0; color: #8A2A2A; }
 
-        .pending-box {
-            margin-top: var(--spacing-sm);
-            padding: 1rem 1.5rem;
-            background: var(--color-stone);
-            border-radius: 6px;
-            font-family: var(--font-mono);
-            font-size: 0.85rem;
+        /* -------- Token table -------- */
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            background: var(--color-white);
+            border-radius: 8px;
+            border: 1px solid var(--color-border-secondary);
+        }
+        table { width: 100%; border-collapse: collapse; font-family: var(--font-mono); font-size: 0.85rem; }
+        th, td {
+            text-align: left;
+            padding: 1rem 1.2rem;
+            border-bottom: 1px solid var(--color-border-secondary);
+        }
+        th {
+            font-weight: 400;
             color: var(--color-muted);
+            background: rgba(0,0,0,0.02);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+        }
+        tr:last-child td { border-bottom: none; }
+        .tok-chip {
             display: inline-block;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            vertical-align: middle;
+            margin-right: 0.6rem;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+        .tok-name { color: var(--color-ink); }
+        .tok-var { color: var(--color-terra); }
+        .tok-hex { color: var(--color-ink); font-weight: 500; }
+        .tok-rgb, .tok-hsl { color: var(--color-text-secondary); }
+
+        /* -------- Metadata strip / nav -------- */
+        .meta-strip {
+            background: var(--color-offblack);
+            color: var(--color-sand);
+            padding: 1.2rem 1.6rem;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-top: var(--spacing-md);
+        }
+        .meta-strip span { color: var(--color-stone); }
+        .meta-strip .sep { color: var(--color-terra); }
+        .meta-strip .tag { color: var(--color-terra); font-weight: 500; }
+
+        .license-notice {
+            background: var(--color-white);
+            border-left: 3px solid var(--color-terra);
+            padding: 1.2rem 1.4rem;
+            border-radius: 4px;
+            font-family: var(--font-text);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--color-ink);
+            max-width: 800px;
+            margin-top: 1rem;
+        }
+        .license-notice strong { color: var(--color-terra); font-weight: 500; }
+
+        footer {
+            text-align: center;
+            margin-top: var(--spacing-xl);
+            padding: var(--spacing-md) 0;
+            border-top: 1px solid var(--color-border-secondary);
+        }
+        .chapter-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 800px;
+            margin: 0 auto var(--spacing-md);
+            padding: 0 var(--spacing-sm);
+        }
+        .chapter-nav a {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .chapter-nav a:hover { color: var(--color-terra); }
+        @media (max-width: 600px) {
+            .chapter-nav { flex-direction: column; gap: 1rem; text-align: center; }
         }
     </style>
 </head>
 <body>
 
 <div class="container">
+
     <div class="intro">
         <div class="lbl">Sección 05</div>
         <h1>Color</h1>
-        <p>Tonos mediterráneos de baja saturación. Piedra caliza, pinar y mar balear en agosto. La paleta cromática de ForMeta evoca calma, solidez y proximidad analógica dentro de un marco digital estructurado.</p>
+        <p class="lead">Cuatro capas. La piedra caliza por dentro, la mariposa de cristal por fuera. Cuanto más alta la capa, más restringido su uso.</p>
     </div>
 
-    <!-- 1. Paleta Cromática -->
+    <!-- ============================================================ -->
+    <!-- CAPA 1 — Paleta principal -->
+    <!-- ============================================================ -->
     <section>
-        <h2>5.1 Paleta Cromática</h2>
-        <p>Gama principal destinada a construir la interfaz y jerarquizar los contenidos.</p>
-        
+        <div class="section-tag">Capa 01 — base</div>
+        <h2>Paleta principal</h2>
+        <p>Tonos mediterráneos de baja saturación. Piedra caliza, pinar y mar balear. Esta capa construye todo: UI, texto, fondos, cliente. Es la voz que la marca usa cuando no está actuando.</p>
+
         <div class="grid-4">
-            <!-- Ink -->
-            <div class="color-card">
-                <div class="color-swatch" style="background-color: var(--color-ink); color: #fff;">
-                    <div class="swatch-hex">#2C2C28</div>
-                </div>
-                <div class="color-info">
-                    <h3>Ink</h3>
-                    <p class="color-desc">Texto principal · estructura · base</p>
-                </div>
-            </div>
-
-            <!-- Terracota -->
-            <div class="color-card">
-                <div class="color-swatch" style="background-color: var(--color-terra); color: #fff;">
-                    <div class="swatch-hex">#B8896A</div>
-                </div>
-                <div class="color-info">
-                    <h3>Terracota</h3>
-                    <p class="color-desc">Acento primario · énfasis · un uso por pantalla</p>
-                </div>
-            </div>
-
-            <!-- Sand -->
-            <div class="color-card">
-                <div class="color-swatch light" style="background-color: var(--color-sand); color: var(--color-ink);">
-                    <div class="swatch-hex">#F4F0E8</div>
-                </div>
-                <div class="color-info">
-                    <h3>Sand</h3>
-                    <p class="color-desc">Fondo base universal</p>
-                </div>
-            </div>
-
-            <!-- Stone -->
-            <div class="color-card">
-                <div class="color-swatch light" style="background-color: var(--color-stone); color: var(--color-ink);">
-                    <div class="swatch-hex">#E2DDD4</div>
-                </div>
-                <div class="color-info">
-                    <h3>Stone</h3>
-                    <p class="color-desc">Bordes · divisores · fondos alternos</p>
-                </div>
-            </div>
-            
-            <!-- Sage -->
-            <div class="color-card">
-                <div class="color-swatch" style="background-color: var(--color-sage); color: #fff;">
-                    <div class="swatch-hex">#8FA892</div>
-                </div>
-                <div class="color-info">
-                    <h3>Sage</h3>
-                    <p class="color-desc">Etiquetas · iconografía de soporte</p>
-                </div>
-            </div>
-            
-            <!-- Sea -->
-            <div class="color-card">
-                <div class="color-swatch" style="background-color: var(--color-sea); color: #fff;">
-                    <div class="swatch-hex">#7A9AAA</div>
-                </div>
-                <div class="color-info">
-                    <h3>Sea</h3>
-                    <p class="color-desc">Tecnología · código · elementos técnicos</p>
-                </div>
-            </div>
-            
-            <!-- Muted -->
-            <div class="color-card">
-                <div class="color-swatch" style="background-color: var(--color-muted); color: #fff;">
-                    <div class="swatch-hex">#7A7870</div>
-                </div>
-                <div class="color-info">
-                    <h3>Muted</h3>
-                    <p class="color-desc">Texto secundario · subtítulos</p>
-                </div>
-            </div>
-            
-            <!-- White -->
-            <div class="color-card">
-                <div class="color-swatch light" style="background-color: var(--color-white); border: 1px solid rgba(0,0,0,0.1); color: var(--color-ink);">
-                    <div class="swatch-hex">#FFFFFF</div>
-                </div>
-                <div class="color-info">
-                    <h3>White</h3>
-                    <p class="color-desc">Fondos limpios · documentos</p>
-                </div>
-            </div>
-            
-            <!-- Off-black -->
-            <div class="color-card">
-                <div class="color-swatch" style="background-color: var(--color-offblack); color: #fff;">
-                    <div class="swatch-hex">#1A1A18</div>
-                </div>
-                <div class="color-info">
-                    <h3>Off-black</h3>
-                    <p class="color-desc">Fondos oscuros · modo noche</p>
-                </div>
-            </div>
-        </div>
-        
-        <div class="pending-box">
-            // Pendiente: valores RGB, HSL, CMYK y Pantone para cada color. Colores de estado (error, éxito, aviso, info).
+            <div class="swatch"><div class="swatch-block" style="background: var(--color-ink); color: #fff;"><div class="swatch-hex">#2C2C28</div></div>
+                <div class="swatch-info"><h3>Ink</h3><p class="swatch-desc">Texto principal · estructura · base</p><div class="swatch-tech">rgb(44 44 40) · hsl(40 5% 16%)</div></div></div>
+            <div class="swatch"><div class="swatch-block" style="background: var(--color-terra); color: #fff;"><div class="swatch-hex">#B8896A</div></div>
+                <div class="swatch-info"><h3>Terra</h3><p class="swatch-desc">Acento primario · un uso por pantalla</p><div class="swatch-tech">rgb(184 137 106) · hsl(24 35% 57%)</div></div></div>
+            <div class="swatch"><div class="swatch-block light" style="background: var(--color-sand);"><div class="swatch-hex">#F4F0E8</div></div>
+                <div class="swatch-info"><h3>Sand</h3><p class="swatch-desc">Fondo base universal</p><div class="swatch-tech">rgb(244 240 232) · hsl(40 33% 93%)</div></div></div>
+            <div class="swatch"><div class="swatch-block light" style="background: var(--color-stone);"><div class="swatch-hex">#E2DDD4</div></div>
+                <div class="swatch-info"><h3>Stone</h3><p class="swatch-desc">Bordes · divisores · fondos alternos</p><div class="swatch-tech">rgb(226 221 212) · hsl(39 24% 86%)</div></div></div>
+            <div class="swatch"><div class="swatch-block" style="background: var(--color-sage); color: #fff;"><div class="swatch-hex">#8FA892</div></div>
+                <div class="swatch-info"><h3>Sage</h3><p class="swatch-desc">Etiquetas · iconografía soporte</p><div class="swatch-tech">rgb(143 168 146) · hsl(127 13% 61%)</div></div></div>
+            <div class="swatch"><div class="swatch-block" style="background: var(--color-sea); color: #fff;"><div class="swatch-hex">#7A9AAA</div></div>
+                <div class="swatch-info"><h3>Sea</h3><p class="swatch-desc">Técnico · código · datos · sistema</p><div class="swatch-tech">rgb(122 154 170) · hsl(200 21% 57%)</div></div></div>
+            <div class="swatch"><div class="swatch-block" style="background: var(--color-muted); color: #fff;"><div class="swatch-hex">#7A7870</div></div>
+                <div class="swatch-info"><h3>Muted</h3><p class="swatch-desc">Texto secundario · subtítulos</p><div class="swatch-tech">rgb(122 120 112) · hsl(48 4% 46%)</div></div></div>
+            <div class="swatch"><div class="swatch-block light" style="background: var(--color-white); border: 1px solid var(--color-border-secondary);"><div class="swatch-hex">#FFFFFF</div></div>
+                <div class="swatch-info"><h3>White</h3><p class="swatch-desc">Fondos limpios · documentos</p><div class="swatch-tech">rgb(255 255 255) · hsl(0 0% 100%)</div></div></div>
+            <div class="swatch"><div class="swatch-block" style="background: var(--color-offblack); color: #fff;"><div class="swatch-hex">#1A1A18</div></div>
+                <div class="swatch-info"><h3>Off-black</h3><p class="swatch-desc">Fondos en modo oscuro</p><div class="swatch-tech">rgb(26 26 24) · hsl(60 4% 10%)</div></div></div>
         </div>
     </section>
 
-    <!-- 2. Reglas de Uso -->
+    <!-- ============================================================ -->
+    <!-- Estados -->
+    <!-- ============================================================ -->
     <section>
-        <h2>5.2 Reglas de Uso</h2>
-        <p>Restricciones y directrices para mantener la coherencia armónica en la aplicación de la paleta.</p>
-        
+        <div class="section-tag">Capa 01 — estados</div>
+        <h2>Estados</h2>
+        <p>Cuatro tonos para feedback del sistema. Se mantienen dentro del registro mediterráneo — el alert es terracota saturada, no rojo emergencia. La idea: el sistema avisa, no grita.</p>
+
+        <div class="grid-4">
+            <div class="swatch"><div class="swatch-block" style="background: var(--color-alert); color: #fff;"><div class="swatch-hex">#D05A5A</div></div>
+                <div class="swatch-info"><h3>Alert</h3><p class="swatch-desc">Error · destructivo · bloqueo</p><div class="swatch-tech">rgb(208 90 90) · hsl(0 56% 58%)</div></div></div>
+            <div class="swatch"><div class="swatch-block" style="background: var(--color-warning); color: #fff;"><div class="swatch-hex">#D9A35A</div></div>
+                <div class="swatch-info"><h3>Warning</h3><p class="swatch-desc">Aviso · atención · revisión</p><div class="swatch-tech">rgb(217 163 90) · hsl(33 62% 60%)</div></div></div>
+            <div class="swatch"><div class="swatch-block" style="background: var(--color-success); color: #fff;"><div class="swatch-hex">#7A9F7E</div></div>
+                <div class="swatch-info"><h3>Success</h3><p class="swatch-desc">Confirmación · OK · guardado</p><div class="swatch-tech">rgb(122 159 126) · hsl(127 16% 55%)</div></div></div>
+            <div class="swatch"><div class="swatch-block" style="background: var(--color-info); color: #fff;"><div class="swatch-hex">#6F8FA0</div></div>
+                <div class="swatch-info"><h3>Info</h3><p class="swatch-desc">Información · neutro técnico</p><div class="swatch-tech">rgb(111 143 160) · hsl(203 19% 53%)</div></div></div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- Reglas de uso -->
+    <!-- ============================================================ -->
+    <section>
+        <div class="section-tag">reglas</div>
+        <h2>Reglas de uso</h2>
+        <p>Pocas pero estrictas. Si la respuesta no está aquí, vuelve al manifiesto de la sección 02.</p>
+
         <ul class="rule-list">
-            <li>Fondo siempre Sand (<span style="font-family: var(--font-mono); font-size:14px">#F4F0E8</span>) o White (<span style="font-family: var(--font-mono); font-size:14px">#FFFFFF</span>). Nunca usar fondo de color para la estructura.</li>
-            <li><strong>Terracota:</strong> único punto de acento por pantalla o página. No repetir de forma abusiva.</li>
-            <li>Texto principal en <strong>Ink</strong>. Texto secundario en <strong>Muted</strong>. Nunca colocar texto Muted sobre fondo Stone.</li>
-            <li>Nunca combinar Terracota + Sea en el mismo elemento interactivo.</li>
-            <li><strong>Stone</strong> es un color exclusivo para bordes (0.5–1px) y fondos alternos de tabla.</li>
-            <li><strong>Off-black</strong> se utiliza solo para fondos en modo oscuro. No debe usarse como color de texto.</li>
+            <li>Fondo siempre <code>Sand</code> o <code>White</code>. Nunca fondo de color para la estructura.</li>
+            <li><strong>Terra</strong> es el único acento. Un uso por pantalla — no se repite ni se distribuye.</li>
+            <li>Texto principal en <strong>Ink</strong>. Texto secundario en <strong>Muted</strong>. Nunca <code>Muted</code> sobre <code>Stone</code>.</li>
+            <li><strong>Stone</strong> solo para bordes (0.5–1px) y fondos alternos de tabla. Nunca para áreas grandes.</li>
+            <li><strong>Off-black</strong> solo para fondos en modo oscuro. Nunca como color de texto.</li>
+            <li>No combinar <strong>Terra + Sea</strong> en el mismo elemento interactivo — chocan el registro cálido y frío.</li>
+            <li>Las capas 2, 3 y 4 son <strong>opt-in expresivo</strong>. Si dudas si una pieza necesita gradiente o cristal, no lo necesita.</li>
+            <li>La capa 4 (espectro generativo) está <strong>prohibida en UI, body, cliente y email</strong>. Solo aparece en motion, posters y momentos editoriales.</li>
         </ul>
     </section>
 
-    <!-- 3. Accesibilidad -->
+    <!-- ============================================================ -->
+    <!-- CAPA 2 — Gradientes editoriales -->
+    <!-- ============================================================ -->
     <section>
-        <h2>5.3 Accesibilidad (WCAG AA)</h2>
-        <p>Relaciones de contraste verificadas para asegurar la legibilidad.</p>
-        
+        <div class="section-tag">Capa 02 — gradiente editorial</div>
+        <h2>Gradientes</h2>
+        <p>Compuestos solo con colores de marca. Pasaje de un tono a otro dentro del mismo registro mediterráneo. Sirven como fondo de hero, transición entre secciones o backdrop de un titular. Nunca debajo de cuerpo de texto largo.</p>
+
+        <div class="grid-3">
+            <div class="grad-card">
+                <div class="grad-fill" style="background: var(--g-sunset);">
+                    <div class="grad-name dark">Sunset</div>
+                    <div class="grad-stops dark">Terra → Stone → Sand</div>
+                </div>
+                <div class="grad-body">
+                    <p>Atardecer cálido. Heros de portada, primeras pantallas, fondos de carta editorial.</p>
+                    <div class="grad-css">linear-gradient(135deg, #B8896A 0%, #E2DDD4 60%, #F4F0E8 100%)</div>
+                </div>
+            </div>
+
+            <div class="grad-card">
+                <div class="grad-fill" style="background: var(--g-deepwater);">
+                    <div class="grad-name">Deepwater</div>
+                    <div class="grad-stops">Sea → Ink</div>
+                </div>
+                <div class="grad-body">
+                    <p>Mar profundo. Fondos oscuros para piezas con peso editorial — referencias técnicas, casos de estudio.</p>
+                    <div class="grad-css">linear-gradient(180deg, #7A9AAA 0%, #2C2C28 100%)</div>
+                </div>
+            </div>
+
+            <div class="grad-card">
+                <div class="grad-fill" style="background: var(--g-pinar);">
+                    <div class="grad-name dark">Pinar</div>
+                    <div class="grad-stops dark">Sage → Stone</div>
+                </div>
+                <div class="grad-body">
+                    <p>Pinar al amanecer. Backdrops calmos para secciones de proceso o metodología.</p>
+                    <div class="grad-css">linear-gradient(160deg, #8FA892 0%, #E2DDD4 100%)</div>
+                </div>
+            </div>
+
+            <div class="grad-card">
+                <div class="grad-fill" style="background: var(--g-night);">
+                    <div class="grad-name">Night</div>
+                    <div class="grad-stops">Ink → Off-black</div>
+                </div>
+                <div class="grad-body">
+                    <p>Noche cerrada. Fondo neutro para modo oscuro cuando se necesita profundidad sin color.</p>
+                    <div class="grad-css">linear-gradient(180deg, #2C2C28 0%, #1A1A18 100%)</div>
+                </div>
+            </div>
+
+            <div class="grad-card">
+                <div class="grad-fill" style="background: var(--g-dawn);">
+                    <div class="grad-name dark">Dawn</div>
+                    <div class="grad-stops dark">Sand → Terra → Sea</div>
+                </div>
+                <div class="grad-body">
+                    <p>Amanecer completo — atraviesa toda la paleta. Reservado para piezas de lanzamiento o cierre.</p>
+                    <div class="grad-css">linear-gradient(120deg, #F4F0E8 0%, #B8896A 70%, #7A9AAA 100%)</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- CAPA 3 — Cristal líquido -->
+    <!-- ============================================================ -->
+    <section>
+        <div class="section-tag">Capa 03 — cristal líquido</div>
+        <h2>Cristal líquido</h2>
+        <p>Superficies translúcidas con <code style="font-family: var(--font-mono); font-size: 0.85em; background: var(--color-stone); padding: 0.1em 0.35em; border-radius: 3px;">backdrop-filter: blur()</code>. Heredan color del fondo, no tienen tono propio. Sirven para tarjetas sobre imagen, overlays, navegaciones flotantes, modales. Tres variantes según contexto.</p>
+
+        <div class="grid-3">
+            <div>
+                <div class="glass-stage aurora-bg">
+                    <div class="glass-card">
+                        <div class="g-eyebrow">v1.0 · sand glass</div>
+                        <div class="g-title">Diez clientes. Diez nombres.</div>
+                        <div class="g-body">Trabajamos con infraestructura de primer nivel, sin perder el nombre de quién está al otro lado.</div>
+                    </div>
+                </div>
+                <div style="margin-top: 0.8rem;">
+                    <div style="font-family: var(--font-deck); font-weight: 500; font-size: 1rem; color: var(--color-ink); margin-bottom: 0.3rem;">Sand glass</div>
+                    <p style="font-size: 0.9rem; margin-bottom: 0.5rem;">Translúcido neutro. Default para overlays sobre fondo claro o gradiente.</p>
+                    <div style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--color-sea); word-break: break-word;">rgba(244,240,232,.18) · blur(28px) saturate(160%)</div>
+                </div>
+            </div>
+
+            <div>
+                <div class="glass-stage image-bg">
+                    <div class="glass-card warm">
+                        <div class="g-eyebrow">v1.0 · terra glass</div>
+                        <div class="g-title">No imponemos procesos.</div>
+                        <div class="g-body">Damos forma a los que ya funcionan. Software construido desde la raíz del oficio.</div>
+                    </div>
+                </div>
+                <div style="margin-top: 0.8rem;">
+                    <div style="font-family: var(--font-deck); font-weight: 500; font-size: 1rem; color: var(--color-ink); margin-bottom: 0.3rem;">Terra glass</div>
+                    <p style="font-size: 0.9rem; margin-bottom: 0.5rem;">Tintado cálido. Para piezas con carga editorial, sobre fondos con riqueza cromática.</p>
+                    <div style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--color-sea); word-break: break-word;">rgba(184,137,106,.18) · blur(28px) saturate(160%)</div>
+                </div>
+            </div>
+
+            <div>
+                <div class="glass-stage dark-bg">
+                    <div class="glass-card dark">
+                        <div class="g-eyebrow" style="color: var(--color-terra);">v1.0 · ink glass</div>
+                        <div class="g-title" style="color: var(--color-sand);">Hacer menos para hacer más.</div>
+                        <div class="g-body" style="color: var(--color-stone);">La tecnología más poderosa es la que no se nota. Libera tiempo para lo que importa.</div>
+                    </div>
+                </div>
+                <div style="margin-top: 0.8rem;">
+                    <div style="font-family: var(--font-deck); font-weight: 500; font-size: 1rem; color: var(--color-ink); margin-bottom: 0.3rem;">Ink glass</div>
+                    <p style="font-size: 0.9rem; margin-bottom: 0.5rem;">Modo oscuro. Translúcido sobre off-black o piezas editoriales nocturnas.</p>
+                    <div style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--color-sea); word-break: break-word;">rgba(26,26,24,.35) · blur(28px) saturate(140%)</div>
+                </div>
+            </div>
+        </div>
+
+        <p style="margin-top: 2rem;"><strong>Receta general:</strong> background translúcido (15–35% opacidad) + <code>backdrop-filter: blur(20–32px) saturate(140–180%)</code> + borde fino blanco a 12–25% + inset highlight superior + sombra suave abajo. <strong>Fallback obligatorio</strong> para navegadores sin <code>backdrop-filter</code>: subir la opacidad del background al 85% para mantener contraste.</p>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- CAPA 4 — Espectro generativo -->
+    <!-- ============================================================ -->
+    <section>
+        <div class="section-tag">Capa 04 — espectro generativo · uso restringido</div>
+        <h2>Espectro generativo</h2>
+        <p>La capa más expresiva. <strong>Vive fuera de la paleta mediterránea</strong> a propósito. Tres efectos para los momentos en que la marca representa la inteligencia aplicada — el símbolo gota en movimiento, posters editoriales, visualización de "la IApp piensa". Aparición rara, deliberada. Cuando aparece, dice algo.</p>
+
+        <div class="license-notice" style="border-left-color: var(--color-alert);">
+            <strong>Prohibido en:</strong> UI funcional · cuerpo de texto · entregables de cliente · email · plantillas comerciales · documentación interna. Romper esta regla diluye el efecto y vacía la marca.
+        </div>
+
+        <div class="grid-3" style="margin-top: 2rem;">
+            <div class="gen-card">
+                <div class="gen-fill iris">
+                    <div class="gen-overlay">
+                        <div class="gen-top">
+                            <div class="gen-tag">04A · iris</div>
+                        </div>
+                        <div class="gen-name light">IRIS</div>
+                    </div>
+                </div>
+                <div class="gen-body">
+                    <p class="gen-rule"><strong>Iridiscente.</strong> Conic-gradient con 5 stops cromáticos. Para representar inteligencia en estado abstracto — IApp pensando, modelo procesando, símbolo gota en transición.</p>
+                    <div class="gen-allowed">✓ Motion · símbolo gota · poster · hero animado</div>
+                    <div class="gen-forbidden">✗ UI · texto · cliente · email</div>
+                </div>
+            </div>
+
+            <div class="gen-card">
+                <div class="gen-fill chrome">
+                    <div class="gen-overlay">
+                        <div class="gen-top">
+                            <div class="gen-tag">04B · chrome</div>
+                        </div>
+                        <div class="gen-name">CHROME</div>
+                    </div>
+                </div>
+                <div class="gen-body">
+                    <p class="gen-rule"><strong>Cromo metálico.</strong> Linear-gradient en grises pearl. Materia sólida, superficie refractante. Para piezas con sensación de objeto — visualización de producto, símbolo gota en estado material.</p>
+                    <div class="gen-allowed">✓ Poster · packaging · render 3D · materia</div>
+                    <div class="gen-forbidden">✗ Fondo de texto · UI · cliente</div>
+                </div>
+            </div>
+
+            <div class="gen-card">
+                <div class="gen-fill aurora">
+                    <div class="gen-overlay">
+                        <div class="gen-top">
+                            <div class="gen-tag">04C · aurora</div>
+                        </div>
+                        <div class="gen-name">AURORA</div>
+                    </div>
+                </div>
+                <div class="gen-body">
+                    <p class="gen-rule"><strong>Aurora atmosférica.</strong> Linear-gradient amanecer — melocotón, lavanda, azul alba. La capa más cercana al espíritu mediterráneo, pero ya fuera del marrón. Fondos contemplativos para piezas editoriales largas.</p>
+                    <div class="gen-allowed">✓ Backdrop de portada · social · editorial largo</div>
+                    <div class="gen-forbidden">✗ UI funcional · cliente directo</div>
+                </div>
+            </div>
+        </div>
+
+        <p style="margin-top: 2.5rem;"><strong>Regla de aparición:</strong> máximo un efecto generativo por pieza. Nunca combinar iris + chrome + aurora en la misma vista. La rareza es lo que les da peso.</p>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- Modo claro / oscuro -->
+    <!-- ============================================================ -->
+    <section>
+        <div class="section-tag">modos</div>
+        <h2>Modo claro y modo oscuro</h2>
+        <p>La paleta se invierte, no se sustituye. Mismos hex, distinta jerarquía de uso.</p>
+
+        <div class="grid-2">
+            <div class="mode-stage light">
+                <div class="m-eyebrow">v1.0 · light · default</div>
+                <div class="m-title">Mediterráneo de día.</div>
+                <div class="m-body">Fondo Sand. Texto Ink. Acento Terra. Datos en Sea. Estructura en Stone. Por defecto en web, cliente, presentaciones.</div>
+            </div>
+            <div class="mode-stage dark">
+                <div class="m-eyebrow">v1.0 · dark · editorial</div>
+                <div class="m-title">Mediterráneo de noche.</div>
+                <div class="m-body">Fondo Off-black. Texto Sand. Acento Terra (no cambia). Datos en Sea (idem). Estructura en rgba blanco a 8%. Para piezas editoriales, redes, posters.</div>
+            </div>
+        </div>
+
+        <p style="margin-top: 2rem;"><strong>Lo que cambia:</strong> fondo y texto se invierten. <strong>Lo que no cambia:</strong> Terra sigue siendo Terra, Sea sigue siendo Sea. Los acentos son anclas reconocibles en ambos modos — no se "aclaran" para el modo oscuro.</p>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- Accesibilidad -->
+    <!-- ============================================================ -->
+    <section>
+        <div class="section-tag">accesibilidad · WCAG 2.1</div>
+        <h2>Contrastes</h2>
+        <p>Relaciones de contraste verificadas. Texto normal requiere AA (4.5:1); texto grande y elementos decorativos pueden bajar a 3:1.</p>
+
         <div class="wcag-box">
             <div class="wcag-item">
-                <div class="wcag-combo">
-                    <div class="wcag-swatches">
-                        <div class="w-swatch w-swatch-1" style="background-color: var(--color-ink);"></div>
-                        <div class="w-swatch w-swatch-2" style="background-color: var(--color-sand);"></div>
-                    </div>
-                    <div class="wcag-text"><strong>Ink</strong> sobre <strong>Sand</strong></div>
-                </div>
-                <div class="wcag-score">
-                    7.2:1 <span class="wcag-badge">PASS</span>
-                </div>
+                <div class="wcag-combo"><div class="wcag-swatches"><div class="w-swatch" style="background: var(--color-ink);"></div><div class="w-swatch" style="background: var(--color-sand);"></div></div><div class="wcag-text"><strong>Ink</strong> sobre <strong>Sand</strong> <small>texto principal</small></div></div>
+                <div class="wcag-score">12.4:1 <span class="wcag-badge aaa">AAA</span></div>
             </div>
-            
             <div class="wcag-item">
-                <div class="wcag-combo">
-                    <div class="wcag-swatches">
-                        <div class="w-swatch w-swatch-1" style="background-color: var(--color-ink);"></div>
-                        <div class="w-swatch w-swatch-2" style="background-color: var(--color-white);"></div>
-                    </div>
-                    <div class="wcag-text"><strong>Ink</strong> sobre <strong>White</strong></div>
-                </div>
-                <div class="wcag-score">
-                    16.1:1 <span class="wcag-badge">PASS</span>
-                </div>
+                <div class="wcag-combo"><div class="wcag-swatches"><div class="w-swatch" style="background: var(--color-ink);"></div><div class="w-swatch" style="background: var(--color-white);"></div></div><div class="wcag-text"><strong>Ink</strong> sobre <strong>White</strong> <small>texto en documento</small></div></div>
+                <div class="wcag-score">13.6:1 <span class="wcag-badge aaa">AAA</span></div>
             </div>
-            
             <div class="wcag-item">
-                <div class="wcag-combo">
-                    <div class="wcag-swatches">
-                        <div class="w-swatch w-swatch-1" style="background-color: var(--color-terra);"></div>
-                        <div class="w-swatch w-swatch-2" style="background-color: var(--color-sand);"></div>
-                    </div>
-                    <div class="wcag-text"><strong>Terra</strong> sobre <strong>Sand</strong> <span style="opacity: 0.6; font-size: 0.9em; margin-left: 4px;">(Uso solo decorativo, no texto)</span></div>
-                </div>
-                <div class="wcag-score">
-                    3.1:1 <span class="wcag-badge warning">DECORATIVE</span>
-                </div>
+                <div class="wcag-combo"><div class="wcag-swatches"><div class="w-swatch" style="background: var(--color-muted);"></div><div class="w-swatch" style="background: var(--color-sand);"></div></div><div class="wcag-text"><strong>Muted</strong> sobre <strong>Sand</strong> <small>texto secundario</small></div></div>
+                <div class="wcag-score">3.6:1 <span class="wcag-badge warning">Texto grande</span></div>
             </div>
+            <div class="wcag-item">
+                <div class="wcag-combo"><div class="wcag-swatches"><div class="w-swatch" style="background: var(--color-terra);"></div><div class="w-swatch" style="background: var(--color-sand);"></div></div><div class="wcag-text"><strong>Terra</strong> sobre <strong>Sand</strong> <small>acento decorativo</small></div></div>
+                <div class="wcag-score">3.0:1 <span class="wcag-badge warning">Decorativo</span></div>
+            </div>
+            <div class="wcag-item">
+                <div class="wcag-combo"><div class="wcag-swatches"><div class="w-swatch" style="background: var(--color-sand);"></div><div class="w-swatch" style="background: var(--color-offblack);"></div></div><div class="wcag-text"><strong>Sand</strong> sobre <strong>Off-black</strong> <small>texto modo oscuro</small></div></div>
+                <div class="wcag-score">14.8:1 <span class="wcag-badge aaa">AAA</span></div>
+            </div>
+            <div class="wcag-item">
+                <div class="wcag-combo"><div class="wcag-swatches"><div class="w-swatch" style="background: var(--color-terra);"></div><div class="w-swatch" style="background: var(--color-offblack);"></div></div><div class="wcag-text"><strong>Terra</strong> sobre <strong>Off-black</strong> <small>acento modo oscuro</small></div></div>
+                <div class="wcag-score">5.3:1 <span class="wcag-badge">AA</span></div>
+            </div>
+            <div class="wcag-item">
+                <div class="wcag-combo"><div class="wcag-swatches"><div class="w-swatch" style="background: var(--color-alert);"></div><div class="w-swatch" style="background: var(--color-sand);"></div></div><div class="wcag-text"><strong>Alert</strong> sobre <strong>Sand</strong> <small>error en formulario</small></div></div>
+                <div class="wcag-score">3.9:1 <span class="wcag-badge warning">Texto grande / icono</span></div>
+            </div>
+            <div class="wcag-item">
+                <div class="wcag-combo"><div class="wcag-swatches"><div class="w-swatch" style="background: var(--color-sea);"></div><div class="w-swatch" style="background: var(--color-sand);"></div></div><div class="wcag-text"><strong>Sea</strong> sobre <strong>Sand</strong> <small>datos · etiquetas</small></div></div>
+                <div class="wcag-score">2.9:1 <span class="wcag-badge fail">Solo decorativo</span></div>
+            </div>
+        </div>
+
+        <p style="margin-top: 1.5rem; font-size: 0.95rem;">Los valores marcados <strong>Decorativo</strong> o <strong>Solo decorativo</strong> no se usan para texto legible — solo para iconos, swatches, separadores o fondos. Para cifras críticas o labels que el usuario debe leer, subir contraste o cambiar de combinación.</p>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- Tokens -->
+    <!-- ============================================================ -->
+    <section>
+        <div class="section-tag">tokens</div>
+        <h2>Tokens</h2>
+        <p>Todos los valores de color como variables CSS. Para que el sistema sea reutilizable y migrar al futuro sea un cambio de variable, no de hex repartidos.</p>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr><th>Color</th><th>Variable</th><th>Hex</th><th>RGB</th><th>HSL</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td class="tok-name"><span class="tok-chip" style="background: var(--color-ink);"></span>Ink</td><td class="tok-var">--color-ink</td><td class="tok-hex">#2C2C28</td><td class="tok-rgb">44 44 40</td><td class="tok-hsl">40 5% 16%</td></tr>
+                    <tr><td class="tok-name"><span class="tok-chip" style="background: var(--color-terra);"></span>Terra</td><td class="tok-var">--color-terra</td><td class="tok-hex">#B8896A</td><td class="tok-rgb">184 137 106</td><td class="tok-hsl">24 35% 57%</td></tr>
+                    <tr><td class="tok-name"><span class="tok-chip" style="background: var(--color-sand);"></span>Sand</td><td class="tok-var">--color-sand</td><td class="tok-hex">#F4F0E8</td><td class="tok-rgb">244 240 232</td><td class="tok-hsl">40 33% 93%</td></tr>
+                    <tr><td class="tok-name"><span class="tok-chip" style="background: var(--color-stone);"></span>Stone</td><td class="tok-var">--color-stone</td><td class="tok-hex">#E2DDD4</td><td class="tok-rgb">226 221 212</td><td class="tok-hsl">39 24% 86%</td></tr>
+                    <tr><td class="tok-name"><span class="tok-chip" style="background: var(--color-sage);"></span>Sage</td><td class="tok-var">--color-sage</td><td class="tok-hex">#8FA892</td><td class="tok-rgb">143 168 146</td><td class="tok-hsl">127 13% 61%</td></tr>
+                    <tr><td class="tok-name"><span class="tok-chip" style="background: var(--color-sea);"></span>Sea</td><td class="tok-var">--color-sea</td><td class="tok-hex">#7A9AAA</td><td class="tok-rgb">122 154 170</td><td class="tok-hsl">200 21% 57%</td></tr>
+                    <tr><td class="tok-name"><span class="tok-chip" style="background: var(--color-muted);"></span>Muted</td><td class="tok-var">--color-muted</td><td class="tok-hex">#7A7870</td><td class="tok-rgb">122 120 112</td><td class="tok-hsl">48 4% 46%</td></tr>
+                    <tr><td class="tok-name"><span class="tok-chip" style="background: var(--color-white); border-color: var(--color-stone);"></span>White</td><td class="tok-var">--color-white</td><td class="tok-hex">#FFFFFF</td><td class="tok-rgb">255 255 255</td><td class="tok-hsl">0 0% 100%</td></tr>
+                    <tr><td class="tok-name"><span class="tok-chip" style="background: var(--color-offblack);"></span>Off-black</td><td class="tok-var">--color-offblack</td><td class="tok-hex">#1A1A18</td><td class="tok-rgb">26 26 24</td><td class="tok-hsl">60 4% 10%</td></tr>
+                    <tr><td class="tok-name"><span class="tok-chip" style="background: var(--color-alert);"></span>Alert</td><td class="tok-var">--color-alert</td><td class="tok-hex">#D05A5A</td><td class="tok-rgb">208 90 90</td><td class="tok-hsl">0 56% 58%</td></tr>
+                    <tr><td class="tok-name"><span class="tok-chip" style="background: var(--color-warning);"></span>Warning</td><td class="tok-var">--color-warning</td><td class="tok-hex">#D9A35A</td><td class="tok-rgb">217 163 90</td><td class="tok-hsl">33 62% 60%</td></tr>
+                    <tr><td class="tok-name"><span class="tok-chip" style="background: var(--color-success);"></span>Success</td><td class="tok-var">--color-success</td><td class="tok-hex">#7A9F7E</td><td class="tok-rgb">122 159 126</td><td class="tok-hsl">127 16% 55%</td></tr>
+                    <tr><td class="tok-name"><span class="tok-chip" style="background: var(--color-info);"></span>Info</td><td class="tok-var">--color-info</td><td class="tok-hex">#6F8FA0</td><td class="tok-rgb">111 143 160</td><td class="tok-hsl">203 19% 53%</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <p style="margin-top: 1.5rem; font-size: 0.95rem;"><strong>Pantone y CMYK:</strong> pendientes de calibración con impresión. La paleta está optimizada para pantalla en sRGB. Para impresión, Terra requiere conversión a CMYK con ajuste manual (los marrones cálidos se apagan en cuatricromía). Documentado en v2.0 cuando se imprima la primera tirada.</p>
+
+        <div class="meta-strip">
+            <span class="tag">v1.0</span><span class="sep">·</span>
+            <span>2026.05.15</span><span class="sep">·</span>
+            <span>Mallorca / 39.5696° N</span><span class="sep">·</span>
+            <span>FMTA—05—Color</span><span class="sep">·</span>
+            <span>4 capas / 13 tokens</span>
         </div>
     </section>
 
 </div>
 
-
-<footer style="text-align: center; margin-top: var(--spacing-xl); padding: var(--spacing-md) 0; border-top: 1px solid var(--color-border-secondary);">
-    <svg width="24" height="30" viewBox="0 0 160 200" style="opacity: 0.8; margin: 0 auto;">
+<footer>
+    <nav class="chapter-nav">
+        <a href="04_tipografia.html">← Anterior: 04 Tipografía</a>
+        <a href="index.html">Índice</a>
+        <a href="06_iconos.html">Siguiente: 06 Iconos →</a>
+    </nav>
+    <svg width="24" height="30" viewBox="0 0 160 200" style="opacity: 0.8; margin: 0 auto;" aria-hidden="true">
          <path d="M80 12 C80 12 104 52 116 88 C126 118 122 152 102 168 C92 176 80 178 80 178 C80 178 68 176 58 168 C38 152 34 118 44 88 C56 52 80 12 80 12 Z" fill="none" stroke="var(--color-terra)" stroke-width="4"/>
          <circle cx="80" cy="130" r="6" fill="var(--color-terra)"/>
     </svg>
 </footer>
-</body>
 
+</body>
 </html>

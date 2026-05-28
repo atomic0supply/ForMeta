@@ -6,9 +6,9 @@
 .shimmer {
   background: linear-gradient(
     90deg,
-    var(--line-soft, #e8e4dc) 25%,
-    var(--stone, #f4f0e8) 50%,
-    var(--line-soft, #e8e4dc) 75%
+    var(--color-border-soft) 25%,
+    var(--color-stone) 50%,
+    var(--color-border-soft) 75%
   );
   background-size: 200% 100%;
   animation: shimmer 1.4s ease-in-out infinite;
@@ -16,7 +16,7 @@
 
 .card {
   padding: 20px 22px;
-  border: 1px solid var(--line-soft);
+  border: 1px solid var(--color-border-soft);
   border-radius: 12px;
   display: flex;
   flex-direction: column;
@@ -28,5 +28,5 @@
   gap: 20px;
   align-items: center;
   padding: 14px 0;
-  border-bottom: 1px solid var(--line-soft);
+  border-bottom: 1px solid var(--color-border-soft);
 }

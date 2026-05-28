@@ -1,5 +1,5 @@
 .thread {
-  border-top: 1px solid var(--line-soft);
+  border-top: 1px solid var(--color-border-soft);
   padding-top: 16px;
   margin-top: 4px;
   display: flex;
@@ -12,7 +12,7 @@
   font-size: 0.6rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--color-muted-strong);
 }
 
 .commentList {
@@ -28,13 +28,13 @@
   width: 3px;
 }
 .commentList::-webkit-scrollbar-thumb {
-  background: var(--line);
+  background: var(--color-border);
   border-radius: 999px;
 }
 
 .empty {
   font-size: 0.78rem;
-  color: var(--muted);
+  color: var(--color-muted-strong);
   padding: 4px 0;
 }
 
@@ -48,8 +48,8 @@
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  background: var(--terracotta, #b8896a);
-  color: #fff;
+  background: var(--color-terra);
+  color: var(--color-white);
   font-size: 0.6rem;
   font-weight: 600;
   display: flex;
@@ -73,18 +73,18 @@
 .commentAuthor {
   font-size: 0.72rem;
   font-weight: 600;
-  color: var(--ink);
+  color: var(--color-ink);
 }
 
 .commentTime {
   font-family: var(--font-mono), monospace;
   font-size: 0.62rem;
-  color: var(--muted);
+  color: var(--color-muted-strong);
 }
 
 .commentText {
   font-size: 0.8rem;
-  color: var(--ink);
+  color: var(--color-ink);
   line-height: 1.45;
   word-break: break-word;
   white-space: pre-wrap;
@@ -99,11 +99,11 @@
 .commentInput {
   flex: 1;
   padding: 8px 12px;
-  border: 1px solid var(--line);
+  border: 1px solid var(--color-border);
   border-radius: 8px;
   background: transparent;
   font-size: 0.8rem;
-  color: var(--ink);
+  color: var(--color-ink);
   font-family: inherit;
   resize: none;
   transition: border-color 0.12s;
@@ -111,15 +111,15 @@
 
 .commentInput:focus {
   outline: none;
-  border-color: var(--terracotta, #b8896a);
+  border-color: var(--color-terra);
 }
 
 .btnSend {
   padding: 8px 14px;
   border: none;
   border-radius: 8px;
-  background: var(--ink);
-  color: #fff;
+  background: var(--color-ink);
+  color: var(--color-white);
   font-family: var(--font-mono), monospace;
   font-size: 0.68rem;
   cursor: pointer;

@@ -3,30 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3. Logo - ForMeta Guía de Estilo</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+    <title>03. Logo - ForMeta Guía de Estilo</title>
+
     <style>
+        /* ============================================================
+           BLOQUE TIPOGRÁFICO (extraer a assets/style.css en migración).
+           Canela en Trial — licenciar antes de publicar.
+           ============================================================ */
+        @font-face { font-family: 'Canela Trial'; src: url('typo/Canela_Collection/Canela Family/Canela-Light-Trial.otf') format('opentype'); font-weight: 300; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Canela Trial'; src: url('typo/Canela_Collection/Canela Family/Canela-LightItalic-Trial.otf') format('opentype'); font-weight: 300; font-style: italic; font-display: swap; }
+        @font-face { font-family: 'Canela Trial'; src: url('typo/Canela_Collection/Canela Family/Canela-Medium-Trial.otf') format('opentype'); font-weight: 500; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Canela Deck Trial'; src: url('typo/Canela_Collection/Canela Deck Family/CanelaDeck-Light-Trial.otf') format('opentype'); font-weight: 300; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Canela Deck Trial'; src: url('typo/Canela_Collection/Canela Deck Family/CanelaDeck-LightItalic-Trial.otf') format('opentype'); font-weight: 300; font-style: italic; font-display: swap; }
+        @font-face { font-family: 'Canela Deck Trial'; src: url('typo/Canela_Collection/Canela Deck Family/CanelaDeck-Medium-Trial.otf') format('opentype'); font-weight: 500; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Canela Text Trial'; src: url('typo/Canela_Collection/Canela Text Family/CanelaText-Regular-Trial.otf') format('opentype'); font-weight: 400; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Canela Text Trial'; src: url('typo/Canela_Collection/Canela Text Family/CanelaText-RegularItalic-Trial.otf') format('opentype'); font-weight: 400; font-style: italic; font-display: swap; }
+        @font-face { font-family: 'Canela Text Trial'; src: url('typo/Canela_Collection/Canela Text Family/CanelaText-Medium-Trial.otf') format('opentype'); font-weight: 500; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Canela Condensed Trial'; src: url('typo/Canela_Collection/Canela Condensed Family/CanelaCondensed-Medium-Trial.otf') format('opentype'); font-weight: 500; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'IBM Plex Mono'; src: url('typo/IBM_PLEX/IBMPlexMono-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'IBM Plex Mono'; src: url('typo/IBM_PLEX/IBMPlexMono-Italic.ttf') format('truetype'); font-weight: 400; font-style: italic; font-display: swap; }
+        @font-face { font-family: 'IBM Plex Mono'; src: url('typo/IBM_PLEX/IBMPlexMono-Medium.ttf') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
+
         :root {
-            --font-mono: 'DM Mono', 'Courier New', Courier, monospace;
-            --font-serif: 'Cormorant Garamond', Garamond, Georgia, serif;
-            
-            --color-ink: #2c2c28;
-            --color-terra: #b8896a;
-            --color-sand: #f4f0e8;
-            --color-sea: #7a9aaa;
-            --color-stone: #e2ddd4;
-            --color-white: #ffffff;
-            --color-offblack: #1a1a18;
-            --color-muted: #7a7870;
-            --color-alert: #d05a5a;
-            
+            --font-display: 'Canela Trial', 'Cormorant Garamond', Garamond, Georgia, serif;
+            --font-deck:    'Canela Deck Trial', 'Cormorant Garamond', Garamond, Georgia, serif;
+            --font-text:    'Canela Text Trial', 'Cormorant Garamond', Georgia, serif;
+            --font-cond:    'Canela Condensed Trial', 'Cormorant Garamond', Garamond, Georgia, serif;
+            --font-mono:    'IBM Plex Mono', 'DM Mono', 'Courier New', Courier, monospace;
+
+            --color-ink: #2C2C28;
+            --color-terra: #B8896A;
+            --color-sand: #F4F0E8;
+            --color-sea: #7A9AAA;
+            --color-stone: #E2DDD4;
+            --color-sage: #8FA892;
+            --color-white: #FFFFFF;
+            --color-offblack: #1A1A18;
+            --color-muted: #7A7870;
+            --color-alert: #D05A5A;
+
             --color-bg: var(--color-sand);
             --color-text: var(--color-ink);
             --color-text-secondary: var(--color-muted);
             --color-border-secondary: rgba(44, 44, 40, 0.1);
-            
+
             --spacing-xs: 0.5rem;
             --spacing-sm: 1.5rem;
             --spacing-md: 3rem;
@@ -34,1219 +54,1512 @@
             --spacing-xl: 10rem;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        body {background-color: var(--color-sand);
+        body {
+            background-color: var(--color-sand);
             color: var(--color-text);
-            font-family: var(--font-serif);
-            font-weight: 300;
-            font-size: 1.15rem;
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: var(--spacing-md) var(--spacing-sm);
-        }
-
-        /* Typography */
-        h1 {
-            font-family: var(--font-serif);
-            font-size: 3.5rem;
-            font-weight: 300;
-            margin-bottom: var(--spacing-xs);
-            color: var(--color-ink);
-        }
-
-        h2 {
-            font-family: var(--font-serif);
-            font-size: 2.5rem;
-            font-weight: 300;
-            margin-bottom: var(--spacing-sm);
-            padding-bottom: 1rem;
-            border-bottom: 1px solid var(--color-border-secondary);
-        }
-
-        h3 {
-            font-family: var(--font-serif);
-            font-size: 1.25rem;
+            font-family: var(--font-text);
             font-weight: 400;
-            margin-bottom: 1rem;
-        }
-
-        p {
-            font-size: 1.1rem;
-            color: var(--color-text-secondary);
-            max-width: 650px;
-            margin-bottom: var(--spacing-sm);
-            font-weight: 300;
-        }
-
-        .intro {
-            margin-bottom: var(--spacing-xl);
-        }
-
-        .lbl {
-            font-family: var(--font-mono);
-            font-size: 11px;
-            letter-spacing: 0.16em;
-            text-transform: uppercase;
-            color: var(--color-text-secondary);
-            margin-top: 1rem;
-        }
-
-        .sub {
-            font-family: var(--font-mono);
-            font-size: 10px;
-            letter-spacing: 0.12em;
-            color: var(--color-text-secondary);
-            opacity: 0.6;
-            margin-top: 0.25rem;
-        }
-
-        /* Section Layouts */
-        section {
-            margin-bottom: var(--spacing-xl);
-        }
-
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: var(--spacing-md);
-        }
-
-        .grid-3 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: var(--spacing-md);
-        }
-
-        /* Asset Cards */
-        .card {
+            font-size: 17px;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            gap: 0.5rem;
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: var(--spacing-md) var(--spacing-sm); flex: 1; }
+
+        h1 { font-family: var(--font-display); font-weight: 300; font-size: 5rem; line-height: 1.05; letter-spacing: -0.02em; color: var(--color-ink); margin-bottom: var(--spacing-xs); }
+        h2 { font-family: var(--font-deck); font-weight: 300; font-size: 2.5rem; line-height: 1.15; letter-spacing: -0.01em; color: var(--color-ink); margin-bottom: var(--spacing-sm); padding-bottom: 1rem; border-bottom: 1px solid var(--color-border-secondary); }
+        h3 { font-family: var(--font-deck); font-weight: 400; font-size: 1.5rem; line-height: 1.3; color: var(--color-ink); margin-top: 2rem; margin-bottom: 1rem; }
+        h4 { font-family: var(--font-deck); font-weight: 500; font-size: 1.1rem; line-height: 1.3; color: var(--color-ink); margin: 1.5rem 0 0.5rem; }
+
+        p { font-family: var(--font-text); color: var(--color-text-secondary); max-width: 720px; margin-bottom: var(--spacing-sm); }
+
+        .intro { margin-bottom: var(--spacing-xl); }
+        .intro p.lead { font-family: var(--font-deck); font-style: italic; font-weight: 300; font-size: 1.5rem; line-height: 1.4; color: var(--color-ink); max-width: 720px; margin-top: var(--spacing-sm); }
+
+        .lbl { font-family: var(--font-mono); font-size: 11px; font-weight: 400; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-text-secondary); margin-top: 1rem; margin-bottom: 0.5rem; }
+
+        section { margin-bottom: var(--spacing-xl); }
+        .section-tag { font-family: var(--font-mono); font-size: 0.7rem; font-weight: 400; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-terra); margin-bottom: 0.5rem; }
+
+        /* -------- Drop tinting via currentColor -------- */
+        .ink-drop   { color: var(--color-ink);   --core-color: var(--color-terra); }
+        .terra-drop { color: var(--color-terra); --core-color: var(--color-ink); }
+        .sand-drop  { color: var(--color-sand);  --core-color: var(--color-terra); }
+        .stone-drop { color: var(--color-stone); --core-color: var(--color-terra); }
+        .mono-ink   { color: var(--color-ink);   --core-color: var(--color-ink); }
+        .mono-sand  { color: var(--color-sand);  --core-color: var(--color-sand); }
+
+        /* -------- Animation 01 — Wave (canónica) -------- */
+        .anim-wave .halftone-dot {
+            transform-box: fill-box;
+            transform-origin: center;
+            animation: halftoneWave 3s ease-in-out infinite;
+        }
+        .anim-wave .halftone-dot[data-ring="0"] { animation-delay: 0.00s; }
+        .anim-wave .halftone-dot[data-ring="1"] { animation-delay: 0.10s; }
+        .anim-wave .halftone-dot[data-ring="2"] { animation-delay: 0.20s; }
+        .anim-wave .halftone-dot[data-ring="3"] { animation-delay: 0.30s; }
+        .anim-wave .halftone-dot[data-ring="4"] { animation-delay: 0.40s; }
+        .anim-wave .halftone-dot[data-ring="5"] { animation-delay: 0.50s; }
+        .anim-wave .halftone-dot[data-ring="6"] { animation-delay: 0.60s; }
+        .anim-wave .halftone-dot[data-ring="7"] { animation-delay: 0.70s; }
+        .anim-wave .halftone-core {
+            transform-box: fill-box;
+            transform-origin: center;
+            animation: halftoneCorePulse 3s ease-in-out infinite;
+        }
+        @keyframes halftoneWave {
+            0%, 100% { transform: scale(0.75); opacity: 0.5; }
+            25%      { transform: scale(1.75); opacity: 1; }
+            55%      { transform: scale(0.75); opacity: 0.5; }
+        }
+        @keyframes halftoneCorePulse {
+            0%, 100% { transform: scale(1); }
+            50%      { transform: scale(1.6); }
         }
 
-        .card-visual {
+        /* -------- Animation 02 — Assembly (compose/decompose) -------- */
+        .anim-assembly .halftone-dot {
+            transform-box: fill-box;
+            transform-origin: center;
+            animation: halftoneAssembly 6s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+            opacity: 0;
+        }
+        .anim-assembly .halftone-dot[data-ring="0"] { animation-delay: 0.5s; }
+        .anim-assembly .halftone-dot[data-ring="1"] { animation-delay: 0.4s; }
+        .anim-assembly .halftone-dot[data-ring="2"] { animation-delay: 0.3s; }
+        .anim-assembly .halftone-dot[data-ring="3"] { animation-delay: 0.2s; }
+        .anim-assembly .halftone-dot[data-ring="4"] { animation-delay: 0.1s; }
+        .anim-assembly .halftone-dot[data-ring="5"] { animation-delay: 0.0s; }
+        .anim-assembly .halftone-dot[data-ring="6"] { animation-delay: 0.0s; }
+        .anim-assembly .halftone-dot[data-ring="7"] { animation-delay: 0.0s; }
+        .anim-assembly .halftone-core {
+            transform-box: fill-box;
+            transform-origin: center;
+            animation: halftoneCoreAssembly 6s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+        }
+        @keyframes halftoneAssembly {
+            0% { opacity: 0; transform: scale(0); }
+            25% { opacity: 1; transform: scale(1); }
+            75% { opacity: 1; transform: scale(1); }
+            95% { opacity: 0; transform: scale(0); }
+            100% { opacity: 0; transform: scale(0); }
+        }
+        @keyframes halftoneCoreAssembly {
+            0% { opacity: 0; transform: scale(0); }
+            15% { opacity: 1; transform: scale(1); }
+            75% { opacity: 1; transform: scale(1); }
+            90% { opacity: 0; transform: scale(0); }
+            100% { opacity: 0; transform: scale(0); }
+        }
+
+        /* -------- Animation 03 — Breath (uniforme) -------- */
+        .anim-breath .halftone-dot {
+            transform-box: fill-box;
+            transform-origin: center;
+            animation: halftoneBreath 4s ease-in-out infinite;
+        }
+        .anim-breath .halftone-core {
+            transform-box: fill-box;
+            transform-origin: center;
+            animation: halftoneBreathCore 4s ease-in-out infinite;
+        }
+        @keyframes halftoneBreath {
+            0%, 100% { transform: scale(0.7); opacity: 0.55; }
+            50%      { transform: scale(1.35); opacity: 1; }
+        }
+        @keyframes halftoneBreathCore {
+            0%, 100% { transform: scale(0.85); opacity: 1; }
+            50%      { transform: scale(1.5); opacity: 1; }
+        }
+
+        /* -------- Logo animations -------- */
+        .logo-anim-wrap { position: relative; display: inline-block; overflow: hidden; }
+        .logo-anim-wrap img { display: block; max-width: 360px; height: auto; }
+
+        /* 04 — Wipe (canónica) */
+        .logo-wipe img {
+            animation: wipeIn 3.5s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+            clip-path: inset(0 100% 0 0);
+        }
+        @keyframes wipeIn {
+            0%   { clip-path: inset(0 100% 0 0); }
+            60%  { clip-path: inset(0 0% 0 0); }
+            85%  { clip-path: inset(0 0% 0 0); }
+            100% { clip-path: inset(0 0% 0 100%); }
+        }
+
+        /* 05 — Fade up */
+        .logo-fadeup img {
+            animation: logoFadeUp 3.5s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+            opacity: 0;
+            transform: translateY(8px);
+        }
+        @keyframes logoFadeUp {
+            0%   { opacity: 0; transform: translateY(8px); }
+            25%  { opacity: 1; transform: translateY(0); }
+            80%  { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-4px); }
+        }
+
+        /* 06 — Pulse acento (escala sutil + opacity) */
+        .logo-pulse img {
+            animation: logoPulse 4s ease-in-out infinite;
+            transform-origin: left center;
+        }
+        @keyframes logoPulse {
+            0%, 100% { opacity: 0.78; transform: scale(0.985); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
+        /* Isotipo composed animation */
+        .iso-anim { display: flex; align-items: center; gap: 1.4rem; }
+        .iso-anim .iso-drop-wrap {
+            width: 70px; height: 88px;
+            opacity: 0;
+            transform: translateY(8px) scale(0.85);
+            animation: isoDropIn 4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+        }
+        .iso-anim .iso-drop-wrap svg { width: 100%; height: 100%; }
+        .iso-anim .iso-word { display: inline-block; overflow: hidden; }
+        .iso-anim .iso-word img {
+            display: block; max-width: 260px; height: auto;
+            clip-path: inset(0 100% 0 0);
+            animation: isoWordIn 4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+        }
+        @keyframes isoDropIn {
+            0%, 100% { opacity: 0; transform: translateY(8px) scale(0.85); }
+            20% { opacity: 1; transform: translateY(0) scale(1); }
+            85% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes isoWordIn {
+            0%, 22% { clip-path: inset(0 100% 0 0); }
+            55% { clip-path: inset(0 0% 0 0); }
+            85% { clip-path: inset(0 0% 0 0); }
+            100% { clip-path: inset(0 0% 0 100%); }
+        }
+
+        /* -------- Grids -------- */
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        @media (max-width: 800px) { .grid-2 { grid-template-columns: 1fr; } }
+
+        /* -------- Asset cards -------- */
+        .asset { display: flex; flex-direction: column; gap: 0.6rem; }
+        .asset-stage {
             width: 100%;
-            height: 240px;
-            background: var(--color-white);
-            border: 0.5px solid var(--color-border-secondary);
+            min-height: 240px;
             border-radius: 8px;
+            border: 1px solid var(--color-border-secondary);
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
             position: relative;
+            padding: 1.5rem;
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s;
         }
+        .asset-stage:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.05); }
+        .asset-stage.sand { background: var(--color-sand); }
+        .asset-stage.white { background: var(--color-white); }
+        .asset-stage.ink { background: var(--color-ink); }
+        .asset-stage.offblack { background: var(--color-offblack); }
+        .asset-stage.terra { background: var(--color-terra); }
+        .asset-stage img, .asset-stage > svg { max-width: 100%; max-height: 180px; height: auto; display: block; }
 
-        .card-visual:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 24px rgba(0,0,0,0.04);
-        }
+        .asset-meta { display: flex; justify-content: space-between; align-items: baseline; padding-top: 0.4rem; }
+        .asset-name { font-family: var(--font-deck); font-weight: 500; font-size: 1rem; color: var(--color-ink); }
+        .asset-spec { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-text-secondary); }
+        .asset-file { font-family: var(--font-mono); font-size: 0.72rem; color: var(--color-muted); }
 
-        .card-visual.dark { background: var(--color-offblack); }
-        .card-visual.color { background: var(--color-sand); }
-        .card-visual.ink { background: var(--color-ink); }
+        .asset-stage .stage-label {
+            position: absolute; top: 0.8rem; left: 1rem;
+            font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.16em;
+            text-transform: uppercase; color: rgba(44, 44, 40, 0.45);
+        }
+        .asset-stage.ink .stage-label, .asset-stage.offblack .stage-label { color: rgba(244, 240, 232, 0.4); }
+        .asset-stage.terra .stage-label { color: rgba(244, 240, 232, 0.7); }
 
-        canvas {
-            display: block;
-            border-radius: 6px;
-        }
-
-        /* Static Mockups (for exclusion zones and incorrect uses) */
-        .logo-static {
-            font-family: var(--font-serif);
-            font-size: 48px;
-            font-weight: 300;
-            color: var(--color-ink);
-        }
-        .logo-static i {
-            font-style: italic;
-        }
-        .dark .logo-static { color: var(--color-white); }
-        .ink .logo-static { color: var(--color-sand); }
-        
-        .isotipo-static {
-            font-family: var(--font-serif);
-            font-size: 80px;
-            font-weight: 300;
-            color: var(--color-ink);
-        }
-
-        /* Exclusion Zone Visualization */
-        .exclusion-box {
-            position: relative;
-            display: inline-block;
-        }
-        .exclusion-lines {
-            position: absolute;
-            top: -24px; bottom: -24px; left: -24px; right: -24px;
-            border: 1px dashed var(--color-terra);
-            pointer-events: none;
-        }
-        .exclusion-x {
-            position: absolute;
-            color: var(--color-terra);
-            font-family: var(--font-mono);
-            font-size: 14px;
-        }
-        .ex-top { top: -18px; left: 50%; transform: translateX(-50%); }
-        .ex-bottom { bottom: -22px; left: 50%; transform: translateX(-50%); }
-        .ex-left { left: -16px; top: 50%; transform: translateY(-50%); }
-        .ex-right { right: -20px; top: 50%; transform: translateY(-50%); }
-
-        /* Incorrect Uses */
-        .incorrect-overlay {
-            position: absolute;
-            top: 1rem; left: 1rem;
-            color: var(--color-alert);
-            font-family: var(--font-mono);
-            font-size: 12px;
-            display: flex;
+        /* -------- System diagram -------- */
+        .system-row {
+            display: grid;
+            grid-template-columns: 90px 1fr;
+            gap: 1.5rem;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid var(--color-border-secondary);
             align-items: center;
-            gap: 4px;
         }
-        .incorrect-overlay::before {
-            content: "✕";
-            font-size: 14px;
-            font-weight: bold;
-        }
+        .system-row:last-child { border-bottom: none; }
+        .system-glyph { display: flex; align-items: center; justify-content: center; min-height: 70px; }
+        .system-text h3 { margin: 0 0 0.3rem; font-family: var(--font-deck); font-weight: 500; font-size: 1.1rem; color: var(--color-ink); }
+        .system-text p { margin: 0; font-size: 0.95rem; max-width: 100%; }
 
-        .wrong-stretch { transform: scaleX(1.5); }
-        .wrong-color { color: #8A2BE2 !important; }
-        .wrong-font { font-family: 'Comic Sans MS', sans-serif !important; font-style: normal !important; }
-        .wrong-rotate { transform: rotate(-15deg); }
-
-        .btn-group {
-            display: flex;
-            gap: 1rem;
-            margin-top: var(--spacing-sm);
-        }
-
-        button {
-            font-family: var(--font-mono);
-            font-size: 11px;
-            letter-spacing: 0.14em;
-            text-transform: uppercase;
-            padding: 10px 24px;
-            cursor: pointer;
-            background: rgba(255,255,255,0.5);
-            border: 1px solid var(--color-border-secondary);
-            border-radius: 6px;
-            color: var(--color-ink);
-            transition: all 0.3s ease;
-            backdrop-filter: blur(4px);
-        }
-
-        button:hover {
-            border-color: var(--color-terra);
-            color: var(--color-terra);
+        /* -------- Change note -------- */
+        .change-note {
             background: var(--color-white);
+            border-left: 3px solid var(--color-terra);
+            padding: 1.4rem 1.6rem;
+            border-radius: 4px;
+            font-family: var(--font-text);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--color-ink);
+            max-width: 820px;
+            margin-bottom: 2rem;
         }
-        /* Hover Animations for Símbolos */
-        .anim-respiracion { transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
-        .anim-respiracion circle { transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); transform-origin: 80px 130px; }
-        .anim-respiracion:hover { transform: scale(1.04); }
-        .anim-respiracion:hover circle { transform: scale(1.8); }
+        .change-note strong { color: var(--color-terra); font-weight: 500; }
+        .change-note code { font-family: var(--font-mono); font-size: 0.85em; }
 
-        .anim-eco .eco-ring { transform-origin: 80px 130px; }
-        .anim-eco:hover .eco-ring { animation: ripple 1.2s ease-out infinite; }
-        
-        @keyframes ripple {
-            0% { transform: scale(1); opacity: 0.8; }
-            100% { transform: scale(3.5); opacity: 0; stroke-width: 0.1px; }
+        /* -------- Animations -------- */
+        .anim-card { border-radius: 8px; border: 1px solid var(--color-border-secondary); overflow: hidden; background: var(--color-white); }
+        .anim-stage {
+            min-height: 280px;
+            background: var(--color-sand);
+            display: flex; align-items: center; justify-content: center;
+            position: relative; overflow: hidden;
         }
+        .anim-stage.dark { background: var(--color-offblack); }
+        .anim-body { padding: 1.4rem 1.5rem 1.5rem; background: var(--color-white); border-top: 1px solid var(--color-border-secondary); }
+        .anim-body h3 { margin-top: 0; }
+        .anim-body p { font-size: 0.92rem; margin-bottom: 0.5rem; line-height: 1.55; }
+        .anim-body .anim-meta { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.05em; color: var(--color-sea); }
+        .anim-body .anim-use { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.08em; color: var(--color-terra); text-transform: uppercase; margin-top: 0.3rem; }
+        .anim-canonical {
+            position: absolute; top: 0.6rem; right: 0.8rem;
+            font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.16em;
+            text-transform: uppercase; color: var(--color-terra);
+            background: rgba(244, 240, 232, 0.9);
+            padding: 0.25rem 0.5rem; border-radius: 3px;
+        }
+        .anim-stage.dark .anim-canonical { background: rgba(26, 26, 24, 0.7); color: var(--color-terra); }
 
-        .anim-flotacion { transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
-        .anim-flotacion:hover { transform: translateY(-8px); }
-        .anim-flotacion circle { transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
-        .anim-flotacion:hover circle { transform: translateY(6px); }
+        /* -------- Construction -------- */
+        .construction {
+            background: var(--color-white);
+            border: 1px solid var(--color-border-secondary);
+            border-radius: 8px;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: center;
+        }
+        @media (max-width: 800px) { .construction { grid-template-columns: 1fr; } }
+        .construction-visual {
+            position: relative; display: flex; align-items: center; justify-content: center;
+            background: var(--color-sand); border-radius: 6px;
+            min-height: 320px; padding: 1.5rem;
+        }
+        .construction-info h3 { margin-top: 0; }
+        .construction-info p { font-size: 0.95rem; max-width: 100%; margin-bottom: 0.5rem; }
+
+        /* -------- Don'ts -------- */
+        .dont-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
+        .dont { background: var(--color-white); border: 1px solid var(--color-border-secondary); border-radius: 8px; padding: 1.5rem; position: relative; }
+        .dont::before {
+            content: 'NO'; position: absolute; top: -10px; left: 1.2rem;
+            background: var(--color-sand); padding: 0 0.6rem;
+            font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.16em;
+            color: var(--color-alert); font-weight: 500;
+        }
+        .dont-stage {
+            height: 140px; display: flex; align-items: center; justify-content: center;
+            background: var(--color-sand); border-radius: 4px; margin-bottom: 1rem;
+        }
+        .dont-stage svg { max-width: 70%; max-height: 120px; }
+        .dont-reason { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.05em; color: var(--color-text-secondary); margin: 0; text-transform: none; }
+
+        /* -------- App icons -------- */
+        .appicon { display: flex; flex-direction: column; gap: 0.6rem; }
+        .appicon-tile {
+            width: 100%; aspect-ratio: 1 / 1;
+            border-radius: 22.37%;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+            position: relative;
+            color: var(--color-ink);
+            --core-color: var(--color-terra);
+        }
+        .appicon-tile > svg { width: 100%; height: 100%; display: block; }
+        .appicon-tile.sand   { background: var(--color-sand);     color: var(--color-ink);      --core-color: var(--color-terra); }
+        .appicon-tile.ink    { background: var(--color-ink);      color: var(--color-sand);     --core-color: var(--color-terra); }
+        .appicon-tile.terra  { background: var(--color-terra);    color: var(--color-sand);     --core-color: var(--color-sand); }
+        .appicon-tile.sunset { background: linear-gradient(135deg, #B8896A 0%, #E2DDD4 60%, #F4F0E8 100%); color: var(--color-ink); --core-color: var(--color-ink); }
+        .appicon-tile.iris   { background: conic-gradient(from 180deg at 50% 50%, #8E5DBF 0deg, #D04AC2 72deg, #4ABFD0 144deg, #4AD0A6 216deg, #D0B14A 288deg, #8E5DBF 360deg); color: var(--color-offblack); --core-color: var(--color-sand); }
+
+        .appicon-favicon { width: 64px; height: 64px; border-radius: 14px; background: var(--color-sand); display: inline-flex; align-items: center; justify-content: center; }
+        .appicon-favicon svg { width: 70%; height: auto; color: var(--color-ink); }
+
+        .og-card {
+            width: 100%; aspect-ratio: 1200 / 630;
+            background: var(--color-offblack);
+            border-radius: 12px; overflow: hidden;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 3rem 4rem; position: relative;
+            color: var(--color-sand);
+        }
+        .og-card .og-drop { width: 130px; height: 162px; flex-shrink: 0; color: var(--color-terra); --core-color: var(--color-sand); }
+        .og-card .og-text { text-align: right; }
+        .og-card .og-eyebrow { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-terra); margin-bottom: 0.4rem; }
+        .og-card .og-title { font-family: var(--font-display); font-weight: 300; font-size: 2.6rem; line-height: 1.05; letter-spacing: -0.02em; }
+        .og-card .og-meta { position: absolute; bottom: 1.4rem; right: 4rem; font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.16em; color: var(--color-stone); opacity: 0.6; }
+
+        /* -------- Halftone controls -------- */
+        .halftone-controls {
+            background: var(--color-white);
+            border: 1px solid var(--color-border-secondary);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+        }
+        .halftone-controls .control-group { display: flex; align-items: center; gap: 0.6rem; }
+        .halftone-controls label { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; color: var(--color-text-secondary); text-transform: uppercase; }
+        .halftone-controls input[type=range] { width: 120px; accent-color: var(--color-terra); }
+        .halftone-controls .val { font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-terra); min-width: 2.5em; }
+        .export-btn {
+            background: var(--color-ink);
+            color: var(--color-sand);
+            border: none;
+            padding: 0.6rem 1rem;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .export-btn:hover { background: var(--color-terra); }
+        .export-btn.primary { background: var(--color-terra); }
+        .export-btn.primary:hover { background: #A37A5A; }
+        .reset-btn {
+            background: transparent;
+            color: var(--color-text-secondary);
+            border: 1px solid var(--color-border-secondary);
+            padding: 0.5rem 0.9rem;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: color 0.3s, border-color 0.3s;
+        }
+        .reset-btn:hover { color: var(--color-terra); border-color: var(--color-terra); }
+
+        /* -------- Download pack -------- */
+        .download-section { background: var(--color-ink); color: var(--color-sand); border-radius: 8px; padding: 2.5rem; }
+        .download-section h3 { color: var(--color-sand); margin-top: 0; }
+        .download-section p { color: var(--color-stone); }
+        .download-cta {
+            display: inline-flex; align-items: center; gap: 0.8rem;
+            background: var(--color-terra); color: var(--color-sand); border: none;
+            padding: 1rem 1.6rem; border-radius: 6px;
+            font-family: var(--font-mono); font-size: 0.8rem; font-weight: 500;
+            letter-spacing: 0.16em; text-transform: uppercase; cursor: pointer;
+            transition: background 0.3s, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            margin-top: 1rem;
+        }
+        .download-cta:hover { background: #A37A5A; transform: translateY(-2px); }
+        .download-cta:disabled { opacity: 0.5; cursor: wait; }
+        .download-cta svg { width: 14px; height: 14px; }
+        .download-status { margin-top: 1rem; font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-sage); min-height: 1.2em; }
+        .download-status.error { color: var(--color-alert); }
+        .download-list {
+            margin-top: 1.5rem;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 0.4rem 1.5rem;
+            padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .download-list a {
+            font-family: var(--font-mono); font-size: 0.78rem;
+            color: var(--color-stone); text-decoration: none;
+            padding: 0.35rem 0;
+            display: flex; justify-content: space-between;
+            transition: color 0.3s;
+        }
+        .download-list a:hover { color: var(--color-terra); }
+        .download-list a span:last-child { color: var(--color-muted); font-size: 0.7rem; }
+
+        /* -------- Metadata strip / footer -------- */
+        .meta-strip { background: var(--color-offblack); color: var(--color-sand); padding: 1.2rem 1.6rem; border-radius: 4px; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.16em; text-transform: uppercase; display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: var(--spacing-md); }
+        .meta-strip span { color: var(--color-stone); }
+        .meta-strip .sep { color: var(--color-terra); }
+        .meta-strip .tag { color: var(--color-terra); font-weight: 500; }
+
+        footer { text-align: center; margin-top: var(--spacing-xl); padding: var(--spacing-md) 0; border-top: 1px solid var(--color-border-secondary); }
+        .chapter-nav { display: flex; justify-content: space-between; align-items: center; max-width: 800px; margin: 0 auto var(--spacing-md); padding: 0 var(--spacing-sm); }
+        .chapter-nav a { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-text-secondary); text-decoration: none; transition: color 0.3s ease; }
+        .chapter-nav a:hover { color: var(--color-terra); }
+        @media (max-width: 600px) { .chapter-nav { flex-direction: column; gap: 1rem; text-align: center; } }
     </style>
 </head>
 <body>
 
+<!-- ============================================================ -->
+<!-- DEFS — Símbolos reutilizables
+     · drop-halftone: rejilla hexagonal de puntos (poblada por JS)
+     · drop-halftone-square: variante cuadrada 200×200 para app icons
+     · drop-layered: alternativa concéntrica
+     · drop-simple: para favicon ≤ 24px
+-->
+<!-- ============================================================ -->
+<svg style="position:absolute; width:0; height:0; overflow:hidden" aria-hidden="true">
+    <defs>
+        <symbol id="drop-halftone" viewBox="0 0 160 200"></symbol>
+
+        <symbol id="drop-halftone-square" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet">
+            <g transform="translate(30 17) scale(0.875)">
+                <use href="#drop-halftone" width="160" height="200"/>
+            </g>
+        </symbol>
+
+        <symbol id="drop-layered" viewBox="0 0 160 200">
+            <g fill="none" stroke="currentColor" stroke-linejoin="round">
+                <path d="M80 12 C80 12 104 52 116 88 C126 118 122 152 102 168 C92 176 80 178 80 178 C80 178 68 176 58 168 C38 152 34 118 44 88 C56 52 80 12 80 12 Z" stroke-width="4"/>
+                <g transform="translate(80 130)">
+                    <path d="M0 -118 C0 -118 24 -78 36 -42 C46 -12 42 22 22 38 C12 46 0 48 0 48 C0 48 -12 46 -22 38 C-42 22 -46 -12 -36 -42 C-24 -78 0 -118 0 -118 Z" transform="scale(0.78)" stroke-width="2.4" opacity="0.85"/>
+                    <path d="M0 -118 C0 -118 24 -78 36 -42 C46 -12 42 22 22 38 C12 46 0 48 0 48 C0 48 -12 46 -22 38 C-42 22 -46 -12 -36 -42 C-24 -78 0 -118 0 -118 Z" transform="scale(0.58)" stroke-width="1.8" opacity="0.70"/>
+                    <path d="M0 -118 C0 -118 24 -78 36 -42 C46 -12 42 22 22 38 C12 46 0 48 0 48 C0 48 -12 46 -22 38 C-42 22 -46 -12 -36 -42 C-24 -78 0 -118 0 -118 Z" transform="scale(0.40)" stroke-width="1.3" opacity="0.55"/>
+                    <path d="M0 -118 C0 -118 24 -78 36 -42 C46 -12 42 22 22 38 C12 46 0 48 0 48 C0 48 -12 46 -22 38 C-42 22 -46 -12 -36 -42 C-24 -78 0 -118 0 -118 Z" transform="scale(0.22)" stroke-width="0.9" opacity="0.40"/>
+                </g>
+            </g>
+            <circle cx="80" cy="130" r="4" fill="currentColor"/>
+        </symbol>
+
+        <symbol id="drop-simple" viewBox="0 0 160 200">
+            <path d="M80 12 C80 12 104 52 116 88 C126 118 122 152 102 168 C92 176 80 178 80 178 C80 178 68 176 58 168 C38 152 34 118 44 88 C56 52 80 12 80 12 Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>
+            <circle cx="80" cy="130" r="6" fill="currentColor"/>
+        </symbol>
+    </defs>
+</svg>
+
+<!-- Generador halftone — debe correr antes de los <use> -->
+<script>
+(function() {
+    const FOCAL_X = 80, FOCAL_Y = 130;
+    const GOTA_D = "M80 12 C80 12 104 52 116 88 C126 118 122 152 102 168 C92 176 80 178 80 178 C80 178 68 176 58 168 C38 152 34 118 44 88 C56 52 80 12 80 12 Z";
+    // Defaults canónicos v1.0 — confirmados
+    window.__halftone = {
+        spacing: 8,
+        maxR: 2.8,
+        minR: 0.4,
+        decay: 38,
+        coreR: 4
+    };
+    window.__halftoneDefaults = Object.assign({}, window.__halftone);
+
+    function generate(symbolEl, opts) {
+        const o = Object.assign({}, window.__halftone, opts || {});
+        while (symbolEl.firstChild) symbolEl.removeChild(symbolEl.firstChild);
+
+        const canvas = document.createElement('canvas');
+        canvas.width = 160; canvas.height = 200;
+        const ctx = canvas.getContext('2d');
+        const path = new Path2D(GOTA_D);
+
+        const SVGNS = 'http://www.w3.org/2000/svg';
+        const sp = o.spacing;
+
+        for (let y = sp / 2; y < 200; y += sp) {
+            const rowIdx = Math.round((y - sp / 2) / sp);
+            const xOff = (rowIdx % 2 === 0) ? 0 : sp / 2;
+            for (let x = sp / 2 + xOff; x < 160; x += sp) {
+                if (!ctx.isPointInPath(path, x, y)) continue;
+                const dx = x - FOCAL_X, dy = y - FOCAL_Y;
+                const d = Math.sqrt(dx * dx + dy * dy);
+                const r = Math.max(o.minR, o.maxR - d / o.decay * o.maxR);
+                if (r < 0.35) continue;
+                if (d < 6) continue;
+                const ring = Math.min(7, Math.floor(d / 11));
+                const c = document.createElementNS(SVGNS, 'circle');
+                c.setAttribute('cx', x.toFixed(2));
+                c.setAttribute('cy', y.toFixed(2));
+                c.setAttribute('r', r.toFixed(2));
+                c.setAttribute('fill', 'currentColor');
+                c.setAttribute('class', 'halftone-dot');
+                c.dataset.ring = ring;
+                symbolEl.appendChild(c);
+            }
+        }
+        const core = document.createElementNS(SVGNS, 'circle');
+        core.setAttribute('cx', FOCAL_X);
+        core.setAttribute('cy', FOCAL_Y);
+        core.setAttribute('r', o.coreR);
+        core.setAttribute('fill', 'var(--core-color, #B8896A)');
+        core.setAttribute('class', 'halftone-core');
+        symbolEl.appendChild(core);
+    }
+
+    window.__generateHalftone = generate;
+
+    // Targets: el symbol + todas las animaciones inline.
+    // Las animaciones se pueblan DESPUÉS de DOMContentLoaded porque están más abajo del script.
+    function populateAll(opts) {
+        const sym = document.getElementById('drop-halftone');
+        if (sym) generate(sym, opts);
+        document.querySelectorAll('.halftone-inline').forEach(el => generate(el, opts));
+    }
+    window.__populateAllHalftone = populateAll;
+
+    // Poblar symbol inmediatamente (las animaciones inline aún no existen en DOM).
+    const sym = document.getElementById('drop-halftone');
+    if (sym) generate(sym);
+
+    // Poblar animaciones inline cuando el DOM esté listo.
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => populateAll());
+    } else {
+        populateAll();
+    }
+})();
+</script>
+
 <div class="container">
+
     <div class="intro">
         <div class="lbl">Sección 03</div>
         <h1>Logo</h1>
-        <p>El logotipo de ForMeta es el elemento principal de nuestra identidad. Transmite la conjunción entre estructura ("Forma") y trascendencia ("Meta"). Su uso debe ser cuidadoso y coherente para mantener la integridad visual de la marca.</p>
+        <p class="lead">Tres elementos, una marca. La gota construida de puntos, el nombre construido de puntos, y la suma de ambos. Una sola gramática visual.</p>
     </div>
 
-    <!-- 1. Principal y variantes -->
-    <section>
-        <h2>3.1 Principal y Variantes</h2>
-        <p>Las diferentes configuraciones del logotipo aseguran legibilidad en cualquier formato y soporte. La versión horizontal es la principal.</p>
-        
-        <div class="grid-3">
-            <div class="card">
-                <div class="card-visual color">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 160">
-  <rect width="100%" height="100%" fill="#f4f0e8" />
-  <circle cx="76" cy="64" r="1.55" fill="#2c2c28" opacity="0.83" />
-  <circle cx="80" cy="64" r="0.55" fill="#2c2c28" opacity="0.69" />
-  <circle cx="96" cy="64" r="0.63" fill="#2c2c28" opacity="0.97" />
-  <circle cx="100" cy="64" r="1.81" fill="#b8896a" opacity="0.86" />
-  <circle cx="156" cy="64" r="1.38" fill="#2c2c28" opacity="0.98" />
-  <circle cx="160" cy="64" r="2.00" fill="#2c2c28" opacity="0.93" />
-  <circle cx="164" cy="64" r="0.59" fill="#b8896a" opacity="0.69" />
-  <circle cx="184" cy="64" r="0.84" fill="#2c2c28" opacity="0.74" />
-  <circle cx="188" cy="64" r="1.54" fill="#2c2c28" opacity="0.67" />
-  <circle cx="192" cy="64" r="0.95" fill="#2c2c28" opacity="0.70" />
-  <circle cx="80" cy="68" r="1.05" fill="#2c2c28" opacity="0.90" />
-  <circle cx="100" cy="68" r="1.80" fill="#b8896a" opacity="0.71" />
-  <circle cx="160" cy="68" r="0.93" fill="#2c2c28" opacity="0.69" />
-  <circle cx="164" cy="68" r="0.97" fill="#2c2c28" opacity="0.85" />
-  <circle cx="184" cy="68" r="0.76" fill="#2c2c28" opacity="0.87" />
-  <circle cx="188" cy="68" r="1.28" fill="#2c2c28" opacity="0.79" />
-  <circle cx="232" cy="68" r="1.16" fill="#2c2c28" opacity="0.70" />
-  <circle cx="80" cy="72" r="1.82" fill="#2c2c28" opacity="0.68" />
-  <circle cx="112" cy="72" r="1.25" fill="#b8896a" opacity="0.69" />
-  <circle cx="116" cy="72" r="1.07" fill="#2c2c28" opacity="0.77" />
-  <circle cx="132" cy="72" r="0.51" fill="#2c2c28" opacity="0.88" />
-  <circle cx="136" cy="72" r="0.83" fill="#b8896a" opacity="0.90" />
-  <circle cx="144" cy="72" r="1.66" fill="#2c2c28" opacity="0.79" />
-  <circle cx="148" cy="72" r="1.46" fill="#2c2c28" opacity="0.87" />
-  <circle cx="160" cy="72" r="0.77" fill="#2c2c28" opacity="0.66" />
-  <circle cx="164" cy="72" r="0.96" fill="#b8896a" opacity="0.68" />
-  <circle cx="168" cy="72" r="1.82" fill="#b8896a" opacity="0.74" />
-  <circle cx="188" cy="72" r="1.36" fill="#2c2c28" opacity="0.89" />
-  <circle cx="212" cy="72" r="1.21" fill="#2c2c28" opacity="0.91" />
-  <circle cx="216" cy="72" r="1.88" fill="#2c2c28" opacity="0.83" />
-  <circle cx="228" cy="72" r="1.32" fill="#2c2c28" opacity="0.78" />
-  <circle cx="232" cy="72" r="1.85" fill="#2c2c28" opacity="0.76" />
-  <circle cx="236" cy="72" r="1.87" fill="#b8896a" opacity="0.97" />
-  <circle cx="240" cy="72" r="1.72" fill="#2c2c28" opacity="0.75" />
-  <circle cx="252" cy="72" r="1.53" fill="#2c2c28" opacity="0.91" />
-  <circle cx="256" cy="72" r="1.72" fill="#2c2c28" opacity="0.72" />
-  <circle cx="260" cy="72" r="1.60" fill="#2c2c28" opacity="0.73" />
-  <circle cx="80" cy="76" r="1.30" fill="#b8896a" opacity="0.97" />
-  <circle cx="92" cy="76" r="1.58" fill="#2c2c28" opacity="0.93" />
-  <circle cx="108" cy="76" r="1.89" fill="#2c2c28" opacity="0.86" />
-  <circle cx="120" cy="76" r="1.42" fill="#2c2c28" opacity="0.96" />
-  <circle cx="136" cy="76" r="1.52" fill="#2c2c28" opacity="0.71" />
-  <circle cx="140" cy="76" r="0.65" fill="#2c2c28" opacity="0.91" />
-  <circle cx="148" cy="76" r="1.20" fill="#2c2c28" opacity="0.82" />
-  <circle cx="160" cy="76" r="0.88" fill="#2c2c28" opacity="0.84" />
-  <circle cx="164" cy="76" r="1.39" fill="#2c2c28" opacity="0.77" />
-  <circle cx="168" cy="76" r="1.42" fill="#b8896a" opacity="0.88" />
-  <circle cx="180" cy="76" r="0.52" fill="#2c2c28" opacity="0.80" />
-  <circle cx="188" cy="76" r="0.61" fill="#2c2c28" opacity="0.83" />
-  <circle cx="204" cy="76" r="0.91" fill="#2c2c28" opacity="0.92" />
-  <circle cx="208" cy="76" r="1.76" fill="#2c2c28" opacity="0.65" />
-  <circle cx="220" cy="76" r="1.93" fill="#2c2c28" opacity="0.83" />
-  <circle cx="232" cy="76" r="1.45" fill="#2c2c28" opacity="0.68" />
-  <circle cx="248" cy="76" r="1.00" fill="#2c2c28" opacity="0.71" />
-  <circle cx="260" cy="76" r="1.63" fill="#2c2c28" opacity="0.90" />
-  <circle cx="80" cy="80" r="0.85" fill="#2c2c28" opacity="0.74" />
-  <circle cx="84" cy="80" r="1.46" fill="#2c2c28" opacity="0.84" />
-  <circle cx="88" cy="80" r="1.55" fill="#2c2c28" opacity="0.67" />
-  <circle cx="92" cy="80" r="0.75" fill="#2c2c28" opacity="0.70" />
-  <circle cx="104" cy="80" r="1.67" fill="#2c2c28" opacity="0.85" />
-  <circle cx="120" cy="80" r="0.77" fill="#2c2c28" opacity="0.88" />
-  <circle cx="124" cy="80" r="0.59" fill="#b8896a" opacity="0.78" />
-  <circle cx="136" cy="80" r="1.40" fill="#2c2c28" opacity="0.87" />
-  <circle cx="148" cy="80" r="1.28" fill="#2c2c28" opacity="0.85" />
-  <circle cx="160" cy="80" r="1.22" fill="#b8896a" opacity="0.94" />
-  <circle cx="168" cy="80" r="1.94" fill="#b8896a" opacity="0.66" />
-  <circle cx="180" cy="80" r="1.62" fill="#2c2c28" opacity="0.94" />
-  <circle cx="188" cy="80" r="1.84" fill="#2c2c28" opacity="0.77" />
-  <circle cx="204" cy="80" r="0.52" fill="#2c2c28" opacity="0.72" />
-  <circle cx="220" cy="80" r="1.92" fill="#2c2c28" opacity="0.73" />
-  <circle cx="232" cy="80" r="0.63" fill="#2c2c28" opacity="0.91" />
-  <circle cx="248" cy="80" r="1.76" fill="#2c2c28" opacity="0.93" />
-  <circle cx="260" cy="80" r="1.76" fill="#2c2c28" opacity="0.83" />
-  <circle cx="264" cy="80" r="1.59" fill="#2c2c28" opacity="0.68" />
-  <circle cx="80" cy="84" r="1.20" fill="#b8896a" opacity="0.97" />
-  <circle cx="92" cy="84" r="0.59" fill="#2c2c28" opacity="0.67" />
-  <circle cx="104" cy="84" r="1.85" fill="#2c2c28" opacity="0.72" />
-  <circle cx="120" cy="84" r="1.97" fill="#b8896a" opacity="0.98" />
-  <circle cx="124" cy="84" r="1.95" fill="#2c2c28" opacity="0.95" />
-  <circle cx="132" cy="84" r="1.54" fill="#2c2c28" opacity="0.69" />
-  <circle cx="136" cy="84" r="0.67" fill="#2c2c28" opacity="0.92" />
-  <circle cx="160" cy="84" r="1.67" fill="#2c2c28" opacity="0.66" />
-  <circle cx="168" cy="84" r="1.09" fill="#2c2c28" opacity="0.98" />
-  <circle cx="172" cy="84" r="1.05" fill="#2c2c28" opacity="0.78" />
-  <circle cx="176" cy="84" r="0.93" fill="#2c2c28" opacity="0.79" />
-  <circle cx="188" cy="84" r="1.11" fill="#2c2c28" opacity="0.96" />
-  <circle cx="204" cy="84" r="1.71" fill="#2c2c28" opacity="0.95" />
-  <circle cx="208" cy="84" r="0.89" fill="#2c2c28" opacity="1.00" />
-  <circle cx="212" cy="84" r="1.08" fill="#2c2c28" opacity="0.67" />
-  <circle cx="216" cy="84" r="1.79" fill="#2c2c28" opacity="0.90" />
-  <circle cx="220" cy="84" r="0.79" fill="#2c2c28" opacity="0.94" />
-  <circle cx="232" cy="84" r="1.79" fill="#2c2c28" opacity="0.90" />
-  <circle cx="252" cy="84" r="1.92" fill="#2c2c28" opacity="0.89" />
-  <circle cx="256" cy="84" r="1.65" fill="#2c2c28" opacity="0.73" />
-  <circle cx="260" cy="84" r="1.85" fill="#2c2c28" opacity="0.71" />
-  <circle cx="264" cy="84" r="1.87" fill="#2c2c28" opacity="0.71" />
-  <circle cx="80" cy="88" r="0.66" fill="#2c2c28" opacity="0.67" />
-  <circle cx="100" cy="88" r="1.84" fill="#2c2c28" opacity="0.67" />
-  <circle cx="104" cy="88" r="1.07" fill="#2c2c28" opacity="0.95" />
-  <circle cx="120" cy="88" r="1.23" fill="#2c2c28" opacity="0.67" />
-  <circle cx="124" cy="88" r="1.15" fill="#2c2c28" opacity="0.90" />
-  <circle cx="132" cy="88" r="1.13" fill="#b8896a" opacity="0.88" />
-  <circle cx="136" cy="88" r="0.84" fill="#b8896a" opacity="0.95" />
-  <circle cx="160" cy="88" r="0.74" fill="#2c2c28" opacity="0.68" />
-  <circle cx="172" cy="88" r="0.73" fill="#b8896a" opacity="0.71" />
-  <circle cx="176" cy="88" r="0.51" fill="#2c2c28" opacity="0.81" />
-  <circle cx="188" cy="88" r="1.24" fill="#2c2c28" opacity="0.65" />
-  <circle cx="204" cy="88" r="1.02" fill="#2c2c28" opacity="0.72" />
-  <circle cx="232" cy="88" r="1.01" fill="#2c2c28" opacity="0.95" />
-  <circle cx="248" cy="88" r="1.74" fill="#2c2c28" opacity="0.80" />
-  <circle cx="260" cy="88" r="1.06" fill="#2c2c28" opacity="0.74" />
-  <circle cx="264" cy="88" r="0.76" fill="#2c2c28" opacity="0.65" />
-  <circle cx="80" cy="92" r="1.67" fill="#2c2c28" opacity="0.87" />
-  <circle cx="104" cy="92" r="0.94" fill="#2c2c28" opacity="0.81" />
-  <circle cx="120" cy="92" r="1.61" fill="#b8896a" opacity="0.98" />
-  <circle cx="132" cy="92" r="1.34" fill="#b8896a" opacity="0.73" />
-  <circle cx="160" cy="92" r="1.22" fill="#2c2c28" opacity="0.90" />
-  <circle cx="172" cy="92" r="1.45" fill="#b8896a" opacity="0.76" />
-  <circle cx="188" cy="92" r="1.86" fill="#2c2c28" opacity="0.86" />
-  <circle cx="204" cy="92" r="0.72" fill="#2c2c28" opacity="0.81" />
-  <circle cx="208" cy="92" r="1.58" fill="#2c2c28" opacity="0.69" />
-  <circle cx="232" cy="92" r="0.54" fill="#2c2c28" opacity="0.82" />
-  <circle cx="248" cy="92" r="0.70" fill="#2c2c28" opacity="0.65" />
-  <circle cx="260" cy="92" r="1.52" fill="#2c2c28" opacity="0.78" />
-  <circle cx="264" cy="92" r="1.27" fill="#2c2c28" opacity="0.76" />
-  <circle cx="72" cy="96" r="1.36" fill="#b8896a" opacity="0.92" />
-  <circle cx="76" cy="96" r="1.54" fill="#2c2c28" opacity="0.86" />
-  <circle cx="80" cy="96" r="1.67" fill="#2c2c28" opacity="1.00" />
-  <circle cx="84" cy="96" r="0.78" fill="#b8896a" opacity="0.70" />
-  <circle cx="104" cy="96" r="1.81" fill="#2c2c28" opacity="0.91" />
-  <circle cx="108" cy="96" r="1.72" fill="#2c2c28" opacity="0.90" />
-  <circle cx="112" cy="96" r="1.50" fill="#b8896a" opacity="0.87" />
-  <circle cx="116" cy="96" r="0.54" fill="#b8896a" opacity="0.82" />
-  <circle cx="132" cy="96" r="0.71" fill="#b8896a" opacity="0.88" />
-  <circle cx="152" cy="96" r="1.83" fill="#b8896a" opacity="0.74" />
-  <circle cx="156" cy="96" r="0.64" fill="#2c2c28" opacity="0.80" />
-  <circle cx="160" cy="96" r="1.09" fill="#2c2c28" opacity="0.93" />
-  <circle cx="164" cy="96" r="1.24" fill="#2c2c28" opacity="0.90" />
-  <circle cx="172" cy="96" r="0.50" fill="#b8896a" opacity="0.95" />
-  <circle cx="184" cy="96" r="1.21" fill="#b8896a" opacity="0.99" />
-  <circle cx="188" cy="96" r="1.89" fill="#2c2c28" opacity="0.86" />
-  <circle cx="192" cy="96" r="1.55" fill="#2c2c28" opacity="0.84" />
-  <circle cx="196" cy="96" r="1.59" fill="#2c2c28" opacity="0.71" />
-  <circle cx="208" cy="96" r="1.38" fill="#b8896a" opacity="0.96" />
-  <circle cx="212" cy="96" r="0.66" fill="#2c2c28" opacity="0.66" />
-  <circle cx="216" cy="96" r="0.75" fill="#2c2c28" opacity="0.77" />
-  <circle cx="220" cy="96" r="0.64" fill="#b8896a" opacity="0.70" />
-  <circle cx="232" cy="96" r="1.63" fill="#2c2c28" opacity="0.88" />
-  <circle cx="236" cy="96" r="1.40" fill="#2c2c28" opacity="0.82" />
-  <circle cx="240" cy="96" r="1.47" fill="#2c2c28" opacity="0.99" />
-  <circle cx="248" cy="96" r="1.13" fill="#2c2c28" opacity="0.88" />
-  <circle cx="252" cy="96" r="1.17" fill="#2c2c28" opacity="0.81" />
-  <circle cx="256" cy="96" r="0.86" fill="#2c2c28" opacity="0.92" />
-  <circle cx="260" cy="96" r="1.63" fill="#2c2c28" opacity="0.95" />
-  <circle cx="264" cy="96" r="1.31" fill="#b8896a" opacity="0.78" />
-  <circle cx="268" cy="96" r="1.50" fill="#2c2c28" opacity="0.69" />
-</svg>
-                </div>
-                <div class="lbl">Color · Fondo Sand</div>
-                <div class="sub">01</div>
-            </div>
-            
-            <div class="card">
-                <div class="card-visual">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 160">
-  <rect width="100%" height="100%" fill="#ffffff" />
-  <circle cx="76" cy="64" r="1.01" fill="#111110" opacity="0.69" />
-  <circle cx="80" cy="64" r="1.60" fill="#111110" opacity="0.87" />
-  <circle cx="96" cy="64" r="1.86" fill="#111110" opacity="0.87" />
-  <circle cx="100" cy="64" r="1.85" fill="#111110" opacity="0.77" />
-  <circle cx="156" cy="64" r="0.68" fill="#111110" opacity="0.77" />
-  <circle cx="160" cy="64" r="0.80" fill="#111110" opacity="0.87" />
-  <circle cx="164" cy="64" r="1.00" fill="#111110" opacity="0.73" />
-  <circle cx="184" cy="64" r="1.43" fill="#111110" opacity="0.85" />
-  <circle cx="188" cy="64" r="0.97" fill="#111110" opacity="0.87" />
-  <circle cx="192" cy="64" r="0.68" fill="#111110" opacity="0.91" />
-  <circle cx="80" cy="68" r="0.86" fill="#111110" opacity="0.89" />
-  <circle cx="100" cy="68" r="1.89" fill="#111110" opacity="0.90" />
-  <circle cx="160" cy="68" r="1.89" fill="#111110" opacity="0.78" />
-  <circle cx="164" cy="68" r="0.69" fill="#111110" opacity="0.67" />
-  <circle cx="184" cy="68" r="1.80" fill="#111110" opacity="0.99" />
-  <circle cx="188" cy="68" r="0.73" fill="#111110" opacity="0.80" />
-  <circle cx="232" cy="68" r="0.85" fill="#111110" opacity="0.88" />
-  <circle cx="80" cy="72" r="0.96" fill="#111110" opacity="0.85" />
-  <circle cx="112" cy="72" r="0.92" fill="#111110" opacity="0.84" />
-  <circle cx="116" cy="72" r="1.65" fill="#111110" opacity="0.92" />
-  <circle cx="132" cy="72" r="0.78" fill="#111110" opacity="0.89" />
-  <circle cx="136" cy="72" r="0.70" fill="#111110" opacity="0.92" />
-  <circle cx="144" cy="72" r="1.57" fill="#111110" opacity="0.76" />
-  <circle cx="148" cy="72" r="1.25" fill="#111110" opacity="0.76" />
-  <circle cx="160" cy="72" r="0.56" fill="#111110" opacity="0.71" />
-  <circle cx="164" cy="72" r="1.36" fill="#111110" opacity="0.91" />
-  <circle cx="168" cy="72" r="0.95" fill="#111110" opacity="0.90" />
-  <circle cx="188" cy="72" r="1.53" fill="#111110" opacity="0.68" />
-  <circle cx="212" cy="72" r="1.22" fill="#111110" opacity="0.86" />
-  <circle cx="216" cy="72" r="1.35" fill="#111110" opacity="0.85" />
-  <circle cx="228" cy="72" r="2.00" fill="#111110" opacity="0.76" />
-  <circle cx="232" cy="72" r="0.71" fill="#111110" opacity="0.93" />
-  <circle cx="236" cy="72" r="0.79" fill="#111110" opacity="0.66" />
-  <circle cx="240" cy="72" r="1.59" fill="#111110" opacity="0.93" />
-  <circle cx="252" cy="72" r="0.51" fill="#111110" opacity="0.69" />
-  <circle cx="256" cy="72" r="1.27" fill="#111110" opacity="0.68" />
-  <circle cx="260" cy="72" r="1.73" fill="#111110" opacity="0.79" />
-  <circle cx="80" cy="76" r="1.09" fill="#111110" opacity="0.73" />
-  <circle cx="92" cy="76" r="0.71" fill="#111110" opacity="0.82" />
-  <circle cx="108" cy="76" r="0.73" fill="#111110" opacity="0.96" />
-  <circle cx="120" cy="76" r="0.93" fill="#111110" opacity="0.99" />
-  <circle cx="136" cy="76" r="0.60" fill="#111110" opacity="0.74" />
-  <circle cx="140" cy="76" r="0.74" fill="#111110" opacity="0.82" />
-  <circle cx="148" cy="76" r="1.15" fill="#111110" opacity="0.95" />
-  <circle cx="160" cy="76" r="1.54" fill="#111110" opacity="0.71" />
-  <circle cx="164" cy="76" r="1.34" fill="#111110" opacity="1.00" />
-  <circle cx="168" cy="76" r="1.78" fill="#111110" opacity="0.92" />
-  <circle cx="180" cy="76" r="1.81" fill="#111110" opacity="0.76" />
-  <circle cx="188" cy="76" r="0.71" fill="#111110" opacity="0.84" />
-  <circle cx="204" cy="76" r="1.04" fill="#111110" opacity="0.87" />
-  <circle cx="208" cy="76" r="0.70" fill="#111110" opacity="0.94" />
-  <circle cx="220" cy="76" r="0.55" fill="#111110" opacity="0.96" />
-  <circle cx="232" cy="76" r="1.95" fill="#111110" opacity="0.68" />
-  <circle cx="248" cy="76" r="0.58" fill="#111110" opacity="0.76" />
-  <circle cx="260" cy="76" r="0.64" fill="#111110" opacity="0.88" />
-  <circle cx="80" cy="80" r="1.46" fill="#111110" opacity="0.80" />
-  <circle cx="84" cy="80" r="1.41" fill="#111110" opacity="0.91" />
-  <circle cx="88" cy="80" r="0.74" fill="#111110" opacity="0.93" />
-  <circle cx="92" cy="80" r="1.98" fill="#111110" opacity="0.84" />
-  <circle cx="104" cy="80" r="0.96" fill="#111110" opacity="0.77" />
-  <circle cx="120" cy="80" r="0.52" fill="#111110" opacity="0.75" />
-  <circle cx="124" cy="80" r="1.34" fill="#111110" opacity="0.93" />
-  <circle cx="136" cy="80" r="0.61" fill="#111110" opacity="0.78" />
-  <circle cx="148" cy="80" r="1.33" fill="#111110" opacity="0.65" />
-  <circle cx="160" cy="80" r="1.61" fill="#111110" opacity="0.94" />
-  <circle cx="168" cy="80" r="0.83" fill="#111110" opacity="0.78" />
-  <circle cx="180" cy="80" r="1.87" fill="#111110" opacity="0.88" />
-  <circle cx="188" cy="80" r="1.87" fill="#111110" opacity="0.85" />
-  <circle cx="204" cy="80" r="1.51" fill="#111110" opacity="0.92" />
-  <circle cx="220" cy="80" r="1.82" fill="#111110" opacity="1.00" />
-  <circle cx="232" cy="80" r="1.22" fill="#111110" opacity="0.92" />
-  <circle cx="248" cy="80" r="1.35" fill="#111110" opacity="0.96" />
-  <circle cx="260" cy="80" r="0.91" fill="#111110" opacity="0.77" />
-  <circle cx="264" cy="80" r="0.52" fill="#111110" opacity="0.84" />
-  <circle cx="80" cy="84" r="1.45" fill="#111110" opacity="0.76" />
-  <circle cx="92" cy="84" r="0.89" fill="#111110" opacity="0.96" />
-  <circle cx="104" cy="84" r="0.55" fill="#111110" opacity="0.77" />
-  <circle cx="120" cy="84" r="1.46" fill="#111110" opacity="0.87" />
-  <circle cx="124" cy="84" r="1.63" fill="#111110" opacity="0.68" />
-  <circle cx="132" cy="84" r="1.91" fill="#111110" opacity="0.79" />
-  <circle cx="136" cy="84" r="1.46" fill="#111110" opacity="0.84" />
-  <circle cx="160" cy="84" r="1.07" fill="#111110" opacity="0.96" />
-  <circle cx="168" cy="84" r="0.85" fill="#111110" opacity="0.75" />
-  <circle cx="172" cy="84" r="1.61" fill="#111110" opacity="0.96" />
-  <circle cx="176" cy="84" r="0.82" fill="#111110" opacity="0.99" />
-  <circle cx="188" cy="84" r="0.62" fill="#111110" opacity="0.86" />
-  <circle cx="204" cy="84" r="1.73" fill="#111110" opacity="0.75" />
-  <circle cx="208" cy="84" r="1.60" fill="#111110" opacity="0.69" />
-  <circle cx="212" cy="84" r="0.51" fill="#111110" opacity="0.81" />
-  <circle cx="216" cy="84" r="1.82" fill="#111110" opacity="1.00" />
-  <circle cx="220" cy="84" r="0.68" fill="#111110" opacity="0.74" />
-  <circle cx="232" cy="84" r="1.82" fill="#111110" opacity="0.89" />
-  <circle cx="252" cy="84" r="1.07" fill="#111110" opacity="0.75" />
-  <circle cx="256" cy="84" r="0.99" fill="#111110" opacity="0.98" />
-  <circle cx="260" cy="84" r="0.84" fill="#111110" opacity="0.95" />
-  <circle cx="264" cy="84" r="1.90" fill="#111110" opacity="0.84" />
-  <circle cx="80" cy="88" r="1.53" fill="#111110" opacity="0.94" />
-  <circle cx="100" cy="88" r="1.22" fill="#111110" opacity="0.88" />
-  <circle cx="104" cy="88" r="1.80" fill="#111110" opacity="0.76" />
-  <circle cx="120" cy="88" r="0.86" fill="#111110" opacity="0.93" />
-  <circle cx="124" cy="88" r="1.12" fill="#111110" opacity="0.94" />
-  <circle cx="132" cy="88" r="0.67" fill="#111110" opacity="0.69" />
-  <circle cx="136" cy="88" r="1.95" fill="#111110" opacity="0.97" />
-  <circle cx="160" cy="88" r="0.73" fill="#111110" opacity="0.69" />
-  <circle cx="172" cy="88" r="1.41" fill="#111110" opacity="0.84" />
-  <circle cx="176" cy="88" r="1.14" fill="#111110" opacity="0.83" />
-  <circle cx="188" cy="88" r="1.75" fill="#111110" opacity="0.73" />
-  <circle cx="204" cy="88" r="1.37" fill="#111110" opacity="0.95" />
-  <circle cx="232" cy="88" r="1.94" fill="#111110" opacity="0.82" />
-  <circle cx="248" cy="88" r="1.69" fill="#111110" opacity="0.89" />
-  <circle cx="260" cy="88" r="0.53" fill="#111110" opacity="0.69" />
-  <circle cx="264" cy="88" r="1.76" fill="#111110" opacity="0.90" />
-  <circle cx="80" cy="92" r="1.54" fill="#111110" opacity="0.80" />
-  <circle cx="104" cy="92" r="0.89" fill="#111110" opacity="0.96" />
-  <circle cx="120" cy="92" r="1.76" fill="#111110" opacity="0.85" />
-  <circle cx="132" cy="92" r="0.62" fill="#111110" opacity="0.82" />
-  <circle cx="160" cy="92" r="1.94" fill="#111110" opacity="0.74" />
-  <circle cx="172" cy="92" r="0.80" fill="#111110" opacity="0.81" />
-  <circle cx="188" cy="92" r="1.74" fill="#111110" opacity="0.70" />
-  <circle cx="204" cy="92" r="1.01" fill="#111110" opacity="0.74" />
-  <circle cx="208" cy="92" r="0.65" fill="#111110" opacity="0.96" />
-  <circle cx="232" cy="92" r="0.55" fill="#111110" opacity="0.86" />
-  <circle cx="248" cy="92" r="1.27" fill="#111110" opacity="0.95" />
-  <circle cx="260" cy="92" r="0.67" fill="#111110" opacity="0.72" />
-  <circle cx="264" cy="92" r="1.78" fill="#111110" opacity="0.88" />
-  <circle cx="72" cy="96" r="1.73" fill="#111110" opacity="0.88" />
-  <circle cx="76" cy="96" r="0.97" fill="#111110" opacity="0.76" />
-  <circle cx="80" cy="96" r="1.99" fill="#111110" opacity="0.80" />
-  <circle cx="84" cy="96" r="1.22" fill="#111110" opacity="0.73" />
-  <circle cx="104" cy="96" r="1.45" fill="#111110" opacity="0.79" />
-  <circle cx="108" cy="96" r="1.11" fill="#111110" opacity="0.73" />
-  <circle cx="112" cy="96" r="1.26" fill="#111110" opacity="0.95" />
-  <circle cx="116" cy="96" r="1.03" fill="#111110" opacity="0.95" />
-  <circle cx="132" cy="96" r="0.60" fill="#111110" opacity="0.89" />
-  <circle cx="152" cy="96" r="1.05" fill="#111110" opacity="0.89" />
-  <circle cx="156" cy="96" r="0.52" fill="#111110" opacity="0.70" />
-  <circle cx="160" cy="96" r="1.55" fill="#111110" opacity="0.85" />
-  <circle cx="164" cy="96" r="1.56" fill="#111110" opacity="0.73" />
-  <circle cx="172" cy="96" r="1.01" fill="#111110" opacity="0.86" />
-  <circle cx="184" cy="96" r="1.04" fill="#111110" opacity="0.96" />
-  <circle cx="188" cy="96" r="1.48" fill="#111110" opacity="0.80" />
-  <circle cx="192" cy="96" r="1.54" fill="#111110" opacity="0.96" />
-  <circle cx="196" cy="96" r="1.78" fill="#111110" opacity="0.71" />
-  <circle cx="208" cy="96" r="0.77" fill="#111110" opacity="0.88" />
-  <circle cx="212" cy="96" r="1.73" fill="#111110" opacity="0.69" />
-  <circle cx="216" cy="96" r="0.84" fill="#111110" opacity="0.90" />
-  <circle cx="220" cy="96" r="1.31" fill="#111110" opacity="0.71" />
-  <circle cx="232" cy="96" r="1.35" fill="#111110" opacity="0.75" />
-  <circle cx="236" cy="96" r="1.31" fill="#111110" opacity="0.83" />
-  <circle cx="240" cy="96" r="1.93" fill="#111110" opacity="0.84" />
-  <circle cx="248" cy="96" r="1.32" fill="#111110" opacity="0.91" />
-  <circle cx="252" cy="96" r="1.75" fill="#111110" opacity="0.85" />
-  <circle cx="256" cy="96" r="1.42" fill="#111110" opacity="0.99" />
-  <circle cx="260" cy="96" r="1.26" fill="#111110" opacity="0.68" />
-  <circle cx="264" cy="96" r="1.31" fill="#111110" opacity="0.92" />
-  <circle cx="268" cy="96" r="1.57" fill="#111110" opacity="0.73" />
-</svg>
-                </div>
-                <div class="lbl">Monocromático · Blanco</div>
-                <div class="sub">02</div>
-            </div>
-            
-            <div class="card">
-                <div class="card-visual dark">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 160">
-  <rect width="100%" height="100%" fill="#1a1a18" />
-  <circle cx="76" cy="64" r="0.75" fill="#d8d4cc" opacity="0.79" />
-  <circle cx="80" cy="64" r="1.64" fill="#d8d4cc" opacity="0.65" />
-  <circle cx="96" cy="64" r="0.91" fill="#b8896a" opacity="0.77" />
-  <circle cx="100" cy="64" r="1.90" fill="#b8896a" opacity="0.81" />
-  <circle cx="156" cy="64" r="1.62" fill="#d8d4cc" opacity="0.89" />
-  <circle cx="160" cy="64" r="0.61" fill="#d8d4cc" opacity="0.86" />
-  <circle cx="164" cy="64" r="1.84" fill="#b8896a" opacity="0.73" />
-  <circle cx="184" cy="64" r="1.52" fill="#d8d4cc" opacity="0.98" />
-  <circle cx="188" cy="64" r="0.59" fill="#d8d4cc" opacity="0.85" />
-  <circle cx="192" cy="64" r="0.57" fill="#d8d4cc" opacity="0.68" />
-  <circle cx="80" cy="68" r="0.54" fill="#d8d4cc" opacity="0.77" />
-  <circle cx="100" cy="68" r="1.62" fill="#d8d4cc" opacity="0.85" />
-  <circle cx="160" cy="68" r="0.82" fill="#d8d4cc" opacity="0.71" />
-  <circle cx="164" cy="68" r="0.59" fill="#d8d4cc" opacity="0.89" />
-  <circle cx="184" cy="68" r="1.51" fill="#d8d4cc" opacity="0.99" />
-  <circle cx="188" cy="68" r="1.07" fill="#d8d4cc" opacity="0.81" />
-  <circle cx="232" cy="68" r="0.83" fill="#d8d4cc" opacity="1.00" />
-  <circle cx="80" cy="72" r="1.80" fill="#d8d4cc" opacity="0.90" />
-  <circle cx="112" cy="72" r="1.00" fill="#b8896a" opacity="0.70" />
-  <circle cx="116" cy="72" r="1.97" fill="#d8d4cc" opacity="0.80" />
-  <circle cx="132" cy="72" r="0.80" fill="#b8896a" opacity="0.96" />
-  <circle cx="136" cy="72" r="1.84" fill="#b8896a" opacity="0.80" />
-  <circle cx="144" cy="72" r="1.86" fill="#d8d4cc" opacity="0.97" />
-  <circle cx="148" cy="72" r="1.01" fill="#d8d4cc" opacity="0.74" />
-  <circle cx="160" cy="72" r="0.80" fill="#d8d4cc" opacity="0.87" />
-  <circle cx="164" cy="72" r="1.62" fill="#b8896a" opacity="0.72" />
-  <circle cx="168" cy="72" r="0.56" fill="#d8d4cc" opacity="0.68" />
-  <circle cx="188" cy="72" r="0.69" fill="#d8d4cc" opacity="0.75" />
-  <circle cx="212" cy="72" r="0.85" fill="#d8d4cc" opacity="0.70" />
-  <circle cx="216" cy="72" r="1.34" fill="#d8d4cc" opacity="0.86" />
-  <circle cx="228" cy="72" r="0.69" fill="#d8d4cc" opacity="0.73" />
-  <circle cx="232" cy="72" r="0.92" fill="#d8d4cc" opacity="0.99" />
-  <circle cx="236" cy="72" r="1.87" fill="#d8d4cc" opacity="0.95" />
-  <circle cx="240" cy="72" r="1.31" fill="#d8d4cc" opacity="0.93" />
-  <circle cx="252" cy="72" r="1.78" fill="#d8d4cc" opacity="0.76" />
-  <circle cx="256" cy="72" r="1.32" fill="#d8d4cc" opacity="0.75" />
-  <circle cx="260" cy="72" r="1.21" fill="#d8d4cc" opacity="0.77" />
-  <circle cx="80" cy="76" r="1.40" fill="#d8d4cc" opacity="0.87" />
-  <circle cx="92" cy="76" r="1.83" fill="#d8d4cc" opacity="0.75" />
-  <circle cx="108" cy="76" r="1.00" fill="#b8896a" opacity="0.68" />
-  <circle cx="120" cy="76" r="1.62" fill="#d8d4cc" opacity="0.82" />
-  <circle cx="136" cy="76" r="1.33" fill="#d8d4cc" opacity="0.92" />
-  <circle cx="140" cy="76" r="1.25" fill="#d8d4cc" opacity="0.99" />
-  <circle cx="148" cy="76" r="1.75" fill="#d8d4cc" opacity="0.92" />
-  <circle cx="160" cy="76" r="1.83" fill="#b8896a" opacity="0.68" />
-  <circle cx="164" cy="76" r="1.49" fill="#b8896a" opacity="0.65" />
-  <circle cx="168" cy="76" r="1.62" fill="#b8896a" opacity="0.70" />
-  <circle cx="180" cy="76" r="1.97" fill="#d8d4cc" opacity="0.88" />
-  <circle cx="188" cy="76" r="0.96" fill="#d8d4cc" opacity="0.90" />
-  <circle cx="204" cy="76" r="1.13" fill="#d8d4cc" opacity="0.67" />
-  <circle cx="208" cy="76" r="1.43" fill="#d8d4cc" opacity="0.75" />
-  <circle cx="220" cy="76" r="1.79" fill="#d8d4cc" opacity="1.00" />
-  <circle cx="232" cy="76" r="1.76" fill="#d8d4cc" opacity="0.66" />
-  <circle cx="248" cy="76" r="0.93" fill="#d8d4cc" opacity="0.75" />
-  <circle cx="260" cy="76" r="1.43" fill="#d8d4cc" opacity="0.72" />
-  <circle cx="80" cy="80" r="1.07" fill="#b8896a" opacity="0.90" />
-  <circle cx="84" cy="80" r="0.66" fill="#b8896a" opacity="0.76" />
-  <circle cx="88" cy="80" r="1.56" fill="#b8896a" opacity="0.77" />
-  <circle cx="92" cy="80" r="1.34" fill="#d8d4cc" opacity="0.89" />
-  <circle cx="104" cy="80" r="1.53" fill="#d8d4cc" opacity="0.67" />
-  <circle cx="120" cy="80" r="0.84" fill="#d8d4cc" opacity="0.98" />
-  <circle cx="124" cy="80" r="0.75" fill="#d8d4cc" opacity="0.80" />
-  <circle cx="136" cy="80" r="1.05" fill="#d8d4cc" opacity="0.80" />
-  <circle cx="148" cy="80" r="1.40" fill="#d8d4cc" opacity="0.72" />
-  <circle cx="160" cy="80" r="1.70" fill="#d8d4cc" opacity="0.69" />
-  <circle cx="168" cy="80" r="0.62" fill="#d8d4cc" opacity="0.78" />
-  <circle cx="180" cy="80" r="1.89" fill="#d8d4cc" opacity="0.75" />
-  <circle cx="188" cy="80" r="0.79" fill="#d8d4cc" opacity="0.65" />
-  <circle cx="204" cy="80" r="1.90" fill="#d8d4cc" opacity="0.92" />
-  <circle cx="220" cy="80" r="1.19" fill="#d8d4cc" opacity="0.96" />
-  <circle cx="232" cy="80" r="0.93" fill="#d8d4cc" opacity="0.69" />
-  <circle cx="248" cy="80" r="1.61" fill="#d8d4cc" opacity="0.79" />
-  <circle cx="260" cy="80" r="1.77" fill="#d8d4cc" opacity="0.89" />
-  <circle cx="264" cy="80" r="0.91" fill="#b8896a" opacity="0.86" />
-  <circle cx="80" cy="84" r="1.78" fill="#b8896a" opacity="0.91" />
-  <circle cx="92" cy="84" r="1.68" fill="#d8d4cc" opacity="0.66" />
-  <circle cx="104" cy="84" r="1.64" fill="#d8d4cc" opacity="0.66" />
-  <circle cx="120" cy="84" r="1.27" fill="#d8d4cc" opacity="0.93" />
-  <circle cx="124" cy="84" r="1.44" fill="#d8d4cc" opacity="0.84" />
-  <circle cx="132" cy="84" r="1.51" fill="#d8d4cc" opacity="0.68" />
-  <circle cx="136" cy="84" r="0.95" fill="#d8d4cc" opacity="0.90" />
-  <circle cx="160" cy="84" r="0.73" fill="#b8896a" opacity="0.79" />
-  <circle cx="168" cy="84" r="0.74" fill="#d8d4cc" opacity="0.85" />
-  <circle cx="172" cy="84" r="0.60" fill="#d8d4cc" opacity="0.84" />
-  <circle cx="176" cy="84" r="1.84" fill="#d8d4cc" opacity="0.82" />
-  <circle cx="188" cy="84" r="0.56" fill="#d8d4cc" opacity="0.77" />
-  <circle cx="204" cy="84" r="0.81" fill="#d8d4cc" opacity="0.99" />
-  <circle cx="208" cy="84" r="1.36" fill="#d8d4cc" opacity="0.98" />
-  <circle cx="212" cy="84" r="1.50" fill="#d8d4cc" opacity="0.91" />
-  <circle cx="216" cy="84" r="1.64" fill="#d8d4cc" opacity="0.87" />
-  <circle cx="220" cy="84" r="1.52" fill="#d8d4cc" opacity="0.69" />
-  <circle cx="232" cy="84" r="1.49" fill="#d8d4cc" opacity="0.95" />
-  <circle cx="252" cy="84" r="1.39" fill="#d8d4cc" opacity="0.69" />
-  <circle cx="256" cy="84" r="0.81" fill="#d8d4cc" opacity="0.70" />
-  <circle cx="260" cy="84" r="1.48" fill="#d8d4cc" opacity="0.99" />
-  <circle cx="264" cy="84" r="1.21" fill="#d8d4cc" opacity="0.65" />
-  <circle cx="80" cy="88" r="1.68" fill="#b8896a" opacity="0.95" />
-  <circle cx="100" cy="88" r="1.29" fill="#d8d4cc" opacity="0.93" />
-  <circle cx="104" cy="88" r="1.83" fill="#b8896a" opacity="0.67" />
-  <circle cx="120" cy="88" r="0.68" fill="#d8d4cc" opacity="0.95" />
-  <circle cx="124" cy="88" r="1.33" fill="#d8d4cc" opacity="0.84" />
-  <circle cx="132" cy="88" r="1.25" fill="#d8d4cc" opacity="0.66" />
-  <circle cx="136" cy="88" r="1.25" fill="#b8896a" opacity="0.66" />
-  <circle cx="160" cy="88" r="1.12" fill="#d8d4cc" opacity="0.96" />
-  <circle cx="172" cy="88" r="0.79" fill="#d8d4cc" opacity="0.70" />
-  <circle cx="176" cy="88" r="1.15" fill="#b8896a" opacity="0.96" />
-  <circle cx="188" cy="88" r="1.97" fill="#d8d4cc" opacity="0.87" />
-  <circle cx="204" cy="88" r="0.65" fill="#b8896a" opacity="0.95" />
-  <circle cx="232" cy="88" r="1.02" fill="#d8d4cc" opacity="0.85" />
-  <circle cx="248" cy="88" r="1.26" fill="#d8d4cc" opacity="0.73" />
-  <circle cx="260" cy="88" r="0.58" fill="#d8d4cc" opacity="0.94" />
-  <circle cx="264" cy="88" r="1.12" fill="#d8d4cc" opacity="0.97" />
-  <circle cx="80" cy="92" r="1.81" fill="#d8d4cc" opacity="0.79" />
-  <circle cx="104" cy="92" r="1.34" fill="#b8896a" opacity="0.75" />
-  <circle cx="120" cy="92" r="1.80" fill="#d8d4cc" opacity="0.82" />
-  <circle cx="132" cy="92" r="1.59" fill="#d8d4cc" opacity="0.66" />
-  <circle cx="160" cy="92" r="0.83" fill="#d8d4cc" opacity="0.75" />
-  <circle cx="172" cy="92" r="1.60" fill="#b8896a" opacity="0.88" />
-  <circle cx="188" cy="92" r="1.87" fill="#d8d4cc" opacity="0.94" />
-  <circle cx="204" cy="92" r="1.04" fill="#b8896a" opacity="0.96" />
-  <circle cx="208" cy="92" r="1.47" fill="#d8d4cc" opacity="0.97" />
-  <circle cx="232" cy="92" r="0.59" fill="#b8896a" opacity="0.81" />
-  <circle cx="248" cy="92" r="1.78" fill="#d8d4cc" opacity="0.79" />
-  <circle cx="260" cy="92" r="0.60" fill="#d8d4cc" opacity="0.83" />
-  <circle cx="264" cy="92" r="0.66" fill="#d8d4cc" opacity="0.79" />
-  <circle cx="72" cy="96" r="0.83" fill="#d8d4cc" opacity="0.90" />
-  <circle cx="76" cy="96" r="1.19" fill="#d8d4cc" opacity="0.80" />
-  <circle cx="80" cy="96" r="1.36" fill="#d8d4cc" opacity="0.66" />
-  <circle cx="84" cy="96" r="1.80" fill="#b8896a" opacity="0.82" />
-  <circle cx="104" cy="96" r="1.09" fill="#d8d4cc" opacity="0.97" />
-  <circle cx="108" cy="96" r="1.61" fill="#d8d4cc" opacity="0.90" />
-  <circle cx="112" cy="96" r="0.60" fill="#b8896a" opacity="0.74" />
-  <circle cx="116" cy="96" r="1.09" fill="#d8d4cc" opacity="0.84" />
-  <circle cx="132" cy="96" r="1.35" fill="#d8d4cc" opacity="0.77" />
-  <circle cx="152" cy="96" r="1.54" fill="#d8d4cc" opacity="0.92" />
-  <circle cx="156" cy="96" r="0.70" fill="#b8896a" opacity="0.88" />
-  <circle cx="160" cy="96" r="1.15" fill="#b8896a" opacity="0.73" />
-  <circle cx="164" cy="96" r="1.42" fill="#d8d4cc" opacity="0.99" />
-  <circle cx="172" cy="96" r="1.95" fill="#d8d4cc" opacity="0.73" />
-  <circle cx="184" cy="96" r="1.23" fill="#d8d4cc" opacity="0.98" />
-  <circle cx="188" cy="96" r="1.46" fill="#d8d4cc" opacity="0.65" />
-  <circle cx="192" cy="96" r="0.69" fill="#d8d4cc" opacity="0.94" />
-  <circle cx="196" cy="96" r="0.98" fill="#d8d4cc" opacity="0.87" />
-  <circle cx="208" cy="96" r="1.47" fill="#d8d4cc" opacity="0.77" />
-  <circle cx="212" cy="96" r="1.34" fill="#d8d4cc" opacity="0.85" />
-  <circle cx="216" cy="96" r="1.06" fill="#d8d4cc" opacity="0.85" />
-  <circle cx="220" cy="96" r="1.74" fill="#d8d4cc" opacity="0.84" />
-  <circle cx="232" cy="96" r="1.69" fill="#d8d4cc" opacity="0.74" />
-  <circle cx="236" cy="96" r="1.32" fill="#b8896a" opacity="0.68" />
-  <circle cx="240" cy="96" r="0.83" fill="#d8d4cc" opacity="0.69" />
-  <circle cx="248" cy="96" r="1.28" fill="#d8d4cc" opacity="0.80" />
-  <circle cx="252" cy="96" r="1.64" fill="#b8896a" opacity="1.00" />
-  <circle cx="256" cy="96" r="0.69" fill="#d8d4cc" opacity="0.75" />
-  <circle cx="260" cy="96" r="1.51" fill="#d8d4cc" opacity="0.73" />
-  <circle cx="264" cy="96" r="1.37" fill="#d8d4cc" opacity="0.71" />
-  <circle cx="268" cy="96" r="0.91" fill="#d8d4cc" opacity="0.89" />
-</svg>
-                </div>
-                <div class="lbl">Negativo · Ink</div>
-                <div class="sub">03</div>
-            </div>
-        </div>
-    </section>
+    <div class="change-note">
+        <strong>v1.0 — símbolo halftone, configuración final.</strong> Rejilla hexagonal con <code>spacing 8</code>, radio máximo <code>2.8</code>, decay <code>38</code>, núcleo terra <code>r=4</code>. Coherente con el logotipo (ambos construidos por puntos). Inspiración: <code>descargar (1).jpg</code> y <code>Detailed 4K.jpg</code> de <code>src/inispiration/</code>.
+    </div>
 
-    <!-- 2. Versiones por fondo -->
+    <!-- ============================================================ -->
+    <!-- Sistema -->
+    <!-- ============================================================ -->
     <section>
-        <h2>3.2 Versiones por Fondo</h2>
-        <p>Comportamiento de la marca según su entorno. El sistema de puntos reacciona para asegurar el contraste adecuado y destacar la región "For".</p>
-        
-        <div class="grid-3">
-            <div class="card">
-                <div class="card-visual color">
-                    <canvas id="c1" width="340" height="160"></canvas>
-                </div>
-                <div class="lbl">Color · Fondo Sand</div>
-                <div class="sub">01</div>
-            </div>
-            
-            <div class="card">
-                <div class="card-visual">
-                    <canvas id="c2" width="340" height="160"></canvas>
-                </div>
-                <div class="lbl">Monocromático · Fondo Blanco</div>
-                <div class="sub">02</div>
-            </div>
-            
-            <div class="card">
-                <div class="card-visual dark">
-                    <canvas id="c3" width="340" height="160"></canvas>
-                </div>
-                <div class="lbl">Negativo · Fondo Ink</div>
-                <div class="sub">03</div>
-            </div>
-        </div>
-        
-        <div class="btn-group" style="justify-content: center;">
-            <button onclick="replayAll()">↺ Repetir Animaciones</button>
-            <button onclick="exportToSVG()">↓ Descargar SVG</button>
-        </div>
-    </section>
+        <div class="section-tag">sistema</div>
+        <h2>El sistema</h2>
+        <p>La marca ForMeta se compone de tres elementos que viven por separado o juntos. Cada uno tiene su uso. No se inventan combinaciones nuevas.</p>
 
-    <!-- 3. Zona de exclusión y tamaño mínimo -->
-    <section>
-        <h2>3.3 Zona de Exclusión y Tamaño Mínimo</h2>
-        <p>Proteger el logotipo es esencial para su reconocimiento. Se debe mantener siempre un área de respeto equivalente a la altura de la vocal "o".</p>
-        
-        <div class="grid-2">
-            <!-- Zona Exclusión -->
-            <div class="card">
-                <div class="card-visual" style="background-color: #fcfbfa; border: 1px dashed #dcd8d1;">
-                    <div class="exclusion-box">
-                        <div class="exclusion-lines">
-                            <span class="exclusion-x ex-top">o</span>
-                            <span class="exclusion-x ex-bottom">o</span>
-                            <span class="exclusion-x ex-left">o</span>
-                            <span class="exclusion-x ex-right">o</span>
-                        </div>
-                        <div class="logo-static" style="font-size: 36px;">F<i>or</i>Meta</div>
+        <div style="margin-top: 2rem;">
+            <div class="system-row">
+                <div class="system-glyph ink-drop">
+                    <svg viewBox="0 0 160 200" width="56" height="70"><use href="#drop-halftone"/></svg>
+                </div>
+                <div class="system-text">
+                    <h3>Símbolo</h3>
+                    <p>La gota construida por una rejilla de puntos cuya densidad converge en un núcleo terra. Representa el formitar — composición a partir de dato — y la inteligencia contenida. Se usa sola cuando ya hay contexto de marca (favicons, redes, watermarks, motion).</p>
+                </div>
+            </div>
+            <div class="system-row">
+                <div class="system-glyph">
+                    <img src="assets/svg/logotipo/logotipo.sand.svg" alt="Logotipo ForMeta" style="height: 28px;" onerror="this.style.display='none'">
+                </div>
+                <div class="system-text">
+                    <h3>Logotipo</h3>
+                    <p>El nombre "ForMeta" construido a partir de puntos. La misma gramática que el símbolo: dato compuesto en forma. Se usa cuando hace falta nombrar sin acompañamiento gráfico, en cabeceras de cliente o documentación técnica.</p>
+                </div>
+            </div>
+            <div class="system-row">
+                <div class="system-glyph">
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span class="ink-drop"><svg viewBox="0 0 160 200" width="24" height="30"><use href="#drop-halftone"/></svg></span>
+                        <img src="assets/svg/logotipo/logotipo.sand.svg" alt="Logotipo ForMeta" style="height: 18px;" onerror="this.style.display='none'">
                     </div>
                 </div>
-                <div class="lbl">Área de Respeto (x = "o")</div>
-                <div class="sub">01</div>
+                <div class="system-text">
+                    <h3>Isotipo</h3>
+                    <p>La composición símbolo + logotipo. Forma canónica de la marca — la que aparece cuando ForMeta se presenta por primera vez. Web, propuesta de cliente, presentación, papelería, firma. Por defecto, esta es la opción.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- LOGOTIPO -->
+    <!-- ============================================================ -->
+    <section>
+        <div class="section-tag">03A</div>
+        <h2>Logotipo</h2>
+        <p>"ForMeta" en trama de puntos. Tres variantes según fondo. El logotipo nunca se reproduce con tipografía: siempre desde SVG original.</p>
+
+        <div class="grid-3">
+            <div class="asset">
+                <div class="asset-stage sand"><span class="stage-label">SAND · default</span>
+                    <img src="assets/svg/logotipo/logotipo.sand.svg" alt="Logotipo sand" onerror="this.parentElement.innerHTML+='<div style=color:var(--color-muted);font-family:var(--font-mono);font-size:0.7rem>logotipo.sand.svg</div>'">
+                </div>
+                <div class="asset-meta"><div class="asset-name">Sand</div><div class="asset-spec">Default</div></div>
+                <div class="asset-file">logotipo.sand.svg</div>
+            </div>
+            <div class="asset">
+                <div class="asset-stage white"><span class="stage-label">MONO · documento</span>
+                    <img src="assets/svg/logotipo/logotipo.mono.svg" alt="Logotipo mono" onerror="this.parentElement.innerHTML+='<div style=color:var(--color-muted);font-family:var(--font-mono);font-size:0.7rem>logotipo.mono.svg</div>'">
+                </div>
+                <div class="asset-meta"><div class="asset-name">Mono</div><div class="asset-spec">Una tinta</div></div>
+                <div class="asset-file">logotipo.mono.svg</div>
+            </div>
+            <div class="asset">
+                <div class="asset-stage ink"><span class="stage-label">NEGATIVE · modo oscuro</span>
+                    <img src="assets/svg/logotipo/logotipo.negative.svg" alt="Logotipo negative" onerror="this.parentElement.innerHTML+='<div style=color:var(--color-stone);font-family:var(--font-mono);font-size:0.7rem>logotipo.negative.svg</div>'">
+                </div>
+                <div class="asset-meta"><div class="asset-name">Negative</div><div class="asset-spec">Fondo oscuro</div></div>
+                <div class="asset-file">logotipo.negative.svg</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- ISOTIPO -->
+    <!-- ============================================================ -->
+    <section>
+        <div class="section-tag">03B</div>
+        <h2>Isotipo</h2>
+        <p>La composición canónica: símbolo a la izquierda, logotipo a la derecha. La altura de la gota iguala la altura del logotipo. Separación = ancho de la gota.</p>
+
+        <div class="grid-3">
+            <div class="asset">
+                <div class="asset-stage sand"><span class="stage-label">SAND · default</span>
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <span class="ink-drop"><svg viewBox="0 0 160 200" width="48" height="60"><use href="#drop-halftone"/></svg></span>
+                        <img src="assets/svg/logotipo/logotipo.sand.svg" alt="ForMeta" style="height: 24px;" onerror="this.style.display='none'">
+                    </div>
+                </div>
+                <div class="asset-meta"><div class="asset-name">Sand</div><div class="asset-spec">Default</div></div>
+                <div class="asset-file">isotipo_halftone_sand.svg</div>
+            </div>
+            <div class="asset">
+                <div class="asset-stage white"><span class="stage-label">MONO · documento</span>
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <span class="mono-ink"><svg viewBox="0 0 160 200" width="48" height="60"><use href="#drop-halftone"/></svg></span>
+                        <img src="assets/svg/logotipo/logotipo.mono.svg" alt="ForMeta" style="height: 24px;" onerror="this.style.display='none'">
+                    </div>
+                </div>
+                <div class="asset-meta"><div class="asset-name">Mono</div><div class="asset-spec">Una tinta</div></div>
+                <div class="asset-file">isotipo_halftone_mono.svg</div>
+            </div>
+            <div class="asset">
+                <div class="asset-stage ink"><span class="stage-label">NEGATIVE · modo oscuro</span>
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <span class="sand-drop"><svg viewBox="0 0 160 200" width="48" height="60"><use href="#drop-halftone"/></svg></span>
+                        <img src="assets/svg/logotipo/logotipo.negative.svg" alt="ForMeta" style="height: 24px;" onerror="this.style.display='none'">
+                    </div>
+                </div>
+                <div class="asset-meta"><div class="asset-name">Negative</div><div class="asset-spec">Fondo oscuro</div></div>
+                <div class="asset-file">isotipo_halftone_negative.svg</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SÍMBOLO -->
+    <!-- ============================================================ -->
+    <section>
+        <div class="section-tag">03C</div>
+        <h2>Símbolo</h2>
+        <p>La gota construida por puntos. La <strong>halftone</strong> es la versión canónica con configuración final (spacing 8, maxR 2.8, decay 38, núcleo 4). La <strong>simple</strong> es para tamaños pequeños donde los puntos no se leen (≤ 24px). La <strong>layered</strong> queda como alternativa concéntrica para contextos específicos.</p>
+
+        <div class="grid-3">
+            <div class="asset">
+                <div class="asset-stage sand"><span class="stage-label">HALFTONE · color</span>
+                    <span class="ink-drop"><svg viewBox="0 0 160 200" width="130" height="162"><use href="#drop-halftone"/></svg></span>
+                </div>
+                <div class="asset-meta"><div class="asset-name">Halftone · color</div><div class="asset-spec">Default</div></div>
+                <div class="asset-file">simbolo_halftone_color.svg</div>
             </div>
 
-            <!-- Tamaño Mínimo -->
-            <div class="card">
-                <div class="card-visual">
-                    <div style="display: flex; flex-direction: column; gap: 2rem; align-items: center;">
-                        <div style="display: flex; align-items: center; gap: 2rem;">
-                            <div class="logo-static" style="font-size: 14px;">F<i>or</i>Meta</div>
-                            <div class="lbl" style="margin-top:0">Pantalla: 80px</div>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 2rem;">
-                            <div class="isotipo-static" style="font-size: 16px;">F</div>
-                            <div class="lbl" style="margin-top:0">Pantalla: 16px</div>
+            <div class="asset">
+                <div class="asset-stage white"><span class="stage-label">HALFTONE · mono</span>
+                    <span class="mono-ink"><svg viewBox="0 0 160 200" width="130" height="162"><use href="#drop-halftone"/></svg></span>
+                </div>
+                <div class="asset-meta"><div class="asset-name">Halftone · mono</div><div class="asset-spec">Una tinta</div></div>
+                <div class="asset-file">simbolo_halftone_mono.svg</div>
+            </div>
+
+            <div class="asset">
+                <div class="asset-stage ink"><span class="stage-label">HALFTONE · negativo</span>
+                    <span class="sand-drop"><svg viewBox="0 0 160 200" width="130" height="162"><use href="#drop-halftone"/></svg></span>
+                </div>
+                <div class="asset-meta"><div class="asset-name">Halftone · negativo</div><div class="asset-spec">Fondo oscuro</div></div>
+                <div class="asset-file">simbolo_halftone_negative.svg</div>
+            </div>
+
+            <div class="asset">
+                <div class="asset-stage sand"><span class="stage-label">SIMPLE · &le; 24px</span>
+                    <span class="terra-drop"><svg viewBox="0 0 160 200" width="100" height="125"><use href="#drop-simple"/></svg></span>
+                </div>
+                <div class="asset-meta"><div class="asset-name">Simple</div><div class="asset-spec">Favicon · ≤ 24px</div></div>
+                <div class="asset-file">simbolo_color_sand.svg</div>
+            </div>
+
+            <div class="asset">
+                <div class="asset-stage sand"><span class="stage-label">LAYERED · alternativa</span>
+                    <span class="terra-drop"><svg viewBox="0 0 160 200" width="120" height="150"><use href="#drop-layered"/></svg></span>
+                </div>
+                <div class="asset-meta"><div class="asset-name">Layered</div><div class="asset-spec">Alternativa concéntrica</div></div>
+                <div class="asset-file">simbolo_v2_layered_color.svg</div>
+            </div>
+
+            <div class="asset">
+                <div class="asset-stage white"><span class="stage-label">CONSTRUCCIÓN · técnico</span>
+                    <img src="assets/svg/simbolo_v2_construccion.svg" alt="Símbolo construcción" style="max-height: 180px;" onerror="this.parentElement.innerHTML+='<div style=color:var(--color-muted);font-family:var(--font-mono);font-size:0.7rem>simbolo_v2_construccion.svg</div>'">
+                </div>
+                <div class="asset-meta"><div class="asset-name">Construcción</div><div class="asset-spec">Geometría · cotas</div></div>
+                <div class="asset-file">simbolo_v2_construccion.svg</div>
+            </div>
+        </div>
+
+        <!-- Controles + exportar -->
+        <h3 style="margin-top: 3rem;">Ajustar y exportar halftone</h3>
+        <p>Los puntos se generan al cargar la página. Los defaults son los confirmados como canónicos. Si necesitas iterar para un contexto especial, ajusta y exporta — el archivo se descarga listo para guardar en <code style="font-family: var(--font-mono); font-size: 0.85em;">assets/svg/</code>.</p>
+
+        <div class="halftone-controls">
+            <div class="control-group">
+                <label for="ctrl-spacing">Spacing</label>
+                <input type="range" id="ctrl-spacing" min="4" max="14" step="1" value="8">
+                <span class="val" id="val-spacing">8</span>
+            </div>
+            <div class="control-group">
+                <label for="ctrl-maxR">Max R</label>
+                <input type="range" id="ctrl-maxR" min="1.5" max="4" step="0.1" value="2.8">
+                <span class="val" id="val-maxR">2.8</span>
+            </div>
+            <div class="control-group">
+                <label for="ctrl-decay">Decay</label>
+                <input type="range" id="ctrl-decay" min="20" max="70" step="2" value="38">
+                <span class="val" id="val-decay">38</span>
+            </div>
+            <div class="control-group">
+                <label for="ctrl-coreR">Core R</label>
+                <input type="range" id="ctrl-coreR" min="2" max="8" step="0.5" value="4">
+                <span class="val" id="val-coreR">4</span>
+            </div>
+            <button class="reset-btn" id="reset-defaults">Reset</button>
+        </div>
+
+        <div style="display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.2rem;">
+            <button class="export-btn" id="export-color">Exportar color (.svg)</button>
+            <button class="export-btn" id="export-mono">Exportar mono (.svg)</button>
+            <button class="export-btn" id="export-negative">Exportar negativo (.svg)</button>
+            <button class="export-btn primary" id="export-all">Exportar las 3</button>
+        </div>
+        <div id="exportStatus" style="margin-top: 0.8rem; font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-sage); min-height: 1.2em;"></div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- ANIMACIONES -->
+    <!-- ============================================================ -->
+    <section>
+        <div class="section-tag">03D</div>
+        <h2>Animaciones</h2>
+        <p>Seis animaciones canónicas. Tres para el símbolo, dos para el logotipo, una para el isotipo. Todas en loop, curva <code style="font-family: var(--font-mono); font-size: 0.85em; background: var(--color-stone); padding: 0.1em 0.35em; border-radius: 3px;">cubic-bezier(0.16, 1, 0.3, 1)</code> o <code style="font-family: var(--font-mono); font-size: 0.85em; background: var(--color-stone); padding: 0.1em 0.35em; border-radius: 3px;">ease-in-out</code>. Duración 3.5–6s. Nunca rebotan ni hacen flash.</p>
+
+        <h3 style="margin-top: 2.5rem;">Símbolo</h3>
+
+        <div class="grid-3" style="margin-top: 1rem;">
+            <!-- 01 Wave -->
+            <div class="anim-card">
+                <div class="anim-stage">
+                    <span class="anim-canonical">canónica</span>
+                    <span class="ink-drop anim-wave"><svg class="halftone-inline" viewBox="0 0 160 200" width="180" height="225"></svg></span>
+                </div>
+                <div class="anim-body">
+                    <h3>01 · Wave</h3>
+                    <p>Onda concéntrica que se propaga desde el núcleo hacia fuera. Cada anillo de puntos pulsa con desfase de 80ms.</p>
+                    <div class="anim-meta">4 s · loop · ease-in-out</div>
+                    <div class="anim-use">Splash · favicon · motion permanente</div>
+                </div>
+            </div>
+
+            <!-- 02 Assembly -->
+            <div class="anim-card">
+                <div class="anim-stage">
+                    <span class="ink-drop anim-assembly"><svg class="halftone-inline" viewBox="0 0 160 200" width="180" height="225"></svg></span>
+                </div>
+                <div class="anim-body">
+                    <h3>02 · Assembly</h3>
+                    <p>Los puntos se componen desde fuera hacia el núcleo, mantienen la forma, luego se desvanecen. La marca se construye y se borra cíclicamente.</p>
+                    <div class="anim-meta">6 s · loop · cubic-bezier expressive</div>
+                    <div class="anim-use">Hero · intro · loading state</div>
+                </div>
+            </div>
+
+            <!-- 03 Breath -->
+            <div class="anim-card">
+                <div class="anim-stage dark">
+                    <span class="sand-drop anim-breath"><svg class="halftone-inline" viewBox="0 0 160 200" width="180" height="225"></svg></span>
+                </div>
+                <div class="anim-body">
+                    <h3>03 · Breath</h3>
+                    <p>Todos los puntos respiran al unísono — escala sutil 1.0 → 1.18 → 1.0. Sin onda, sin desfase. La marca como organismo único.</p>
+                    <div class="anim-meta">5 s · loop · ease-in-out</div>
+                    <div class="anim-use">Ambient · fondo · marca pasiva</div>
+                </div>
+            </div>
+        </div>
+
+        <h3 style="margin-top: 3rem;">Logotipo</h3>
+
+        <div class="grid-3" style="margin-top: 1rem;">
+            <!-- 04 Wipe -->
+            <div class="anim-card">
+                <div class="anim-stage">
+                    <span class="anim-canonical">canónica</span>
+                    <div class="logo-anim-wrap logo-wipe">
+                        <img src="assets/svg/logotipo/logotipo.sand.svg" alt="Logotipo wipe" onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=font-family:var(--font-display);font-size:3.5rem;font-weight:300;color:var(--color-ink);letter-spacing:-0.02em>ForMeta</div>'">
+                    </div>
+                </div>
+                <div class="anim-body">
+                    <h3>04 · Wipe</h3>
+                    <p>Revelado de izquierda a derecha vía clip-path. Pausa en el centro del loop, salida por la derecha.</p>
+                    <div class="anim-meta">3.5 s · loop · cubic-bezier expressive</div>
+                    <div class="anim-use">Cabecera video · intro presentación</div>
+                </div>
+            </div>
+
+            <!-- 05 Fade up -->
+            <div class="anim-card">
+                <div class="anim-stage">
+                    <div class="logo-anim-wrap logo-fadeup">
+                        <img src="assets/svg/logotipo/logotipo.sand.svg" alt="Logotipo fade up" onerror="this.style.display='none'">
+                    </div>
+                </div>
+                <div class="anim-body">
+                    <h3>05 · Fade up</h3>
+                    <p>Entrada vertical desde abajo con desvanecimiento. Sale hacia arriba. Más calmada que el wipe.</p>
+                    <div class="anim-meta">3.5 s · loop · cubic-bezier expressive</div>
+                    <div class="anim-use">Email · firma documento · hover state</div>
+                </div>
+            </div>
+
+            <!-- 06 Pulse -->
+            <div class="anim-card">
+                <div class="anim-stage">
+                    <div class="logo-anim-wrap logo-pulse">
+                        <img src="assets/svg/logotipo/logotipo.sand.svg" alt="Logotipo pulse" onerror="this.style.display='none'">
+                    </div>
+                </div>
+                <div class="anim-body">
+                    <h3>06 · Pulse</h3>
+                    <p>Latido permanente — opacidad y escala mínima. La marca presente pero no insistente.</p>
+                    <div class="anim-meta">4 s · loop · ease-in-out</div>
+                    <div class="anim-use">Footer · watermark · presencia pasiva</div>
+                </div>
+            </div>
+        </div>
+
+        <h3 style="margin-top: 3rem;">Isotipo</h3>
+
+        <div class="grid-3" style="margin-top: 1rem;">
+            <!-- 07 Compose -->
+            <div class="anim-card" style="grid-column: span 2;">
+                <div class="anim-stage">
+                    <span class="anim-canonical">canónica</span>
+                    <div class="iso-anim">
+                        <span class="iso-drop-wrap ink-drop">
+                            <svg viewBox="0 0 160 200"><use href="#drop-halftone"/></svg>
+                        </span>
+                        <div class="iso-word">
+                            <img src="assets/svg/logotipo/logotipo.sand.svg" alt="ForMeta" onerror="this.style.display='none'">
                         </div>
                     </div>
                 </div>
-                <div class="lbl">Tamaños Mínimos Recomendados</div>
-                <div class="sub">02</div>
+                <div class="anim-body">
+                    <h3>07 · Compose</h3>
+                    <p>Coreografía completa: primero entra la gota con escala + opacidad. Luego el nombre se revela en wipe. Cierre simétrico. La forma canónica de animar el isotipo.</p>
+                    <div class="anim-meta">4 s · loop · drop in → word wipe</div>
+                    <div class="anim-use">Web hero · loading inicial · firma video</div>
+                </div>
+            </div>
+
+            <div class="anim-card">
+                <div class="anim-stage" style="background: var(--color-stone);">
+                    <div style="text-align: center; padding: 1rem;">
+                        <div style="font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-muted); margin-bottom: 0.6rem;">Combinables</div>
+                        <div style="font-family: var(--font-deck); font-size: 1.1rem; line-height: 1.4; color: var(--color-ink); max-width: 240px;">
+                            Las animaciones del símbolo y del logotipo se pueden combinar — Wave + Wipe, Breath + Pulse — siempre que mantengan duraciones múltiplos.
+                        </div>
+                    </div>
+                </div>
+                <div class="anim-body">
+                    <h3>Nota</h3>
+                    <p>Para piezas que combinan animación de símbolo + logotipo, sincronizar duraciones: 4s + 4s, o 3.5s + 7s. Nunca animaciones simultáneas con duraciones impares.</p>
+                    <div class="anim-meta">regla de sincronización</div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- 4. Usos incorrectos -->
+    <!-- ============================================================ -->
+    <!-- Construcción -->
+    <!-- ============================================================ -->
     <section>
-        <h2>3.4 Usos Incorrectos</h2>
-        <p>No se debe alterar, distorsionar ni modificar la estructura del logotipo original. Los siguientes ejemplos ilustran prácticas que deben evitarse para preservar la integridad visual.</p>
-        
-        <div class="grid-2">
-            <div class="card">
-                <div class="card-visual" style="background-color: #fff4f4; border-color: #ffdce0;">
-                    <div class="incorrect-overlay">Distorsionar o escalar</br>desproporcionadamente</div>
-                    <div class="logo-static wrong-stretch">F<i>or</i>Meta</div>
-                </div>
+        <div class="section-tag">construcción</div>
+        <h2>Construcción y zona de seguridad</h2>
+
+        <div class="construction">
+            <div class="construction-visual ink-drop" style="background: var(--color-sand);">
+                <svg viewBox="0 0 200 240" width="100%" style="max-width: 320px;">
+                    <defs>
+                        <pattern id="g-grid" width="10" height="10" patternUnits="userSpaceOnUse">
+                            <path d="M 10 0 L 0 0 0 10" fill="none" stroke="#B8896A" stroke-width="0.3" opacity="0.4"/>
+                        </pattern>
+                    </defs>
+                    <rect x="20" y="20" width="160" height="200" fill="url(#g-grid)"/>
+                    <rect x="20" y="20" width="160" height="200" fill="none" stroke="#B8896A" stroke-width="0.5" stroke-dasharray="3 2" opacity="0.7"/>
+
+                    <g stroke="#B8896A" stroke-width="1" fill="none">
+                        <path d="M16 20 L24 20 M20 16 L20 24"/>
+                        <path d="M176 20 L184 20 M180 16 L180 24"/>
+                        <path d="M16 220 L24 220 M20 216 L20 224"/>
+                        <path d="M176 220 L184 220 M180 216 L180 224"/>
+                    </g>
+
+                    <g stroke="#B8896A" stroke-width="0.4" stroke-dasharray="2 3" opacity="0.5">
+                        <line x1="100" y1="20" x2="100" y2="220"/>
+                        <line x1="20" y1="150" x2="180" y2="150"/>
+                    </g>
+
+                    <g font-family="monospace" font-size="6" fill="#B8896A" opacity="0.8">
+                        <text x="100" y="14" text-anchor="middle">160 × 200</text>
+                        <text x="100" y="234" text-anchor="middle">FOCAL · 80,130</text>
+                    </g>
+
+                    <g transform="translate(20 20)">
+                        <use href="#drop-halftone" width="160" height="200"/>
+                    </g>
+
+                    <g fill="none" stroke="#B8896A" stroke-width="0.4" stroke-dasharray="1 2" opacity="0.5">
+                        <circle cx="100" cy="150" r="14"/>
+                        <circle cx="100" cy="150" r="28"/>
+                        <circle cx="100" cy="150" r="46"/>
+                        <circle cx="100" cy="150" r="66"/>
+                    </g>
+                </svg>
             </div>
-            
-            <div class="card">
-                <div class="card-visual" style="background-color: #fff4f4; border-color: #ffdce0;">
-                    <div class="incorrect-overlay">Cambiar los colores</br>corporativos</div>
-                    <div class="logo-static wrong-color">F<i>or</i>Meta</div>
-                </div>
-            </div>
-            
-            <div class="card">
-                <div class="card-visual" style="background-color: #fff4f4; border-color: #ffdce0;">
-                    <div class="incorrect-overlay">Reemplazar la</br>tipografía original</div>
-                    <div class="logo-static wrong-font">ForMeta</div>
-                </div>
-            </div>
-            
-            <div class="card">
-                <div class="card-visual" style="background-color: #fff4f4; border-color: #ffdce0;">
-                    <div class="incorrect-overlay">Rotar el logo u</br>omitir jerarquías</div>
-                    <div class="logo-static wrong-rotate">F<i>or</i>Meta</div>
-                </div>
+            <div class="construction-info">
+                <h3>Proporciones</h3>
+                <p>El símbolo vive en una retícula de 160 × 200. La silueta de la gota es <strong style="color: var(--color-ink);">implícita</strong> — no hay trazo de contorno; los puntos definen la forma por densidad. Punto focal en (80, 130) — tercio inferior.</p>
+                <p style="margin-top: 1rem;"><strong style="color: var(--color-ink);">Rejilla:</strong> hexagonal, spacing 8 con offset de medio paso en filas alternas. ~75 puntos. Radio de cada punto: <code style="font-family: var(--font-mono); font-size: 0.85em;">max(0.4, 2.8 − d/38 × 2.8)</code> donde <code style="font-family: var(--font-mono); font-size: 0.85em;">d</code> = distancia al foco.</p>
+                <p style="margin-top: 1rem;"><strong style="color: var(--color-ink);">Núcleo:</strong> círculo terra (radio 4) en el punto focal exacto. Es la única parte sólida del símbolo.</p>
+                <p style="margin-top: 1rem;"><strong style="color: var(--color-ink);">Zona de seguridad:</strong> margen igual al diámetro del núcleo (×4). En el isotipo, la separación símbolo–logotipo = ancho de la gota.</p>
+                <p style="margin-top: 1rem;"><strong style="color: var(--color-ink);">Tamaño mínimo:</strong> halftone 40px de altura · simple 16px · logotipo 80px de ancho · isotipo 120px de ancho. Por debajo de 40px, usar la variante simple.</p>
+                <p style="margin-top: 1rem;"><strong style="color: var(--color-ink);">App icon:</strong> se usa <code style="font-family: var(--font-mono); font-size: 0.85em;">#drop-halftone-square</code> — viewport 200×200 con la gota centrada (padding 30 horizontal, 12.5 vertical). Mantiene la composición cuadrada del tile.</p>
             </div>
         </div>
     </section>
 
-    <!-- 5. El Símbolo (Drop) -->
+    <!-- ============================================================ -->
+    <!-- Usos incorrectos -->
+    <!-- ============================================================ -->
     <section>
-        <h2>3.5 El Símbolo (Drop)</h2>
-        <p>El símbolo de ForMeta es una abstracción natural (gota) que condensa la esencia de la evolución y la contención. Su adaptabilidad permite usarlo tanto en trazados como en sólidos, con ecos intermedios para enriquecer la textura visual de la marca.</p>
-        
-        <h3 style="margin-top:2rem;">Comportamiento según el fondo</h3>
-        <div class="grid-3" style="margin-bottom:2rem;">
-            <div class="card">
-                <div class="card-visual color" style="padding:1rem;">
-                    <svg width="100%" height="160" viewBox="0 0 160 200">
-                        <path d="M80 12 C80 12 104 52 116 88 C126 118 122 152 102 168 C92 176 80 178 80 178 C80 178 68 176 58 168 C38 152 34 118 44 88 C56 52 80 12 80 12 Z"
-                          fill="none" stroke="var(--color-terra)" stroke-width="1.4" stroke-linejoin="round"/>
-                        <circle cx="80" cy="130" r="3" fill="var(--color-terra)"/>
-                    </svg>
-                </div>
-                <div class="lbl">Color · Sand</div>
-            </div>
-            <div class="card">
-                <div class="card-visual dark" style="padding:1rem;">
-                    <svg width="100%" height="160" viewBox="0 0 160 200">
-                        <path d="M80 12 C80 12 104 52 116 88 C126 118 122 152 102 168 C92 176 80 178 80 178 C80 178 68 176 58 168 C38 152 34 118 44 88 C56 52 80 12 80 12 Z"
-                          fill="none" stroke="var(--color-terra)" stroke-width="1.4" stroke-linejoin="round"/>
-                        <circle cx="80" cy="130" r="3" fill="var(--color-terra)"/>
-                    </svg>
-                </div>
-                <div class="lbl">Negativo · Ink</div>
-            </div>
-            <div class="card">
-                <div class="card-visual" style="padding:1rem;">
-                    <svg width="100%" height="160" viewBox="0 0 160 200">
-                        <path d="M80 12 C80 12 104 52 116 88 C126 118 122 152 102 168 C92 176 80 178 80 178 C80 178 68 176 58 168 C38 152 34 118 44 88 C56 52 80 12 80 12 Z"
-                          fill="none" stroke="var(--color-ink)" stroke-width="1.4" stroke-linejoin="round"/>
-                        <circle cx="80" cy="130" r="3" fill="var(--color-ink)"/>
-                    </svg>
-                </div>
-                <div class="lbl">Mono · Blanco</div>
-            </div>
-        </div>
+        <div class="section-tag">usos incorrectos</div>
+        <h2>Lo que no se hace</h2>
+        <p>Reglas estrictas. El sistema mantiene su forma — no se rota, no se rellena, no se distorsiona, no se simplifica fuera de las variantes definidas.</p>
 
-        <h3 style="margin-top:2rem;">Variantes estilísticas</h3>
-        <div class="grid-3" style="margin-bottom:2rem;">
-            <div class="card">
-                <div class="card-visual color" style="padding:1rem;">
-                    <svg width="100%" height="160" viewBox="0 0 160 200">
-                        <path d="M80 12 C80 12 104 52 116 88 C126 118 122 152 102 168 C92 176 80 178 80 178 C80 178 68 176 58 168 C38 152 34 118 44 88 C56 52 80 12 80 12 Z" fill="none" stroke="var(--color-terra)" stroke-width="1.4"/>
-                        <path d="M80 12 C80 12 104 52 116 88 C126 118 122 152 102 168 C92 176 80 178 80 178 C80 178 68 176 58 168 C38 152 34 118 44 88 C56 52 80 12 80 12 Z" fill="none" stroke="var(--color-ink)" stroke-width="0.5" stroke-opacity="0.25" stroke-dasharray="4 8" transform="scale(0.72) translate(22 25)"/>
-                        <circle cx="80" cy="130" r="3.5" fill="var(--color-terra)"/>
+        <div class="dont-grid" style="margin-top: 1.5rem;">
+            <div class="dont">
+                <div class="dont-stage">
+                    <span class="ink-drop" style="transform: rotate(20deg); display: inline-block;">
+                        <svg viewBox="0 0 160 200" width="80" height="100"><use href="#drop-halftone"/></svg>
+                    </span>
+                </div>
+                <p class="dont-reason">No rotar. La gota cae hacia abajo siempre.</p>
+            </div>
+            <div class="dont">
+                <div class="dont-stage">
+                    <svg viewBox="0 0 160 200" width="80" height="100">
+                        <path d="M80 12 C80 12 104 52 116 88 C126 118 122 152 102 168 C92 176 80 178 80 178 C80 178 68 176 58 168 C38 152 34 118 44 88 C56 52 80 12 80 12 Z" fill="var(--color-ink)" stroke="none"/>
                     </svg>
                 </div>
-                <div class="lbl">Con Eco Interior</div>
+                <p class="dont-reason">No rellenar sólido. Los puntos son la marca.</p>
             </div>
-            <div class="card">
-                <div class="card-visual color" style="padding:1rem;">
-                    <svg width="100%" height="160" viewBox="0 0 160 200">
-                        <path d="M80 12 C80 12 104 52 116 88 C126 118 122 152 102 168 C92 176 80 178 80 178 C80 178 68 176 58 168 C38 152 34 118 44 88 C56 52 80 12 80 12 Z" fill="var(--color-terra)" fill-opacity="0.08" stroke="var(--color-terra)" stroke-width="1.4"/>
-                        <circle cx="80" cy="130" r="3" fill="var(--color-terra)"/>
-                        <circle cx="80" cy="130" r="8" fill="none" stroke="var(--color-terra)" stroke-width="0.6" stroke-opacity="0.4"/>
+            <div class="dont">
+                <div class="dont-stage">
+                    <span class="ink-drop"><svg viewBox="0 0 160 200" width="100" height="78" preserveAspectRatio="none"><use href="#drop-halftone"/></svg></span>
+                </div>
+                <p class="dont-reason">No deformar las proporciones.</p>
+            </div>
+            <div class="dont">
+                <div class="dont-stage">
+                    <span style="color: #D04AC2; --core-color: #4ABFD0;"><svg viewBox="0 0 160 200" width="80" height="100"><use href="#drop-halftone"/></svg></span>
+                </div>
+                <p class="dont-reason">No cambiar el color fuera de paleta.</p>
+            </div>
+            <div class="dont">
+                <div class="dont-stage" style="background: linear-gradient(45deg, #B8896A, #7A9AAA);">
+                    <span class="ink-drop"><svg viewBox="0 0 160 200" width="80" height="100"><use href="#drop-halftone"/></svg></span>
+                </div>
+                <p class="dont-reason">No sobre fondo con poco contraste.</p>
+            </div>
+            <div class="dont">
+                <div class="dont-stage">
+                    <span class="ink-drop" style="filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.4));"><svg viewBox="0 0 160 200" width="80" height="100"><use href="#drop-halftone"/></svg></span>
+                </div>
+                <p class="dont-reason">No añadir sombras, bordes ni efectos.</p>
+            </div>
+            <div class="dont">
+                <div class="dont-stage">
+                    <svg viewBox="0 0 160 200" width="80" height="100">
+                        <use href="#drop-halftone" style="color: var(--color-ink); --core-color: var(--color-terra);"/>
+                        <circle cx="80" cy="130" r="4" fill="var(--color-sand)"/>
+                        <circle cx="105" cy="105" r="6" fill="var(--color-terra)"/>
                     </svg>
                 </div>
-                <div class="lbl">Relleno Sutil + Anillo</div>
+                <p class="dont-reason">No mover el núcleo del foco (80, 130).</p>
             </div>
-            <div class="card">
-                <div class="card-visual color" style="padding:1rem;">
-                    <svg width="100%" height="160" viewBox="0 0 160 200">
-                        <path d="M80 22 C80 22 106 60 118 94 C128 122 122 155 100 169 C91 175 80 177 80 177 C80 177 69 175 60 169 C38 155 32 122 42 94 C54 60 80 22 80 22 Z" fill="none" stroke="var(--color-ink)" stroke-width="1.0" stroke-opacity="0.9"/>
-                        <path d="M80 22 C80 22 106 60 118 94 C128 122 122 155 100 169 C91 175 80 177 80 177 C80 177 69 175 60 169 C38 155 32 122 42 94 C54 60 80 22 80 22 Z" fill="none" stroke="var(--color-terra)" stroke-width="0.5" stroke-opacity="0.5" transform="translate(0 0) scale(0.60) translate(32 37)"/>
-                        <line x1="80" y1="24" x2="80" y2="176" stroke="var(--color-ink)" stroke-width="0.4" stroke-opacity="0.20"/>
-                        <circle cx="80" cy="126" r="2.8" fill="var(--color-terra)"/>
-                    </svg>
+            <div class="dont">
+                <div class="dont-stage">
+                    <span class="ink-drop"><svg viewBox="0 0 160 200" width="80" height="100">
+                        <path d="M80 12 C80 12 104 52 116 88 C126 118 122 152 102 168 C92 176 80 178 80 178 C80 178 68 176 58 168 C38 152 34 118 44 88 C56 52 80 12 80 12 Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>
+                        <use href="#drop-halftone"/>
+                    </svg></span>
                 </div>
-                <div class="lbl">Contorno + Eje + Eco</div>
+                <p class="dont-reason">No añadir contorno alrededor de los puntos.</p>
             </div>
-        </div>
-
-        <h3 style="margin-top:2rem;">Progresión de Tamaño</h3>
-        <p>A tamaños muy reducidos, el símbolo pierde el trazo y se convierte en una forma sólida para mantener la presencia y legibilidad rápida.</p>
-        <div class="card-visual color" style="height:auto; min-height:160px; padding:2rem; flex-direction:row; gap:2.5rem; align-items:flex-end;">
-            <div class="col" style="align-items:center;">
-              <svg width="48" height="60" viewBox="0 0 160 200">
-                <path d="M80 12 C80 12 104 52 116 88 C126 118 122 152 102 168 C92 176 80 178 80 178 C80 178 68 176 58 168 C38 152 34 118 44 88 C56 52 80 12 80 12 Z" fill="none" stroke="var(--color-terra)" stroke-width="2"/>
-                <circle cx="80" cy="130" r="4" fill="var(--color-terra)"/>
-              </svg>
-              <div class="lbl" style="margin-top:1rem;">Trazo (L)</div>
-            </div>
-            <div class="col" style="align-items:center;">
-              <svg width="24" height="30" viewBox="0 0 160 200">
-                <path d="M80 12 C80 12 104 52 116 88 C126 118 122 152 102 168 C92 176 80 178 80 178 C80 178 68 176 58 168 C38 152 34 118 44 88 C56 52 80 12 80 12 Z" fill="none" stroke="var(--color-terra)" stroke-width="4"/>
-                <circle cx="80" cy="130" r="6" fill="var(--color-terra)"/>
-              </svg>
-              <div class="lbl" style="margin-top:1rem;">Grueso (M)</div>
-            </div>
-            <div class="col" style="align-items:center;">
-              <svg width="16" height="20" viewBox="0 0 160 200">
-                <path d="M80 12 C80 12 104 52 116 88 C126 118 122 152 102 168 C92 176 80 178 80 178 C80 178 68 176 58 168 C38 152 34 118 44 88 C56 52 80 12 80 12 Z" fill="var(--color-terra)" stroke="none"/>
-              </svg>
-              <div class="lbl" style="margin-top:1rem;">Sólido (SM)</div>
-            </div>
-        </div>
-        <div class="btn-group" style="justify-content: center; margin-top:3rem;">
-            <button onclick="exportSymbolsSVG()">↓ Descargar Símbolos SVG</button>
         </div>
     </section>
-    <!-- 6. Animaciones del Símbolo -->
+
+    <!-- ============================================================ -->
+    <!-- App icons -->
+    <!-- ============================================================ -->
     <section>
-        <h2>3.6 Animaciones del Símbolo</h2>
-        <p>Micro-interacciones recomendadas para entornos digitales cuando el símbolo actúa como botón, enlace o elemento interactivo. Pasa el cursor por encima para probarlas.</p>
-        
-        <div class="grid-3" style="margin-bottom:2rem;">
-            <div class="card">
-                <div class="card-visual color">
-                    <svg class="anim-respiracion" width="100%" height="160" viewBox="0 0 160 200">
-                        <path d="M80 12 C80 12 104 52 116 88 C126 118 122 152 102 168 C92 176 80 178 80 178 C80 178 68 176 58 168 C38 152 34 118 44 88 C56 52 80 12 80 12 Z"
-                          fill="none" stroke="var(--color-terra)" stroke-width="1.4" stroke-linejoin="round"/>
-                        <circle cx="80" cy="130" r="3" fill="var(--color-terra)"/>
-                    </svg>
+        <div class="section-tag">03E</div>
+        <h2>App icon</h2>
+        <p>Icono para aplicaciones móviles y favicons. Cinco variantes de fondo + favicon. El símbolo se renderiza usando <code style="font-family: var(--font-mono); font-size: 0.85em;">#drop-halftone-square</code> — viewport cuadrado 200×200 con la gota centrada (padding 30 horizontal, 12.5 vertical). Esto mantiene la composición visual cuadrada del tile, sin que el símbolo quede letterboxed verticalmente. Esquinas con radio iOS estándar (22.37%, "squircle continuous"). Para favicon ≤ 32px se usa la versión <strong>simple</strong>.</p>
+
+        <div class="grid-3" style="margin-top: 1.5rem;">
+            <div class="appicon">
+                <div class="appicon-tile sand">
+                    <svg viewBox="0 0 200 200"><use href="#drop-halftone-square"/></svg>
                 </div>
-                <div class="lbl">Respiración (Pulse)</div>
+                <div class="asset-meta"><div class="asset-name">Sand · default</div><div class="asset-spec">iOS · Android</div></div>
+                <div class="asset-file">appicon.sand.svg · 1024×1024</div>
             </div>
-            <div class="card">
-                <div class="card-visual color">
-                    <svg class="anim-eco" width="100%" height="160" viewBox="0 0 160 200">
-                        <path d="M80 12 C80 12 104 52 116 88 C126 118 122 152 102 168 C92 176 80 178 80 178 C80 178 68 176 58 168 C38 152 34 118 44 88 C56 52 80 12 80 12 Z" fill="var(--color-terra)" fill-opacity="0.08" stroke="var(--color-terra)" stroke-width="1.4"/>
-                        <circle cx="80" cy="130" r="3" fill="var(--color-terra)"/>
-                        <circle class="eco-ring" cx="80" cy="130" r="8" fill="none" stroke="var(--color-terra)" stroke-width="0.8" opacity="0"/>
-                    </svg>
+
+            <div class="appicon">
+                <div class="appicon-tile ink">
+                    <svg viewBox="0 0 200 200"><use href="#drop-halftone-square"/></svg>
                 </div>
-                <div class="lbl">Eco (Ripple)</div>
+                <div class="asset-meta"><div class="asset-name">Ink · dark</div><div class="asset-spec">Modo oscuro · tinted</div></div>
+                <div class="asset-file">appicon.ink.svg · 1024×1024</div>
             </div>
-            <div class="card">
-                <div class="card-visual color">
-                    <svg class="anim-flotacion" width="100%" height="160" viewBox="0 0 160 200">
-                        <path d="M80 12 C80 12 104 52 116 88 C126 118 122 152 102 168 C92 176 80 178 80 178 C80 178 68 176 58 168 C38 152 34 118 44 88 C56 52 80 12 80 12 Z"
-                          fill="none" stroke="var(--color-ink)" stroke-width="1.4" stroke-linejoin="round"/>
-                        <circle cx="80" cy="130" r="3" fill="var(--color-ink)"/>
-                    </svg>
+
+            <div class="appicon">
+                <div class="appicon-tile terra">
+                    <svg viewBox="0 0 200 200"><use href="#drop-halftone-square"/></svg>
                 </div>
-                <div class="lbl">Flotación (Hover Elevate)</div>
+                <div class="asset-meta"><div class="asset-name">Terra · acento</div><div class="asset-spec">Lanzamiento · campaña</div></div>
+                <div class="asset-file">appicon.terra.svg · 1024×1024</div>
+            </div>
+
+            <div class="appicon">
+                <div class="appicon-tile sunset">
+                    <svg viewBox="0 0 200 200"><use href="#drop-halftone-square"/></svg>
+                </div>
+                <div class="asset-meta"><div class="asset-name">Sunset · gradient</div><div class="asset-spec">Editorial · poster</div></div>
+                <div class="asset-file">appicon.sunset.svg · 1024×1024</div>
+            </div>
+
+            <div class="appicon">
+                <div class="appicon-tile iris">
+                    <svg viewBox="0 0 200 200"><use href="#drop-halftone-square"/></svg>
+                </div>
+                <div class="asset-meta"><div class="asset-name">Iris · expresivo</div><div class="asset-spec">Capa 4 · uso restringido</div></div>
+                <div class="asset-file">appicon.iris.svg · 1024×1024</div>
+            </div>
+
+            <div class="appicon">
+                <div class="appicon-tile" style="background: var(--color-white); border: 1px solid var(--color-border-secondary); box-shadow: none; display: flex; flex-direction: column; gap: 0.6rem; aspect-ratio: 1/1; padding: 1.5rem;">
+                    <div class="appicon-favicon">
+                        <svg viewBox="0 0 160 200"><use href="#drop-simple"/></svg>
+                    </div>
+                    <div style="font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.16em; color: var(--color-muted); text-transform: uppercase;">Favicon · 32 / 64</div>
+                </div>
+                <div class="asset-meta"><div class="asset-name">Favicon</div><div class="asset-spec">Símbolo simple</div></div>
+                <div class="asset-file">favicon.svg · 32×32 · 64×64</div>
             </div>
         </div>
+
+        <h3 style="margin-top: 3rem;">OG / Social card</h3>
+        <p>Imagen Open Graph para redes sociales y previews de link. Formato 1200×630. Modo oscuro por defecto — la marca rinde mejor cuando se comparte sobre feeds claros.</p>
+        <div class="og-card">
+            <svg class="og-drop" viewBox="0 0 160 200"><use href="#drop-halftone"/></svg>
+            <div class="og-text">
+                <div class="og-eyebrow">ForMeta · Mallorca</div>
+                <div class="og-title">Dar forma<br>a las cosas.</div>
+            </div>
+            <div class="og-meta">v1.0 · 2026.05 · formeta.es</div>
+        </div>
+        <p style="margin-top: 0.5rem; font-size: 0.85rem;"><span class="asset-file">og.default.png · 1200×630</span></p>
     </section>
+
+    <!-- ============================================================ -->
+    <!-- Descarga pack -->
+    <!-- ============================================================ -->
+    <section>
+        <div class="section-tag">03F</div>
+        <h2>Descarga</h2>
+
+        <div class="download-section">
+            <h3>Pack de logos · SVG</h3>
+            <p>Todos los archivos vectoriales en sus variantes. Para usar en cliente, web, redes y aplicaciones. Si el botón de pack no funciona, descarga los archivos individualmente desde la lista de abajo. Para descargar los halftone con la configuración actual, usa los botones de exportar en la sección Símbolo.</p>
+
+            <button class="download-cta" id="downloadPackBtn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                Descargar pack legacy (.zip)
+            </button>
+            <div class="download-status" id="downloadStatus"></div>
+
+            <div class="download-list">
+                <a href="#" data-dynamic="halftone-color"><span>Símbolo · halftone color</span><span>SVG · v1.0</span></a>
+                <a href="#" data-dynamic="halftone-mono"><span>Símbolo · halftone mono</span><span>SVG · v1.0</span></a>
+                <a href="#" data-dynamic="halftone-negative"><span>Símbolo · halftone negative</span><span>SVG · v1.0</span></a>
+                <a href="#" data-dynamic="appicon.sand"><span>App icon · sand</span><span>SVG · 1024</span></a>
+                <a href="#" data-dynamic="appicon.ink"><span>App icon · ink</span><span>SVG · 1024</span></a>
+                <a href="#" data-dynamic="appicon.terra"><span>App icon · terra</span><span>SVG · 1024</span></a>
+                <a href="#" data-dynamic="appicon.sunset"><span>App icon · sunset</span><span>SVG · 1024</span></a>
+                <a href="#" data-dynamic="appicon.iris"><span>App icon · iris</span><span>SVG · 1024</span></a>
+                <a href="#" data-dynamic="favicon"><span>Favicon</span><span>SVG · 64</span></a>
+                <a href="#" data-dynamic="og"><span>OG card</span><span>SVG · 1200×630</span></a>
+                <a href="assets/svg/formeta_01_sand.svg" download><span>Isotipo · sand</span><span>SVG</span></a>
+                <a href="assets/svg/formeta_02_mono.svg" download><span>Isotipo · mono</span><span>SVG</span></a>
+                <a href="assets/svg/formeta_03_negative.svg" download><span>Isotipo · negative</span><span>SVG</span></a>
+                <a href="assets/svg/logotipo/logotipo.sand.svg" download><span>Logotipo · sand</span><span>SVG</span></a>
+                <a href="assets/svg/logotipo/logotipo.mono.svg" download><span>Logotipo · mono</span><span>SVG</span></a>
+                <a href="assets/svg/logotipo/logotipo.negative.svg" download><span>Logotipo · negative</span><span>SVG</span></a>
+                <a href="assets/svg/logotipo/logotipo.sand.png" download><span>Logotipo · sand</span><span>PNG</span></a>
+                <a href="assets/svg/logotipo/logotipo.mono.png" download><span>Logotipo · mono</span><span>PNG</span></a>
+                <a href="assets/svg/logotipo/logotipo.negative.png" download><span>Logotipo · negative</span><span>PNG</span></a>
+                <a href="assets/svg/simbolo_v2_layered_color.svg" download><span>Símbolo · layered color</span><span>SVG · v2</span></a>
+                <a href="assets/svg/simbolo_v2_layered_mono.svg" download><span>Símbolo · layered mono</span><span>SVG · v2</span></a>
+                <a href="assets/svg/simbolo_v2_layered_negative.svg" download><span>Símbolo · layered negative</span><span>SVG · v2</span></a>
+                <a href="assets/svg/simbolo_v2_dotted_edge.svg" download><span>Símbolo · dotted edge</span><span>SVG · v2</span></a>
+                <a href="assets/svg/simbolo_v2_construccion.svg" download><span>Símbolo · construcción</span><span>SVG · v2</span></a>
+                <a href="assets/svg/simbolo_color_sand.svg" download><span>Símbolo · simple (≤ 24px)</span><span>SVG</span></a>
+            </div>
+        </div>
+
+        <div class="meta-strip">
+            <span class="tag">v1.0</span><span class="sep">·</span>
+            <span>2026.05.15</span><span class="sep">·</span>
+            <span>Mallorca / 39.5696° N</span><span class="sep">·</span>
+            <span>FMTA—03—Logo</span><span class="sep">·</span>
+            <span>Halftone 8/2.8/38/4 · 6 animaciones</span>
+        </div>
+    </section>
+
 </div>
 
-<!-- SCRIPTS DE ANIMACION DEL LOGO DE PUNTOS -->
+<footer>
+    <nav class="chapter-nav">
+        <a href="02_marca.html">← Anterior: 02 Marca</a>
+        <a href="index.html">Índice</a>
+        <a href="04_tipografia.html">Siguiente: 04 Tipografía →</a>
+    </nav>
+    <span class="terra-drop" style="display: inline-block; opacity: 0.7;">
+        <svg viewBox="0 0 160 200" width="28" height="35" aria-hidden="true"><use href="#drop-simple"/></svg>
+    </span>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 <script>
-    const TERRA='#b8896a', INK='#2c2c28', SAND='#f4f0e8', SEA='#7a9aaa',
-          STONE='#e2ddd4', WHITE='#ffffff', OFFBLACK='#1a1a18', MUTED='#7a7870';
-    
-    function ease(x){ return x<0.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2; }
-    function lerp(a,b,t){ return a+(b-a)*t; }
-    
-    function buildPixels(W, H, inkCol, accentCol, spacing){
-      const off=document.createElement('canvas');
-      off.width=W; off.height=H;
-      const oc=off.getContext('2d');
-      oc.clearRect(0,0,W,H);
-    
-      oc.font='300 52px "Cormorant Garamond",Georgia,serif';
-      const wF=oc.measureText('F').width - 2;
-      oc.font='italic 300 52px "Cormorant Garamond",Georgia,serif';
-      const wor=oc.measureText('or').width + 2;
-      const wFor=wF+wor;
-      oc.font='300 52px "Cormorant Garamond",Georgia,serif';
-      const wMeta=oc.measureText('Meta').width;
-      const totalW=wFor+wMeta-2;
-      const sx=(W-totalW)/2, by=H/2+18;
-    
-      oc.fillStyle='#000';
-      oc.font='300 52px "Cormorant Garamond",Georgia,serif';
-      oc.fillText('F', sx, by);
-      oc.font='italic 300 52px "Cormorant Garamond",Georgia,serif';
-      oc.fillText('or', sx+wF, by);
-      oc.font='300 52px "Cormorant Garamond",Georgia,serif';
-      oc.fillText('Meta', sx+wFor-2, by);
-    
-      const data=oc.getImageData(0,0,W,H).data;
-      const pts=[];
-      const step=spacing||4;
-      for(let y=0;y<H;y+=step) for(let x=0;x<W;x+=step){
-        const i=(y*W+x)*4;
-        if(data[i+3]>110) pts.push({x,y});
-      }
-      return pts;
-    }
-    
-    function initDots(targets, W, H, inkCol, accentCol, accentRatio){
-      const CX=W/2, CY=H/2;
-      return targets.map(tgt=>{
-        const angle=Math.random()*Math.PI*2;
-        const dist=70+Math.random()*90;
-        const inFor = tgt.x < W*0.52;
-        const isAccent = inFor ? Math.random()<(accentRatio*1.4) : Math.random()<(accentRatio*0.3);
-        return {
-          tx:tgt.x, ty:tgt.y,
-          x:CX+Math.cos(angle)*dist,
-          y:CY+Math.sin(angle)*dist,
-          r:Math.random()*1.5+0.5,
-          delay:Math.random()*0.42,
-          col: isAccent ? accentCol : inkCol,
-          finalOp:Math.random()*0.35+0.65,
-        };
-      });
-    }
-    
-    function makeScene(canvasEl, dotCol, accentCol, bgCol, accentRatio, spacing, delay){
-      const ctx=canvasEl.getContext('2d');
-      const W=canvasEl.width, H=canvasEl.height;
-      const DUR=2800;
-      let start=null, raf=null, dots=[];
-    
-      function init(){
-        const targets=buildPixels(W,H,dotCol,accentCol,spacing);
-        dots=initDots(targets,W,H,dotCol,accentCol,accentRatio);
-      }
-    
-      function draw(ts){
-        if(!start) start=ts;
-        const el=ts-start;
-        ctx.clearRect(0,0,W,H);
-        if(bgCol){ctx.fillStyle=bgCol; ctx.fillRect(0,0,W,H);}
-    
-        dots.forEach(d=>{
-          const rawP=Math.max(0,(el/DUR-d.delay))/(1-d.delay);
-          const p=ease(Math.min(1,rawP));
-          const cx=lerp(d.x,d.tx,p);
-          const cy=lerp(d.y,d.ty,p);
-          ctx.globalAlpha=lerp(0.06,d.finalOp,p);
-          ctx.fillStyle=d.col;
-          ctx.beginPath(); ctx.arc(cx,cy,d.r,0,Math.PI*2); ctx.fill();
+// =====================================================
+// Controles halftone + exportar
+// =====================================================
+(function() {
+    const ctrls = ['spacing', 'maxR', 'decay', 'coreR'];
+    const sym = document.getElementById('drop-halftone');
+
+    function regen() {
+        const opts = {};
+        ctrls.forEach(k => {
+            const el = document.getElementById('ctrl-' + k);
+            if (!el) return;
+            opts[k] = parseFloat(el.value);
+            const v = document.getElementById('val-' + k);
+            if (v) v.textContent = el.value;
         });
-    
-        if(el>DUR){
-          const idle=(el-DUR)/900;
-          const pulse=0.86+Math.sin(idle*1.5)*0.14;
-          ctx.clearRect(0,0,W,H);
-          if(bgCol){ctx.fillStyle=bgCol; ctx.fillRect(0,0,W,H);}
-          dots.forEach(d=>{
-            ctx.globalAlpha=d.finalOp*pulse;
-            ctx.fillStyle=d.col;
-            ctx.beginPath(); ctx.arc(d.tx,d.ty,d.r,0,Math.PI*2); ctx.fill();
-          });
-        }
-        ctx.globalAlpha=1;
-        raf=requestAnimationFrame(draw);
-      }
-    
-      return {
-        start(){
-          if(raf) cancelAnimationFrame(raf);
-          ctx.clearRect(0,0,W,H);
-          if(bgCol){ctx.fillStyle=bgCol; ctx.fillRect(0,0,W,H);}
-          start=null; init();
-          setTimeout(()=>{ raf=requestAnimationFrame(draw); }, delay||0);
-        },
-        stop(){ if(raf) cancelAnimationFrame(raf); }
-      };
+        window.__halftone = Object.assign({}, window.__halftone, opts);
+        if (window.__populateAllHalftone) window.__populateAllHalftone(opts);
     }
-    
-    // Scene setup
-    const s1 = makeScene(document.getElementById('c1'), INK, TERRA, SAND, 0.22, 4, 0);
-    const s2 = makeScene(document.getElementById('c2'), '#111110', '#444440', WHITE, 0.0, 4, 180);
-    const s3 = makeScene(document.getElementById('c3'), '#d8d4cc', TERRA, OFFBLACK, 0.25, 4, 360);
-    
-    function getSVGString(W, H, pts, dotCol, accentCol, bgCol, accentRatio) {
-      let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}">\n`;
-      if (bgCol) {
-        svg += `  <rect width="100%" height="100%" fill="${bgCol}" />\n`;
-      }
-      
-      pts.forEach(p => {
-        const inFor = p.x < W*0.52;
-        const isAccent = inFor ? Math.random()<(accentRatio*1.4) : Math.random()<(accentRatio*0.3);
-        const col = isAccent ? accentCol : dotCol;
-        const r = Math.random()*1.5+0.5;
-        const op = Math.random()*0.35+0.65;
-        svg += `  <circle cx="${p.x}" cy="${p.y}" r="${r.toFixed(2)}" fill="${col}" opacity="${op.toFixed(2)}" />\n`;
-      });
-      svg += `</svg>`;
-      return svg;
-    }
-    
-    function downloadStringAsFile(str, filename) {
-      const blob = new Blob([str], { type: 'image/svg+xml' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      setTimeout(() => URL.revokeObjectURL(url), 100);
-    }
-    
-    function exportToSVG(){
-      const W=340, H=160;
-      const pts = buildPixels(W, H, null, null, 4);
-      const svg1 = getSVGString(W, H, pts, INK, TERRA, SAND, 0.22);
-      downloadStringAsFile(svg1, 'formeta_01_sand.svg');
-      const svg2 = getSVGString(W, H, pts, '#111110', '#444440', WHITE, 0.0);
-      setTimeout(() => downloadStringAsFile(svg2, 'formeta_02_mono.svg'), 300);
-      const svg3 = getSVGString(W, H, pts, '#d8d4cc', TERRA, OFFBLACK, 0.25);
-      setTimeout(() => downloadStringAsFile(svg3, 'formeta_03_negative.svg'), 600);
+    ctrls.forEach(k => {
+        const el = document.getElementById('ctrl-' + k);
+        if (el) el.addEventListener('input', regen);
+    });
+
+    // Reset a defaults
+    const resetBtn = document.getElementById('reset-defaults');
+    if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+            const d = window.__halftoneDefaults;
+            ctrls.forEach(k => {
+                const el = document.getElementById('ctrl-' + k);
+                if (el) el.value = d[k];
+                const v = document.getElementById('val-' + k);
+                if (v) v.textContent = d[k];
+            });
+            regen();
+        });
     }
 
-    function exportSymbolsSVG(){
-      const svgs = document.querySelectorAll('section:nth-of-type(5) svg');
-      let delay = 0;
-      svgs.forEach((svg, i) => {
-        let clone = svg.cloneNode(true);
-        if(!clone.getAttribute('xmlns')) {
-            clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-        }
-        
-        let label = "simbolo_" + (i+1);
-        let lblEl = svg.closest('.card, .col') ? svg.closest('.card, .col').querySelector('.lbl') : null;
-        if(lblEl) {
-            label = 'simbolo_' + lblEl.innerText.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/g, '_').replace(/_+/g, '_').replace(/_$/, '');
-        }
-        
-        let str = clone.outerHTML;
-        // Reemplazar variables CSS por códigos hex para el SVG estático
-        str = str.replace(/var\(--color-terra\)/g, TERRA)
-                 .replace(/var\(--color-ink\)/g, INK);
+    function serializeSymbol(coreColor, dotColor) {
+        if (!sym) return '';
+        let content = '';
+        Array.from(sym.children).forEach(node => {
+            const clone = node.cloneNode(true);
+            if (clone.getAttribute('fill') === 'currentColor') clone.setAttribute('fill', dotColor);
+            const f = clone.getAttribute('fill') || '';
+            if (f.startsWith('var(--core-color')) clone.setAttribute('fill', coreColor);
+            content += clone.outerHTML + '\n';
+        });
+        return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 200" width="160" height="200">\n${content}</svg>\n`;
+    }
 
-        setTimeout(() => {
-           downloadStringAsFile(str, label + '.svg');
-        }, delay);
-        delay += 300;
-      });
+    function downloadFile(filename, svgString) {
+        const blob = new Blob([svgString], { type: 'image/svg+xml' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = filename;
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        URL.revokeObjectURL(url);
     }
-    
-    function replayAll(){ 
-      s1.start(); s2.start(); s3.start(); 
+
+    const status = document.getElementById('exportStatus');
+    function setStatus(msg, error) {
+        if (!status) return;
+        status.textContent = msg;
+        status.style.color = error ? 'var(--color-alert)' : 'var(--color-sage)';
     }
-    replayAll();
+
+    document.getElementById('export-color').addEventListener('click', () => {
+        downloadFile('simbolo_halftone_color.svg', serializeSymbol('#B8896A', '#2C2C28'));
+        setStatus('✓ simbolo_halftone_color.svg descargado');
+    });
+    document.getElementById('export-mono').addEventListener('click', () => {
+        downloadFile('simbolo_halftone_mono.svg', serializeSymbol('#2C2C28', '#2C2C28'));
+        setStatus('✓ simbolo_halftone_mono.svg descargado');
+    });
+    document.getElementById('export-negative').addEventListener('click', () => {
+        downloadFile('simbolo_halftone_negative.svg', serializeSymbol('#B8896A', '#F4F0E8'));
+        setStatus('✓ simbolo_halftone_negative.svg descargado');
+    });
+    document.getElementById('export-all').addEventListener('click', () => {
+        downloadFile('simbolo_halftone_color.svg', serializeSymbol('#B8896A', '#2C2C28'));
+        setTimeout(() => downloadFile('simbolo_halftone_mono.svg', serializeSymbol('#2C2C28', '#2C2C28')), 200);
+        setTimeout(() => downloadFile('simbolo_halftone_negative.svg', serializeSymbol('#B8896A', '#F4F0E8')), 400);
+        setStatus('✓ 3 archivos descargados — guardar en assets/svg/');
+    });
+})();
+
+// =====================================================
+// Helpers globales para serializar halftone y construir
+// SVGs derivados (favicon, app icons, OG card).
+// =====================================================
+window.__svgBuilders = (function() {
+    const GOTA_PATH = 'M80 12 C80 12 104 52 116 88 C126 118 122 152 102 168 C92 176 80 178 80 178 C80 178 68 176 58 168 C38 152 34 118 44 88 C56 52 80 12 80 12 Z';
+
+    function dotsContent(dotColor, coreColor) {
+        const sym = document.getElementById('drop-halftone');
+        if (!sym) return '';
+        let content = '';
+        Array.from(sym.children).forEach(node => {
+            const clone = node.cloneNode(true);
+            if (clone.getAttribute('fill') === 'currentColor') clone.setAttribute('fill', dotColor);
+            const f = clone.getAttribute('fill') || '';
+            if (f.startsWith('var(--core-color')) clone.setAttribute('fill', coreColor);
+            content += clone.outerHTML;
+        });
+        return content;
+    }
+
+    function serializeHalftone(dotColor, coreColor) {
+        return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 200" width="160" height="200">\n' +
+               dotsContent(dotColor, coreColor) +
+               '\n</svg>\n';
+    }
+
+    function buildFavicon() {
+        return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 200" width="64" height="64">\n' +
+               '  <path d="' + GOTA_PATH + '" fill="none" stroke="#2C2C28" stroke-width="6" stroke-linejoin="round"/>\n' +
+               '  <circle cx="80" cy="130" r="8" fill="#B8896A"/>\n' +
+               '</svg>\n';
+    }
+
+    // Construye un app icon 1024×1024 con squircle, fondo y halftone centrado.
+    function buildAppIcon(variant) {
+        const variants = {
+            sand:   { bg: '#F4F0E8', dot: '#2C2C28', core: '#B8896A', defs: '' },
+            ink:    { bg: '#1A1A18', dot: '#F4F0E8', core: '#B8896A', defs: '' },
+            terra:  { bg: '#B8896A', dot: '#F4F0E8', core: '#F4F0E8', defs: '' },
+            sunset: {
+                bg: 'url(#bg-sunset)',
+                dot: '#2C2C28', core: '#2C2C28',
+                defs: '<defs><linearGradient id="bg-sunset" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#B8896A"/><stop offset="60%" stop-color="#E2DDD4"/><stop offset="100%" stop-color="#F4F0E8"/></linearGradient></defs>'
+            },
+            iris: {
+                bg: 'url(#bg-iris)',
+                dot: '#1A1A18', core: '#F4F0E8',
+                defs: '<defs><radialGradient id="bg-iris" cx="50%" cy="50%" r="72%"><stop offset="0%" stop-color="#D04AC2"/><stop offset="40%" stop-color="#4ABFD0"/><stop offset="80%" stop-color="#8E5DBF"/><stop offset="100%" stop-color="#8E5DBF"/></radialGradient></defs>'
+            }
+        };
+        const v = variants[variant] || variants.sand;
+        // viewBox 200×200, squircle radio 22.37% = 44.74
+        return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="1024" height="1024">\n' +
+               v.defs + '\n' +
+               '  <rect width="200" height="200" rx="44.74" ry="44.74" fill="' + v.bg + '"/>\n' +
+               '  <g transform="translate(30 17) scale(0.875)">\n' +
+               '    ' + dotsContent(v.dot, v.core) + '\n' +
+               '  </g>\n' +
+               '</svg>\n';
+    }
+
+    function buildOGCard() {
+        // 1200×630 modo oscuro
+        return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">\n' +
+               '  <rect width="1200" height="630" fill="#1A1A18"/>\n' +
+               '  <g transform="translate(140 175) scale(2.0)">\n' +
+               '    ' + dotsContent('#B8896A', '#F4F0E8') + '\n' +
+               '  </g>\n' +
+               '  <text x="1080" y="200" text-anchor="end" font-family="DM Mono, monospace" font-size="14" letter-spacing="2.2" fill="#B8896A">FORMETA · MALLORCA</text>\n' +
+               '  <text x="1080" y="305" text-anchor="end" font-family="Garamond, Georgia, serif" font-size="78" font-weight="300" fill="#F4F0E8" letter-spacing="-1.6">Dar forma</text>\n' +
+               '  <text x="1080" y="395" text-anchor="end" font-family="Garamond, Georgia, serif" font-size="78" font-weight="300" fill="#F4F0E8" letter-spacing="-1.6">a las cosas.</text>\n' +
+               '  <text x="1080" y="590" text-anchor="end" font-family="DM Mono, monospace" font-size="11" letter-spacing="1.6" fill="#E2DDD4" opacity="0.6">v1.0 · 2026.05 · formeta.es</text>\n' +
+               '</svg>\n';
+    }
+
+    function downloadString(filename, content) {
+        const blob = new Blob([content], { type: 'image/svg+xml' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = filename;
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+
+    return {
+        serializeHalftone: serializeHalftone,
+        buildFavicon: buildFavicon,
+        buildAppIcon: buildAppIcon,
+        buildOGCard: buildOGCard,
+        downloadString: downloadString
+    };
+})();
+
+// Handler para descargas individuales dinámicas (favicon, app icons, OG)
+document.addEventListener('click', function(e) {
+    const a = e.target.closest('a[data-dynamic]');
+    if (!a) return;
+    e.preventDefault();
+    const kind = a.dataset.dynamic;
+    const b = window.__svgBuilders;
+    if (!b) return;
+    if (kind === 'favicon') b.downloadString('favicon.svg', b.buildFavicon());
+    else if (kind === 'og') b.downloadString('og.default.svg', b.buildOGCard());
+    else if (kind.startsWith('appicon.')) {
+        const variant = kind.replace('appicon.', '');
+        b.downloadString('appicon.' + variant + '.svg', b.buildAppIcon(variant));
+    }
+    else if (kind === 'halftone-color')    b.downloadString('simbolo_halftone_color.svg',    b.serializeHalftone('#2C2C28', '#B8896A'));
+    else if (kind === 'halftone-mono')     b.downloadString('simbolo_halftone_mono.svg',     b.serializeHalftone('#2C2C28', '#2C2C28'));
+    else if (kind === 'halftone-negative') b.downloadString('simbolo_halftone_negative.svg', b.serializeHalftone('#F4F0E8', '#B8896A'));
+});
+
+// =====================================================
+// Pack zip — todo: legacy + halftone + favicon + app icons + OG
+// =====================================================
+(function() {
+    const btn = document.getElementById('downloadPackBtn');
+    const status = document.getElementById('downloadStatus');
+    if (!btn) return;
+
+    const legacyFiles = [
+        'assets/svg/formeta_01_sand.svg',
+        'assets/svg/formeta_02_mono.svg',
+        'assets/svg/formeta_03_negative.svg',
+        'assets/svg/logotipo/logotipo.sand.svg',
+        'assets/svg/logotipo/logotipo.mono.svg',
+        'assets/svg/logotipo/logotipo.negative.svg',
+        'assets/svg/logotipo/logotipo.sand.png',
+        'assets/svg/logotipo/logotipo.mono.png',
+        'assets/svg/logotipo/logotipo.negative.png',
+        'assets/svg/simbolo_v2_layered_color.svg',
+        'assets/svg/simbolo_v2_layered_mono.svg',
+        'assets/svg/simbolo_v2_layered_negative.svg',
+        'assets/svg/simbolo_v2_dotted_edge.svg',
+        'assets/svg/simbolo_v2_construccion.svg',
+        'assets/svg/simbolo_color_sand.svg'
+    ];
+
+    btn.addEventListener('click', async function() {
+        if (typeof JSZip === 'undefined') {
+            status.textContent = 'JSZip no cargado. Usa los enlaces individuales abajo.';
+            status.classList.add('error'); return;
+        }
+        btn.disabled = true; status.classList.remove('error');
+        const totalDynamic = 10; // 3 halftone + 5 appicons + favicon + og
+        const totalAll = legacyFiles.length + totalDynamic;
+        status.textContent = 'Empaquetando ' + totalAll + ' archivos...';
+
+        try {
+            const zip = new JSZip();
+            const folder = zip.folder('formeta-logo-pack');
+            const b = window.__svgBuilders;
+
+            // Legacy: fetch
+            for (let i = 0; i < legacyFiles.length; i++) {
+                const path = legacyFiles[i];
+                status.textContent = 'Empaquetando ' + (i + 1) + '/' + totalAll + ' · ' + path.split('/').pop();
+                try {
+                    const res = await fetch(path);
+                    if (!res.ok) throw new Error('404');
+                    const blob = await res.blob();
+                    folder.file(path.split('/').pop(), blob);
+                } catch (e) {
+                    console.warn('Skipping ' + path + ' — ' + e.message);
+                }
+            }
+
+            // Halftone serializados
+            status.textContent = 'Generando halftone variants...';
+            folder.file('simbolo_halftone_color.svg',    b.serializeHalftone('#2C2C28', '#B8896A'));
+            folder.file('simbolo_halftone_mono.svg',     b.serializeHalftone('#2C2C28', '#2C2C28'));
+            folder.file('simbolo_halftone_negative.svg', b.serializeHalftone('#F4F0E8', '#B8896A'));
+
+            // App icons
+            status.textContent = 'Generando app icons...';
+            ['sand', 'ink', 'terra', 'sunset', 'iris'].forEach(v => {
+                folder.file('appicon.' + v + '.svg', b.buildAppIcon(v));
+            });
+
+            // Favicon
+            folder.file('favicon.svg', b.buildFavicon());
+
+            // OG card
+            folder.file('og.default.svg', b.buildOGCard());
+
+            status.textContent = 'Generando .zip...';
+            const zipBlob = await zip.generateAsync({ type: 'blob' });
+            const url = URL.createObjectURL(zipBlob);
+            const a = document.createElement('a');
+            a.href = url; a.download = 'formeta-logo-pack-v1.0.zip';
+            document.body.appendChild(a); a.click(); document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            status.textContent = '✓ Pack descargado · formeta-logo-pack-v1.0.zip · ' + totalAll + ' archivos';
+        } catch (err) {
+            console.error(err); status.classList.add('error');
+            status.textContent = '✗ ' + (err.message || 'Error') + ' · sirve la carpeta con un servidor local para incluir los archivos legacy.';
+        } finally { btn.disabled = false; }
+    });
+})();
 </script>
 
-
-<footer style="text-align: center; margin-top: var(--spacing-xl); padding: var(--spacing-md) 0; border-top: 1px solid var(--color-border-secondary);">
-    <svg width="24" height="30" viewBox="0 0 160 200" style="opacity: 0.8; margin: 0 auto;">
-         <path d="M80 12 C80 12 104 52 116 88 C126 118 122 152 102 168 C92 176 80 178 80 178 C80 178 68 176 58 168 C38 152 34 118 44 88 C56 52 80 12 80 12 Z" fill="none" stroke="var(--color-terra)" stroke-width="4"/>
-         <circle cx="80" cy="130" r="6" fill="var(--color-terra)"/>
-    </svg>
-</footer>
 </body>
-
 </html>

@@ -9,7 +9,7 @@
 /* Timer control block */
 .timerControl {
   padding: 28px 32px;
-  border: 1px solid var(--line);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   background:
     linear-gradient(140deg, rgba(248, 244, 237, 0.9), rgba(244, 240, 232, 0.7));
@@ -26,7 +26,7 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #5a8a5e;
+  background: var(--color-success-strong);
   flex-shrink: 0;
   animation: pulse 1.6s ease-in-out infinite;
 }
@@ -41,14 +41,14 @@
   font-size: 0.64rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: #5a8a5e;
+  color: var(--color-success-strong);
 }
 
 .runningElapsed {
   font-family: var(--font-mono), monospace;
   font-size: 2rem;
   letter-spacing: 0.06em;
-  color: var(--ink);
+  color: var(--color-ink);
   margin-left: auto;
 }
 
@@ -56,8 +56,8 @@
   padding: 9px 20px;
   border: 1px solid rgba(44, 44, 40, 0.3);
   border-radius: 999px;
-  background: var(--ink);
-  color: var(--sand);
+  background: var(--color-ink);
+  color: var(--color-sand);
   font-family: var(--font-mono), monospace;
   font-size: 0.66rem;
   letter-spacing: 0.14em;
@@ -68,8 +68,8 @@
 }
 
 .btnStop:hover {
-  background: var(--danger);
-  border-color: var(--danger);
+  background: var(--color-alert);
+  border-color: var(--color-alert);
 }
 
 .idleBlock {
@@ -83,21 +83,21 @@
   margin: 0;
   font-family: var(--font-mono), monospace;
   font-size: 0.68rem;
-  color: var(--muted);
+  color: var(--color-muted-strong);
   letter-spacing: 0.04em;
 }
 
 .otherActive strong {
-  color: var(--ink);
+  color: var(--color-ink);
   font-weight: 400;
 }
 
 .btnPlay {
   padding: 11px 28px;
-  border: 1px solid var(--ink);
+  border: 1px solid var(--color-ink);
   border-radius: 999px;
-  background: var(--ink);
-  color: var(--sand);
+  background: var(--color-ink);
+  color: var(--color-sand);
   font-family: var(--font-mono), monospace;
   font-size: 0.7rem;
   letter-spacing: 0.16em;
@@ -108,8 +108,8 @@
 }
 
 .btnPlay:hover:not(:disabled) {
-  background: #5a8a5e;
-  border-color: #5a8a5e;
+  background: var(--color-success-strong);
+  border-color: var(--color-success-strong);
 }
 
 .btnPlay:disabled {
@@ -129,7 +129,7 @@
   flex-direction: column;
   gap: 8px;
   padding: 20px 24px;
-  border: 1px solid var(--line-soft);
+  border: 1px solid var(--color-border-soft);
   border-radius: var(--radius-sm);
   background: rgba(244, 240, 232, 0.5);
 }
@@ -139,14 +139,14 @@
   font-size: 0.6rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--color-muted-strong);
 }
 
 .summaryValue {
   font-family: var(--font-display), serif;
   font-size: 2rem;
   line-height: 1;
-  color: var(--ink);
+  color: var(--color-ink);
 }
 
 /* Weekly chart */
@@ -161,7 +161,7 @@
   font-size: 0.62rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--color-muted-strong);
 }
 
 .chart {
@@ -192,13 +192,13 @@
 .barFill {
   width: 100%;
   border-radius: 3px 3px 0 0;
-  background: var(--stone-strong);
+  background: var(--color-stone-strong);
   transition: height 600ms var(--ease-smooth);
   min-height: 0;
 }
 
 .barFill[data-active="true"] {
-  background: var(--terracotta);
+  background: var(--color-terra);
   opacity: 0.7;
 }
 
@@ -207,13 +207,13 @@
   font-size: 0.58rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--color-muted-strong);
 }
 
 .barValue {
   font-family: var(--font-mono), monospace;
   font-size: 0.56rem;
-  color: var(--terracotta);
+  color: var(--color-terra);
   letter-spacing: 0.04em;
 }
 
@@ -229,7 +229,7 @@
   font-size: 0.62rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--color-muted-strong);
 }
 
 .dayGroup {
@@ -243,15 +243,15 @@
   font-size: 0.64rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--terracotta);
+  color: var(--color-terra);
   padding-bottom: 6px;
-  border-bottom: 1px solid var(--line-soft);
+  border-bottom: 1px solid var(--color-border-soft);
 }
 
 .sessionList {
   display: flex;
   flex-direction: column;
-  border: 1px solid var(--line-soft);
+  border: 1px solid var(--color-border-soft);
   border-radius: var(--radius-sm);
   overflow: hidden;
 }
@@ -261,7 +261,7 @@
   align-items: center;
   gap: 12px;
   padding: 10px 16px;
-  border-bottom: 1px solid var(--line-soft);
+  border-bottom: 1px solid var(--color-border-soft);
 }
 
 .sessionRow:last-of-type {
@@ -270,8 +270,8 @@
 
 .sessionUser {
   font-size: 0.68rem;
-  color: var(--muted);
-  background: var(--stone, #e8e4dc);
+  color: var(--color-muted-strong);
+  background: var(--color-stone);
   padding: 1px 6px;
   border-radius: 10px;
   white-space: nowrap;
@@ -280,7 +280,7 @@
 .sessionTime {
   font-family: var(--font-mono), monospace;
   font-size: 0.7rem;
-  color: var(--muted);
+  color: var(--color-muted-strong);
   letter-spacing: 0.04em;
   flex: 1;
 }
@@ -288,7 +288,7 @@
 .sessionDuration {
   font-family: var(--font-mono), monospace;
   font-size: 0.7rem;
-  color: var(--ink);
+  color: var(--color-ink);
   letter-spacing: 0.04em;
 }
 
@@ -298,7 +298,7 @@
   padding: 2px 6px;
   font-family: var(--font-mono), monospace;
   font-size: 0.75rem;
-  color: var(--muted);
+  color: var(--color-muted-strong);
   opacity: 0;
   transition:
     opacity var(--motion-fast) var(--ease-smooth),
@@ -311,12 +311,12 @@
 }
 
 .btnDeleteEntry:hover {
-  color: var(--danger);
+  color: var(--color-alert);
 }
 
 .btnDeleteEntryConfirm {
   opacity: 1 !important;
-  color: var(--danger);
+  color: var(--color-alert);
   font-size: 0.6rem;
   letter-spacing: 0.1em;
 }
@@ -331,15 +331,15 @@
   font-size: 0.64rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--color-muted-strong);
 }
 
 .dayTotal span:last-child {
-  color: var(--ink);
+  color: var(--color-ink);
 }
 
 .empty {
-  color: var(--muted);
+  color: var(--color-muted-strong);
   font-size: 0.95rem;
   line-height: 1.8;
 }

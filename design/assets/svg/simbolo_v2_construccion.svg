@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" width="200" height="240">
+  <!-- Rejilla -->
+  <defs>
+    <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+      <path d="M 10 0 L 0 0 0 10" fill="none" stroke="#B8896A" stroke-width="0.3" opacity="0.4"/>
+    </pattern>
+  </defs>
+  <rect x="20" y="20" width="160" height="200" fill="url(#grid)"/>
+
+  <!-- Caja de cota -->
+  <rect x="20" y="20" width="160" height="200" fill="none" stroke="#B8896A" stroke-width="0.5" stroke-dasharray="3 2" opacity="0.7"/>
+
+  <!-- Marcadores esquinas (estilo _NET_) -->
+  <g stroke="#B8896A" stroke-width="1" fill="none">
+    <path d="M16 20 L24 20 M20 16 L20 24"/>
+    <path d="M176 20 L184 20 M180 16 L180 24"/>
+    <path d="M16 220 L24 220 M20 216 L20 224"/>
+    <path d="M176 220 L184 220 M180 216 L180 224"/>
+  </g>
+
+  <!-- Líneas guía centrales -->
+  <g stroke="#B8896A" stroke-width="0.4" stroke-dasharray="2 3" opacity="0.5">
+    <line x1="100" y1="20" x2="100" y2="220"/>
+    <line x1="20" y1="150" x2="180" y2="150"/>
+  </g>
+
+  <!-- Cotas -->
+  <g font-family="monospace" font-size="6" fill="#B8896A" opacity="0.8">
+    <text x="100" y="14" text-anchor="middle">160 × 200</text>
+    <text x="100" y="234" text-anchor="middle">FOCAL · 80,130</text>
+    <text x="14" y="153" text-anchor="end" transform="rotate(-90 14 150)">y = 130</text>
+  </g>
+
+  <!-- Símbolo layered (trasladado al centro) -->
+  <g transform="translate(20 20)" fill="none" stroke="#2C2C28" stroke-linejoin="round">
+    <path d="M80 12 C80 12 104 52 116 88 C126 118 122 152 102 168 C92 176 80 178 80 178 C80 178 68 176 58 168 C38 152 34 118 44 88 C56 52 80 12 80 12 Z" stroke-width="4"/>
+    <g transform="translate(80 130)">
+      <path d="M0 -118 C0 -118 24 -78 36 -42 C46 -12 42 22 22 38 C12 46 0 48 0 48 C0 48 -12 46 -22 38 C-42 22 -46 -12 -36 -42 C-24 -78 0 -118 0 -118 Z" transform="scale(0.78)" stroke-width="2.4" opacity="0.85"/>
+      <path d="M0 -118 C0 -118 24 -78 36 -42 C46 -12 42 22 22 38 C12 46 0 48 0 48 C0 48 -12 46 -22 38 C-42 22 -46 -12 -36 -42 C-24 -78 0 -118 0 -118 Z" transform="scale(0.58)" stroke-width="1.8" opacity="0.70"/>
+      <path d="M0 -118 C0 -118 24 -78 36 -42 C46 -12 42 22 22 38 C12 46 0 48 0 48 C0 48 -12 46 -22 38 C-42 22 -46 -12 -36 -42 C-24 -78 0 -118 0 -118 Z" transform="scale(0.40)" stroke-width="1.3" opacity="0.55"/>
+      <path d="M0 -118 C0 -118 24 -78 36 -42 C46 -12 42 22 22 38 C12 46 0 48 0 48 C0 48 -12 46 -22 38 C-42 22 -46 -12 -36 -42 C-24 -78 0 -118 0 -118 Z" transform="scale(0.22)" stroke-width="0.9" opacity="0.40"/>
+    </g>
+  </g>
+  <circle cx="100" cy="150" r="4" fill="#B8896A"/>
+
+  <!-- Anillos de cota alrededor del foco -->
+  <g fill="none" stroke="#B8896A" stroke-width="0.4" stroke-dasharray="1 2" opacity="0.5">
+    <circle cx="100" cy="150" r="14"/>
+    <circle cx="100" cy="150" r="28"/>
+    <circle cx="100" cy="150" r="46"/>
+  </g>
+</svg>

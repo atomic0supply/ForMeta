@@ -45,7 +45,7 @@
 
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   .card {
-    background: var(--sand);
+    background: var(--color-sand);
   }
 }
 
@@ -68,12 +68,12 @@
   font-size: 0.68rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--terracotta);
+  color: var(--color-terra);
 }
 
 .copy {
   margin: 0;
-  color: var(--muted);
+  color: var(--color-muted-strong);
   line-height: 1.8;
 }
 
@@ -93,7 +93,7 @@
   font-size: 0.68rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--color-muted-strong);
 }
 
 .field input {
@@ -104,12 +104,12 @@
   background: rgba(255, 255, 255, 0.62);
   -webkit-backdrop-filter: blur(var(--glass-blur-xs));
   backdrop-filter: blur(var(--glass-blur-xs));
-  color: var(--ink);
+  color: var(--color-ink);
   transition: border-color var(--motion-fast) var(--ease-smooth), background var(--motion-fast) var(--ease-smooth);
 }
 
 .field input:focus {
-  border-color: var(--terracotta);
+  border-color: var(--color-terra);
   background: rgba(255, 255, 255, 0.85);
   outline: none;
 }
@@ -125,8 +125,8 @@
   padding: 0 18px;
   border-radius: 999px;
   border: 0;
-  background: var(--ink);
-  color: var(--sand);
+  background: var(--color-ink);
+  color: var(--color-sand);
   font-family: var(--font-mono), monospace;
   font-size: 0.72rem;
   letter-spacing: 0.16em;
@@ -136,7 +136,7 @@
 .actions .secondary {
   background: transparent;
   border: 1px solid rgba(44, 44, 40, 0.14);
-  color: var(--ink);
+  color: var(--color-ink);
 }
 
 .error,
@@ -149,12 +149,12 @@
 
 .error {
   background: rgba(208, 90, 90, 0.1);
-  color: var(--danger);
+  color: var(--color-alert);
 }
 
 .message {
   background: rgba(143, 168, 146, 0.15);
-  color: #4a7a4e;
+  color: var(--color-success-deep);
 }
 
 .metaRow {
@@ -162,7 +162,7 @@
   display: flex;
   justify-content: space-between;
   gap: 18px;
-  color: var(--muted);
+  color: var(--color-muted-strong);
   font-size: 0.94rem;
 }
 

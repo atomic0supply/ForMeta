@@ -3,13 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>08. Animación y Motion - ForMeta Guía de Estilo</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
-    <style>:root {
-            --font-mono: 'DM Mono', 'Courier New', Courier, monospace;
-            --font-serif: 'Cormorant Garamond', Garamond, Georgia, serif;
+    <title>08. Animación - ForMeta Guía de Estilo</title>
+
+    <style>
+        @font-face { font-family: 'Canela Trial'; src: url('typo/Canela_Collection/Canela Family/Canela-Light-Trial.otf') format('opentype'); font-weight: 300; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Canela Trial'; src: url('typo/Canela_Collection/Canela Family/Canela-LightItalic-Trial.otf') format('opentype'); font-weight: 300; font-style: italic; font-display: swap; }
+        @font-face { font-family: 'Canela Trial'; src: url('typo/Canela_Collection/Canela Family/Canela-Medium-Trial.otf') format('opentype'); font-weight: 500; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Canela Deck Trial'; src: url('typo/Canela_Collection/Canela Deck Family/CanelaDeck-Light-Trial.otf') format('opentype'); font-weight: 300; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Canela Deck Trial'; src: url('typo/Canela_Collection/Canela Deck Family/CanelaDeck-LightItalic-Trial.otf') format('opentype'); font-weight: 300; font-style: italic; font-display: swap; }
+        @font-face { font-family: 'Canela Deck Trial'; src: url('typo/Canela_Collection/Canela Deck Family/CanelaDeck-Medium-Trial.otf') format('opentype'); font-weight: 500; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Canela Text Trial'; src: url('typo/Canela_Collection/Canela Text Family/CanelaText-Regular-Trial.otf') format('opentype'); font-weight: 400; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Canela Text Trial'; src: url('typo/Canela_Collection/Canela Text Family/CanelaText-RegularItalic-Trial.otf') format('opentype'); font-weight: 400; font-style: italic; font-display: swap; }
+        @font-face { font-family: 'Canela Text Trial'; src: url('typo/Canela_Collection/Canela Text Family/CanelaText-Medium-Trial.otf') format('opentype'); font-weight: 500; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'IBM Plex Mono'; src: url('typo/IBM_PLEX/IBMPlexMono-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'IBM Plex Mono'; src: url('typo/IBM_PLEX/IBMPlexMono-Medium.ttf') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
+
+        :root {
+            --font-display: 'Canela Trial', Georgia, serif;
+            --font-deck:    'Canela Deck Trial', Georgia, serif;
+            --font-text:    'Canela Text Trial', Georgia, serif;
+            --font-mono:    'IBM Plex Mono', 'Courier New', monospace;
+
             --color-ink: #2C2C28;
             --color-terra: #B8896A;
             --color-sand: #F4F0E8;
@@ -19,47 +33,1342 @@
             --color-white: #FFFFFF;
             --color-offblack: #1A1A18;
             --color-muted: #7A7870;
-            --color-alert: #d05a5a;
+            --color-alert: #D05A5A;
+            --color-success: #7A9F7E;
+
             --color-bg: var(--color-sand);
             --color-text: var(--color-ink);
             --color-text-secondary: var(--color-muted);
             --color-border-secondary: rgba(44, 44, 40, 0.1);
+
             --spacing-xs: 0.5rem;
             --spacing-sm: 1.5rem;
             --spacing-md: 3rem;
             --spacing-lg: 6rem;
             --spacing-xl: 10rem;
+
+            /* ============================================================
+               MOTION TOKENS — el sistema canónico v1.0
+               ============================================================ */
+            --easing-expressive: cubic-bezier(0.16, 1, 0.3, 1);
+            --easing-standard:   cubic-bezier(0.4, 0, 0.2, 1);
+            --easing-enter:      cubic-bezier(0, 0, 0.2, 1);
+            --easing-exit:       cubic-bezier(0.4, 0, 1, 1);
+            --easing-inout:      cubic-bezier(0.4, 0, 0.2, 1);
+
+            --duration-micro:     200ms;
+            --duration-short:     400ms;
+            --duration-medium:   1500ms;
+            --duration-editorial: 4000ms;
         }
+
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background-color: var(--color-sand); color: var(--color-text); font-family: var(--font-serif); font-weight: 300; font-size: 1.15rem; line-height: 1.8; -webkit-font-smoothing: antialiased; display: flex; flex-direction: column; min-height: 100vh; }
+
+        body {
+            background-color: var(--color-sand);
+            color: var(--color-text);
+            font-family: var(--font-text);
+            font-weight: 400;
+            font-size: 17px;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
         .container { max-width: 1200px; margin: 0 auto; padding: var(--spacing-md) var(--spacing-sm); flex: 1; }
-        h1 { font-family: var(--font-serif); font-size: 3.5rem; font-weight: 300; margin-bottom: var(--spacing-xs); color: var(--color-ink); }
-        h2 { font-family: var(--font-serif); font-size: 2.5rem; font-weight: 300; margin-bottom: var(--spacing-sm); padding-bottom: 1rem; border-bottom: 1px solid var(--color-border-secondary); }
-        h3 { font-family: var(--font-serif); font-size: 1.5rem; font-weight: 400; margin-bottom: 1rem; color: var(--color-ink); }
-        p { color: var(--color-text-secondary); max-width: 650px; margin-bottom: var(--spacing-sm); }
-        .intro { margin-bottom: var(--spacing-xl); }
-        .lbl { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-text-secondary); margin-top: 1rem; margin-bottom: 0.5rem; }
+
+        h1 { font-family: var(--font-display); font-weight: 300; font-size: 5rem; line-height: 1.05; letter-spacing: -0.02em; color: var(--color-ink); margin-bottom: var(--spacing-xs); }
+        h2 { font-family: var(--font-deck); font-weight: 300; font-size: 2.5rem; line-height: 1.15; letter-spacing: -0.01em; color: var(--color-ink); margin-bottom: var(--spacing-sm); padding-bottom: 1rem; border-bottom: 1px solid var(--color-border-secondary); }
+        h3 { font-family: var(--font-deck); font-weight: 400; font-size: 1.5rem; line-height: 1.3; color: var(--color-ink); margin-top: 2rem; margin-bottom: 1rem; }
+
+        p { font-family: var(--font-text); color: var(--color-text-secondary); max-width: 720px; margin-bottom: var(--spacing-sm); }
+        p strong { color: var(--color-ink); font-weight: 500; }
+        p em { font-style: italic; color: var(--color-ink); }
+        code { font-family: var(--font-mono); font-size: 0.85em; background: var(--color-stone); padding: 0.1em 0.4em; border-radius: 3px; color: var(--color-ink); }
+
+        .intro { margin-bottom: var(--spacing-xl); display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: end; }
+        .intro-text { max-width: 720px; }
+        .intro p.lead { font-family: var(--font-deck); font-style: italic; font-weight: 300; font-size: 1.5rem; line-height: 1.4; color: var(--color-ink); max-width: 720px; margin-top: var(--spacing-sm); }
+        .intro-mark { color: var(--color-terra); --core-color: var(--color-ink); }
+        .intro-mark svg { width: 120px; height: 150px; display: block; }
+        .intro-mark .halftone-dot {
+            transform-box: fill-box;
+            transform-origin: center;
+            animation: introBreath var(--duration-editorial) ease-in-out infinite;
+        }
+        .intro-mark .halftone-core {
+            transform-box: fill-box;
+            transform-origin: center;
+            animation: introBreathCore var(--duration-editorial) ease-in-out infinite;
+        }
+        @keyframes introBreath {
+            0%, 100% { transform: scale(0.85); opacity: 0.8; }
+            50%      { transform: scale(1.15); opacity: 1; }
+        }
+        @keyframes introBreathCore {
+            0%, 100% { transform: scale(0.95); }
+            50%      { transform: scale(1.2); }
+        }
+        @media (max-width: 720px) {
+            .intro { grid-template-columns: 1fr; }
+            .intro-mark { order: -1; }
+            .intro-mark svg { width: 80px; height: 100px; }
+        }
+
+        .lbl { font-family: var(--font-mono); font-size: 11px; font-weight: 400; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-text-secondary); margin-top: 1rem; margin-bottom: 0.5rem; }
+
         section { margin-bottom: var(--spacing-xl); }
+        .section-tag { font-family: var(--font-mono); font-size: 0.7rem; font-weight: 400; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-terra); margin-bottom: 0.5rem; }
+
+        .manifest-statement {
+            font-family: var(--font-display);
+            font-weight: 300;
+            font-size: 2.4rem;
+            line-height: 1.15;
+            letter-spacing: -0.015em;
+            color: var(--color-ink);
+            max-width: 880px;
+            margin-bottom: var(--spacing-md);
+        }
+        @media (max-width: 720px) { .manifest-statement { font-size: 1.8rem; } }
+
+        /* -------- Curve cards -------- */
+        .curve-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
+        .curve-card {
+            background: var(--color-white);
+            border: 1px solid var(--color-border-secondary);
+            border-radius: 8px;
+            padding: 1.5rem;
+            position: relative;
+        }
+        .curve-card.canonical { border-color: var(--color-terra); }
+        .curve-card.canonical::before {
+            content: 'canónica';
+            position: absolute; top: -10px; right: 1rem;
+            background: var(--color-sand); padding: 0 0.6rem;
+            font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.16em;
+            text-transform: uppercase; color: var(--color-terra); font-weight: 500;
+        }
+        .curve-plot { background: var(--color-sand); border-radius: 4px; padding: 1rem; margin-bottom: 1rem; }
+        .curve-plot svg { width: 100%; height: auto; display: block; }
+        .curve-name {
+            font-family: var(--font-deck);
+            font-weight: 500;
+            font-size: 1.05rem;
+            color: var(--color-ink);
+            margin-bottom: 0.2rem;
+        }
+        .curve-spec {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            letter-spacing: 0.06em;
+            color: var(--color-sea);
+            margin-bottom: 0.6rem;
+            word-break: break-all;
+        }
+        .curve-use {
+            font-family: var(--font-text);
+            font-size: 0.92rem;
+            line-height: 1.5;
+            color: var(--color-text-secondary);
+            margin-bottom: 0.8rem;
+        }
+        .curve-track {
+            background: var(--color-stone);
+            border-radius: 4px;
+            height: 18px;
+            position: relative;
+            overflow: hidden;
+        }
+        .curve-track .ball {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 12px;
+            height: 12px;
+            background: var(--color-terra);
+            border-radius: 50%;
+            transform: translate(0, -50%);
+            animation: travel 2.5s infinite alternate;
+        }
+        .curve-track.expressive .ball { animation-timing-function: var(--easing-expressive); }
+        .curve-track.standard   .ball { animation-timing-function: var(--easing-standard); }
+        .curve-track.enter      .ball { animation-timing-function: var(--easing-enter); }
+        .curve-track.exit       .ball { animation-timing-function: var(--easing-exit); }
+        .curve-track.linear     .ball { animation-timing-function: linear; }
+        @keyframes travel {
+            from { left: 0; }
+            to   { left: calc(100% - 12px); }
+        }
+
+        /* -------- Duration ladder -------- */
+        .duration-ladder {
+            background: var(--color-white);
+            border: 1px solid var(--color-border-secondary);
+            border-radius: 8px;
+            padding: 2rem;
+        }
+        .duration-row {
+            display: grid;
+            grid-template-columns: 120px 80px 1fr 200px;
+            gap: 1.2rem;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--color-border-secondary);
+        }
+        .duration-row:last-child { border-bottom: none; }
+        @media (max-width: 800px) {
+            .duration-row { grid-template-columns: 1fr; gap: 0.4rem; }
+        }
+        .duration-name {
+            font-family: var(--font-deck);
+            font-weight: 500;
+            font-size: 1.05rem;
+            color: var(--color-ink);
+        }
+        .duration-value {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--color-terra);
+            font-weight: 500;
+        }
+        .duration-track {
+            background: var(--color-sand);
+            border-radius: 4px;
+            height: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+        .duration-track .ball {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 10px; height: 10px;
+            background: var(--color-ink);
+            border-radius: 50%;
+            transform: translate(0, -50%);
+            animation: travel infinite alternate;
+            animation-timing-function: var(--easing-expressive);
+        }
+        .duration-track.t-micro     .ball { animation-duration: var(--duration-micro); }
+        .duration-track.t-short     .ball { animation-duration: var(--duration-short); }
+        .duration-track.t-medium    .ball { animation-duration: var(--duration-medium); }
+        .duration-track.t-editorial .ball { animation-duration: var(--duration-editorial); }
+        .duration-use {
+            font-family: var(--font-text);
+            font-size: 0.9rem;
+            color: var(--color-text-secondary);
+            line-height: 1.45;
+        }
+
+        /* -------- Motion families grid -------- */
+        .family-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        .family-card {
+            background: var(--color-white);
+            border: 1px solid var(--color-border-secondary);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .family-stage {
+            background: var(--color-sand);
+            min-height: 180px;
+            display: flex; align-items: center; justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .family-stage.dark { background: var(--color-offblack); color: var(--color-sand); }
+        .family-body { padding: 1.2rem 1.4rem 1.4rem; }
+        .family-name { font-family: var(--font-deck); font-weight: 500; font-size: 1.05rem; color: var(--color-ink); margin-bottom: 0.2rem; }
+        .family-desc { font-family: var(--font-text); font-size: 0.9rem; line-height: 1.5; color: var(--color-text-secondary); margin: 0 0 0.4rem; }
+        .family-spec { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.1em; color: var(--color-sea); text-transform: uppercase; }
+
+        /* ============================================================ */
+        /* Motion families — keyframes                                  */
+        /* ============================================================ */
+
+        /* WAVE — 5 dots horizontales, pulse propagation */
+        .demo-wave { display: flex; gap: 8px; }
+        .demo-wave .d {
+            width: 14px; height: 14px;
+            background: var(--color-terra);
+            border-radius: 50%;
+            animation: waveDot 2.5s var(--easing-inout) infinite;
+            transform-origin: center;
+        }
+        .demo-wave .d:nth-child(1) { animation-delay: 0s; }
+        .demo-wave .d:nth-child(2) { animation-delay: 0.08s; }
+        .demo-wave .d:nth-child(3) { animation-delay: 0.16s; }
+        .demo-wave .d:nth-child(4) { animation-delay: 0.24s; }
+        .demo-wave .d:nth-child(5) { animation-delay: 0.32s; }
+        @keyframes waveDot {
+            0%, 70%, 100% { transform: scale(0.7); opacity: 0.5; }
+            25% { transform: scale(1.6); opacity: 1; }
+        }
+
+        /* BREATH — 5 dots todos al unísono */
+        .demo-breath { display: flex; gap: 8px; }
+        .demo-breath .d {
+            width: 14px; height: 14px;
+            background: var(--color-ink);
+            border-radius: 50%;
+            animation: breathDot 3.5s ease-in-out infinite;
+            transform-origin: center;
+        }
+        .demo-breath .d:nth-child(3) { background: var(--color-terra); }
+        @keyframes breathDot {
+            0%, 100% { transform: scale(0.7); opacity: 0.55; }
+            50% { transform: scale(1.3); opacity: 1; }
+        }
+
+        /* ASSEMBLY — dots compose then decompose */
+        .demo-assembly { display: flex; gap: 8px; }
+        .demo-assembly .d {
+            width: 14px; height: 14px;
+            background: var(--color-terra);
+            border-radius: 50%;
+            transform: scale(0);
+            opacity: 0;
+            animation: assemblyDot 5s var(--easing-expressive) infinite;
+        }
+        .demo-assembly .d:nth-child(1) { animation-delay: 0.25s; }
+        .demo-assembly .d:nth-child(2) { animation-delay: 0.10s; }
+        .demo-assembly .d:nth-child(3) { animation-delay: 0s; }
+        .demo-assembly .d:nth-child(4) { animation-delay: 0.10s; }
+        .demo-assembly .d:nth-child(5) { animation-delay: 0.25s; }
+        @keyframes assemblyDot {
+            0%   { transform: scale(0); opacity: 0; }
+            25%  { transform: scale(1); opacity: 1; }
+            75%  { transform: scale(1); opacity: 1; }
+            95%  { transform: scale(0); opacity: 0; }
+            100% { transform: scale(0); opacity: 0; }
+        }
+
+        /* WIPE — horizontal bar revealing left-to-right */
+        .demo-wipe {
+            width: 180px; height: 6px;
+            background: rgba(44,44,40,0.12);
+            border-radius: 3px;
+            overflow: hidden;
+            position: relative;
+        }
+        .demo-wipe::after {
+            content: '';
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: var(--color-terra);
+            transform-origin: left center;
+            animation: wipeBar 3.5s var(--easing-expressive) infinite;
+        }
+        @keyframes wipeBar {
+            0%   { transform: scaleX(0); transform-origin: left center; }
+            55%  { transform: scaleX(1); transform-origin: left center; }
+            55.01% { transform-origin: right center; }
+            100% { transform: scaleX(0); transform-origin: right center; }
+        }
+
+        /* FADE + TRANSLATE — text appearing from below */
+        .demo-fadeup {
+            font-family: var(--font-display);
+            font-weight: 300;
+            font-size: 1.8rem;
+            color: var(--color-ink);
+            letter-spacing: -0.01em;
+            animation: fadeUpText 3.5s var(--easing-expressive) infinite;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        @keyframes fadeUpText {
+            0%   { opacity: 0; transform: translateY(10px); }
+            25%  { opacity: 1; transform: translateY(0); }
+            80%  { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-6px); }
+        }
+
+        /* CORE PULSE — un solo dot grande pulsando */
+        .demo-pulse {
+            width: 40px; height: 40px;
+            background: var(--color-terra);
+            border-radius: 50%;
+            animation: pulseDot 2.5s ease-in-out infinite;
+            transform-origin: center;
+            position: relative;
+        }
+        .demo-pulse::after {
+            content: '';
+            position: absolute; inset: -8px;
+            border: 1px solid var(--color-terra);
+            border-radius: 50%;
+            opacity: 0;
+            animation: pulseRipple 2.5s ease-out infinite;
+        }
+        @keyframes pulseDot {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+        @keyframes pulseRipple {
+            0% { transform: scale(0.7); opacity: 0.8; }
+            70%, 100% { transform: scale(1.6); opacity: 0; }
+        }
+
+        /* DRIFT — dots desplazándose lentamente */
+        .demo-drift {
+            width: 200px; height: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        .demo-drift .d {
+            position: absolute;
+            top: 50%;
+            width: 6px; height: 6px;
+            background: var(--color-ink);
+            border-radius: 50%;
+            transform: translate(0, -50%);
+            animation: driftMove 6s linear infinite;
+        }
+        .demo-drift .d:nth-child(1) { animation-delay: 0s; }
+        .demo-drift .d:nth-child(2) { animation-delay: -1.5s; opacity: 0.7; }
+        .demo-drift .d:nth-child(3) { animation-delay: -3s; opacity: 0.5; }
+        .demo-drift .d:nth-child(4) { animation-delay: -4.5s; opacity: 0.3; }
+        .demo-drift .d:nth-child(5) { animation-delay: -2s; opacity: 0.6; width: 4px; height: 4px; }
+        .demo-drift .d:nth-child(6) { animation-delay: -5s; opacity: 0.4; width: 4px; height: 4px; }
+        @keyframes driftMove {
+            from { left: -10px; }
+            to   { left: 210px; }
+        }
+
+        /* STAGGER REVEAL — list items en cascada */
+        .demo-stagger {
+            display: flex; flex-direction: column; gap: 6px;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--color-ink);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+        }
+        .demo-stagger .item {
+            display: flex; align-items: center; gap: 8px;
+            opacity: 0;
+            transform: translateX(-8px);
+            animation: staggerItem 4.5s var(--easing-expressive) infinite;
+        }
+        .demo-stagger .item::before {
+            content: '';
+            display: inline-block;
+            width: 5px; height: 5px;
+            background: var(--color-terra);
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .demo-stagger .item:nth-child(1) { animation-delay: 0s; }
+        .demo-stagger .item:nth-child(2) { animation-delay: 0.15s; }
+        .demo-stagger .item:nth-child(3) { animation-delay: 0.30s; }
+        .demo-stagger .item:nth-child(4) { animation-delay: 0.45s; }
+        @keyframes staggerItem {
+            0%   { opacity: 0; transform: translateX(-8px); }
+            18%  { opacity: 1; transform: translateX(0); }
+            80%  { opacity: 1; transform: translateX(0); }
+            100% { opacity: 0; transform: translateX(4px); }
+        }
+
+        /* HALFTONE SHIFT — dots con desplazamientos individuales (atmospheric) */
+        .demo-shift {
+            display: grid;
+            grid-template-columns: repeat(5, 14px);
+            grid-template-rows: repeat(3, 14px);
+            gap: 10px;
+        }
+        .demo-shift .d {
+            width: 6px; height: 6px;
+            background: var(--color-ink);
+            border-radius: 50%;
+            justify-self: center; align-self: center;
+            animation: shiftDot 4s ease-in-out infinite;
+            transform-origin: center;
+        }
+        .demo-shift .d.accent { background: var(--color-terra); width: 8px; height: 8px; }
+        .demo-shift .d:nth-child(2n)  { animation-delay: 0.3s; }
+        .demo-shift .d:nth-child(3n)  { animation-delay: 0.6s; }
+        .demo-shift .d:nth-child(5n)  { animation-delay: 0.9s; }
+        @keyframes shiftDot {
+            0%, 100% { transform: translate(0, 0); opacity: 0.6; }
+            50%      { transform: translate(2px, -2px); opacity: 1; }
+        }
+
+        /* -------- UI feedback examples -------- */
+        .ui-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        .ui-card {
+            background: var(--color-white);
+            border: 1px solid var(--color-border-secondary);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+        .ui-card h4 {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--color-terra);
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+        .ui-btn {
+            background: var(--color-ink);
+            color: var(--color-sand);
+            border: none;
+            padding: 0.7rem 1.2rem;
+            border-radius: 6px;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: transform var(--duration-micro) var(--easing-standard),
+                        background var(--duration-micro) var(--easing-standard);
+        }
+        .ui-btn:hover { transform: translateY(-2px); background: var(--color-terra); }
+        .ui-btn:active { transform: translateY(0); }
+        .ui-btn-ghost {
+            background: transparent;
+            color: var(--color-ink);
+            border: 1px solid var(--color-border-secondary);
+            padding: 0.7rem 1.2rem;
+            border-radius: 6px;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: border-color var(--duration-micro) var(--easing-standard),
+                        color var(--duration-micro) var(--easing-standard);
+        }
+        .ui-btn-ghost:hover { border-color: var(--color-terra); color: var(--color-terra); }
+
+        .ui-spec {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            color: var(--color-muted);
+            letter-spacing: 0.05em;
+            margin-top: 1rem;
+        }
+
+        .ui-toast {
+            background: var(--color-sand);
+            border-left: 3px solid var(--color-success);
+            padding: 0.7rem 1rem;
+            border-radius: 4px;
+            font-family: var(--font-text);
+            font-size: 0.9rem;
+            color: var(--color-ink);
+            animation: toastIn var(--duration-short) var(--easing-expressive) infinite alternate;
+            opacity: 0;
+            transform: translateY(6px);
+        }
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .ui-loading {
+            display: flex; gap: 4px;
+        }
+        .ui-loading .d {
+            width: 8px; height: 8px;
+            background: var(--color-muted);
+            border-radius: 50%;
+            animation: loadDot 1.2s ease-in-out infinite;
+        }
+        .ui-loading .d:nth-child(1) { animation-delay: 0s; }
+        .ui-loading .d:nth-child(2) { animation-delay: 0.15s; }
+        .ui-loading .d:nth-child(3) { animation-delay: 0.30s; }
+        @keyframes loadDot {
+            0%, 100% { transform: scale(0.6); opacity: 0.4; }
+            50% { transform: scale(1.2); opacity: 1; }
+        }
+
+        /* -------- Brand application — symbol + logo intro -------- */
+        .brand-stage {
+            background: var(--color-offblack);
+            border-radius: 8px;
+            min-height: 260px;
+            display: flex; align-items: center; justify-content: center;
+            position: relative;
+            overflow: hidden;
+            color: var(--color-sand);
+            --core-color: var(--color-terra);
+        }
+        .brand-intro {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .brand-intro .b-drop {
+            width: 70px; height: 88px;
+            opacity: 0;
+            transform: translateY(10px) scale(0.85);
+            animation: brandDropIn 5s var(--easing-expressive) infinite;
+        }
+        .brand-intro .b-drop svg { width: 100%; height: 100%; display: block; }
+        .brand-intro .b-word {
+            display: inline-block;
+            overflow: hidden;
+            font-family: var(--font-display);
+            font-weight: 300;
+            font-size: 3.2rem;
+            line-height: 1;
+            letter-spacing: -0.02em;
+            color: var(--color-sand);
+            opacity: 0;
+            animation: brandWordIn 5s var(--easing-expressive) infinite;
+            transform: translateX(-6px);
+        }
+        @keyframes brandDropIn {
+            0%, 100% { opacity: 0; transform: translateY(10px) scale(0.85); }
+            18% { opacity: 1; transform: translateY(0) scale(1); }
+            85% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes brandWordIn {
+            0%, 22% { opacity: 0; transform: translateX(-6px); }
+            45% { opacity: 1; transform: translateX(0); }
+            85% { opacity: 1; transform: translateX(0); }
+            100% { opacity: 0; transform: translateX(6px); }
+        }
+
+        /* -------- Rule list / Don'ts -------- */
+        .rule-list { list-style: none; counter-reset: rule-counter; margin-top: 1rem; }
+        .rule-list li {
+            position: relative;
+            padding-left: 3rem;
+            margin-bottom: 1.4rem;
+            font-family: var(--font-text);
+            font-size: 1.0625rem;
+            line-height: 1.55;
+            color: var(--color-ink);
+            max-width: 820px;
+        }
+        .rule-list li::before {
+            counter-increment: rule-counter;
+            content: "0" counter(rule-counter);
+            position: absolute; left: 0; top: 0.1rem;
+            font-family: var(--font-mono); font-size: 13px;
+            color: var(--color-terra);
+        }
+        .rule-list strong { color: var(--color-ink); font-weight: 500; }
+
+        .dont-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1.5rem; }
+        .dont {
+            background: var(--color-white); border: 1px solid var(--color-border-secondary);
+            border-radius: 8px; padding: 1.2rem; position: relative;
+        }
+        .dont::before {
+            content: 'NO'; position: absolute; top: -10px; left: 1rem;
+            background: var(--color-sand); padding: 0 0.5rem;
+            font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.16em;
+            color: var(--color-alert); font-weight: 500;
+        }
+        .dont-display {
+            height: 80px; display: flex; align-items: center; justify-content: center;
+            background: var(--color-sand); border-radius: 4px; margin-bottom: 0.8rem; overflow: hidden;
+        }
+        .dont-reason { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.04em; color: var(--color-text-secondary); margin: 0; }
+
+        .dont-bounce {
+            width: 24px; height: 24px;
+            background: var(--color-terra);
+            border-radius: 50%;
+            animation: bounce 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        .dont-flash {
+            width: 30px; height: 30px;
+            background: var(--color-terra);
+            border-radius: 50%;
+            animation: flash 0.4s linear infinite;
+        }
+        @keyframes flash {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.1; }
+        }
+        .dont-rotate {
+            width: 24px; height: 24px;
+            border: 3px solid var(--color-terra);
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: rotate 0.8s linear infinite;
+        }
+        @keyframes rotate {
+            from { transform: rotate(0); }
+            to { transform: rotate(360deg); }
+        }
+        .dont-shake {
+            width: 24px; height: 24px;
+            background: var(--color-terra);
+            border-radius: 50%;
+            animation: shake 0.2s linear infinite;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-4px); }
+            75% { transform: translateX(4px); }
+        }
+
+        /* -------- Download / pack -------- */
+        .download-section { background: var(--color-ink); color: var(--color-sand); border-radius: 8px; padding: 2.5rem; }
+        .download-section h3 { color: var(--color-sand); margin-top: 0; }
+        .download-section p { color: var(--color-stone); }
+        .download-cta {
+            display: inline-flex; align-items: center; gap: 0.8rem;
+            background: var(--color-terra); color: var(--color-sand); border: none;
+            padding: 1rem 1.6rem; border-radius: 6px;
+            font-family: var(--font-mono); font-size: 0.8rem; font-weight: 500;
+            letter-spacing: 0.16em; text-transform: uppercase; cursor: pointer;
+            transition: background var(--duration-short) var(--easing-expressive),
+                        transform var(--duration-short) var(--easing-expressive);
+            margin-top: 1rem;
+        }
+        .download-cta:hover { background: #A37A5A; transform: translateY(-2px); }
+        .download-cta:disabled { opacity: 0.5; cursor: wait; }
+        .download-cta svg { width: 14px; height: 14px; }
+        .download-status { margin-top: 1rem; font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-sage); min-height: 1.2em; }
+        .download-status.error { color: var(--color-alert); }
+
+        /* -------- Meta / footer -------- */
+        .meta-strip { background: var(--color-offblack); color: var(--color-sand); padding: 1.2rem 1.6rem; border-radius: 4px; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.16em; text-transform: uppercase; display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: var(--spacing-md); }
+        .meta-strip span { color: var(--color-stone); }
+        .meta-strip .sep { color: var(--color-terra); }
+        .meta-strip .tag { color: var(--color-terra); font-weight: 500; }
+
         footer { text-align: center; margin-top: var(--spacing-xl); padding: var(--spacing-md) 0; border-top: 1px solid var(--color-border-secondary); }
-</style>
+        .chapter-nav { display: flex; justify-content: space-between; align-items: center; max-width: 800px; margin: 0 auto var(--spacing-md); padding: 0 var(--spacing-sm); }
+        .chapter-nav a { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-text-secondary); text-decoration: none; transition: color 0.3s ease; }
+        .chapter-nav a:hover { color: var(--color-terra); }
+        @media (max-width: 600px) { .chapter-nav { flex-direction: column; gap: 1rem; text-align: center; } }
+        .footer-mark { color: var(--color-terra); display: inline-block; opacity: 0.7; }
+
+        /* -------- Respect reduced-motion -------- */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+        }
+    </style>
 </head>
 <body>
+
+<svg style="position:absolute; width:0; height:0; overflow:hidden" aria-hidden="true">
+    <defs>
+        <symbol id="drop-halftone" viewBox="0 0 160 200"></symbol>
+        <symbol id="drop-simple" viewBox="0 0 160 200">
+            <path d="M80 12 C80 12 104 52 116 88 C126 118 122 152 102 168 C92 176 80 178 80 178 C80 178 68 176 58 168 C38 152 34 118 44 88 C56 52 80 12 80 12 Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>
+            <circle cx="80" cy="130" r="6" fill="currentColor"/>
+        </symbol>
+    </defs>
+</svg>
+
+<script>
+(function() {
+    const FX = 80, FY = 130;
+    const GD = "M80 12 C80 12 104 52 116 88 C126 118 122 152 102 168 C92 176 80 178 80 178 C80 178 68 176 58 168 C38 152 34 118 44 88 C56 52 80 12 80 12 Z";
+    function gen(symbolEl) {
+        while (symbolEl.firstChild) symbolEl.removeChild(symbolEl.firstChild);
+        const cv = document.createElement('canvas'); cv.width = 160; cv.height = 200;
+        const ctx = cv.getContext('2d');
+        const path = new Path2D(GD);
+        const NS = 'http://www.w3.org/2000/svg';
+        const sp = 8;
+        for (let y = sp/2; y < 200; y += sp) {
+            const ri = Math.round((y - sp/2) / sp);
+            const xo = (ri % 2 === 0) ? 0 : sp/2;
+            for (let x = sp/2 + xo; x < 160; x += sp) {
+                if (!ctx.isPointInPath(path, x, y)) continue;
+                const dx = x - FX, dy = y - FY;
+                const d = Math.sqrt(dx*dx + dy*dy);
+                const r = Math.max(0.4, 2.8 - d/38 * 2.8);
+                if (r < 0.35 || d < 6) continue;
+                const c = document.createElementNS(NS, 'circle');
+                c.setAttribute('cx', x.toFixed(2));
+                c.setAttribute('cy', y.toFixed(2));
+                c.setAttribute('r', r.toFixed(2));
+                c.setAttribute('fill', 'currentColor');
+                c.setAttribute('class', 'halftone-dot');
+                symbolEl.appendChild(c);
+            }
+        }
+        const core = document.createElementNS(NS, 'circle');
+        core.setAttribute('cx', FX); core.setAttribute('cy', FY); core.setAttribute('r', 4);
+        core.setAttribute('fill', 'var(--core-color, #B8896A)');
+        core.setAttribute('class', 'halftone-core');
+        symbolEl.appendChild(core);
+    }
+    const s = document.getElementById('drop-halftone');
+    if (s) gen(s);
+})();
+</script>
+
 <div class="container">
+
     <div class="intro">
-        <div class="lbl">Sección 08</div>
-        <h1>Animación y Motion</h1>
+        <div class="intro-text">
+            <div class="lbl">Sección 08</div>
+            <h1>Animación</h1>
+            <p class="lead">La marca se mueve como respira. Lento, contenido, intencional.</p>
+        </div>
+        <div class="intro-mark">
+            <svg viewBox="0 0 160 200"><use href="#drop-halftone"/></svg>
+        </div>
     </div>
-    
+
+    <!-- ============================================================ -->
+    <!-- 08.0 — Principio -->
+    <!-- ============================================================ -->
     <section>
-        <p style="opacity: 0.6; font-style: italic;">Esta sección (Interacciones y transiciones) se desarrollará en la siguiente iteración de la guía de estilo.</p>
+        <div class="section-tag">08.0 · principio</div>
+        <h2>Principio</h2>
+
+        <div class="manifest-statement">
+            Animar no es decorar. Es <em>aclarar</em>. Cuando una pieza se mueve, el ojo aprende qué es importante antes de que lo lea la conciencia.
+        </div>
+
+        <p>ForMeta se mueve solo cuando el movimiento explica algo: un estado cambia, un elemento entra, una atención se dirige. Nunca por relleno, nunca por brillo. La marca respira — no rebota, no destella, no llama la atención sobre sí misma. <strong>Si dudas si una animación hace falta, no hace falta.</strong></p>
     </section>
-  
+
+    <!-- ============================================================ -->
+    <!-- 08.1 — Curvas canónicas -->
+    <!-- ============================================================ -->
+    <section>
+        <div class="section-tag">08.1 · curvas</div>
+        <h2>Curvas canónicas</h2>
+        <p>Cuatro curvas de easing. La <strong>expressive-out</strong> es la firma de ForMeta — la que se usa en motion de marca y entradas editoriales. Las otras tres cubren el espectro funcional. <strong>Linear está prohibido</strong> excepto en loading dots y drifts atmosféricos.</p>
+
+        <div class="curve-grid">
+
+            <div class="curve-card canonical">
+                <div class="curve-plot">
+                    <svg viewBox="0 0 110 80">
+                        <line x1="10" y1="70" x2="100" y2="70" stroke="#B8896A" stroke-width="0.4" opacity="0.4"/>
+                        <line x1="10" y1="10" x2="10" y2="70" stroke="#B8896A" stroke-width="0.4" opacity="0.4"/>
+                        <path d="M10 70 C 24.4 10, 37 24.8, 100 10" fill="none" stroke="#B8896A" stroke-width="1.5" stroke-linecap="round"/>
+                        <circle cx="24.4" cy="10" r="1.5" fill="#B8896A" opacity="0.7"/>
+                        <circle cx="37" cy="24.8" r="1.5" fill="#B8896A" opacity="0.7"/>
+                        <text x="55" y="78" text-anchor="middle" font-family="monospace" font-size="5" fill="#7A7870">time →</text>
+                    </svg>
+                </div>
+                <div class="curve-name">Expressive-out</div>
+                <div class="curve-spec">cubic-bezier(0.16, 1, 0.3, 1)</div>
+                <p class="curve-use">Acelera fuerte al principio y se asienta despacio al final. La marca llega y se queda. Por defecto en motion editorial.</p>
+                <div class="curve-track expressive"><div class="ball"></div></div>
+            </div>
+
+            <div class="curve-card">
+                <div class="curve-plot">
+                    <svg viewBox="0 0 110 80">
+                        <line x1="10" y1="70" x2="100" y2="70" stroke="#B8896A" stroke-width="0.4" opacity="0.4"/>
+                        <line x1="10" y1="10" x2="10" y2="70" stroke="#B8896A" stroke-width="0.4" opacity="0.4"/>
+                        <path d="M10 70 C 46 70, 64 10, 100 10" fill="none" stroke="#B8896A" stroke-width="1.5" stroke-linecap="round"/>
+                        <text x="55" y="78" text-anchor="middle" font-family="monospace" font-size="5" fill="#7A7870">time →</text>
+                    </svg>
+                </div>
+                <div class="curve-name">Standard</div>
+                <div class="curve-spec">cubic-bezier(0.4, 0, 0.2, 1)</div>
+                <p class="curve-use">Acelera y decelera simétricamente. La curva de UI por defecto — botones, transiciones, micro-interactions.</p>
+                <div class="curve-track standard"><div class="ball"></div></div>
+            </div>
+
+            <div class="curve-card">
+                <div class="curve-plot">
+                    <svg viewBox="0 0 110 80">
+                        <line x1="10" y1="70" x2="100" y2="70" stroke="#B8896A" stroke-width="0.4" opacity="0.4"/>
+                        <line x1="10" y1="10" x2="10" y2="70" stroke="#B8896A" stroke-width="0.4" opacity="0.4"/>
+                        <path d="M10 70 C 10 70, 28 10, 100 10" fill="none" stroke="#B8896A" stroke-width="1.5" stroke-linecap="round"/>
+                        <text x="55" y="78" text-anchor="middle" font-family="monospace" font-size="5" fill="#7A7870">time →</text>
+                    </svg>
+                </div>
+                <div class="curve-name">Enter</div>
+                <div class="curve-spec">cubic-bezier(0, 0, 0.2, 1)</div>
+                <p class="curve-use">Sale rápido y termina suave. Para elementos que aparecen sobre el lienzo — alertas, tooltips, dropdowns.</p>
+                <div class="curve-track enter"><div class="ball"></div></div>
+            </div>
+
+            <div class="curve-card">
+                <div class="curve-plot">
+                    <svg viewBox="0 0 110 80">
+                        <line x1="10" y1="70" x2="100" y2="70" stroke="#B8896A" stroke-width="0.4" opacity="0.4"/>
+                        <line x1="10" y1="10" x2="10" y2="70" stroke="#B8896A" stroke-width="0.4" opacity="0.4"/>
+                        <path d="M10 70 C 46 70, 100 70, 100 10" fill="none" stroke="#B8896A" stroke-width="1.5" stroke-linecap="round"/>
+                        <text x="55" y="78" text-anchor="middle" font-family="monospace" font-size="5" fill="#7A7870">time →</text>
+                    </svg>
+                </div>
+                <div class="curve-name">Exit</div>
+                <div class="curve-spec">cubic-bezier(0.4, 0, 1, 1)</div>
+                <p class="curve-use">Empieza lento y acelera al final. Para elementos que abandonan el lienzo — el ojo no necesita seguirlos hasta el final.</p>
+                <div class="curve-track exit"><div class="ball"></div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 08.2 — Tiempos -->
+    <!-- ============================================================ -->
+    <section>
+        <div class="section-tag">08.2 · tiempos</div>
+        <h2>Tiempos</h2>
+        <p>Cuatro escalas canónicas. Cada animación pertenece a una. Mezclar tiempos dentro de una pieza desordena la lectura. <strong>Nunca duraciones intermedias</strong> — si una animación no encaja en una escala, falta diseñar la decisión.</p>
+
+        <div class="duration-ladder">
+            <div class="duration-row">
+                <div class="duration-name">Micro</div>
+                <div class="duration-value">200ms</div>
+                <div class="duration-track t-micro"><div class="ball"></div></div>
+                <div class="duration-use">Feedback inmediato — hover, focus, click.</div>
+            </div>
+            <div class="duration-row">
+                <div class="duration-name">Short</div>
+                <div class="duration-value">400ms</div>
+                <div class="duration-track t-short"><div class="ball"></div></div>
+                <div class="duration-use">Transición de estado — modal abre, toast aparece, sección cambia.</div>
+            </div>
+            <div class="duration-row">
+                <div class="duration-name">Medium</div>
+                <div class="duration-value">1500ms</div>
+                <div class="duration-track t-medium"><div class="ball"></div></div>
+                <div class="duration-use">Entrada de hero — el primer movimiento que ve el usuario al cargar.</div>
+            </div>
+            <div class="duration-row">
+                <div class="duration-name">Editorial</div>
+                <div class="duration-value">4000ms</div>
+                <div class="duration-track t-editorial"><div class="ball"></div></div>
+                <div class="duration-use">Loops de marca — símbolo en hero, breath ambiente, video intro.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 08.3 — Familias de motion -->
+    <!-- ============================================================ -->
+    <section>
+        <div class="section-tag">08.3 · familias</div>
+        <h2>Familias de motion</h2>
+        <p>Nueve movimientos canónicos. Cualquier animación de marca pertenece a una de estas familias. Inventar una nueva implica documentarla aquí.</p>
+
+        <div class="family-grid">
+            <div class="family-card">
+                <div class="family-stage"><div class="demo-wave"><span class="d"></span><span class="d"></span><span class="d"></span><span class="d"></span><span class="d"></span></div></div>
+                <div class="family-body">
+                    <div class="family-name">Wave</div>
+                    <p class="family-desc">Onda concéntrica que se propaga. Canónica del símbolo halftone — la marca pensando.</p>
+                    <div class="family-spec">2.5–4s · easing-inout · stagger 80ms</div>
+                </div>
+            </div>
+
+            <div class="family-card">
+                <div class="family-stage"><div class="demo-breath"><span class="d"></span><span class="d"></span><span class="d"></span><span class="d"></span><span class="d"></span></div></div>
+                <div class="family-body">
+                    <div class="family-name">Breath</div>
+                    <p class="family-desc">Pulso uniforme al unísono. Marca presente pero no insistente.</p>
+                    <div class="family-spec">3.5–5s · ease-in-out · scale 0.7→1.3</div>
+                </div>
+            </div>
+
+            <div class="family-card">
+                <div class="family-stage"><div class="demo-assembly"><span class="d"></span><span class="d"></span><span class="d"></span><span class="d"></span><span class="d"></span></div></div>
+                <div class="family-body">
+                    <div class="family-name">Assembly</div>
+                    <p class="family-desc">Los puntos se componen, se mantienen, se descomponen. Loops de marca con narrativa.</p>
+                    <div class="family-spec">5s · expressive-out · stagger 100ms inverso</div>
+                </div>
+            </div>
+
+            <div class="family-card">
+                <div class="family-stage"><div class="demo-wipe"></div></div>
+                <div class="family-body">
+                    <div class="family-name">Wipe</div>
+                    <p class="family-desc">Revelado por clip-path o scaleX. Para logotipos, barras de progreso, líneas que aparecen.</p>
+                    <div class="family-spec">3.5s · expressive-out · scaleX 0→1→0</div>
+                </div>
+            </div>
+
+            <div class="family-card">
+                <div class="family-stage"><div class="demo-fadeup">ForMeta</div></div>
+                <div class="family-body">
+                    <div class="family-name">Fade + translate</div>
+                    <p class="family-desc">Entrada vertical con desvanecimiento. Para texto, headlines, blocks editoriales.</p>
+                    <div class="family-spec">3.5s · expressive-out · translateY 10→0</div>
+                </div>
+            </div>
+
+            <div class="family-card">
+                <div class="family-stage"><div class="demo-pulse"></div></div>
+                <div class="family-body">
+                    <div class="family-name">Core pulse</div>
+                    <p class="family-desc">Un solo núcleo pulsa con ripple. Para watermarks animados, presencia mínima.</p>
+                    <div class="family-spec">2.5s · ease-in-out · scale 1→1.15 + ripple</div>
+                </div>
+            </div>
+
+            <div class="family-card">
+                <div class="family-stage dark"><div class="demo-drift"><span class="d"></span><span class="d"></span><span class="d"></span><span class="d"></span><span class="d"></span><span class="d"></span></div></div>
+                <div class="family-body">
+                    <div class="family-name">Drift</div>
+                    <p class="family-desc">Desplazamiento lateral lento. Fondos atmosféricos, paginación lenta. <em>Única excepción de linear.</em></p>
+                    <div class="family-spec">6s · linear · translateX cíclico</div>
+                </div>
+            </div>
+
+            <div class="family-card">
+                <div class="family-stage">
+                    <div class="demo-stagger">
+                        <div class="item">Software a medida</div>
+                        <div class="item">AI integration</div>
+                        <div class="item">IApp</div>
+                        <div class="item">Mallorca</div>
+                    </div>
+                </div>
+                <div class="family-body">
+                    <div class="family-name">Stagger reveal</div>
+                    <p class="family-desc">Elementos en cascada con desfase. Para listas, menús, índices editoriales.</p>
+                    <div class="family-spec">4.5s · expressive-out · stagger 150ms</div>
+                </div>
+            </div>
+
+            <div class="family-card">
+                <div class="family-stage"><div class="demo-shift"><span class="d"></span><span class="d accent"></span><span class="d"></span><span class="d"></span><span class="d"></span><span class="d"></span><span class="d"></span><span class="d accent"></span><span class="d"></span><span class="d"></span><span class="d"></span><span class="d"></span><span class="d"></span><span class="d accent"></span><span class="d"></span></div></div>
+                <div class="family-body">
+                    <div class="family-name">Halftone shift</div>
+                    <p class="family-desc">Dots de una rejilla con desplazamientos individuales. Atmósfera generativa para hero y fondos largos.</p>
+                    <div class="family-spec">4s · ease-in-out · translate 2px stagger</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 08.4 — Aplicación UI -->
+    <!-- ============================================================ -->
+    <section>
+        <div class="section-tag">08.4 · aplicación UI</div>
+        <h2>Aplicación · UI feedback</h2>
+        <p>Micro-animaciones (200–400ms) para feedback inmediato. La regla: si no responde al ratón o al teclado, no se anima.</p>
+
+        <div class="ui-grid">
+            <div class="ui-card">
+                <h4>Botón hover</h4>
+                <div style="display: flex; gap: 0.6rem; flex-wrap: wrap;">
+                    <button class="ui-btn">Guardar</button>
+                    <button class="ui-btn-ghost">Cancelar</button>
+                </div>
+                <div class="ui-spec">200ms · standard · translateY −2px + bg shift</div>
+            </div>
+
+            <div class="ui-card">
+                <h4>Toast (entrada)</h4>
+                <div class="ui-toast">✓ Pedido guardado correctamente</div>
+                <div class="ui-spec">400ms · expressive-out · translateY 6→0 + opacity</div>
+            </div>
+
+            <div class="ui-card">
+                <h4>Loading dots</h4>
+                <div class="ui-loading"><span class="d"></span><span class="d"></span><span class="d"></span></div>
+                <div class="ui-spec">1200ms · ease-in-out · scale 0.6→1.2 · stagger 150ms</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 08.5 — Aplicación brand -->
+    <!-- ============================================================ -->
+    <section>
+        <div class="section-tag">08.5 · aplicación brand</div>
+        <h2>Aplicación · brand motion</h2>
+        <p>Animaciones largas (medium / editorial) para hero web, intro de video, splash de carga. Mismo lenguaje del símbolo + logotipo combinado.</p>
+
+        <div class="brand-stage">
+            <div class="brand-intro">
+                <span class="b-drop"><svg viewBox="0 0 160 200"><use href="#drop-halftone"/></svg></span>
+                <span class="b-word">ForMeta</span>
+            </div>
+        </div>
+        <p style="margin-top: 1rem; font-size: 0.95rem;"><strong>Coreografía:</strong> primero entra el símbolo con scale + translateY (0–18% del loop). Después entra el logotipo con opacity + translateX (22–45%). Sostiene 40%. Salida simétrica. Duración total <code>5s</code> con curva <code>expressive-out</code>. Para video: 2.5s sin sostener.</p>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- Reglas -->
+    <!-- ============================================================ -->
+    <section>
+        <div class="section-tag">reglas</div>
+        <h2>Reglas de uso</h2>
+        <ul class="rule-list">
+            <li><strong>Solo <code>transform</code> y <code>opacity</code>.</strong> Cualquier otra propiedad anima en CPU y produce jank. Si necesitas mover algo, es <code>translate</code>, no <code>top/left</code>.</li>
+            <li><strong>Curvas y tiempos del sistema.</strong> Si una animación no encaja en las 4 curvas y las 4 escalas de tiempo, falta decisión, no animación.</li>
+            <li><strong>Una sola animación por elemento.</strong> Combinar 2-3 propiedades en la misma keyframe está bien. Encadenar 5 transiciones distintas, no.</li>
+            <li><strong><code>prefers-reduced-motion</code> obligatorio.</strong> Todo el sistema respeta la preferencia del usuario — el motion editorial cae a <code>0.01ms</code>, los loops paran en frame 1.</li>
+            <li><strong>Loops solo en hero / splash / watermark.</strong> Animación permanente en una pantalla de trabajo distrae. La marca respira en la home, no en el dashboard.</li>
+            <li><strong>Stagger no más de 8 elementos.</strong> Cascada que dura más de 1.2s rompe la atención. Si la lista es larga, animar bloque, no item.</li>
+            <li><strong>No animación = decisión válida.</strong> Si la pieza funciona estática, no se anima. La inmovilidad es parte del lenguaje.</li>
+            <li><strong>El motion no comunica.</strong> La información va en tipografía e iconos. La animación la dirige. Si requiere un texto para entenderse, la animación está mal diseñada.</li>
+        </ul>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- Don'ts -->
+    <!-- ============================================================ -->
+    <section>
+        <div class="section-tag">usos incorrectos</div>
+        <h2>Lo que no se hace</h2>
+        <div class="dont-grid">
+            <div class="dont">
+                <div class="dont-display"><div class="dont-bounce"></div></div>
+                <p class="dont-reason">Rebote elástico. La marca no rebota.</p>
+            </div>
+            <div class="dont">
+                <div class="dont-display"><div class="dont-flash"></div></div>
+                <p class="dont-reason">Flashes / parpadeo. Llaman la atención sin razón.</p>
+            </div>
+            <div class="dont">
+                <div class="dont-display"><div class="dont-rotate"></div></div>
+                <p class="dont-reason">Spinner genérico. Para loading usar los dots del sistema.</p>
+            </div>
+            <div class="dont">
+                <div class="dont-display"><div class="dont-shake"></div></div>
+                <p class="dont-reason">Shake / vibración. Solo en error grave, nunca decorativo.</p>
+            </div>
+            <div class="dont">
+                <div class="dont-display" style="font-family: var(--font-display); font-size: 1.6rem; color: var(--color-terra);"><em>Parallax</em></div>
+                <p class="dont-reason">Parallax al scroll. Pesa, distrae y nunca aporta.</p>
+            </div>
+            <div class="dont">
+                <div class="dont-display" style="background: linear-gradient(45deg, #D04AC2, #4ABFD0, #4AD0A6); background-size: 200% 200%; animation: gradMove 3s linear infinite;"></div>
+                <p class="dont-reason">Gradientes animados psicodélicos. Fuera de paleta.</p>
+            </div>
+        </div>
+        <style>
+            @keyframes gradMove { 0%{background-position:0% 0%;} 50%{background-position:100% 100%;} 100%{background-position:0% 0%;} }
+        </style>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 08.6 — Descarga -->
+    <!-- ============================================================ -->
+    <section>
+        <div class="section-tag">08.6 · descarga</div>
+        <h2>Descarga</h2>
+
+        <div class="download-section">
+            <h3>Pack motion · CSS tokens + keyframes</h3>
+            <p>Las curvas, tiempos y keyframes canónicas en archivos listos para importar. <code>motion-tokens.css</code> define las variables del sistema. <code>motion-keyframes.css</code> incluye las 8 familias listas para aplicar. <code>README</code> con ejemplos de uso.</p>
+
+            <button class="download-cta" id="downloadMotionBtn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                Descargar pack motion (.zip)
+            </button>
+            <div class="download-status" id="downloadMotionStatus"></div>
+        </div>
+
+        <div class="meta-strip">
+            <span class="tag">v1.0</span><span class="sep">·</span>
+            <span>2026.05.15</span><span class="sep">·</span>
+            <span>Mallorca / 39.5696° N</span><span class="sep">·</span>
+            <span>FMTA—08—Animación</span><span class="sep">·</span>
+            <span>4 curvas · 4 tiempos · 9 familias</span>
+        </div>
+    </section>
+
 </div>
+
 <footer>
-    <svg width="24" height="30" viewBox="0 0 160 200" style="opacity: 0.8; margin: 0 auto;">
-         <path d="M80 12 C80 12 104 52 116 88 C126 118 122 152 102 168 C92 176 80 178 80 178 C80 178 68 176 58 168 C38 152 34 118 44 88 C56 52 80 12 80 12 Z" fill="none" stroke="var(--color-terra)" stroke-width="4"/>
-         <circle cx="80" cy="130" r="6" fill="var(--color-terra)"/>
-    </svg>
+    <nav class="chapter-nav">
+        <a href="07_ilustracion.html">← Anterior: 07 Ilustración</a>
+        <a href="index.html">Índice</a>
+        <a href="09_espaciado.html">Siguiente: 09 Espaciado →</a>
+    </nav>
+    <span class="footer-mark">
+        <svg width="24" height="30" viewBox="0 0 160 200" aria-hidden="true"><use href="#drop-simple"/></svg>
+    </span>
 </footer>
+
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+<script>
+(function() {
+    const btn = document.getElementById('downloadMotionBtn');
+    const status = document.getElementById('downloadMotionStatus');
+    if (!btn) return;
+
+    const motionTokensCSS = [
+        '/* ============================================================',
+        '   ForMeta · motion-tokens.css · v1.0 · 2026.05.15',
+        '   Curvas, tiempos y propiedades canónicas del sistema motion.',
+        '   ============================================================ */',
+        '',
+        ':root {',
+        '  /* Easing curves */',
+        '  --easing-expressive: cubic-bezier(0.16, 1, 0.3, 1);  /* canónica · entradas editoriales */',
+        '  --easing-standard:   cubic-bezier(0.4, 0, 0.2, 1);   /* UI por defecto */',
+        '  --easing-enter:      cubic-bezier(0, 0, 0.2, 1);     /* aparición */',
+        '  --easing-exit:       cubic-bezier(0.4, 0, 1, 1);     /* desaparición */',
+        '',
+        '  /* Duration scale */',
+        '  --duration-micro:     200ms;   /* hover, focus, click */',
+        '  --duration-short:     400ms;   /* modal, toast, transición de estado */',
+        '  --duration-medium:   1500ms;   /* hero entrada */',
+        '  --duration-editorial: 4000ms;  /* loops de marca */',
+        '}',
+        '',
+        '/* Reduced motion — obligatorio en producción */',
+        '@media (prefers-reduced-motion: reduce) {',
+        '  *, *::before, *::after {',
+        '    animation-duration: 0.01ms !important;',
+        '    animation-iteration-count: 1 !important;',
+        '    transition-duration: 0.01ms !important;',
+        '  }',
+        '}'
+    ].join('\n');
+
+    const motionKeyframesCSS = [
+        '/* ============================================================',
+        '   ForMeta · motion-keyframes.css · v1.0',
+        '   Las 9 familias canónicas como keyframes reutilizables.',
+        '   Depende de motion-tokens.css.',
+        '   ============================================================ */',
+        '',
+        '/* 01 — Wave (onda concéntrica) */',
+        '@keyframes fmta-wave {',
+        '  0%, 70%, 100% { transform: scale(0.75); opacity: 0.5; }',
+        '  25% { transform: scale(1.75); opacity: 1; }',
+        '}',
+        '',
+        '/* 02 — Breath (pulso uniforme) */',
+        '@keyframes fmta-breath {',
+        '  0%, 100% { transform: scale(0.7); opacity: 0.55; }',
+        '  50% { transform: scale(1.3); opacity: 1; }',
+        '}',
+        '',
+        '/* 03 — Assembly (compose/decompose) */',
+        '@keyframes fmta-assembly {',
+        '  0% { transform: scale(0); opacity: 0; }',
+        '  25% { transform: scale(1); opacity: 1; }',
+        '  75% { transform: scale(1); opacity: 1; }',
+        '  95% { transform: scale(0); opacity: 0; }',
+        '  100% { transform: scale(0); opacity: 0; }',
+        '}',
+        '',
+        '/* 04 — Wipe (revelado lateral) */',
+        '@keyframes fmta-wipe {',
+        '  0% { clip-path: inset(0 100% 0 0); }',
+        '  55% { clip-path: inset(0 0% 0 0); }',
+        '  85% { clip-path: inset(0 0% 0 0); }',
+        '  100% { clip-path: inset(0 0% 0 100%); }',
+        '}',
+        '',
+        '/* 05 — Fade + translate Y */',
+        '@keyframes fmta-fadeup {',
+        '  0% { opacity: 0; transform: translateY(10px); }',
+        '  25% { opacity: 1; transform: translateY(0); }',
+        '  80% { opacity: 1; transform: translateY(0); }',
+        '  100% { opacity: 0; transform: translateY(-6px); }',
+        '}',
+        '',
+        '/* 06 — Core pulse */',
+        '@keyframes fmta-pulse {',
+        '  0%, 100% { transform: scale(1); }',
+        '  50% { transform: scale(1.15); }',
+        '}',
+        '@keyframes fmta-pulse-ripple {',
+        '  0% { transform: scale(0.7); opacity: 0.8; }',
+        '  70%, 100% { transform: scale(1.6); opacity: 0; }',
+        '}',
+        '',
+        '/* 07 — Drift (única linear permitida) */',
+        '@keyframes fmta-drift {',
+        '  from { transform: translateX(-10%); }',
+        '  to   { transform: translateX(110%); }',
+        '}',
+        '',
+        '/* 08 — Stagger item */',
+        '@keyframes fmta-stagger {',
+        '  0% { opacity: 0; transform: translateX(-8px); }',
+        '  18% { opacity: 1; transform: translateX(0); }',
+        '  80% { opacity: 1; transform: translateX(0); }',
+        '  100% { opacity: 0; transform: translateX(4px); }',
+        '}',
+        '',
+        '/* Halftone shift (atmosférico) */',
+        '@keyframes fmta-shift {',
+        '  0%, 100% { transform: translate(0, 0); opacity: 0.6; }',
+        '  50% { transform: translate(2px, -2px); opacity: 1; }',
+        '}'
+    ].join('\n');
+
+    const readmeTxt = [
+        'ForMeta · Pack Motion · v1.0 · 2026.05.15',
+        '',
+        'Contenido:',
+        '  motion-tokens.css     — variables CSS de curvas y tiempos',
+        '  motion-keyframes.css  — 9 familias canónicas como @keyframes',
+        '  README.txt            — esto',
+        '',
+        'Uso básico:',
+        '',
+        '  <link rel="stylesheet" href="motion-tokens.css">',
+        '  <link rel="stylesheet" href="motion-keyframes.css">',
+        '',
+        '  .mi-elemento {',
+        '    animation: fmta-fadeup var(--duration-medium) var(--easing-expressive);',
+        '  }',
+        '',
+        '  .mi-boton {',
+        '    transition: transform var(--duration-micro) var(--easing-standard);',
+        '  }',
+        '',
+        'Reglas:',
+        '  · Solo animar transform y opacity.',
+        '  · Una sola familia por elemento.',
+        '  · Respetar prefers-reduced-motion (ya incluido en tokens).',
+        '  · Loops solo en hero, splash o watermark.',
+        '',
+        'El sistema completo está documentado en el capítulo 08 del manual de marca.'
+    ].join('\n');
+
+    btn.addEventListener('click', async function() {
+        if (typeof JSZip === 'undefined') {
+            status.textContent = 'JSZip no cargado.';
+            status.classList.add('error'); return;
+        }
+        btn.disabled = true; status.classList.remove('error');
+        status.textContent = 'Empaquetando…';
+        try {
+            const zip = new JSZip();
+            const root = zip.folder('formeta-motion-v1.0');
+            root.file('motion-tokens.css', motionTokensCSS);
+            root.file('motion-keyframes.css', motionKeyframesCSS);
+            root.file('README.txt', readmeTxt);
+
+            const blob = await zip.generateAsync({ type: 'blob' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url; a.download = 'formeta-motion-v1.0.zip';
+            document.body.appendChild(a); a.click(); document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            status.textContent = '✓ Pack descargado · 3 archivos';
+        } catch (err) {
+            console.error(err); status.classList.add('error');
+            status.textContent = '✗ ' + (err.message || 'Error');
+        } finally { btn.disabled = false; }
+    });
+})();
+</script>
+
 </body>
 </html>

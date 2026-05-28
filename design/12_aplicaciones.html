@@ -4,14 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>12. Aplicaciones - ForMeta Guía de Estilo</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
-    <style>:root {
-            --font-mono: 'DM Mono', 'Courier New', Courier, monospace;
-            --font-serif: 'Cormorant Garamond', Garamond, Georgia, serif;
+
+    <style>
+        @font-face { font-family: 'Canela Trial'; src: url('typo/Canela_Collection/Canela Family/Canela-Light-Trial.otf') format('opentype'); font-weight: 300; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Canela Trial'; src: url('typo/Canela_Collection/Canela Family/Canela-LightItalic-Trial.otf') format('opentype'); font-weight: 300; font-style: italic; font-display: swap; }
+        @font-face { font-family: 'Canela Trial'; src: url('typo/Canela_Collection/Canela Family/Canela-Medium-Trial.otf') format('opentype'); font-weight: 500; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Canela Deck Trial'; src: url('typo/Canela_Collection/Canela Deck Family/CanelaDeck-Light-Trial.otf') format('opentype'); font-weight: 300; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Canela Deck Trial'; src: url('typo/Canela_Collection/Canela Deck Family/CanelaDeck-LightItalic-Trial.otf') format('opentype'); font-weight: 300; font-style: italic; font-display: swap; }
+        @font-face { font-family: 'Canela Deck Trial'; src: url('typo/Canela_Collection/Canela Deck Family/CanelaDeck-Medium-Trial.otf') format('opentype'); font-weight: 500; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Canela Text Trial'; src: url('typo/Canela_Collection/Canela Text Family/CanelaText-Regular-Trial.otf') format('opentype'); font-weight: 400; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Canela Text Trial'; src: url('typo/Canela_Collection/Canela Text Family/CanelaText-RegularItalic-Trial.otf') format('opentype'); font-weight: 400; font-style: italic; font-display: swap; }
+        @font-face { font-family: 'Canela Text Trial'; src: url('typo/Canela_Collection/Canela Text Family/CanelaText-Medium-Trial.otf') format('opentype'); font-weight: 500; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Canela Condensed Trial'; src: url('typo/Canela_Collection/Canela Condensed Family/CanelaCondensed-Medium-Trial.otf') format('opentype'); font-weight: 500; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'IBM Plex Mono'; src: url('typo/IBM_PLEX/IBMPlexMono-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'IBM Plex Mono'; src: url('typo/IBM_PLEX/IBMPlexMono-Medium.ttf') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
+
+        :root {
+            --font-display: 'Canela Trial', Georgia, serif;
+            --font-deck:    'Canela Deck Trial', Georgia, serif;
+            --font-text:    'Canela Text Trial', Georgia, serif;
+            --font-cond:    'Canela Condensed Trial', Georgia, serif;
+            --font-mono:    'IBM Plex Mono', 'Courier New', monospace;
+
             --color-ink: #2C2C28;
             --color-terra: #B8896A;
+            --color-terra-deep: #A37A5A;
             --color-sand: #F4F0E8;
             --color-sea: #7A9AAA;
             --color-stone: #E2DDD4;
@@ -19,47 +36,1047 @@
             --color-white: #FFFFFF;
             --color-offblack: #1A1A18;
             --color-muted: #7A7870;
-            --color-alert: #d05a5a;
+            --color-alert: #D05A5A;
+            --color-warning: #D9A35A;
+            --color-success: #7A9F7E;
+            --color-info: #6F8FA0;
+
             --color-bg: var(--color-sand);
             --color-text: var(--color-ink);
             --color-text-secondary: var(--color-muted);
             --color-border-secondary: rgba(44, 44, 40, 0.1);
-            --spacing-xs: 0.5rem;
-            --spacing-sm: 1.5rem;
-            --spacing-md: 3rem;
-            --spacing-lg: 6rem;
-            --spacing-xl: 10rem;
+
+            --space-xs: 0.5rem;
+            --space-sm: 1.5rem;
+            --space-md: 3rem;
+            --space-lg: 6rem;
+            --space-xl: 10rem;
+
+            --easing-expressive: cubic-bezier(0.16, 1, 0.3, 1);
+            --easing-standard:   cubic-bezier(0.4, 0, 0.2, 1);
+            --duration-micro:     200ms;
+            --duration-short:     400ms;
+            --duration-editorial: 4000ms;
         }
+
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background-color: var(--color-sand); color: var(--color-text); font-family: var(--font-serif); font-weight: 300; font-size: 1.15rem; line-height: 1.8; -webkit-font-smoothing: antialiased; display: flex; flex-direction: column; min-height: 100vh; }
-        .container { max-width: 1200px; margin: 0 auto; padding: var(--spacing-md) var(--spacing-sm); flex: 1; }
-        h1 { font-family: var(--font-serif); font-size: 3.5rem; font-weight: 300; margin-bottom: var(--spacing-xs); color: var(--color-ink); }
-        h2 { font-family: var(--font-serif); font-size: 2.5rem; font-weight: 300; margin-bottom: var(--spacing-sm); padding-bottom: 1rem; border-bottom: 1px solid var(--color-border-secondary); }
-        h3 { font-family: var(--font-serif); font-size: 1.5rem; font-weight: 400; margin-bottom: 1rem; color: var(--color-ink); }
-        p { color: var(--color-text-secondary); max-width: 650px; margin-bottom: var(--spacing-sm); }
-        .intro { margin-bottom: var(--spacing-xl); }
-        .lbl { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-text-secondary); margin-top: 1rem; margin-bottom: 0.5rem; }
-        section { margin-bottom: var(--spacing-xl); }
-        footer { text-align: center; margin-top: var(--spacing-xl); padding: var(--spacing-md) 0; border-top: 1px solid var(--color-border-secondary); }
-</style>
+
+        body {
+            background-color: var(--color-sand);
+            color: var(--color-text);
+            font-family: var(--font-text);
+            font-weight: 400;
+            font-size: 17px;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: var(--space-md) var(--space-sm); flex: 1; }
+
+        h1 { font-family: var(--font-display); font-weight: 300; font-size: 5rem; line-height: 1.05; letter-spacing: -0.02em; color: var(--color-ink); margin-bottom: var(--space-xs); }
+        h2 { font-family: var(--font-deck); font-weight: 300; font-size: 2.5rem; line-height: 1.15; letter-spacing: -0.01em; color: var(--color-ink); margin-bottom: var(--space-sm); padding-bottom: 1rem; border-bottom: 1px solid var(--color-border-secondary); }
+        h3 { font-family: var(--font-deck); font-weight: 400; font-size: 1.5rem; line-height: 1.3; color: var(--color-ink); margin-top: 2rem; margin-bottom: 1rem; }
+
+        p { font-family: var(--font-text); color: var(--color-text-secondary); max-width: 720px; margin-bottom: var(--space-sm); }
+        p strong { color: var(--color-ink); font-weight: 500; }
+        p em { font-style: italic; color: var(--color-ink); }
+        code { font-family: var(--font-mono); font-size: 0.85em; background: var(--color-stone); padding: 0.1em 0.4em; border-radius: 3px; color: var(--color-ink); }
+
+        .intro { margin-bottom: var(--space-xl); display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: end; }
+        .intro-text { max-width: 720px; }
+        .intro p.lead { font-family: var(--font-deck); font-style: italic; font-weight: 300; font-size: 1.5rem; line-height: 1.4; color: var(--color-ink); max-width: 720px; margin-top: var(--space-sm); }
+        .intro-mark { color: var(--color-terra); --core-color: var(--color-ink); }
+        .intro-mark svg { width: 120px; height: 150px; display: block; }
+        @media (max-width: 720px) {
+            .intro { grid-template-columns: 1fr; }
+            .intro-mark { order: -1; }
+            .intro-mark svg { width: 80px; height: 100px; }
+        }
+
+        .lbl { font-family: var(--font-mono); font-size: 11px; font-weight: 400; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-text-secondary); margin-top: 1rem; margin-bottom: 0.5rem; }
+
+        section { margin-bottom: var(--space-xl); }
+        .section-tag { font-family: var(--font-mono); font-size: 0.7rem; font-weight: 400; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-terra); margin-bottom: 0.5rem; }
+
+        .manifest-statement {
+            font-family: var(--font-display);
+            font-weight: 300;
+            font-size: 2.4rem;
+            line-height: 1.15;
+            letter-spacing: -0.015em;
+            color: var(--color-ink);
+            max-width: 880px;
+            margin-bottom: var(--space-md);
+        }
+        @media (max-width: 720px) { .manifest-statement { font-size: 1.8rem; } }
+
+        /* -------- Piece showcase -------- */
+        .piece {
+            background: var(--color-white);
+            border: 1px solid var(--color-border-secondary);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: var(--space-sm);
+        }
+        .piece-stage {
+            background: var(--color-sand);
+            padding: var(--space-md);
+            min-height: 280px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .piece-stage.dark { background: var(--color-offblack); }
+        .piece-stage.terra { background: var(--color-terra); }
+        .piece-meta {
+            display: flex; justify-content: space-between; align-items: baseline;
+            gap: 1rem;
+            padding: 1.2rem 1.5rem;
+            border-top: 1px solid var(--color-border-secondary);
+            background: var(--color-white);
+        }
+        .piece-name { font-family: var(--font-deck); font-weight: 500; font-size: 1.05rem; color: var(--color-ink); }
+        .piece-spec { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-text-secondary); }
+        .piece-corner {
+            position: absolute; top: 0.8rem; left: 0.8rem;
+            font-family: var(--font-mono);
+            font-size: 0.6rem; letter-spacing: 0.16em;
+            text-transform: uppercase; color: rgba(44, 44, 40, 0.4);
+        }
+        .piece-stage.dark .piece-corner { color: rgba(244, 240, 232, 0.45); }
+
+        .piece-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-sm);
+        }
+        @media (max-width: 800px) { .piece-grid { grid-template-columns: 1fr; } }
+
+        /* ============================================================ */
+        /* 12.1 Business card                                           */
+        /* ============================================================ */
+        .biz-card {
+            background: var(--color-sand);
+            border-radius: 6px;
+            box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+            width: 100%;
+            max-width: 340px;
+            aspect-ratio: 85 / 55;
+            padding: 1rem 1.2rem;
+            display: flex; flex-direction: column; justify-content: space-between;
+            color: var(--color-ink);
+            --core-color: var(--color-terra);
+            position: relative;
+        }
+        .biz-card .biz-top { display: flex; justify-content: space-between; align-items: flex-start; }
+        .biz-card .biz-sym svg { width: 24px; height: 30px; color: var(--color-terra); }
+        .biz-card .biz-tag {
+            font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.16em;
+            text-transform: uppercase; color: var(--color-muted);
+            text-align: right;
+        }
+        .biz-card .biz-name {
+            font-family: var(--font-display); font-weight: 300;
+            font-size: 1.3rem; line-height: 1.1; letter-spacing: -0.01em;
+            color: var(--color-ink);
+        }
+        .biz-card .biz-role {
+            font-family: var(--font-mono); font-size: 0.55rem;
+            letter-spacing: 0.16em; text-transform: uppercase;
+            color: var(--color-terra); margin-top: 0.25rem;
+        }
+        .biz-card .biz-contact {
+            font-family: var(--font-mono); font-size: 0.6rem;
+            color: var(--color-ink); line-height: 1.6;
+            letter-spacing: 0.04em;
+        }
+
+        .biz-card.back {
+            background: var(--color-offblack);
+            color: var(--color-sand);
+            display: flex; align-items: center; justify-content: center;
+            padding: 0;
+            position: relative;
+            overflow: hidden;
+            --core-color: var(--color-sand);
+        }
+        .biz-card.back .big-sym {
+            color: var(--color-terra);
+            width: 70px; height: 88px;
+        }
+
+        /* ============================================================ */
+        /* 12.2 Email signature                                         */
+        /* ============================================================ */
+        .signature {
+            background: var(--color-white);
+            border: 1px solid var(--color-border-secondary);
+            border-radius: 4px;
+            padding: 1.2rem 1.5rem;
+            max-width: 480px;
+            display: flex; gap: 1rem; align-items: flex-start;
+            font-family: var(--font-text);
+            color: var(--color-ink);
+        }
+        .signature .s-mark { color: var(--color-terra); --core-color: var(--color-ink); flex-shrink: 0; }
+        .signature .s-mark svg { width: 36px; height: 45px; display: block; }
+        .signature .s-body { display: flex; flex-direction: column; gap: 0.1rem; }
+        .signature .s-name { font-family: var(--font-deck); font-weight: 500; font-size: 1rem; color: var(--color-ink); }
+        .signature .s-role { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-terra); margin-bottom: 0.4rem; }
+        .signature .s-contact { font-family: var(--font-mono); font-size: 0.65rem; color: var(--color-muted); letter-spacing: 0.04em; line-height: 1.6; }
+        .signature .s-contact a { color: var(--color-ink); text-decoration: none; }
+        .signature .s-contact a:hover { color: var(--color-terra); }
+
+        /* ============================================================ */
+        /* 12.3 One-pager / Proposal                                    */
+        /* ============================================================ */
+        .one-pager {
+            background: var(--color-white);
+            aspect-ratio: 210 / 297;
+            max-width: 360px;
+            width: 100%;
+            padding: 1.4rem 1.3rem;
+            box-shadow: 0 12px 32px rgba(0,0,0,0.1);
+            display: flex; flex-direction: column;
+            font-family: var(--font-text);
+            color: var(--color-ink);
+            position: relative;
+            overflow: hidden;
+        }
+        .one-pager .op-head { display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 0.7rem; border-bottom: 1px solid var(--color-border-secondary); margin-bottom: 0.8rem; }
+        .one-pager .op-head .op-sym { color: var(--color-terra); --core-color: var(--color-ink); }
+        .one-pager .op-head .op-sym svg { width: 22px; height: 28px; display: block; }
+        .one-pager .op-head .op-meta { font-family: var(--font-mono); font-size: 0.5rem; letter-spacing: 0.16em; color: var(--color-muted); text-transform: uppercase; text-align: right; line-height: 1.6; }
+        .one-pager .op-eyebrow { font-family: var(--font-mono); font-size: 0.5rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-terra); margin-bottom: 0.4rem; }
+        .one-pager .op-title { font-family: var(--font-display); font-weight: 300; font-size: 1.4rem; line-height: 1.1; letter-spacing: -0.01em; margin-bottom: 0.6rem; }
+        .one-pager .op-lead { font-family: var(--font-deck); font-style: italic; font-weight: 300; font-size: 0.85rem; line-height: 1.4; color: var(--color-text-secondary); margin-bottom: 0.8rem; }
+        .one-pager .op-section { margin-bottom: 0.7rem; }
+        .one-pager .op-section h5 { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-terra); margin-bottom: 0.3rem; font-weight: 500; }
+        .one-pager .op-section p { font-size: 0.65rem; line-height: 1.55; color: var(--color-ink); max-width: 100%; margin: 0; }
+        .one-pager .op-metric {
+            background: var(--color-sand); border-radius: 4px; padding: 0.6rem 0.8rem;
+            display: flex; justify-content: space-between; align-items: baseline;
+            margin-bottom: 0.4rem;
+        }
+        .one-pager .op-metric .label { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-muted); }
+        .one-pager .op-metric .value { font-family: var(--font-display); font-weight: 300; font-size: 1.2rem; letter-spacing: -0.01em; color: var(--color-ink); }
+        .one-pager .op-metric .value em { color: var(--color-terra); font-style: italic; }
+        .one-pager .op-footer {
+            margin-top: auto;
+            padding-top: 0.8rem;
+            border-top: 1px solid var(--color-border-secondary);
+            font-family: var(--font-mono); font-size: 0.5rem;
+            letter-spacing: 0.16em; color: var(--color-muted); text-transform: uppercase;
+            display: flex; justify-content: space-between;
+        }
+
+        /* ============================================================ */
+        /* 12.4 Slide deck                                              */
+        /* ============================================================ */
+        .slide {
+            aspect-ratio: 16 / 9;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+            position: relative;
+        }
+        .slide-intro {
+            background: var(--color-offblack);
+            color: var(--color-sand);
+            --core-color: var(--color-terra);
+            display: flex; flex-direction: column; justify-content: space-between;
+            padding: 1.6rem 1.8rem;
+        }
+        .slide-intro .si-top { display: flex; justify-content: space-between; align-items: flex-start; }
+        .slide-intro .si-sym svg { width: 32px; height: 40px; color: var(--color-terra); display: block; }
+        .slide-intro .si-meta { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.16em; color: var(--color-terra); text-transform: uppercase; text-align: right; }
+        .slide-intro .si-title {
+            font-family: var(--font-display); font-weight: 300;
+            font-size: 2rem; line-height: 1.1; letter-spacing: -0.02em;
+            color: var(--color-sand);
+            max-width: 70%;
+        }
+        .slide-intro .si-title em { font-style: italic; color: var(--color-terra); }
+        .slide-intro .si-bottom { display: flex; justify-content: space-between; align-items: baseline; font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.16em; color: var(--color-stone); opacity: 0.65; }
+
+        .slide-content {
+            background: var(--color-sand);
+            color: var(--color-ink);
+            padding: 1.6rem 1.8rem;
+            display: flex; flex-direction: column; gap: 0.6rem;
+        }
+        .slide-content .sc-eyebrow { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-terra); }
+        .slide-content .sc-title { font-family: var(--font-display); font-weight: 300; font-size: 1.6rem; line-height: 1.15; letter-spacing: -0.01em; }
+        .slide-content .sc-points { display: flex; flex-direction: column; gap: 0.3rem; font-family: var(--font-text); font-size: 0.75rem; line-height: 1.5; }
+        .slide-content .sc-points div { display: flex; gap: 0.4rem; }
+        .slide-content .sc-points div::before { content: '·'; color: var(--color-terra); font-weight: 700; font-size: 1rem; line-height: 1; }
+        .slide-content .sc-foot {
+            font-family: var(--font-mono); font-size: 0.5rem;
+            letter-spacing: 0.16em; color: var(--color-muted); text-transform: uppercase;
+            margin-top: auto;
+            display: flex; justify-content: space-between;
+        }
+
+        /* ============================================================ */
+        /* 12.5 Social posts                                            */
+        /* ============================================================ */
+        .social-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: var(--space-sm);
+        }
+        @media (max-width: 800px) { .social-row { grid-template-columns: 1fr 1fr; } }
+        @media (max-width: 600px) { .social-row { grid-template-columns: 1fr; } }
+        .social-post {
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+            position: relative;
+        }
+        .social-square { aspect-ratio: 1 / 1; background: var(--color-offblack); color: var(--color-sand); display: flex; flex-direction: column; justify-content: space-between; padding: 1.2rem; --core-color: var(--color-terra); }
+        .social-square .ss-sym svg { width: 28px; height: 35px; color: var(--color-terra); }
+        .social-square .ss-text { font-family: var(--font-display); font-weight: 300; font-size: 1.4rem; line-height: 1.1; letter-spacing: -0.02em; }
+        .social-square .ss-text em { font-style: italic; color: var(--color-terra); }
+        .social-square .ss-foot { font-family: var(--font-mono); font-size: 0.5rem; letter-spacing: 0.16em; color: var(--color-stone); text-transform: uppercase; opacity: 0.55; }
+
+        .social-story { aspect-ratio: 9 / 16; background: var(--color-sand); color: var(--color-ink); display: flex; flex-direction: column; justify-content: space-between; padding: 1.4rem 1rem; --core-color: var(--color-ink); }
+        .social-story .ss-sym svg { width: 36px; height: 45px; color: var(--color-terra); }
+        .social-story .ss-text { font-family: var(--font-display); font-weight: 300; font-size: 1.5rem; line-height: 1.1; letter-spacing: -0.02em; }
+        .social-story .ss-meta { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.16em; color: var(--color-terra); text-transform: uppercase; }
+
+        .social-iris { aspect-ratio: 1 / 1; background: conic-gradient(from 180deg at 50% 50%, #8E5DBF 0deg, #D04AC2 72deg, #4ABFD0 144deg, #4AD0A6 216deg, #D0B14A 288deg, #8E5DBF 360deg); display: flex; flex-direction: column; justify-content: space-between; padding: 1.2rem; }
+        .social-iris .si-sym { color: var(--color-offblack); --core-color: var(--color-sand); }
+        .social-iris .si-sym svg { width: 32px; height: 40px; }
+        .social-iris .si-tag { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.16em; color: var(--color-offblack); text-transform: uppercase; background: rgba(244,240,232,0.8); padding: 0.2rem 0.45rem; border-radius: 3px; align-self: flex-start; }
+        .social-iris .si-text { font-family: var(--font-display); font-weight: 300; font-size: 1.4rem; line-height: 1.05; color: var(--color-offblack); letter-spacing: -0.02em; }
+
+        /* ============================================================ */
+        /* 12.6 Video intro storyboard                                  */
+        /* ============================================================ */
+        .video-board {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.6rem;
+            background: var(--color-white);
+            border: 1px solid var(--color-border-secondary);
+            border-radius: 8px;
+            padding: var(--space-sm);
+        }
+        @media (max-width: 700px) { .video-board { grid-template-columns: repeat(3, 1fr); } }
+        .video-frame {
+            aspect-ratio: 16 / 9;
+            background: var(--color-offblack);
+            border-radius: 3px;
+            position: relative;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden;
+            color: var(--color-terra);
+            --core-color: var(--color-sand);
+        }
+        .video-frame .timestamp { position: absolute; top: 4px; left: 6px; font-family: var(--font-mono); font-size: 0.45rem; letter-spacing: 0.1em; color: rgba(244,240,232,0.5); }
+        .video-frame .vf-text { font-family: var(--font-display); font-weight: 300; font-size: 0.8rem; color: var(--color-sand); }
+        .video-frame svg { width: 30px; height: 38px; }
+        .video-frame.empty { background: var(--color-offblack); }
+        .video-frame.dot-only::after { content: ''; width: 10px; height: 10px; background: var(--color-terra); border-radius: 50%; }
+        .video-frame .small-dots { display: flex; gap: 4px; }
+        .video-frame .small-dots .d { width: 3px; height: 3px; background: var(--color-terra); border-radius: 50%; }
+        .video-frame .small-dots .d:nth-child(2) { width: 5px; height: 5px; }
+        .video-frame .small-dots .d:nth-child(3) { width: 7px; height: 7px; }
+        .video-frame .small-dots .d:nth-child(4) { width: 5px; height: 5px; }
+        .video-frame .small-dots .d:nth-child(5) { width: 3px; height: 3px; }
+        .video-frame.word { background: var(--color-offblack); }
+        .video-frame.word .w { font-family: var(--font-display); font-weight: 300; font-size: 0.7rem; color: var(--color-sand); letter-spacing: -0.01em; }
+        .video-frame.final { background: var(--color-offblack); flex-direction: column; gap: 4px; padding: 8px; }
+        .video-frame.final svg { width: 22px; height: 28px; }
+        .video-frame.final .w { font-family: var(--font-display); font-weight: 300; font-size: 0.65rem; color: var(--color-sand); }
+        .video-board-spec {
+            font-family: var(--font-mono); font-size: 0.65rem;
+            letter-spacing: 0.08em; color: var(--color-text-secondary);
+            margin-top: 1rem; padding-top: 0.8rem;
+            border-top: 1px solid var(--color-border-secondary);
+        }
+
+        /* ============================================================ */
+        /* 12.7 Web hero                                                */
+        /* ============================================================ */
+        .web-hero {
+            aspect-ratio: 16 / 9;
+            background: var(--color-sand);
+            color: var(--color-ink);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            padding: var(--space-md) var(--space-md) 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .web-hero .wh-text { display: flex; flex-direction: column; justify-content: center; gap: 0.6rem; }
+        .web-hero .wh-eyebrow { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-terra); }
+        .web-hero .wh-title { font-family: var(--font-display); font-weight: 300; font-size: 1.8rem; line-height: 1.1; letter-spacing: -0.02em; }
+        .web-hero .wh-title em { color: var(--color-terra); font-style: italic; }
+        .web-hero .wh-lead { font-family: var(--font-text); font-size: 0.75rem; line-height: 1.55; color: var(--color-text-secondary); max-width: 90%; }
+        .web-hero .wh-cta { display: flex; gap: 0.5rem; margin-top: 0.5rem; }
+        .web-hero .wh-btn { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.16em; text-transform: uppercase; padding: 0.4rem 0.7rem; border-radius: 4px; background: var(--color-ink); color: var(--color-sand); }
+        .web-hero .wh-btn.ghost { background: transparent; color: var(--color-ink); border: 1px solid var(--color-border-secondary); }
+        .web-hero .wh-sym { display: flex; align-items: center; justify-content: center; color: var(--color-terra); --core-color: var(--color-ink); }
+        .web-hero .wh-sym svg { width: 60%; max-height: 80%; }
+        .web-hero .wh-nav {
+            position: absolute; top: 0.6rem; left: var(--space-md); right: var(--space-md);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .web-hero .wh-logo { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.16em; color: var(--color-terra); text-transform: uppercase; }
+        .web-hero .wh-menu { display: flex; gap: 1rem; font-family: var(--font-mono); font-size: 0.5rem; letter-spacing: 0.16em; color: var(--color-muted); text-transform: uppercase; }
+
+        /* ============================================================ */
+        /* 12.8 Dashboard                                               */
+        /* ============================================================ */
+        .dashboard {
+            background: var(--color-sand);
+            aspect-ratio: 16 / 10;
+            border-radius: 4px;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 60px 1fr;
+            font-family: var(--font-text);
+            color: var(--color-ink);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.1);
+        }
+        .dashboard .ds-sidebar { background: var(--color-ink); padding: 0.8rem 0.5rem; display: flex; flex-direction: column; gap: 0.8rem; align-items: center; }
+        .dashboard .ds-sidebar .ds-sym svg { width: 22px; height: 28px; color: var(--color-terra); }
+        .dashboard .ds-sidebar .ds-nav { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem; }
+        .dashboard .ds-sidebar .ds-nav-item { width: 22px; height: 22px; border-radius: 4px; background: rgba(244,240,232,0.08); display: flex; align-items: center; justify-content: center; color: rgba(244,240,232,0.5); }
+        .dashboard .ds-sidebar .ds-nav-item.active { background: rgba(184,137,106,0.25); color: var(--color-terra); }
+        .dashboard .ds-sidebar .ds-nav-item svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+        .dashboard .ds-main { padding: 0.8rem 1rem; display: flex; flex-direction: column; gap: 0.6rem; overflow: hidden; }
+        .dashboard .ds-header { display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 0.4rem; border-bottom: 1px solid var(--color-border-secondary); }
+        .dashboard .ds-title { font-family: var(--font-deck); font-weight: 300; font-size: 1rem; color: var(--color-ink); }
+        .dashboard .ds-tag { font-family: var(--font-mono); font-size: 0.5rem; letter-spacing: 0.16em; color: var(--color-terra); text-transform: uppercase; }
+        .dashboard .ds-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
+        .dashboard .ds-card { background: var(--color-white); border-radius: 4px; padding: 0.6rem; }
+        .dashboard .ds-card .label { font-family: var(--font-mono); font-size: 0.45rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-muted); }
+        .dashboard .ds-card .value { font-family: var(--font-display); font-weight: 300; font-size: 1.1rem; color: var(--color-ink); letter-spacing: -0.01em; margin-top: 0.2rem; }
+        .dashboard .ds-card .value em { color: var(--color-terra); font-style: italic; }
+        .dashboard .ds-chart { background: var(--color-white); border-radius: 4px; flex: 1; padding: 0.6rem 0.8rem; display: flex; flex-direction: column; gap: 0.3rem; }
+        .dashboard .ds-chart .chart-title { font-family: var(--font-mono); font-size: 0.5rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-muted); }
+        .dashboard .ds-chart .bars { display: flex; gap: 4px; align-items: flex-end; flex: 1; padding-top: 0.4rem; }
+        .dashboard .ds-chart .bar { flex: 1; background: var(--color-ink); border-radius: 2px 2px 0 0; min-height: 4px; position: relative; }
+        .dashboard .ds-chart .bar.terra { background: var(--color-terra); }
+
+        /* ============================================================ */
+        /* 12.9 Print                                                   */
+        /* ============================================================ */
+        .print-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: var(--space-sm);
+        }
+        @media (max-width: 800px) { .print-row { grid-template-columns: 1fr 1fr; } }
+        @media (max-width: 600px) { .print-row { grid-template-columns: 1fr; } }
+
+        .poster {
+            aspect-ratio: 297 / 420;
+            background: var(--color-offblack);
+            color: var(--color-sand);
+            --core-color: var(--color-terra);
+            display: flex; flex-direction: column; justify-content: space-between;
+            padding: 1.4rem 1.2rem;
+            border-radius: 4px;
+            box-shadow: 0 12px 32px rgba(0,0,0,0.18);
+            position: relative;
+            overflow: hidden;
+        }
+        .poster .p-top { display: flex; justify-content: space-between; align-items: flex-start; }
+        .poster .p-sym svg { width: 24px; height: 30px; color: var(--color-terra); }
+        .poster .p-meta { font-family: var(--font-mono); font-size: 0.5rem; letter-spacing: 0.16em; color: var(--color-terra); text-transform: uppercase; text-align: right; }
+        .poster .p-text { display: flex; flex-direction: column; gap: 0.4rem; }
+        .poster .p-title { font-family: var(--font-display); font-weight: 300; font-size: 1.5rem; line-height: 1.05; letter-spacing: -0.02em; color: var(--color-sand); }
+        .poster .p-title em { color: var(--color-terra); font-style: italic; }
+        .poster .p-foot { font-family: var(--font-mono); font-size: 0.5rem; letter-spacing: 0.16em; color: var(--color-stone); opacity: 0.55; text-transform: uppercase; }
+
+        .sticker {
+            aspect-ratio: 1 / 1;
+            background: var(--color-sand);
+            border-radius: 50%;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            color: var(--color-terra);
+            --core-color: var(--color-ink);
+            position: relative;
+            padding: 1rem;
+            overflow: hidden;
+        }
+        .sticker svg { width: 36px; height: 45px; }
+        .sticker .st-text { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.16em; color: var(--color-ink); text-transform: uppercase; margin-top: 0.6rem; }
+        .sticker.ink { background: var(--color-offblack); color: var(--color-terra); --core-color: var(--color-sand); }
+        .sticker.ink .st-text { color: var(--color-sand); }
+
+        .billet {
+            background: var(--color-terra);
+            color: var(--color-sand);
+            --core-color: var(--color-sand);
+            aspect-ratio: 4 / 3;
+            border-radius: 4px;
+            padding: 1.2rem;
+            display: flex; flex-direction: column; justify-content: space-between;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+        }
+        .billet .b-top { display: flex; justify-content: space-between; align-items: flex-start; }
+        .billet .b-sym svg { width: 26px; height: 32px; color: var(--color-sand); }
+        .billet .b-tag { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.16em; text-transform: uppercase; }
+        .billet .b-text { font-family: var(--font-display); font-weight: 300; font-size: 1.2rem; line-height: 1.1; letter-spacing: -0.01em; }
+
+        /* ============================================================ */
+        /* Rules / Don'ts                                               */
+        /* ============================================================ */
+        .rule-list { list-style: none; counter-reset: rule-counter; margin-top: 1rem; }
+        .rule-list li {
+            position: relative;
+            padding-left: 3rem;
+            margin-bottom: 1.4rem;
+            font-family: var(--font-text);
+            font-size: 1.0625rem;
+            line-height: 1.55;
+            color: var(--color-ink);
+            max-width: 820px;
+        }
+        .rule-list li::before {
+            counter-increment: rule-counter;
+            content: "0" counter(rule-counter);
+            position: absolute; left: 0; top: 0.1rem;
+            font-family: var(--font-mono); font-size: 13px;
+            color: var(--color-terra);
+        }
+        .rule-list strong { color: var(--color-ink); font-weight: 500; }
+
+        /* Meta strip / footer */
+        .meta-strip { background: var(--color-offblack); color: var(--color-sand); padding: 1.2rem 1.6rem; border-radius: 4px; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.16em; text-transform: uppercase; display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: var(--space-md); }
+        .meta-strip span { color: var(--color-stone); }
+        .meta-strip .sep { color: var(--color-terra); }
+        .meta-strip .tag { color: var(--color-terra); font-weight: 500; }
+
+        footer { text-align: center; margin-top: var(--space-xl); padding: var(--space-md) 0; border-top: 1px solid var(--color-border-secondary); }
+        .chapter-nav { display: flex; justify-content: space-between; align-items: center; max-width: 800px; margin: 0 auto var(--space-md); padding: 0 var(--space-sm); }
+        .chapter-nav a { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-text-secondary); text-decoration: none; transition: color 0.3s ease; }
+        .chapter-nav a:hover { color: var(--color-terra); }
+        @media (max-width: 600px) { .chapter-nav { flex-direction: column; gap: 1rem; text-align: center; } }
+        .footer-mark { color: var(--color-terra); display: inline-block; opacity: 0.7; }
+    </style>
 </head>
 <body>
+
+<svg style="position:absolute; width:0; height:0; overflow:hidden" aria-hidden="true">
+    <defs>
+        <symbol id="drop-halftone" viewBox="0 0 160 200"></symbol>
+        <symbol id="drop-simple" viewBox="0 0 160 200">
+            <path d="M80 12 C80 12 104 52 116 88 C126 118 122 152 102 168 C92 176 80 178 80 178 C80 178 68 176 58 168 C38 152 34 118 44 88 C56 52 80 12 80 12 Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>
+            <circle cx="80" cy="130" r="6" fill="currentColor"/>
+        </symbol>
+    </defs>
+</svg>
+
+<script>
+(function() {
+    const FX = 80, FY = 130;
+    const GD = "M80 12 C80 12 104 52 116 88 C126 118 122 152 102 168 C92 176 80 178 80 178 C80 178 68 176 58 168 C38 152 34 118 44 88 C56 52 80 12 80 12 Z";
+    function gen(symbolEl) {
+        while (symbolEl.firstChild) symbolEl.removeChild(symbolEl.firstChild);
+        const cv = document.createElement('canvas'); cv.width = 160; cv.height = 200;
+        const ctx = cv.getContext('2d');
+        const path = new Path2D(GD);
+        const NS = 'http://www.w3.org/2000/svg';
+        const sp = 8;
+        for (let y = sp/2; y < 200; y += sp) {
+            const ri = Math.round((y - sp/2) / sp);
+            const xo = (ri % 2 === 0) ? 0 : sp/2;
+            for (let x = sp/2 + xo; x < 160; x += sp) {
+                if (!ctx.isPointInPath(path, x, y)) continue;
+                const dx = x - FX, dy = y - FY;
+                const d = Math.sqrt(dx*dx + dy*dy);
+                const r = Math.max(0.4, 2.8 - d/38 * 2.8);
+                if (r < 0.35 || d < 6) continue;
+                const c = document.createElementNS(NS, 'circle');
+                c.setAttribute('cx', x.toFixed(2));
+                c.setAttribute('cy', y.toFixed(2));
+                c.setAttribute('r', r.toFixed(2));
+                c.setAttribute('fill', 'currentColor');
+                symbolEl.appendChild(c);
+            }
+        }
+        const core = document.createElementNS(NS, 'circle');
+        core.setAttribute('cx', FX); core.setAttribute('cy', FY); core.setAttribute('r', 4);
+        core.setAttribute('fill', 'var(--core-color, #B8896A)');
+        symbolEl.appendChild(core);
+    }
+    const s = document.getElementById('drop-halftone');
+    if (s) gen(s);
+})();
+</script>
+
 <div class="container">
+
     <div class="intro">
-        <div class="lbl">Sección 12</div>
-        <h1>Aplicaciones</h1>
+        <div class="intro-text">
+            <div class="lbl">Sección 12</div>
+            <h1>Aplicaciones</h1>
+            <p class="lead">El sistema en piezas reales. Papelería, presentación, social, video, web, dashboard, impresión.</p>
+        </div>
+        <div class="intro-mark">
+            <svg viewBox="0 0 160 200"><use href="#drop-halftone"/></svg>
+        </div>
     </div>
-    
+
+    <!-- ============================================================ -->
+    <!-- 12.0 Principio -->
+    <!-- ============================================================ -->
     <section>
-        <p style="opacity: 0.6; font-style: italic;">Esta sección (Digital, imprenta y RRSS) se desarrollará en la siguiente iteración de la guía de estilo.</p>
+        <div class="section-tag">12.0 · principio</div>
+        <h2>Principio</h2>
+        <div class="manifest-statement">
+            Cada pieza que sale de ForMeta es <em>el sistema funcionando</em>. Si una pieza necesita reinventar reglas, las reglas están mal.
+        </div>
+        <p>Las 9 piezas de este capítulo no son ejemplos. Son las <strong>piezas canónicas</strong> — la papelería, el deck, el post, el video, la web, el dashboard, el sticker. Cuando hay que producir algo nuevo, se parte de aquí y se varía solo lo necesario.</p>
     </section>
-  
+
+    <!-- ============================================================ -->
+    <!-- 12.1 Business card -->
+    <!-- ============================================================ -->
+    <section>
+        <div class="section-tag">12.1 · papelería</div>
+        <h2>Tarjeta de visita</h2>
+        <p>85 × 55 mm. Anverso sand con info esencial, reverso offblack con símbolo halftone grande. Papel sin estucar, gramaje 350g. Solo se imprime cuando un cliente lo pide en mano — el resto del tiempo, el contacto vive en el email signature.</p>
+
+        <div class="piece">
+            <div class="piece-stage">
+                <span class="piece-corner">12.1.A · cara frente</span>
+                <div style="display: flex; gap: var(--space-sm); flex-wrap: wrap; justify-content: center;">
+                    <div class="biz-card">
+                        <div class="biz-top">
+                            <span class="biz-sym"><svg viewBox="0 0 160 200"><use href="#drop-simple"/></svg></span>
+                            <div class="biz-tag">v1.0 · 2026</div>
+                        </div>
+                        <div>
+                            <div class="biz-name">Marc Bauzà</div>
+                            <div class="biz-role">Co-fundador</div>
+                        </div>
+                        <div class="biz-contact">
+                            marc@formeta.es<br>
+                            +34 670 000 000<br>
+                            Palma · Mallorca
+                        </div>
+                    </div>
+                    <div class="biz-card back">
+                        <span class="big-sym"><svg viewBox="0 0 160 200"><use href="#drop-halftone"/></svg></span>
+                    </div>
+                </div>
+            </div>
+            <div class="piece-meta">
+                <div class="piece-name">Tarjeta de visita · anverso + reverso</div>
+                <div class="piece-spec">85 × 55 mm · 350g sin estucar · una tinta + halftone</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 12.2 Email signature -->
+    <!-- ============================================================ -->
+    <section>
+        <div class="section-tag">12.2 · firma de email</div>
+        <h2>Firma de email</h2>
+        <p>Cuatro líneas. Símbolo a la izquierda, info a la derecha. Sin imagen de fondo, sin redes sociales, sin lema, sin tagline. La señal estable de la marca en cada conversación.</p>
+
+        <div class="piece">
+            <div class="piece-stage">
+                <span class="piece-corner">12.2 · email signature</span>
+                <div class="signature">
+                    <span class="s-mark"><svg viewBox="0 0 160 200"><use href="#drop-halftone"/></svg></span>
+                    <div class="s-body">
+                        <div class="s-name">Marc Bauzà</div>
+                        <div class="s-role">ForMeta · Mallorca</div>
+                        <div class="s-contact">
+                            <a href="mailto:marc@formeta.es">marc@formeta.es</a> · +34 670 000 000<br>
+                            <a href="https://formeta.es">formeta.es</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="piece-meta">
+                <div class="piece-name">Email signature</div>
+                <div class="piece-spec">símbolo 36px + nombre + ForMeta · Mallorca + contacto</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 12.3 One-pager / Proposal -->
+    <!-- ============================================================ -->
+    <section>
+        <div class="section-tag">12.3 · propuesta</div>
+        <h2>One-pager comercial</h2>
+        <p>A4 vertical. Cabecera con símbolo + metadata, título Canela, lead italic, secciones por bloques con eyebrow terra, métricas en bloque sand, footer con metadata strip. <strong>Una página · una página solo.</strong></p>
+
+        <div class="piece">
+            <div class="piece-stage">
+                <span class="piece-corner">12.3 · A4 · propuesta</span>
+                <div class="one-pager">
+                    <div class="op-head">
+                        <span class="op-sym"><svg viewBox="0 0 160 200"><use href="#drop-halftone"/></svg></span>
+                        <div class="op-meta">v1.0 · 2026.05.15<br>Propuesta · #FMTA—2026—011</div>
+                    </div>
+
+                    <div class="op-eyebrow">Cliente · Cooperativa Sant Joan</div>
+                    <div class="op-title">Automatizar la entrada de albaranes a Holded.</div>
+                    <div class="op-lead">"Reducir 40 minutos de gestión por proveedor a 3 minutos por proveedor."</div>
+
+                    <div class="op-section">
+                        <h5>Qué vimos</h5>
+                        <p>Dos veces a la semana, alguien reescribe albaranes desde PDF a Holded. 28 minutos por proveedor, ocho proveedores. Más de 100 horas al año en una tarea mecánica.</p>
+                    </div>
+
+                    <div class="op-section">
+                        <h5>Qué construimos</h5>
+                        <p>Una IApp que escucha el email del proveedor, lee el albarán, deja todo listo en Holded. Persona valida en 3 minutos. La IApp aprende de las correcciones.</p>
+                    </div>
+
+                    <div class="op-metric">
+                        <span class="label">Coste</span>
+                        <span class="value">4.800 €</span>
+                    </div>
+                    <div class="op-metric">
+                        <span class="label">Duración</span>
+                        <span class="value">2 semanas</span>
+                    </div>
+                    <div class="op-metric">
+                        <span class="label">Ahorro año 1</span>
+                        <span class="value"><em>100h</em></span>
+                    </div>
+
+                    <div class="op-footer">
+                        <span>FMTA · MALLORCA</span>
+                        <span>39.5696° N</span>
+                    </div>
+                </div>
+            </div>
+            <div class="piece-meta">
+                <div class="piece-name">One-pager · propuesta</div>
+                <div class="piece-spec">A4 · 210 × 297 mm · narrow container · halftone símbolo arriba</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 12.4 Slide deck -->
+    <!-- ============================================================ -->
+    <section>
+        <div class="section-tag">12.4 · presentación</div>
+        <h2>Presentación · slides</h2>
+        <p>16:9. Slide de portada con halftone símbolo sobre offblack. Slide de contenido sobre sand con eyebrow terra, título Canela y bullets Canela Text. Footer con metadata. <strong>Máximo tres bullets por slide.</strong> Si necesitas más, falta una slide.</p>
+
+        <div class="piece-grid">
+            <div class="piece">
+                <div class="piece-stage dark">
+                    <span class="piece-corner">12.4.A · portada</span>
+                    <div class="slide slide-intro" style="width: 100%; max-width: 480px;">
+                        <div class="si-top">
+                            <span class="si-sym"><svg viewBox="0 0 160 200"><use href="#drop-halftone"/></svg></span>
+                            <div class="si-meta">PROPUESTA · 2026.05<br>SANT JOAN</div>
+                        </div>
+                        <div class="si-title">Dar <em>40 minutos</em> a 3.</div>
+                        <div class="si-bottom">
+                            <span>FORMETA · MALLORCA</span>
+                            <span>01 / 12</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="piece-meta">
+                    <div class="piece-name">Slide portada</div>
+                    <div class="piece-spec">16:9 · offblack · Canela 2rem · halftone arriba izda</div>
+                </div>
+            </div>
+
+            <div class="piece">
+                <div class="piece-stage">
+                    <span class="piece-corner">12.4.B · contenido</span>
+                    <div class="slide slide-content" style="width: 100%; max-width: 480px;">
+                        <div class="sc-eyebrow">02 · Qué construimos</div>
+                        <div class="sc-title">Una IApp que escucha el email.</div>
+                        <div class="sc-points">
+                            <div>Lee el albarán cuando llega.</div>
+                            <div>Crea el registro en Holded.</div>
+                            <div>Aprende de las correcciones.</div>
+                        </div>
+                        <div class="sc-foot">
+                            <span>FMTA · MALLORCA · 2026.05</span>
+                            <span>02 / 12</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="piece-meta">
+                    <div class="piece-name">Slide contenido</div>
+                    <div class="piece-spec">16:9 · sand · 3 bullets · footer metadata</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 12.5 Social -->
+    <!-- ============================================================ -->
+    <section>
+        <div class="section-tag">12.5 · social</div>
+        <h2>Social media</h2>
+        <p>Tres formatos: feed cuadrado (1080×1080), story vertical (1080×1920) y post editorial expresivo en iris (capa 4 · uso restringido). Mismo lenguaje editorial — el contenido cambia, el sistema no.</p>
+
+        <div class="social-row">
+            <div class="social-post">
+                <div class="social-square">
+                    <div class="ss-sym"><svg viewBox="0 0 160 200"><use href="#drop-halftone"/></svg></div>
+                    <div class="ss-text">No imponemos procesos. <em>Damos forma</em> a los que ya funcionan.</div>
+                    <div class="ss-foot">FORMETA · MALLORCA</div>
+                </div>
+            </div>
+            <div class="social-post">
+                <div class="social-story">
+                    <div class="ss-meta">CASO · 2026.05</div>
+                    <div>
+                        <div class="ss-text">−37 min por pedido.</div>
+                    </div>
+                    <div class="ss-sym"><svg viewBox="0 0 160 200"><use href="#drop-halftone"/></svg></div>
+                </div>
+            </div>
+            <div class="social-post">
+                <div class="social-iris">
+                    <div class="si-tag">Lanzamiento · capa 04</div>
+                    <div class="si-sym"><svg viewBox="0 0 160 200"><use href="#drop-halftone"/></svg></div>
+                    <div class="si-text">IApp v2.0 ·<br>en vivo.</div>
+                </div>
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-sm); margin-top: 0.5rem; font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.08em; color: var(--color-muted); text-transform: uppercase;">
+            <span>Feed · 1080 × 1080 · dark</span>
+            <span>Story · 1080 × 1920 · light</span>
+            <span>Lanzamiento · 1080 × 1080 · iris · raro</span>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 12.6 Video intro -->
+    <!-- ============================================================ -->
+    <section>
+        <div class="section-tag">12.6 · video intro</div>
+        <h2>Video intro</h2>
+        <p>5 frames clave de la intro. Duración total: <strong>2.5 segundos</strong>. La gota se compone por puntos desde el centro (assembly), aparece el nombre con wipe, sostiene 0.8s, cierra. Para video corporativo, redes en vídeo, splash de demo.</p>
+
+        <div class="video-board">
+            <div class="video-frame">
+                <span class="timestamp">00:00</span>
+                <div class="vf-text" style="opacity: 0.4;">·</div>
+            </div>
+            <div class="video-frame">
+                <span class="timestamp">00:08</span>
+                <div class="small-dots"><span class="d"></span><span class="d"></span><span class="d"></span><span class="d"></span><span class="d"></span></div>
+            </div>
+            <div class="video-frame">
+                <span class="timestamp">00:16</span>
+                <svg viewBox="0 0 160 200"><use href="#drop-halftone"/></svg>
+            </div>
+            <div class="video-frame word">
+                <span class="timestamp">00:20</span>
+                <div class="w" style="text-align: center;">ForMeta</div>
+            </div>
+            <div class="video-frame final">
+                <span class="timestamp">02:30</span>
+                <svg viewBox="0 0 160 200"><use href="#drop-simple"/></svg>
+                <div class="w">ForMeta</div>
+            </div>
+        </div>
+
+        <div class="video-board-spec">
+            00:00 → punto inicial · assembly outward (0.6s)<br>
+            00:08 → primeros anillos de dots aparecen · curva expressive<br>
+            00:16 → halftone completo (1.0s desde inicio)<br>
+            00:20 → entra logotipo con wipe horizontal (0.4s)<br>
+            02:30 → cierre · isotipo composto sobre offblack · hold 0.8s
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 12.7 Web hero -->
+    <!-- ============================================================ -->
+    <section>
+        <div class="section-tag">12.7 · web</div>
+        <h2>Web hero</h2>
+        <p>Sección principal de la home. Container default 1200px. Headline a 1/2, símbolo halftone a 1/2. Nav superior con menú mono. Dos CTAs: primary "Ver cómo trabajamos" + ghost "Casos". Footer metadata.</p>
+
+        <div class="piece">
+            <div class="piece-stage" style="padding: 0;">
+                <div class="web-hero" style="width: 100%; max-width: 720px;">
+                    <div class="wh-nav">
+                        <span class="wh-logo">ForMeta · Mallorca</span>
+                        <span class="wh-menu">
+                            <span>Cómo</span>
+                            <span>Casos</span>
+                            <span>Contacto</span>
+                        </span>
+                    </div>
+                    <div class="wh-text">
+                        <div class="wh-eyebrow">Mallorca · 2026</div>
+                        <div class="wh-title">Software construido<br>desde la <em>raíz</em>.</div>
+                        <div class="wh-lead">Dos personas en Mallorca que construyen IApps para empresas reales. Diez clientes. Diez nombres.</div>
+                        <div class="wh-cta">
+                            <span class="wh-btn">Ver cómo trabajamos</span>
+                            <span class="wh-btn ghost">Casos</span>
+                        </div>
+                    </div>
+                    <div class="wh-sym"><svg viewBox="0 0 160 200"><use href="#drop-halftone"/></svg></div>
+                </div>
+            </div>
+            <div class="piece-meta">
+                <div class="piece-name">Web hero</div>
+                <div class="piece-spec">grid 6+6 · container default · nav mono · 2 CTAs</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 12.8 Dashboard -->
+    <!-- ============================================================ -->
+    <section>
+        <div class="section-tag">12.8 · dashboard</div>
+        <h2>Dashboard de IApp</h2>
+        <p>Donde la IApp vive en el día a día del cliente. Sidebar ink fijo 60px, símbolo halftone arriba, navegación con dots semánticos. Main con header + métricas en cards + chart halftone. Spacing tokens · components canónicos.</p>
+
+        <div class="piece">
+            <div class="piece-stage" style="padding: var(--space-sm);">
+                <div class="dashboard" style="width: 100%; max-width: 720px;">
+                    <div class="ds-sidebar">
+                        <span class="ds-sym"><svg viewBox="0 0 160 200"><use href="#drop-halftone"/></svg></span>
+                        <div class="ds-nav">
+                            <div class="ds-nav-item active"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="6" fill="currentColor" stroke="none"/></svg></div>
+                            <div class="ds-nav-item"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="1"/></svg></div>
+                            <div class="ds-nav-item"><svg viewBox="0 0 24 24"><path d="M4 7 h16 M4 12 h16 M4 17 h16"/></svg></div>
+                            <div class="ds-nav-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="3"/><path d="M5 20 c0 -4 3 -6 7 -6 s7 2 7 6"/></svg></div>
+                        </div>
+                    </div>
+                    <div class="ds-main">
+                        <div class="ds-header">
+                            <span class="ds-title">Cooperativa Sant Joan · Mayo</span>
+                            <span class="ds-tag">IAPP · ACTIVA</span>
+                        </div>
+                        <div class="ds-cards">
+                            <div class="ds-card"><div class="label">Pedidos mes</div><div class="value">42</div></div>
+                            <div class="ds-card"><div class="label">Tiempo ahorrado</div><div class="value"><em>−37 min</em></div></div>
+                            <div class="ds-card"><div class="label">Errores</div><div class="value">0</div></div>
+                        </div>
+                        <div class="ds-chart">
+                            <div class="chart-title">Pedidos · últimos 6 meses</div>
+                            <div class="bars">
+                                <div class="bar" style="height: 45%;"></div>
+                                <div class="bar" style="height: 60%;"></div>
+                                <div class="bar" style="height: 70%;"></div>
+                                <div class="bar" style="height: 55%;"></div>
+                                <div class="bar terra" style="height: 88%;"></div>
+                                <div class="bar" style="height: 72%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="piece-meta">
+                <div class="piece-name">Dashboard · IApp interno</div>
+                <div class="piece-spec">sidebar 60px · main grid 3 cards + chart · spacing system</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 12.9 Print -->
+    <!-- ============================================================ -->
+    <section>
+        <div class="section-tag">12.9 · print</div>
+        <h2>Print · poster · sticker · billete</h2>
+        <p>Tres piezas impresas. <strong>Poster A3</strong> en offblack para presentaciones públicas. <strong>Sticker circular</strong> para portátiles del estudio. <strong>Billete</strong> formato 4:3 para wallet de cliente con código de acceso o credencial.</p>
+
+        <div class="print-row">
+            <div>
+                <div class="poster">
+                    <div class="p-top">
+                        <span class="p-sym"><svg viewBox="0 0 160 200"><use href="#drop-halftone"/></svg></span>
+                        <div class="p-meta">2026 · MALLORCA<br>FMTA</div>
+                    </div>
+                    <div class="p-text">
+                        <div class="p-title">Hacer <em>menos</em><br>para hacer <em>más</em>.</div>
+                    </div>
+                    <div class="p-foot">FORMETA.ES · v1.0</div>
+                </div>
+                <div style="font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.08em; color: var(--color-muted); margin-top: 0.4rem; text-transform: uppercase; text-align: center;">Poster A3 · 297 × 420 · offblack</div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: var(--space-sm); justify-content: center;">
+                <div class="sticker">
+                    <svg viewBox="0 0 160 200"><use href="#drop-halftone"/></svg>
+                    <div class="st-text">FORMETA</div>
+                </div>
+                <div style="font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.08em; color: var(--color-muted); text-transform: uppercase; text-align: center;">Sticker · ⌀ 60mm · sand</div>
+            </div>
+
+            <div>
+                <div class="billet">
+                    <div class="b-top">
+                        <span class="b-sym"><svg viewBox="0 0 160 200"><use href="#drop-simple"/></svg></span>
+                        <div class="b-tag">ACCESO · 2026.05</div>
+                    </div>
+                    <div class="b-text">Marc Bauzà<br>FormAula · #011</div>
+                </div>
+                <div style="font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.08em; color: var(--color-muted); margin-top: 0.4rem; text-transform: uppercase; text-align: center;">Billete · 4:3 · terra</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- Reglas -->
+    <!-- ============================================================ -->
+    <section>
+        <div class="section-tag">reglas</div>
+        <h2>Reglas de uso</h2>
+        <ul class="rule-list">
+            <li><strong>Cada pieza usa solo lo definido.</strong> Si una pieza necesita un componente que no existe en el manual, primero se documenta el componente, después se construye la pieza.</li>
+            <li><strong>Una sola idea por pieza.</strong> Tarjeta = identidad. Propuesta = caso de cliente. Slide de portada = título. Más de una idea por pieza diluye.</li>
+            <li><strong>Métricas concretas.</strong> Cualquier pieza comercial (propuesta, slide, post, dashboard) lleva números reales. "Optimizamos procesos" no es ForMeta. "−37 min por pedido" sí.</li>
+            <li><strong>Símbolo arriba izquierda · metadata arriba derecha.</strong> Convención canónica. Tarjeta, propuesta, slide, dashboard — todos siguen la misma ancla.</li>
+            <li><strong>Iris solo en lanzamiento.</strong> El espectro generativo (capa 04) aparece máximo una vez por campaña, en piezas editoriales puntuales. Nunca en cliente directo o producto interno.</li>
+            <li><strong>Metadata strip al pie.</strong> Toda pieza con presencia de marca lleva metadata: <code>v1.0 · fecha · localización · ID</code>. Es la firma técnica del oficio.</li>
+            <li><strong>Print: solo cuando vale más físico.</strong> Tarjeta cuando alguien la pida en mano. Poster para inauguración o evento. Sticker para portátiles del equipo. No regalar impresos por inercia.</li>
+            <li><strong>Web hero · una sola.</strong> La portada de formeta.es tiene un solo hero canónico. Las landings tácticas heredan estructura pero cambian copy. Nunca dos heros distintos vivos a la vez.</li>
+        </ul>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- Metadata -->
+    <!-- ============================================================ -->
+    <div class="meta-strip">
+        <span class="tag">v1.0</span><span class="sep">·</span>
+        <span>2026.05.15</span><span class="sep">·</span>
+        <span>Mallorca / 39.5696° N</span><span class="sep">·</span>
+        <span>FMTA—12—Aplicaciones</span><span class="sep">·</span>
+        <span>9 piezas canónicas</span>
+    </div>
+
 </div>
+
 <footer>
-    <svg width="24" height="30" viewBox="0 0 160 200" style="opacity: 0.8; margin: 0 auto;">
-         <path d="M80 12 C80 12 104 52 116 88 C126 118 122 152 102 168 C92 176 80 178 80 178 C80 178 68 176 58 168 C38 152 34 118 44 88 C56 52 80 12 80 12 Z" fill="none" stroke="var(--color-terra)" stroke-width="4"/>
-         <circle cx="80" cy="130" r="6" fill="var(--color-terra)"/>
-    </svg>
+    <nav class="chapter-nav">
+        <a href="11_voz.html">← Anterior: 11 Voz</a>
+        <a href="index.html">Índice</a>
+        <a href="13_recursos.html">Siguiente: 13 Recursos →</a>
+    </nav>
+    <span class="footer-mark">
+        <svg width="24" height="30" viewBox="0 0 160 200" aria-hidden="true"><use href="#drop-simple"/></svg>
+    </span>
 </footer>
+
 </body>
 </html>

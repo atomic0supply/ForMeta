@@ -3,16 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>13. Recursos · Indicadores de carga - ForMeta Guía de Estilo</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+    <title>13. Recursos - ForMeta Guía de Estilo</title>
+
     <style>
+        @font-face { font-family: 'Canela Trial'; src: url('typo/Canela_Collection/Canela Family/Canela-Light-Trial.otf') format('opentype'); font-weight: 300; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Canela Trial'; src: url('typo/Canela_Collection/Canela Family/Canela-LightItalic-Trial.otf') format('opentype'); font-weight: 300; font-style: italic; font-display: swap; }
+        @font-face { font-family: 'Canela Trial'; src: url('typo/Canela_Collection/Canela Family/Canela-Medium-Trial.otf') format('opentype'); font-weight: 500; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Canela Deck Trial'; src: url('typo/Canela_Collection/Canela Deck Family/CanelaDeck-Light-Trial.otf') format('opentype'); font-weight: 300; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Canela Deck Trial'; src: url('typo/Canela_Collection/Canela Deck Family/CanelaDeck-LightItalic-Trial.otf') format('opentype'); font-weight: 300; font-style: italic; font-display: swap; }
+        @font-face { font-family: 'Canela Text Trial'; src: url('typo/Canela_Collection/Canela Text Family/CanelaText-Regular-Trial.otf') format('opentype'); font-weight: 400; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Canela Text Trial'; src: url('typo/Canela_Collection/Canela Text Family/CanelaText-RegularItalic-Trial.otf') format('opentype'); font-weight: 400; font-style: italic; font-display: swap; }
+        @font-face { font-family: 'Canela Text Trial'; src: url('typo/Canela_Collection/Canela Text Family/CanelaText-Medium-Trial.otf') format('opentype'); font-weight: 500; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'IBM Plex Mono'; src: url('typo/IBM_PLEX/IBMPlexMono-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'IBM Plex Mono'; src: url('typo/IBM_PLEX/IBMPlexMono-Medium.ttf') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
+
         :root {
-            --font-mono: 'DM Mono', 'Courier New', Courier, monospace;
-            --font-serif: 'Cormorant Garamond', Garamond, Georgia, serif;
+            --font-display: 'Canela Trial', Georgia, serif;
+            --font-deck:    'Canela Deck Trial', Georgia, serif;
+            --font-text:    'Canela Text Trial', Georgia, serif;
+            --font-mono:    'IBM Plex Mono', 'Courier New', monospace;
+
             --color-ink: #2C2C28;
             --color-terra: #B8896A;
+            --color-terra-deep: #A37A5A;
             --color-sand: #F4F0E8;
             --color-sea: #7A9AAA;
             --color-stone: #E2DDD4;
@@ -20,16 +33,26 @@
             --color-white: #FFFFFF;
             --color-offblack: #1A1A18;
             --color-muted: #7A7870;
-            --color-alert: #d05a5a;
+            --color-alert: #D05A5A;
+            --color-warning: #D9A35A;
+            --color-success: #7A9F7E;
+            --color-info: #6F8FA0;
+
             --color-bg: var(--color-sand);
             --color-text: var(--color-ink);
             --color-text-secondary: var(--color-muted);
             --color-border-secondary: rgba(44, 44, 40, 0.1);
-            --spacing-xs: 0.5rem;
-            --spacing-sm: 1.5rem;
-            --spacing-md: 3rem;
-            --spacing-lg: 6rem;
-            --spacing-xl: 10rem;
+
+            --space-xs: 0.5rem;
+            --space-sm: 1.5rem;
+            --space-md: 3rem;
+            --space-lg: 6rem;
+            --space-xl: 10rem;
+
+            --easing-expressive: cubic-bezier(0.16, 1, 0.3, 1);
+            --easing-standard:   cubic-bezier(0.4, 0, 0.2, 1);
+            --duration-micro:     200ms;
+            --duration-short:     400ms;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -37,647 +60,2199 @@
         body {
             background-color: var(--color-sand);
             color: var(--color-text);
-            font-family: var(--font-serif);
-            font-weight: 300;
-            font-size: 1.15rem;
-            line-height: 1.8;
+            font-family: var(--font-text);
+            font-weight: 400;
+            font-size: 17px;
+            line-height: 1.7;
             -webkit-font-smoothing: antialiased;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
         }
+        .container { max-width: 1200px; margin: 0 auto; padding: var(--space-md) var(--space-sm); flex: 1; }
 
-        .container { max-width: 1200px; margin: 0 auto; padding: var(--spacing-md) var(--spacing-sm); flex: 1; }
-        h1 { font-family: var(--font-serif); font-size: 3.5rem; font-weight: 300; margin-bottom: var(--spacing-xs); color: var(--color-ink); }
-        h2 { font-family: var(--font-serif); font-size: 2.5rem; font-weight: 300; margin-bottom: var(--spacing-sm); padding-bottom: 1rem; border-bottom: 1px solid var(--color-border-secondary); }
-        h3 { font-family: var(--font-serif); font-size: 1.5rem; font-weight: 400; margin-bottom: 1rem; color: var(--color-ink); }
-        p { color: var(--color-text-secondary); max-width: 650px; margin-bottom: var(--spacing-sm); }
-        .intro { margin-bottom: var(--spacing-xl); }
-        .lbl { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-text-secondary); margin-top: 1rem; margin-bottom: 0.5rem; }
-        section { margin-bottom: var(--spacing-xl); }
-        footer { text-align: center; margin-top: var(--spacing-xl); padding: var(--spacing-md) 0; border-top: 1px solid var(--color-border-secondary); }
+        h1 { font-family: var(--font-display); font-weight: 300; font-size: 5rem; line-height: 1.05; letter-spacing: -0.02em; color: var(--color-ink); margin-bottom: var(--space-xs); }
+        h2 { font-family: var(--font-deck); font-weight: 300; font-size: 2.5rem; line-height: 1.15; letter-spacing: -0.01em; color: var(--color-ink); margin-bottom: var(--space-sm); padding-bottom: 1rem; border-bottom: 1px solid var(--color-border-secondary); }
+        h3 { font-family: var(--font-deck); font-weight: 400; font-size: 1.5rem; line-height: 1.3; color: var(--color-ink); margin-top: 2rem; margin-bottom: 1rem; }
 
-        /* ── Loader grid ─────────────────────────────────────────── */
-        .loader-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 24px;
+        p { font-family: var(--font-text); color: var(--color-text-secondary); max-width: 720px; margin-bottom: var(--space-sm); }
+        p strong { color: var(--color-ink); font-weight: 500; }
+        p em { font-style: italic; color: var(--color-ink); }
+        code { font-family: var(--font-mono); font-size: 0.85em; background: var(--color-stone); padding: 0.1em 0.4em; border-radius: 3px; color: var(--color-ink); }
+
+        a { color: var(--color-terra); text-decoration: none; transition: color var(--duration-micro) var(--easing-standard); }
+        a:hover { color: var(--color-terra-deep); text-decoration: underline; text-underline-offset: 3px; }
+
+        .intro { margin-bottom: var(--space-xl); display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: end; }
+        .intro-text { max-width: 720px; }
+        .intro p.lead { font-family: var(--font-deck); font-style: italic; font-weight: 300; font-size: 1.5rem; line-height: 1.4; color: var(--color-ink); max-width: 720px; margin-top: var(--space-sm); }
+        .intro-mark { color: var(--color-terra); --core-color: var(--color-ink); }
+        .intro-mark svg { width: 120px; height: 150px; display: block; }
+        @media (max-width: 720px) {
+            .intro { grid-template-columns: 1fr; }
+            .intro-mark { order: -1; }
+            .intro-mark svg { width: 80px; height: 100px; }
         }
 
-        .loader-card {
+        .lbl { font-family: var(--font-mono); font-size: 11px; font-weight: 400; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-text-secondary); margin-top: 1rem; margin-bottom: 0.5rem; }
+
+        section { margin-bottom: var(--space-xl); }
+        .section-tag { font-family: var(--font-mono); font-size: 0.7rem; font-weight: 400; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-terra); margin-bottom: 0.5rem; }
+
+        .manifest-statement {
+            font-family: var(--font-display);
+            font-weight: 300;
+            font-size: 2.4rem;
+            line-height: 1.15;
+            letter-spacing: -0.015em;
+            color: var(--color-ink);
+            max-width: 880px;
+            margin-bottom: var(--space-md);
+        }
+        @media (max-width: 720px) { .manifest-statement { font-size: 1.8rem; } }
+
+        /* ============================================================ */
+        /* Quick reference card                                         */
+        /* ============================================================ */
+        .qref {
+            background: var(--color-white);
+            border: 1px solid var(--color-border-secondary);
+            border-radius: 8px;
+            padding: var(--space-md);
+            position: relative;
+            overflow: hidden;
+        }
+        .qref-corner-tl, .qref-corner-br {
+            position: absolute;
+            opacity: 0.5;
+        }
+        .qref-corner-tl { top: 0.8rem; left: 0.8rem; color: var(--color-ink); }
+        .qref-corner-br { bottom: 0.8rem; right: 0.8rem; color: var(--color-muted); }
+        .qref-corner-tl svg, .qref-corner-br svg { width: 24px; height: 24px; }
+
+        .qref-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 1.5rem;
+            margin-bottom: var(--space-md);
+            padding-bottom: var(--space-sm);
+            border-bottom: 1px solid var(--color-border-secondary);
+        }
+        .qref-title {
+            font-family: var(--font-display);
+            font-weight: 300;
+            font-size: 2.6rem;
+            line-height: 1;
+            letter-spacing: -0.02em;
+            color: var(--color-ink);
+        }
+        .qref-meta {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--color-terra);
+            text-align: right;
+            line-height: 1.7;
+        }
+        .qref-meta strong { color: var(--color-ink); }
+
+        .qref-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-md);
+        }
+        @media (max-width: 800px) { .qref-grid { grid-template-columns: 1fr; } }
+        .qref-block {
             display: flex;
             flex-direction: column;
-            align-items: center;
-            gap: 12px;
+            gap: 0.8rem;
+        }
+        .qref-block .qb-label {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--color-terra);
+            margin-bottom: 0.2rem;
         }
 
-        .loader-stage {
-            width: 200px;
-            height: 200px;
-            background: var(--color-white);
-            border: 1px solid var(--color-stone);
-            border-radius: 14px;
+        .qref-symbol {
             display: flex;
             align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            position: relative;
+            gap: 1rem;
+            color: var(--color-terra);
+            --core-color: var(--color-ink);
         }
-
-        .loader-name {
+        .qref-symbol svg { width: 60px; height: 75px; }
+        .qref-symbol-name {
+            font-family: var(--font-display);
+            font-weight: 300;
+            font-size: 1.8rem;
+            line-height: 1;
+            letter-spacing: -0.02em;
+            color: var(--color-ink);
+        }
+        .qref-symbol-spec {
             font-family: var(--font-mono);
-            font-size: 9px;
-            letter-spacing: 0.14em;
-            text-transform: uppercase;
+            font-size: 0.65rem;
+            letter-spacing: 0.12em;
             color: var(--color-muted);
+            margin-top: 0.3rem;
         }
 
-        /* ── 01 blob-morph ────────────────────────────────────────── */
-        @keyframes blobMorph {
-            0%,100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; transform: rotate(0deg); }
-            25%      { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; transform: rotate(90deg); }
-            50%      { border-radius: 50% 60% 30% 60% / 30% 70% 70% 30%; transform: rotate(180deg); }
-            75%      { border-radius: 40% 60% 60% 40% / 60% 30% 40% 60%; transform: rotate(270deg); }
+        .qref-colors {
+            display: flex;
+            gap: 4px;
+            height: 36px;
         }
-        .blob-morph {
-            width: 80px; height: 80px;
-            background: var(--color-ink);
-            animation: blobMorph 4s ease-in-out infinite;
-        }
-
-        /* ── 02 wave-fill ─────────────────────────────────────────── */
-        @keyframes waveFill {
-            0%   { clip-path: inset(100% 0 0 0); }
-            50%  { clip-path: inset(0 0 0 0); }
-            100% { clip-path: inset(100% 0 0 0); }
-        }
-        .wave-fill-wrap {
-            width: 70px; height: 100px;
-            border: 2px solid var(--color-ink);
-            border-radius: 35px;
-            overflow: hidden;
+        .qref-colors .swatch {
+            flex: 1;
+            border-radius: 4px;
             position: relative;
         }
-        .wave-fill-wrap::before {
-            content: '';
-            position: absolute; inset: 0;
-            background: var(--color-ink);
-            animation: waveFill 2.4s cubic-bezier(0.45, 0, 0.55, 1) infinite;
-        }
-
-        /* ── 03 orbit-ring ────────────────────────────────────────── */
-        @keyframes orbitRotate {
-            to { transform: rotate(360deg); }
-        }
-        .orbit-ring {
-            width: 72px; height: 72px;
-            border: 2px solid var(--color-ink);
-            border-radius: 50%;
-            position: relative;
-            animation: orbitRotate 1.8s linear infinite;
-        }
-        .orbit-ring::before {
-            content: '';
+        .qref-colors .swatch[title]:hover::after {
+            content: attr(title);
             position: absolute;
-            width: 16px; height: 16px;
+            bottom: calc(100% + 4px);
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
             background: var(--color-ink);
-            border-radius: 50%;
-            top: -9px; left: 50%; transform: translateX(-50%);
+            color: var(--color-sand);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            white-space: nowrap;
+            letter-spacing: 0.08em;
         }
-        .orbit-ring::after {
-            content: '';
-            position: absolute;
-            width: 10px; height: 10px;
-            background: var(--color-ink);
-            border-radius: 50%;
-            bottom: -6px; left: 50%; transform: translateX(-50%);
-            opacity: 0.35;
-        }
-
-        /* ── 04 pulse-circle ──────────────────────────────────────── */
-        @keyframes pulseScale {
-            0%,100% { transform: scale(1);   opacity: 1; }
-            50%      { transform: scale(1.4); opacity: 0.3; }
-        }
-        .pulse-circle { position: relative; width: 90px; height: 90px; display: flex; align-items: center; justify-content: center; }
-        .pulse-circle span {
-            position: absolute;
-            border-radius: 50%;
-            border: 2px solid var(--color-ink);
-            animation: pulseScale 2s ease-in-out infinite;
-        }
-        .pulse-circle span:nth-child(1) { width: 30px; height: 30px; animation-delay: 0s; }
-        .pulse-circle span:nth-child(2) { width: 55px; height: 55px; animation-delay: -0.5s; }
-        .pulse-circle span:nth-child(3) { width: 80px; height: 80px; animation-delay: -1s; }
-
-        /* ── 05 growing-dots ──────────────────────────────────────── */
-        @keyframes growDot {
-            0%,40%,100% { transform: scaleY(0.4); }
-            20%          { transform: scaleY(1); }
-        }
-        .growing-dots {
-            display: flex; gap: 6px; align-items: center; height: 60px;
-        }
-        .growing-dots span {
-            display: block;
-            width: 10px; height: 50px;
-            background: var(--color-ink);
-            border-radius: 5px;
-            animation: growDot 1.2s ease-in-out infinite;
-        }
-        .growing-dots span:nth-child(1) { animation-delay: 0s; }
-        .growing-dots span:nth-child(2) { animation-delay: 0.1s; }
-        .growing-dots span:nth-child(3) { animation-delay: 0.2s; }
-        .growing-dots span:nth-child(4) { animation-delay: 0.3s; }
-        .growing-dots span:nth-child(5) { animation-delay: 0.4s; }
-
-        /* ── 06 breathing-shape ───────────────────────────────────── */
-        @keyframes breathe {
-            0%,100% { transform: scale(0.82) rotate(-4deg); border-radius: 40% 60% 55% 45% / 55% 45% 60% 40%; }
-            50%      { transform: scale(1.12) rotate(4deg);  border-radius: 55% 45% 40% 60% / 40% 60% 45% 55%; }
-        }
-        .breathing-shape {
-            width: 80px; height: 80px;
-            background: var(--color-ink);
-            animation: breathe 3s ease-in-out infinite;
+        .qref-colors-list {
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            letter-spacing: 0.06em;
+            color: var(--color-muted);
+            display: flex;
+            justify-content: space-between;
+            gap: 0.5rem;
+            flex-wrap: wrap;
         }
 
-        /* ── 07 ripple-rings ──────────────────────────────────────── */
-        @keyframes ripple {
-            0%   { transform: scale(0); opacity: 0.8; }
-            100% { transform: scale(2.4); opacity: 0; }
+        .qref-type {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
         }
-        .ripple-rings { position: relative; width: 40px; height: 40px; }
-        .ripple-rings span {
-            position: absolute; inset: 0;
-            border-radius: 50%;
-            border: 2px solid var(--color-ink);
-            animation: ripple 2s ease-out infinite;
+        .qref-canela {
+            font-family: var(--font-display);
+            font-weight: 300;
+            font-size: 2.2rem;
+            line-height: 1;
+            letter-spacing: -0.02em;
+            color: var(--color-ink);
         }
-        .ripple-rings span:nth-child(1) { animation-delay: 0s; }
-        .ripple-rings span:nth-child(2) { animation-delay: 0.6s; }
-        .ripple-rings span:nth-child(3) { animation-delay: 1.2s; }
-
-        /* ── 08 figure-eight ──────────────────────────────────────── */
-        @keyframes figX {
-            0%,100% { transform: translateX(30px); }
-            50%      { transform: translateX(-30px); }
-        }
-        @keyframes figY {
-            0%,100% { transform: translateY(0px); }
-            25%      { transform: translateY(-20px); }
-            75%      { transform: translateY(20px); }
-        }
-        .figure-eight-wrap { position: relative; width: 100px; height: 60px; display: flex; align-items: center; justify-content: center; }
-        .figure-eight-dot {
-            width: 16px; height: 16px;
-            background: var(--color-ink);
-            border-radius: 50%;
-            position: absolute;
-            animation: figX 2s ease-in-out infinite, figY 1s ease-in-out infinite;
+        .qref-plex {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            letter-spacing: 0.12em;
+            color: var(--color-text-secondary);
         }
 
-        /* ── 09 spinning-blob ─────────────────────────────────────── */
-        @keyframes spinBlob {
-            0%   { transform: rotate(0deg);   border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
-            33%  { transform: rotate(120deg); border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
-            66%  { transform: rotate(240deg); border-radius: 50% 60% 30% 60% / 30% 70% 70% 30%; }
-            100% { transform: rotate(360deg); border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+        .qref-spacing {
+            display: flex;
+            align-items: flex-end;
+            gap: 6px;
+            height: 40px;
         }
-        .spinning-blob {
-            width: 72px; height: 72px;
-            background: var(--color-ink);
-            animation: spinBlob 2.4s linear infinite;
-        }
-
-        /* ── 10 ink-drop ──────────────────────────────────────────── */
-        @keyframes inkDrop {
-            0%   { clip-path: circle(0% at 50% 50%); }
-            50%  { clip-path: circle(70% at 50% 50%); }
-            100% { clip-path: circle(0% at 50% 50%); }
-        }
-        .ink-drop {
-            width: 100px; height: 100px;
-            background: var(--color-ink);
-            border-radius: 50%;
-            animation: inkDrop 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-
-        /* ── 11 radial-burst ──────────────────────────────────────── */
-        @keyframes radialSpin {
-            to { transform: rotate(360deg); }
-        }
-        .radial-burst {
-            width: 90px; height: 90px;
-            border-radius: 50%;
-            background: conic-gradient(
-                var(--color-ink) 0deg 30deg,
-                transparent 30deg 60deg,
-                var(--color-ink) 60deg 90deg,
-                transparent 90deg 120deg,
-                var(--color-ink) 120deg 150deg,
-                transparent 150deg 180deg,
-                var(--color-ink) 180deg 210deg,
-                transparent 210deg 240deg,
-                var(--color-ink) 240deg 270deg,
-                transparent 270deg 300deg,
-                var(--color-ink) 300deg 330deg,
-                transparent 330deg 360deg
-            );
-            mask: radial-gradient(circle at center, transparent 40%, black 42%);
-            -webkit-mask: radial-gradient(circle at center, transparent 40%, black 42%);
-            animation: radialSpin 1.6s linear infinite;
-        }
-
-        /* ── 12 blur-pulse ────────────────────────────────────────── */
-        @keyframes blurPulse {
-            0%,100% { filter: blur(1px);  transform: scale(0.92); }
-            50%      { filter: blur(10px); transform: scale(1.1); }
-        }
-        .blur-pulse {
-            width: 70px; height: 70px;
-            background: var(--color-ink);
-            border-radius: 40% 60% 55% 45% / 55% 45% 60% 40%;
-            animation: blurPulse 2.4s ease-in-out infinite;
-        }
-
-        /* ── 13 corner-morph ──────────────────────────────────────── */
-        @keyframes cornerMorph {
-            0%,100% { border-radius: 4px; transform: rotate(0deg); }
-            25%      { border-radius: 50%; transform: rotate(90deg); }
-            50%      { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; transform: rotate(180deg); }
-            75%      { border-radius: 50% 20% 50% 20% / 20% 50% 20% 50%; transform: rotate(270deg); }
-        }
-        .corner-morph {
-            width: 72px; height: 72px;
-            background: var(--color-ink);
-            animation: cornerMorph 3s ease-in-out infinite;
-        }
-
-        /* ── 14 wave-lines ────────────────────────────────────────── */
-        @keyframes waveLine {
-            0%,100% { transform: scaleX(0.3); }
-            50%      { transform: scaleX(1); }
-        }
-        .wave-lines {
-            display: flex; flex-direction: column; gap: 8px; width: 80px;
-        }
-        .wave-lines span {
-            display: block;
-            height: 3px;
-            background: var(--color-ink);
+        .qref-spacing .b {
+            background: var(--color-terra);
             border-radius: 2px;
-            transform-origin: left center;
-            animation: waveLine 1.4s ease-in-out infinite;
+            position: relative;
         }
-        .wave-lines span:nth-child(1) { animation-delay: 0s; }
-        .wave-lines span:nth-child(2) { animation-delay: 0.12s; }
-        .wave-lines span:nth-child(3) { animation-delay: 0.24s; }
-        .wave-lines span:nth-child(4) { animation-delay: 0.36s; }
-        .wave-lines span:nth-child(5) { animation-delay: 0.48s; }
+        .qref-spacing .b1 { width: 8px;  height: 4px; }
+        .qref-spacing .b2 { width: 8px;  height: 12px; }
+        .qref-spacing .b3 { width: 8px;  height: 24px; }
+        .qref-spacing .b4 { width: 8px;  height: 36px; }
+        .qref-spacing .b5 { width: 8px;  height: 40px; }
+        .qref-spacing-vals {
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            color: var(--color-muted);
+            letter-spacing: 0.05em;
+        }
 
-        /* ── 15 blend-orbs ────────────────────────────────────────── */
-        @keyframes orbA {
-            0%,100% { transform: translateX(18px); }
-            50%      { transform: translateX(-18px); }
+        .qref-easings {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
         }
-        @keyframes orbB {
-            0%,100% { transform: translateX(-18px); }
-            50%      { transform: translateX(18px); }
+        .qref-easings .ec {
+            background: var(--color-sand);
+            border-radius: 3px;
+            padding: 6px;
+            display: flex; flex-direction: column; gap: 2px;
+            align-items: center;
+            position: relative;
         }
-        .blend-orbs {
-            position: relative; width: 100px; height: 60px;
-            display: flex; align-items: center; justify-content: center;
+        .qref-easings svg { width: 100%; height: 28px; display: block; }
+        .qref-easings .lbl-e {
+            font-family: var(--font-mono);
+            font-size: 0.55rem;
+            letter-spacing: 0.08em;
+            color: var(--color-text-secondary);
+            text-transform: uppercase;
+            text-align: center;
         }
-        .blend-orbs span {
-            position: absolute;
-            width: 46px; height: 46px;
-            border-radius: 50%;
-            background: var(--color-ink);
-            mix-blend-mode: multiply;
-        }
-        .blend-orbs span:nth-child(1) { opacity: 0.55; animation: orbA 2s ease-in-out infinite; }
-        .blend-orbs span:nth-child(2) { opacity: 0.55; animation: orbB 2s ease-in-out infinite; }
 
-        /* ── 16 liquid-fill ───────────────────────────────────────── */
-        @keyframes liquidRise {
-            0%,100% { clip-path: polygon(0% 100%, 100% 100%, 100% 20%, 80% 15%, 60% 20%, 40% 15%, 20% 20%, 0% 15%); }
-            50%      { clip-path: polygon(0% 100%, 100% 100%, 100% 20%, 80% 25%, 60% 18%, 40% 25%, 20% 18%, 0% 25%); }
+        .qref-print-hint {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            letter-spacing: 0.1em;
+            color: var(--color-muted);
+            margin-top: var(--space-md);
+            padding-top: var(--space-sm);
+            border-top: 1px solid var(--color-border-secondary);
+            display: flex; justify-content: space-between;
         }
-        .liquid-fill-wrap {
-            width: 72px; height: 90px;
-            border: 2px solid var(--color-ink);
+
+        /* ============================================================ */
+        /* Packs index                                                  */
+        /* ============================================================ */
+        .pack-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--space-sm);
+        }
+        .pack-card {
+            background: var(--color-white);
+            border: 1px solid var(--color-border-secondary);
+            border-radius: 8px;
+            padding: 1.4rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            transition: transform var(--duration-short) var(--easing-expressive),
+                        box-shadow var(--duration-short) var(--easing-expressive),
+                        border-color var(--duration-short) var(--easing-expressive);
+        }
+        .pack-card:hover { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(0,0,0,0.06); border-color: var(--color-terra); }
+        .pack-chapter {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--color-terra);
+        }
+        .pack-name {
+            font-family: var(--font-deck);
+            font-weight: 500;
+            font-size: 1.2rem;
+            line-height: 1.3;
+            color: var(--color-ink);
+        }
+        .pack-desc {
+            font-family: var(--font-text);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+        .pack-files {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            letter-spacing: 0.05em;
+            color: var(--color-muted);
+            margin-top: 0.3rem;
+            padding-top: 0.6rem;
+            border-top: 1px solid var(--color-border-secondary);
+        }
+        .pack-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            font-weight: 500;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--color-terra);
+            margin-top: 0.4rem;
+        }
+        .pack-action::after {
+            content: '→';
+            transition: transform var(--duration-micro) var(--easing-standard);
+        }
+        .pack-card:hover .pack-action::after { transform: translateX(3px); }
+
+        /* ============================================================ */
+        /* Master pack section                                          */
+        /* ============================================================ */
+        .master-section { background: var(--color-ink); color: var(--color-sand); border-radius: 8px; padding: var(--space-md); }
+        .master-section h3 { color: var(--color-sand); margin-top: 0; }
+        .master-section p { color: var(--color-stone); }
+        .master-cta {
+            display: inline-flex; align-items: center; gap: 0.8rem;
+            background: var(--color-terra); color: var(--color-sand); border: none;
+            padding: 1.1rem 1.8rem; border-radius: 6px;
+            font-family: var(--font-mono); font-size: 0.85rem; font-weight: 500;
+            letter-spacing: 0.16em; text-transform: uppercase; cursor: pointer;
+            transition: background var(--duration-short) var(--easing-expressive),
+                        transform var(--duration-short) var(--easing-expressive);
+            margin-top: 1.2rem;
+        }
+        .master-cta:hover { background: var(--color-terra-deep); transform: translateY(-2px); }
+        .master-cta:disabled { opacity: 0.5; cursor: wait; }
+        .master-cta svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+        .master-status { margin-top: 1rem; font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-sage); min-height: 1.2em; }
+        .master-status.error { color: var(--color-alert); }
+        .master-contents {
+            margin-top: 1.5rem;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            line-height: 1.8;
+            color: var(--color-stone);
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 1.2rem;
+        }
+        .master-contents .ch-num { color: var(--color-terra); font-weight: 500; margin-right: 0.5rem; }
+
+        /* ============================================================ */
+        /* Templates                                                    */
+        /* ============================================================ */
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--space-sm);
+        }
+        .template-card {
+            background: var(--color-white);
+            border: 1px solid var(--color-border-secondary);
             border-radius: 8px;
             overflow: hidden;
+            cursor: pointer;
+            transition: transform var(--duration-short) var(--easing-expressive),
+                        border-color var(--duration-short) var(--easing-expressive);
+        }
+        .template-card:hover { transform: translateY(-2px); border-color: var(--color-terra); }
+        .template-preview {
+            background: var(--color-sand);
+            padding: var(--space-md);
+            min-height: 160px;
+            display: flex; align-items: center; justify-content: center;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            letter-spacing: 0.12em;
+            color: var(--color-muted);
             position: relative;
         }
-        .liquid-fill-wrap::before {
-            content: '';
-            position: absolute; inset: 0;
-            background: var(--color-ink);
-            animation: liquidRise 2s ease-in-out infinite;
+        .template-body { padding: 1.2rem 1.5rem 1.4rem; }
+        .template-body h4 { font-family: var(--font-deck); font-weight: 500; font-size: 1.05rem; color: var(--color-ink); margin-bottom: 0.3rem; }
+        .template-body p { font-size: 0.9rem; margin: 0 0 0.5rem; max-width: 100%; }
+        .template-body .pack-action { font-size: 0.65rem; }
+
+        /* Mini halftone for social preview */
+        .preview-social {
+            background: var(--color-offblack);
+            color: var(--color-terra);
+            --core-color: var(--color-sand);
+            padding: 1.4rem;
+            border-radius: 4px;
+            width: 100%;
+            display: flex; align-items: center; justify-content: space-between;
+            gap: 1rem;
+        }
+        .preview-social svg { width: 40px; height: 50px; flex-shrink: 0; }
+        .preview-social .ps-text { text-align: right; }
+        .preview-social .ps-eyebrow { font-family: var(--font-mono); font-size: 0.5rem; letter-spacing: 0.16em; color: var(--color-terra); text-transform: uppercase; }
+        .preview-social .ps-title { font-family: var(--font-display); font-weight: 300; font-size: 1.1rem; color: var(--color-sand); line-height: 1.1; letter-spacing: -0.01em; margin-top: 0.2rem; }
+
+        .preview-html {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            color: var(--color-text-secondary);
+            background: var(--color-white);
+            padding: 1rem;
+            border-radius: 4px;
+            line-height: 1.5;
+            white-space: pre-wrap;
+        }
+        .preview-html .tag { color: var(--color-sea); }
+        .preview-html .attr { color: var(--color-terra); }
+
+        .preview-letter {
+            background: var(--color-white);
+            padding: 1.2rem;
+            border-radius: 4px;
+            display: flex; flex-direction: column;
+            gap: 0.7rem;
+            font-family: var(--font-text);
+            font-size: 0.75rem;
+            color: var(--color-ink);
+            min-height: 120px;
+        }
+        .preview-letter .l-head { display: flex; justify-content: space-between; align-items: center; }
+        .preview-letter .l-symbol { color: var(--color-terra); --core-color: var(--color-ink); }
+        .preview-letter .l-symbol svg { width: 24px; height: 30px; }
+        .preview-letter .l-meta { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.12em; color: var(--color-muted); text-transform: uppercase; text-align: right; }
+        .preview-letter .l-body { font-style: italic; font-family: var(--font-deck); color: var(--color-ink); font-size: 0.85rem; line-height: 1.4; }
+
+        /* ============================================================ */
+        /* Licencias                                                    */
+        /* ============================================================ */
+        .table-wrapper { width: 100%; overflow-x: auto; background: var(--color-white); border-radius: 8px; border: 1px solid var(--color-border-secondary); }
+        table { width: 100%; border-collapse: collapse; font-family: var(--font-mono); font-size: 0.85rem; }
+        th, td { text-align: left; padding: 1rem 1.2rem; border-bottom: 1px solid var(--color-border-secondary); vertical-align: top; }
+        th { font-weight: 400; color: var(--color-muted); background: rgba(0,0,0,0.02); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em; }
+        tr:last-child td { border-bottom: none; }
+        .lic-asset { color: var(--color-ink); font-weight: 500; }
+        .lic-type { color: var(--color-text-secondary); }
+        .lic-status { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.25rem 0.5rem; border-radius: 4px; display: inline-block; }
+        .lic-status.ok { background: rgba(122, 159, 126, 0.22); color: #4d6f51; }
+        .lic-status.warn { background: rgba(208, 90, 90, 0.18); color: #8A2A2A; }
+        .lic-status.info { background: rgba(111, 143, 160, 0.22); color: #3e5566; }
+        .lic-action { color: var(--color-text-secondary); font-family: var(--font-text); font-size: 1rem; letter-spacing: 0; line-height: 1.5; }
+
+        /* ============================================================ */
+        /* Glossary                                                     */
+        /* ============================================================ */
+        .glossary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--space-sm);
+        }
+        .glos-item {
+            background: var(--color-white);
+            border: 1px solid var(--color-border-secondary);
+            border-radius: 8px;
+            padding: 1.2rem 1.4rem;
+        }
+        .glos-term {
+            font-family: var(--font-display);
+            font-weight: 300;
+            font-size: 1.4rem;
+            line-height: 1.1;
+            letter-spacing: -0.01em;
+            color: var(--color-ink);
+            margin-bottom: 0.4rem;
+        }
+        .glos-cap {
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            letter-spacing: 0.16em;
+            color: var(--color-terra);
+            text-transform: uppercase;
+            margin-bottom: 0.6rem;
+        }
+        .glos-def {
+            font-family: var(--font-text);
+            font-size: 0.92rem;
+            line-height: 1.55;
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+        .glos-def em { font-style: italic; color: var(--color-ink); }
+
+        /* ============================================================ */
+        /* Stack                                                        */
+        /* ============================================================ */
+        .stack-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: var(--space-sm);
+        }
+        .stack-card {
+            background: var(--color-white);
+            border: 1px solid var(--color-border-secondary);
+            border-radius: 8px;
+            padding: 1.2rem 1.4rem;
+        }
+        .stack-name {
+            font-family: var(--font-deck);
+            font-weight: 500;
+            font-size: 1.05rem;
+            color: var(--color-ink);
+            margin-bottom: 0.2rem;
+        }
+        .stack-use {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--color-terra);
+            margin-bottom: 0.6rem;
+        }
+        .stack-desc {
+            font-family: var(--font-text);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: var(--color-text-secondary);
+            margin: 0;
         }
 
-        /* ── 17 marquee-ovals ─────────────────────────────────────── */
-        @keyframes marqueeMove {
-            from { transform: translateX(-160px); }
-            to   { transform: translateX(160px); }
+        /* ============================================================ */
+        /* Changelog                                                    */
+        /* ============================================================ */
+        .changelog {
+            display: flex; flex-direction: column;
+            gap: 0;
         }
-        .marquee-ovals {
-            width: 160px; height: 60px;
-            overflow: hidden;
-            position: relative;
+        .change-row {
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            gap: var(--space-sm);
+            padding: var(--space-sm) 0;
+            border-bottom: 1px solid var(--color-border-secondary);
         }
-        .marquee-ovals-track {
-            display: flex; gap: 20px; align-items: center;
-            height: 100%;
-            animation: marqueeMove 2s linear infinite;
+        .change-row:last-child { border-bottom: none; }
+        @media (max-width: 700px) { .change-row { grid-template-columns: 1fr; } }
+        .change-version {
+            display: flex; flex-direction: column; gap: 0.4rem;
         }
-        .marquee-ovals span {
+        .change-tag {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            font-weight: 500;
+            background: var(--color-stone);
+            color: var(--color-ink);
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            align-self: flex-start;
+        }
+        .change-tag.pending { background: transparent; border: 1px dashed var(--color-border-secondary); color: var(--color-muted); }
+        .change-tag.current { background: var(--color-terra); color: var(--color-sand); }
+        .change-date {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            color: var(--color-muted);
+        }
+        .change-body h4 {
+            font-family: var(--font-deck);
+            font-weight: 500;
+            font-size: 1.1rem;
+            color: var(--color-ink);
+            margin-bottom: 0.4rem;
+        }
+        .change-body ul {
+            list-style: none;
+            padding: 0;
+            display: flex; flex-direction: column;
+            gap: 0.4rem;
+        }
+        .change-body li {
+            display: flex;
+            gap: 0.5rem;
+            font-family: var(--font-text);
+            font-size: 0.95rem;
+            color: var(--color-text-secondary);
+        }
+        .change-body li::before {
+            content: '·';
+            color: var(--color-terra);
+            font-weight: 700;
+            font-size: 1.3rem;
+            line-height: 1;
             flex-shrink: 0;
-            width: 50px; height: 30px;
-            background: var(--color-ink);
-            border-radius: 50%;
-            opacity: 0.85;
-        }
-        .marquee-ovals span:nth-child(2) { opacity: 0.5; }
-        .marquee-ovals span:nth-child(3) { opacity: 0.25; }
-
-        /* ── 18 eccentric-ellipse ─────────────────────────────────── */
-        @keyframes eccentricSpin {
-            0%   { border-radius: 50% 50% / 80% 20%; transform: rotate(0deg) scaleX(1); }
-            25%  { border-radius: 80% 20% / 50% 50%; transform: rotate(90deg) scaleX(0.7); }
-            50%  { border-radius: 50% 50% / 20% 80%; transform: rotate(180deg) scaleX(1.3); }
-            75%  { border-radius: 20% 80% / 50% 50%; transform: rotate(270deg) scaleX(0.7); }
-            100% { border-radius: 50% 50% / 80% 20%; transform: rotate(360deg) scaleX(1); }
-        }
-        .eccentric-ellipse {
-            width: 80px; height: 80px;
-            background: var(--color-ink);
-            animation: eccentricSpin 2.8s ease-in-out infinite;
+            margin-top: -0.2em;
         }
 
-        /* ── 19 concentric-pulse ──────────────────────────────────── */
-        @keyframes concentricGrow {
-            0%,100% { background-size: 20% 20%, 60% 60%, 100% 100%; }
-            50%      { background-size: 40% 40%, 80% 80%, 120% 120%; }
-        }
-        .concentric-pulse {
-            width: 100px; height: 100px;
-            border-radius: 50%;
-            background:
-                radial-gradient(circle at center, var(--color-ink) 0%, var(--color-ink) 50%, transparent 50%) center/20% 20% no-repeat,
-                radial-gradient(circle at center, transparent 40%, var(--color-ink) 40%, var(--color-ink) 60%, transparent 60%) center/60% 60% no-repeat,
-                radial-gradient(circle at center, transparent 70%, var(--color-ink) 70%, var(--color-ink) 90%, transparent 90%) center/100% 100% no-repeat;
-            animation: concentricGrow 2s ease-in-out infinite;
-        }
+        /* ============================================================ */
+        /* Meta strip / footer                                          */
+        /* ============================================================ */
+        .meta-strip { background: var(--color-offblack); color: var(--color-sand); padding: 1.2rem 1.6rem; border-radius: 4px; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.16em; text-transform: uppercase; display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: var(--space-md); }
+        .meta-strip span { color: var(--color-stone); }
+        .meta-strip .sep { color: var(--color-terra); }
+        .meta-strip .tag { color: var(--color-terra); font-weight: 500; }
 
-        /* ── 20 chase-arcs ────────────────────────────────────────── */
-        @keyframes chaseA {
-            to { transform: rotate(360deg); }
-        }
-        @keyframes chaseB {
-            to { transform: rotate(-360deg); }
-        }
-        .chase-arcs {
-            position: relative; width: 80px; height: 80px;
-        }
-        .chase-arcs span {
-            position: absolute; inset: 0;
-            border-radius: 50%;
-            border: 3px solid transparent;
-        }
-        .chase-arcs span:nth-child(1) {
-            border-top-color: var(--color-ink);
-            border-right-color: var(--color-ink);
-            animation: chaseA 1.4s linear infinite;
-        }
-        .chase-arcs span:nth-child(2) {
-            inset: 12px;
-            border-bottom-color: var(--color-ink);
-            border-left-color: var(--color-ink);
-            animation: chaseB 1.4s linear infinite;
-            animation-delay: -0.7s;
-        }
+        footer { text-align: center; margin-top: var(--space-xl); padding: var(--space-md) 0; border-top: 1px solid var(--color-border-secondary); }
+        .chapter-nav { display: flex; justify-content: space-between; align-items: center; max-width: 800px; margin: 0 auto var(--space-md); padding: 0 var(--space-sm); }
+        .chapter-nav a { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-text-secondary); text-decoration: none; }
+        .chapter-nav a:hover { color: var(--color-terra); text-decoration: none; }
+        @media (max-width: 600px) { .chapter-nav { flex-direction: column; gap: 1rem; text-align: center; } }
+        .footer-mark { color: var(--color-terra); display: inline-block; opacity: 0.7; }
 
-        /* ── Accessibility ────────────────────────────────────────── */
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-            }
+        /* Print-friendly hint */
+        @media print {
+            body { background: white; }
+            section:not(.qref-section) { display: none; }
+            footer, .chapter-nav, .intro { display: none; }
+            .qref-section { margin: 0; }
         }
     </style>
 </head>
 <body>
+
+<svg style="position:absolute; width:0; height:0; overflow:hidden" aria-hidden="true">
+    <defs>
+        <symbol id="drop-halftone" viewBox="0 0 160 200"></symbol>
+        <symbol id="drop-simple" viewBox="0 0 160 200">
+            <path d="M80 12 C80 12 104 52 116 88 C126 118 122 152 102 168 C92 176 80 178 80 178 C80 178 68 176 58 168 C38 152 34 118 44 88 C56 52 80 12 80 12 Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>
+            <circle cx="80" cy="130" r="6" fill="currentColor"/>
+        </symbol>
+    </defs>
+</svg>
+
+<script>
+(function() {
+    const FX = 80, FY = 130;
+    const GD = "M80 12 C80 12 104 52 116 88 C126 118 122 152 102 168 C92 176 80 178 80 178 C80 178 68 176 58 168 C38 152 34 118 44 88 C56 52 80 12 80 12 Z";
+    function gen(symbolEl) {
+        while (symbolEl.firstChild) symbolEl.removeChild(symbolEl.firstChild);
+        const cv = document.createElement('canvas'); cv.width = 160; cv.height = 200;
+        const ctx = cv.getContext('2d');
+        const path = new Path2D(GD);
+        const NS = 'http://www.w3.org/2000/svg';
+        const sp = 8;
+        for (let y = sp/2; y < 200; y += sp) {
+            const ri = Math.round((y - sp/2) / sp);
+            const xo = (ri % 2 === 0) ? 0 : sp/2;
+            for (let x = sp/2 + xo; x < 160; x += sp) {
+                if (!ctx.isPointInPath(path, x, y)) continue;
+                const dx = x - FX, dy = y - FY;
+                const d = Math.sqrt(dx*dx + dy*dy);
+                const r = Math.max(0.4, 2.8 - d/38 * 2.8);
+                if (r < 0.35 || d < 6) continue;
+                const c = document.createElementNS(NS, 'circle');
+                c.setAttribute('cx', x.toFixed(2));
+                c.setAttribute('cy', y.toFixed(2));
+                c.setAttribute('r', r.toFixed(2));
+                c.setAttribute('fill', 'currentColor');
+                symbolEl.appendChild(c);
+            }
+        }
+        const core = document.createElementNS(NS, 'circle');
+        core.setAttribute('cx', FX); core.setAttribute('cy', FY); core.setAttribute('r', 4);
+        core.setAttribute('fill', 'var(--core-color, #B8896A)');
+        symbolEl.appendChild(core);
+    }
+    const s = document.getElementById('drop-halftone');
+    if (s) gen(s);
+})();
+</script>
+
 <div class="container">
+
     <div class="intro">
-        <div class="lbl">Sección 13</div>
-        <h1>Recursos</h1>
+        <div class="intro-text">
+            <div class="lbl">Sección 13</div>
+            <h1>Recursos</h1>
+            <p class="lead">Todo lo que el manual entrega, en un sitio. Packs, plantillas, licencias, glosario.</p>
+        </div>
+        <div class="intro-mark">
+            <svg viewBox="0 0 160 200"><use href="#drop-halftone"/></svg>
+        </div>
     </div>
 
+    <!-- ============================================================ -->
+    <!-- 13.0 Principio -->
+    <!-- ============================================================ -->
     <section>
-        <h2>Indicadores de carga</h2>
-        <p>
-            20 animaciones indeterminadas en blanco y negro puro. Sin texto, sin color.
-            Todas implementadas en CSS puro — sin JavaScript ni librerías externas.
-            El carácter es orgánico, fluido y blobby, coherente con la identidad visual de ForMeta.
-        </p>
-        <p>
-            Cada indicador ocupa un espacio de 200&thinsp;×&thinsp;200 px y puede integrarse
-            directamente en la aplicación mediante las clases exportadas en <code style="font-family:var(--font-mono);font-size:0.85em">styles/loaders.css</code>.
-        </p>
+        <div class="section-tag">13.0 · principio</div>
+        <h2>Principio</h2>
+        <div class="manifest-statement">
+            Una guía sin archivos no es una guía. Es un <em>folleto</em>. ForMeta entrega todo lo que define.
+        </div>
+        <p>Cada capítulo del manual produce assets descargables: tokens CSS, SVGs canónicos, helpers JS, plantillas listas. Esta sección es el índice maestro — un solo sitio donde encontrar todo lo que ha generado el sistema. Cuando alguien empiece una pieza de marca nueva, parte de aquí.</p>
+    </section>
 
-        <div class="loader-grid">
+    <!-- ============================================================ -->
+    <!-- 13.1 Quick reference -->
+    <!-- ============================================================ -->
+    <section class="qref-section">
+        <div class="section-tag">13.1 · quick reference</div>
+        <h2>Quick reference</h2>
+        <p>El manual completo condensado en una tarjeta. Símbolo, paleta, tipografía, escala, easings. Para imprimir o tener en el escritorio.</p>
 
-            <!-- 01 blob-morph -->
-            <div class="loader-card">
-                <div class="loader-stage">
-                    <div class="blob-morph"></div>
+        <div class="qref">
+            <span class="qref-corner-tl">
+                <svg viewBox="0 0 24 24"><g fill="currentColor"><circle cx="4" cy="4" r="1.5" fill="#B8896A"/><circle cx="9" cy="4" r="1"/><circle cx="14" cy="4" r="0.7"/><circle cx="19" cy="4" r="0.4"/><circle cx="4" cy="9" r="1"/><circle cx="4" cy="14" r="0.7"/><circle cx="4" cy="19" r="0.4"/></g></svg>
+            </span>
+            <span class="qref-corner-br">
+                <svg viewBox="0 0 24 24"><g fill="currentColor"><circle cx="5" cy="5" r="0.65"/><circle cx="9.5" cy="5" r="0.65"/><circle cx="14.5" cy="5" r="0.65"/><circle cx="19" cy="5" r="0.65"/><circle cx="5" cy="9.5" r="0.65"/><circle cx="9.5" cy="9.5" r="0.65"/><circle cx="14.5" cy="9.5" r="0.65"/><circle cx="19" cy="9.5" r="0.65"/><circle cx="5" cy="14.5" r="0.65"/><circle cx="9.5" cy="14.5" r="0.65"/><circle cx="14.5" cy="14.5" r="0.9" fill="#B8896A"/><circle cx="19" cy="14.5" r="0.65"/><circle cx="5" cy="19" r="0.65"/><circle cx="9.5" cy="19" r="0.65"/><circle cx="14.5" cy="19" r="0.65"/><circle cx="19" cy="19" r="0.65"/></g></svg>
+            </span>
+
+            <div class="qref-header">
+                <div class="qref-title">ForMeta · v1.0</div>
+                <div class="qref-meta">
+                    <strong>Quick reference</strong><br>
+                    2026.05.15<br>
+                    Mallorca · 39.5696° N
                 </div>
-                <span class="loader-name">01 · blob morph</span>
             </div>
 
-            <!-- 02 wave-fill -->
-            <div class="loader-card">
-                <div class="loader-stage">
-                    <div class="wave-fill-wrap"></div>
-                </div>
-                <span class="loader-name">02 · wave fill</span>
-            </div>
-
-            <!-- 03 orbit-ring -->
-            <div class="loader-card">
-                <div class="loader-stage">
-                    <div class="orbit-ring"></div>
-                </div>
-                <span class="loader-name">03 · orbit ring</span>
-            </div>
-
-            <!-- 04 pulse-circle -->
-            <div class="loader-card">
-                <div class="loader-stage">
-                    <div class="pulse-circle">
-                        <span></span><span></span><span></span>
-                    </div>
-                </div>
-                <span class="loader-name">04 · pulse circle</span>
-            </div>
-
-            <!-- 05 growing-dots -->
-            <div class="loader-card">
-                <div class="loader-stage">
-                    <div class="growing-dots">
-                        <span></span><span></span><span></span><span></span><span></span>
-                    </div>
-                </div>
-                <span class="loader-name">05 · growing dots</span>
-            </div>
-
-            <!-- 06 breathing-shape -->
-            <div class="loader-card">
-                <div class="loader-stage">
-                    <div class="breathing-shape"></div>
-                </div>
-                <span class="loader-name">06 · breathing shape</span>
-            </div>
-
-            <!-- 07 ripple-rings -->
-            <div class="loader-card">
-                <div class="loader-stage">
-                    <div class="ripple-rings">
-                        <span></span><span></span><span></span>
-                    </div>
-                </div>
-                <span class="loader-name">07 · ripple rings</span>
-            </div>
-
-            <!-- 08 figure-eight -->
-            <div class="loader-card">
-                <div class="loader-stage">
-                    <div class="figure-eight-wrap">
-                        <div class="figure-eight-dot"></div>
-                    </div>
-                </div>
-                <span class="loader-name">08 · figure eight</span>
-            </div>
-
-            <!-- 09 spinning-blob -->
-            <div class="loader-card">
-                <div class="loader-stage">
-                    <div class="spinning-blob"></div>
-                </div>
-                <span class="loader-name">09 · spinning blob</span>
-            </div>
-
-            <!-- 10 ink-drop -->
-            <div class="loader-card">
-                <div class="loader-stage">
-                    <div class="ink-drop"></div>
-                </div>
-                <span class="loader-name">10 · ink drop</span>
-            </div>
-
-            <!-- 11 radial-burst -->
-            <div class="loader-card">
-                <div class="loader-stage">
-                    <div class="radial-burst"></div>
-                </div>
-                <span class="loader-name">11 · radial burst</span>
-            </div>
-
-            <!-- 12 blur-pulse -->
-            <div class="loader-card">
-                <div class="loader-stage">
-                    <div class="blur-pulse"></div>
-                </div>
-                <span class="loader-name">12 · blur pulse</span>
-            </div>
-
-            <!-- 13 corner-morph -->
-            <div class="loader-card">
-                <div class="loader-stage">
-                    <div class="corner-morph"></div>
-                </div>
-                <span class="loader-name">13 · corner morph</span>
-            </div>
-
-            <!-- 14 wave-lines -->
-            <div class="loader-card">
-                <div class="loader-stage">
-                    <div class="wave-lines">
-                        <span></span><span></span><span></span><span></span><span></span>
-                    </div>
-                </div>
-                <span class="loader-name">14 · wave lines</span>
-            </div>
-
-            <!-- 15 blend-orbs -->
-            <div class="loader-card">
-                <div class="loader-stage">
-                    <div class="blend-orbs">
-                        <span></span><span></span>
-                    </div>
-                </div>
-                <span class="loader-name">15 · blend orbs</span>
-            </div>
-
-            <!-- 16 liquid-fill -->
-            <div class="loader-card">
-                <div class="loader-stage">
-                    <div class="liquid-fill-wrap"></div>
-                </div>
-                <span class="loader-name">16 · liquid fill</span>
-            </div>
-
-            <!-- 17 marquee-ovals -->
-            <div class="loader-card">
-                <div class="loader-stage">
-                    <div class="marquee-ovals">
-                        <div class="marquee-ovals-track">
-                            <span></span><span></span><span></span>
+            <div class="qref-grid">
+                <div class="qref-block">
+                    <div class="qb-label">Símbolo</div>
+                    <div class="qref-symbol">
+                        <svg viewBox="0 0 160 200"><use href="#drop-halftone"/></svg>
+                        <div>
+                            <div class="qref-symbol-name">Halftone gota</div>
+                            <div class="qref-symbol-spec">160 × 200 · sp 8 · maxR 2.8 · decay 38 · core 4</div>
                         </div>
                     </div>
                 </div>
-                <span class="loader-name">17 · marquee ovals</span>
-            </div>
 
-            <!-- 18 eccentric-ellipse -->
-            <div class="loader-card">
-                <div class="loader-stage">
-                    <div class="eccentric-ellipse"></div>
-                </div>
-                <span class="loader-name">18 · eccentric ellipse</span>
-            </div>
-
-            <!-- 19 concentric-pulse -->
-            <div class="loader-card">
-                <div class="loader-stage">
-                    <div class="concentric-pulse"></div>
-                </div>
-                <span class="loader-name">19 · concentric pulse</span>
-            </div>
-
-            <!-- 20 chase-arcs -->
-            <div class="loader-card">
-                <div class="loader-stage">
-                    <div class="chase-arcs">
-                        <span></span><span></span>
+                <div class="qref-block">
+                    <div class="qb-label">Tipografía</div>
+                    <div class="qref-type">
+                        <div class="qref-canela">Canela <em>Trial</em></div>
+                        <div class="qref-plex">IBM PLEX MONO · system</div>
                     </div>
                 </div>
-                <span class="loader-name">20 · chase arcs</span>
+
+                <div class="qref-block">
+                    <div class="qb-label">Paleta · capa 01</div>
+                    <div class="qref-colors">
+                        <div class="swatch" style="background: #2C2C28;" title="Ink #2C2C28"></div>
+                        <div class="swatch" style="background: #B8896A;" title="Terra #B8896A"></div>
+                        <div class="swatch" style="background: #F4F0E8; border: 1px solid var(--color-border-secondary);" title="Sand #F4F0E8"></div>
+                        <div class="swatch" style="background: #E2DDD4;" title="Stone #E2DDD4"></div>
+                        <div class="swatch" style="background: #8FA892;" title="Sage #8FA892"></div>
+                        <div class="swatch" style="background: #7A9AAA;" title="Sea #7A9AAA"></div>
+                        <div class="swatch" style="background: #7A7870;" title="Muted #7A7870"></div>
+                        <div class="swatch" style="background: #1A1A18;" title="Off-black #1A1A18"></div>
+                    </div>
+                    <div class="qref-colors-list">
+                        <span>INK</span><span>TERRA</span><span>SAND</span><span>STONE</span><span>SAGE</span><span>SEA</span><span>MUTED</span><span>BLACK</span>
+                    </div>
+                </div>
+
+                <div class="qref-block">
+                    <div class="qb-label">Spacing · 8 base</div>
+                    <div class="qref-spacing">
+                        <div class="b b1"></div>
+                        <div class="b b2"></div>
+                        <div class="b b3"></div>
+                        <div class="b b4"></div>
+                        <div class="b b5"></div>
+                    </div>
+                    <div class="qref-spacing-vals">
+                        XS 8 · SM 24 · MD 48 · LG 96 · XL 160
+                    </div>
+                </div>
+
+                <div class="qref-block">
+                    <div class="qb-label">Curvas · motion</div>
+                    <div class="qref-easings">
+                        <div class="ec">
+                            <svg viewBox="0 0 32 24"><path d="M2 22 C7 2, 11 7, 30 2" fill="none" stroke="#B8896A" stroke-width="1.5" stroke-linecap="round"/></svg>
+                            <span class="lbl-e">expressive</span>
+                        </div>
+                        <div class="ec">
+                            <svg viewBox="0 0 32 24"><path d="M2 22 C14 22, 18 2, 30 2" fill="none" stroke="#B8896A" stroke-width="1.5" stroke-linecap="round"/></svg>
+                            <span class="lbl-e">standard</span>
+                        </div>
+                        <div class="ec">
+                            <svg viewBox="0 0 32 24"><path d="M2 22 C2 22, 9 2, 30 2" fill="none" stroke="#B8896A" stroke-width="1.5" stroke-linecap="round"/></svg>
+                            <span class="lbl-e">enter</span>
+                        </div>
+                        <div class="ec">
+                            <svg viewBox="0 0 32 24"><path d="M2 22 C14 22, 30 22, 30 2" fill="none" stroke="#B8896A" stroke-width="1.5" stroke-linecap="round"/></svg>
+                            <span class="lbl-e">exit</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qref-block">
+                    <div class="qb-label">Tiempos</div>
+                    <div style="font-family: var(--font-mono); font-size: 0.85rem; line-height: 1.7; color: var(--color-ink);">
+                        <strong style="color: var(--color-terra);">200ms</strong> · micro (hover)<br>
+                        <strong style="color: var(--color-terra);">400ms</strong> · short (state)<br>
+                        <strong style="color: var(--color-terra);">1500ms</strong> · medium (hero)<br>
+                        <strong style="color: var(--color-terra);">4000ms</strong> · editorial (loop)
+                    </div>
+                </div>
             </div>
 
-        </div><!-- /.loader-grid -->
+            <div class="qref-print-hint">
+                <span>FMTA · v1.0 · 2026.05.15 · MALLORCA</span>
+                <span style="cursor: pointer; color: var(--color-terra);" onclick="window.print()">⌘P · Imprimir tarjeta</span>
+            </div>
+        </div>
     </section>
 
-</div><!-- /.container -->
+    <!-- ============================================================ -->
+    <!-- 13.2 Packs por capítulo -->
+    <!-- ============================================================ -->
+    <section>
+        <div class="section-tag">13.2 · packs por capítulo</div>
+        <h2>Packs por capítulo</h2>
+        <p>Cada capítulo entrega su propio pack independiente. Click en una card te lleva al capítulo donde está el botón de descarga.</p>
+
+        <div class="pack-grid">
+            <a href="03_logo.html#03F" class="pack-card" style="text-decoration: none;">
+                <div class="pack-chapter">Capítulo 03 · logo</div>
+                <div class="pack-name">Pack logos</div>
+                <p class="pack-desc">Isotipo, logotipo y símbolo en SVG. Halftone color/mono/negative + app icons + favicon + OG card.</p>
+                <div class="pack-files">25 archivos · SVG · ~140 KB</div>
+                <span class="pack-action">Descargar</span>
+            </a>
+
+            <a href="04_tipografia.html" class="pack-card" style="text-decoration: none;">
+                <div class="pack-chapter">Capítulo 04 · tipografía</div>
+                <div class="pack-name">Familias tipográficas</div>
+                <p class="pack-desc">Canela (Trial · licenciar) + IBM Plex Mono (OFL · libre). Subset curado: 10 cuts Canela + 3 Plex.</p>
+                <div class="pack-files">13 OTF/TTF · trial + open · ~3 MB</div>
+                <span class="pack-action">Ver capítulo</span>
+            </a>
+
+            <a href="07_ilustracion.html#07.9" class="pack-card" style="text-decoration: none;">
+                <div class="pack-chapter">Capítulo 07 · ilustración</div>
+                <div class="pack-name">Pack ilustración</div>
+                <p class="pack-desc">Composiciones halftone + campos generativos + datos. Más <code>halftone-tool.js</code> para construir nuevas piezas.</p>
+                <div class="pack-files">9 SVG + 1 JS · ~12 KB</div>
+                <span class="pack-action">Descargar</span>
+            </a>
+
+            <a href="08_animacion.html#08.6" class="pack-card" style="text-decoration: none;">
+                <div class="pack-chapter">Capítulo 08 · motion</div>
+                <div class="pack-name">Pack motion</div>
+                <p class="pack-desc">Tokens CSS (4 curvas, 4 duraciones) + 9 keyframes canónicas. Reduced-motion incluido.</p>
+                <div class="pack-files">2 CSS + README · ~4 KB</div>
+                <span class="pack-action">Descargar</span>
+            </a>
+
+            <a href="06_iconos.html#06.7" class="pack-card" style="text-decoration: none;">
+                <div class="pack-chapter">Capítulo 06 · iconos</div>
+                <div class="pack-name">Pack iconos</div>
+                <p class="pack-desc">57 iconos en 5 capas: acción, objeto, concepto, estado, marca. <code>currentColor</code> compatible.</p>
+                <div class="pack-files">57 SVG · 5 carpetas · ~28 KB</div>
+                <span class="pack-action">Descargar</span>
+            </a>
+
+            <a href="09_espaciado.html#09.7" class="pack-card" style="text-decoration: none;">
+                <div class="pack-chapter">Capítulo 09 · spacing</div>
+                <div class="pack-name">Pack spacing</div>
+                <p class="pack-desc">Tokens CSS (5 escalas, 3 containers, 3 breakpoints) + grid system mobile-first con clases <code>.col-N</code>.</p>
+                <div class="pack-files">2 CSS + README · ~3 KB</div>
+                <span class="pack-action">Descargar</span>
+            </a>
+
+            <a href="10_componentes.html#10.12" class="pack-card" style="text-decoration: none;">
+                <div class="pack-chapter">Capítulo 10 · componentes</div>
+                <div class="pack-name">Pack componentes UI</div>
+                <p class="pack-desc">11 familias: botones, inputs, cards, alerts, modal, dropdown, tabs, badges, progress, toast, liquid glass.</p>
+                <div class="pack-files">1 CSS + 1 JS + README · ~10 KB</div>
+                <span class="pack-action">Descargar</span>
+            </a>
+
+            <a href="#master" class="pack-card" style="text-decoration: none; border-color: var(--color-terra);">
+                <div class="pack-chapter" style="color: var(--color-terra); font-weight: 500;">★ master pack</div>
+                <div class="pack-name">Todo en uno</div>
+                <p class="pack-desc">Bundle completo: todos los packs anteriores + quick reference + plantillas + README maestro mapeado al manual.</p>
+                <div class="pack-files">~10 carpetas · ~50 archivos · ~200 KB</div>
+                <span class="pack-action">Saltar a master</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 13.3 Master pack -->
+    <!-- ============================================================ -->
+    <section id="master">
+        <div class="section-tag">13.3 · master pack</div>
+        <h2>Master pack</h2>
+
+        <div class="master-section">
+            <h3>El starter kit completo de ForMeta</h3>
+            <p>Todo lo que el manual genera, en un solo archivo. Tokens CSS, SVGs, helpers JS, plantillas y README maestro mapeado al manual. <strong>El punto de partida</strong> para cualquier persona que vaya a construir una pieza de marca nueva.</p>
+
+            <button class="master-cta" id="masterBtn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                Descargar master pack (.zip)
+            </button>
+            <div class="master-status" id="masterStatus"></div>
+
+            <div class="master-contents">
+                <div><span class="ch-num">03 ·</span> logos/ — symbol-halftone (color/mono/neg) + logotype + favicon + OG card</div>
+                <div><span class="ch-num">05 ·</span> color/ — color-tokens.css con la paleta completa + gradients + glass recipes</div>
+                <div><span class="ch-num">06 ·</span> icons/ — 57 SVGs en 5 carpetas (action/object/concept/status/brand)</div>
+                <div><span class="ch-num">07 ·</span> illustration/ — composiciones + campos + datos + halftone-tool.js</div>
+                <div><span class="ch-num">08 ·</span> motion/ — motion-tokens.css + motion-keyframes.css</div>
+                <div><span class="ch-num">09 ·</span> spacing/ — spacing-tokens.css + grid-system.css</div>
+                <div><span class="ch-num">10 ·</span> components/ — components.css + components.js</div>
+                <div><span class="ch-num">13 ·</span> templates/ — HTML starter + social card + letterhead</div>
+                <div style="margin-top: 1rem; color: var(--color-terra);">+ master.css — todos los tokens fusionados · listo para <code>@import</code></div>
+                <div style="color: var(--color-terra);">+ README.md — mapa completo de archivos contra capítulos del manual</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 13.4 Templates -->
+    <!-- ============================================================ -->
+    <section>
+        <div class="section-tag">13.4 · plantillas</div>
+        <h2>Plantillas</h2>
+        <p>Puntos de partida listos para uso. Cada plantilla incluye los <code>@import</code> de los tokens, el símbolo halftone y la estructura básica. Editar el contenido, no la estructura.</p>
+
+        <div class="template-grid">
+            <div class="template-card" id="tpl-html">
+                <div class="template-preview">
+                    <div class="preview-html"><span class="tag">&lt;link</span> <span class="attr">rel</span>=<span style="color: var(--color-ink)">"stylesheet"</span> <span class="attr">href</span>=<span style="color: var(--color-ink)">"master.css"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;svg&gt;</span><span class="tag">&lt;use</span> <span class="attr">href</span>=<span style="color: var(--color-ink)">"#drop-halftone"</span><span class="tag">/&gt;</span><span class="tag">&lt;/svg&gt;</span>
+<span class="tag">&lt;h1&gt;</span>Título<span class="tag">&lt;/h1&gt;</span></div>
+                </div>
+                <div class="template-body">
+                    <h4>HTML starter</h4>
+                    <p>Página base con todos los tokens importados, símbolo halftone listo, body con tipografía del sistema. Punto de partida para landings, docs y micropáginas.</p>
+                    <span class="pack-action">Descargar</span>
+                </div>
+            </div>
+
+            <div class="template-card" id="tpl-social">
+                <div class="template-preview">
+                    <div class="preview-social">
+                        <svg viewBox="0 0 160 200"><use href="#drop-halftone"/></svg>
+                        <div class="ps-text">
+                            <div class="ps-eyebrow">FORMETA · 2026</div>
+                            <div class="ps-title">Dar forma<br>a las cosas.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="template-body">
+                    <h4>Social card</h4>
+                    <p>SVG 1200×630 (Open Graph) en modo oscuro. Halftone izquierda + titular derecha + metadata. Para previews de link y posts.</p>
+                    <span class="pack-action">Descargar</span>
+                </div>
+            </div>
+
+            <div class="template-card" id="tpl-letter">
+                <div class="template-preview">
+                    <div class="preview-letter">
+                        <div class="l-head">
+                            <span class="l-symbol"><svg viewBox="0 0 160 200"><use href="#drop-halftone"/></svg></span>
+                            <div class="l-meta">FORMETA<br>2026.05.15</div>
+                        </div>
+                        <div class="l-body">Estimada Cooperativa,<br>el manual está listo para revisión.</div>
+                    </div>
+                </div>
+                <div class="template-body">
+                    <h4>Letterhead</h4>
+                    <p>Cabecera de carta / propuesta. Símbolo halftone arriba izquierda, metadata mono arriba derecha, cuerpo Canela Deck italic.</p>
+                    <span class="pack-action">Descargar</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 13.5 Licencias -->
+    <!-- ============================================================ -->
+    <section>
+        <div class="section-tag">13.5 · licencias</div>
+        <h2>Licencias</h2>
+        <p>Estado actual de cada asset que entra en el sistema. <strong>Acción crítica:</strong> Canela está en <strong>Trial</strong> — licenciar antes de cualquier publicación o entregable comercial.</p>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr><th>Asset</th><th>Tipo</th><th>Estado</th><th>Acción</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="lic-asset">Canela (4 cuts × 3 weights = 10)</td>
+                        <td class="lic-type">Display + Deck + Text + Condensed</td>
+                        <td><span class="lic-status warn">Trial</span></td>
+                        <td class="lic-action">Licenciar en <a href="https://commercialtype.com" target="_blank" rel="noopener">commercialtype.com</a> antes de publicar el manual online o entregar piezas a cliente. Bundle estudio recomendado.</td>
+                    </tr>
+                    <tr>
+                        <td class="lic-asset">IBM Plex Mono</td>
+                        <td class="lic-type">Regular + Italic + Medium</td>
+                        <td><span class="lic-status ok">SIL OFL</span></td>
+                        <td class="lic-action">Libre de licencia. Autoalojable, redistribuible, modificable. Sin acción necesaria.</td>
+                    </tr>
+                    <tr>
+                        <td class="lic-asset">Símbolo halftone</td>
+                        <td class="lic-type">SVG generado · gota path original</td>
+                        <td><span class="lic-status ok">Propio</span></td>
+                        <td class="lic-action">Propiedad de ForMeta. Definido en capítulo 03. Uso interno y comercial sin restricción.</td>
+                    </tr>
+                    <tr>
+                        <td class="lic-asset">JSZip</td>
+                        <td class="lic-type">Library JS (packs descargables)</td>
+                        <td><span class="lic-status ok">MIT</span></td>
+                        <td class="lic-action">Libre. Solo presente en el manual web — no se distribuye en los packs.</td>
+                    </tr>
+                    <tr>
+                        <td class="lic-asset">Tokens CSS / keyframes</td>
+                        <td class="lic-type">Sistema de diseño</td>
+                        <td><span class="lic-status ok">Propio</span></td>
+                        <td class="lic-action">Propiedad de ForMeta. Reutilizables en proyectos del estudio sin restricción.</td>
+                    </tr>
+                    <tr>
+                        <td class="lic-asset">Inspiración (carpeta drafts/inispiration)</td>
+                        <td class="lic-type">Referencia visual · no producción</td>
+                        <td><span class="lic-status info">Solo referencia</span></td>
+                        <td class="lic-action">Imágenes de mood board, no se distribuyen ni se publican. Mantener fuera del repositorio público.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 13.6 Glosario -->
+    <!-- ============================================================ -->
+    <section>
+        <div class="section-tag">13.6 · glosario</div>
+        <h2>Glosario</h2>
+        <p>Términos del manual definidos. Si una palabra aparece varias veces y tiene un significado específico, vive aquí.</p>
+
+        <div class="glossary">
+            <div class="glos-item">
+                <div class="glos-term">ForMeta</div>
+                <div class="glos-cap">CAP. 02</div>
+                <p class="glos-def">Nombre del estudio. Nace de <em>formita</em>, palabra mallorquina para dar forma a las cosas. Dos personas en Mallorca construyendo IApps para empresas reales.</p>
+            </div>
+            <div class="glos-item">
+                <div class="glos-term">Formitar</div>
+                <div class="glos-cap">CAP. 02</div>
+                <p class="glos-def">Verbo mallorquín. Dar forma. La marca lo aplica al software: <em>coger el conocimiento que ya existe en una empresa y darle forma digital</em>.</p>
+            </div>
+            <div class="glos-item">
+                <div class="glos-term">IApp</div>
+                <div class="glos-cap">CAP. 02</div>
+                <p class="glos-def">Intelligent Application. Aplicación donde la IA es la capa lógica central, no una función añadida. Entiende contexto, aprende del uso, decide. <em>El trabajador deja de ser intermediario entre datos y acción.</em></p>
+            </div>
+            <div class="glos-item">
+                <div class="glos-term">Halftone</div>
+                <div class="glos-cap">CAP. 03 · 06 · 07</div>
+                <p class="glos-def">Técnica de representación por densidad de puntos. En ForMeta es la gramática visual única: el símbolo, los marcadores editoriales y las composiciones comparten la misma lógica a escalas distintas.</p>
+            </div>
+            <div class="glos-item">
+                <div class="glos-term">Núcleo</div>
+                <div class="glos-cap">CAP. 03</div>
+                <p class="glos-def">El punto terra sólido en el centro del símbolo. La parte sólida única — todo lo demás son dots ink. Representa la inteligencia contenida.</p>
+            </div>
+            <div class="glos-item">
+                <div class="glos-term">Gota</div>
+                <div class="glos-cap">CAP. 03</div>
+                <p class="glos-def">La silueta del símbolo. En el sistema halftone es <em>implícita</em>: no hay trazo, los puntos definen el borde por densidad.</p>
+            </div>
+            <div class="glos-item">
+                <div class="glos-term">Capa 01–04</div>
+                <div class="glos-cap">CAP. 05</div>
+                <p class="glos-def">Las cuatro capas del sistema cromático: <strong>01 sólida</strong> (paleta base), <strong>02 gradientes editoriales</strong>, <strong>03 cristal líquido</strong>, <strong>04 espectro generativo</strong>. Cuanto más alta la capa, más restringido su uso.</p>
+            </div>
+            <div class="glos-item">
+                <div class="glos-term">Liquid glass</div>
+                <div class="glos-cap">CAP. 05 · 10</div>
+                <p class="glos-def">Capa 03 del color. Superficie translúcida con <code>backdrop-filter: blur()</code>. Hereda color del fondo, no tiene tono propio. Cards, modales, dropdowns.</p>
+            </div>
+            <div class="glos-item">
+                <div class="glos-term">Expressive-out</div>
+                <div class="glos-cap">CAP. 08</div>
+                <p class="glos-def">Curva de easing canónica: <code>cubic-bezier(0.16, 1, 0.3, 1)</code>. Acelera fuerte al inicio y se asienta despacio al final. La firma de motion editorial.</p>
+            </div>
+            <div class="glos-item">
+                <div class="glos-term">Metadata strip</div>
+                <div class="glos-cap">CAP. 04</div>
+                <p class="glos-def">Tira de metadatos en Plex Mono al pie de cada pieza. Versión, fecha, localización, ID. Firma técnica como ornamento.</p>
+            </div>
+            <div class="glos-item">
+                <div class="glos-term">Halftone editorial</div>
+                <div class="glos-cap">CAP. 06</div>
+                <p class="glos-def">Familia de marcadores en capa 05 del icon system: burst, strip, bullet, grain, corner, focal. Para piezas editoriales largas — leadlines, dividers, watermarks.</p>
+            </div>
+            <div class="glos-item">
+                <div class="glos-term">Container narrow/default/wide</div>
+                <div class="glos-cap">CAP. 09</div>
+                <p class="glos-def">Tres anchos canónicos: <strong>narrow 720px</strong> (long-form), <strong>default 1200px</strong> (layouts), <strong>wide 1440px</strong> (dashboard). Elegido por función, no por estética.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 13.7 Stack técnico -->
+    <!-- ============================================================ -->
+    <section>
+        <div class="section-tag">13.7 · stack</div>
+        <h2>Stack técnico</h2>
+        <p>Herramientas que el estudio usa para construir piezas con el sistema. No es prescriptivo — cualquier herramienta que respete los tokens vale. Esta es la lista de las que se han usado para este manual.</p>
+
+        <div class="stack-grid">
+            <div class="stack-card">
+                <div class="stack-name">HTML + CSS plano</div>
+                <div class="stack-use">Manual · landings</div>
+                <p class="stack-desc">El manual está escrito en HTML + CSS sin build. Importable directamente. Sin compilación, sin tooling.</p>
+            </div>
+            <div class="stack-card">
+                <div class="stack-name">CSS Custom Properties</div>
+                <div class="stack-use">Tokens · theming</div>
+                <p class="stack-desc">Toda la sistema vive como variables CSS. Cambiar un token actualiza todo el sistema. Nada hardcoded.</p>
+            </div>
+            <div class="stack-card">
+                <div class="stack-name">SVG inline</div>
+                <div class="stack-use">Símbolo · iconos · charts</div>
+                <p class="stack-desc">Todo lo gráfico es SVG. <code>currentColor</code> compatible. Sin dependencias de imagen raster.</p>
+            </div>
+            <div class="stack-card">
+                <div class="stack-name">JS vanilla</div>
+                <div class="stack-use">Halftone generator · componentes</div>
+                <p class="stack-desc">Sin frameworks. <code>Canvas.isPointInPath</code> para halftone, <code>backdrop-filter</code> para liquid glass, listeners para componentes.</p>
+            </div>
+            <div class="stack-card">
+                <div class="stack-name">Claude Code</div>
+                <div class="stack-use">Construcción del manual</div>
+                <p class="stack-desc">El manual se construyó iterativamente con asistencia AI. Cada capítulo revisado y validado en navegador antes de pasar al siguiente.</p>
+            </div>
+            <div class="stack-card">
+                <div class="stack-name">JSZip</div>
+                <div class="stack-use">Packs descargables</div>
+                <p class="stack-desc">Library MIT para empaquetar assets en zips desde el browser. Único dependency external.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 13.8 Changelog -->
+    <!-- ============================================================ -->
+    <section>
+        <div class="section-tag">13.8 · changelog</div>
+        <h2>Versionado</h2>
+
+        <div class="changelog">
+            <div class="change-row">
+                <div class="change-version">
+                    <span class="change-tag current">v1.0</span>
+                    <span class="change-date">15 mayo 2026</span>
+                </div>
+                <div class="change-body">
+                    <h4>Primera versión completa</h4>
+                    <ul>
+                        <li>Manifiesto, IApp y tono · cap. 02</li>
+                        <li>Logo halftone (símbolo + logotipo + isotipo + app icons) · cap. 03</li>
+                        <li>Sistema tipográfico Canela Trial + IBM Plex Mono · cap. 04</li>
+                        <li>Paleta cromática 4 capas (sólida + gradientes + liquid glass + espectro generativo) · cap. 05</li>
+                        <li>Sistema de iconografía 5 capas · 57 iconos + familia halftone editorial · cap. 06</li>
+                        <li>Sistema de ilustración halftone · 1 gramática · 5 escalas · cap. 07</li>
+                        <li>Sistema de motion · 4 curvas · 4 tiempos · 9 familias · cap. 08</li>
+                        <li>Sistema de spacing · 5 tokens · 12 cols · 3 breakpoints · cap. 09</li>
+                        <li>11 familias de componentes UI con liquid glass · cap. 10</li>
+                        <li>Voz extendida · léxico · microcopy · 5 plantillas de email · 10 frases canónicas · cap. 11</li>
+                        <li>9 piezas canónicas de aplicación (papelería · web · dashboard · social · print) · cap. 12</li>
+                        <li>13 capítulos · packs descargables · master pack · cap. 13</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="change-row">
+                <div class="change-version">
+                    <span class="change-tag pending">v2.0</span>
+                    <span class="change-date">pendiente</span>
+                </div>
+                <div class="change-body">
+                    <h4>Próxima iteración</h4>
+                    <ul>
+                        <li>Manifiesto visual de fotografía con tratamiento halftone real</li>
+                        <li>Pantone + CMYK calibrados tras primera tirada de imprenta</li>
+                        <li>Canela licenciada · paso de Trial a producción</li>
+                        <li>Componentes adicionales: data table, calendar picker, command palette</li>
+                        <li>Variante "dark mode" canónica documentada</li>
+                        <li>Video intro renderizado · formato .mp4 + .webm</li>
+                        <li>Plantillas editables Figma · onboarding del equipo extendido</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 13.9 Responsables / Gobernanza -->
+    <!-- ============================================================ -->
+    <section>
+        <div class="section-tag">13.9 · gobernanza</div>
+        <h2>Responsables</h2>
+        <p>La guía la aprueban los dos fundadores. <strong>Cambios fundacionales</strong> (manifiesto, logo, color base, tipografía) requieren acuerdo explícito de ambos y bump de versión. <strong>Cambios en aplicación</strong> (componentes, plantillas, documentación) se hacen por consenso informal y se documentan en el siguiente ciclo.</p>
+        <p>Toda nueva pieza pasa por la pregunta del capítulo 01: <em>¿esto es coherente con el manifiesto de la sección 02?</em> Si la respuesta es no, no se hace. Si la respuesta es sí, se hace y se documenta aquí para la siguiente versión.</p>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 13.10 Texturas, wallpapers y volúmenes 3D -->
+    <!-- ============================================================ -->
+    <style>
+        /* Texture / wallpaper / 3D styles, scoped to section */
+        .res-textures-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-top: 1.5rem; }
+        .res-tex-card {
+            background: var(--color-white);
+            border: 1px solid var(--color-border-secondary);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform var(--duration-short) var(--easing-expressive);
+        }
+        .res-tex-card:hover { transform: translateY(-2px); }
+        .res-tex-tile {
+            aspect-ratio: 1 / 1;
+            background: var(--color-sand);
+            position: relative;
+            overflow: hidden;
+        }
+        .res-tex-tile.dark { background: var(--color-offblack); }
+        .res-tex-body {
+            padding: 1rem 1.1rem 1.2rem;
+            display: flex; flex-direction: column; gap: 0.4rem;
+        }
+        .res-tex-name { font-family: var(--font-deck); font-weight: 500; font-size: 0.95rem; color: var(--color-ink); }
+        .res-tex-spec { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.1em; color: var(--color-muted); text-transform: uppercase; }
+        .res-tex-dl {
+            margin-top: 0.4rem;
+            background: transparent;
+            border: 1px solid var(--color-border-secondary);
+            color: var(--color-ink);
+            padding: 0.4rem 0.7rem;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.6rem; font-weight: 500;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: border-color var(--duration-micro) var(--easing-standard),
+                        color var(--duration-micro) var(--easing-standard);
+        }
+        .res-tex-dl:hover { border-color: var(--color-terra); color: var(--color-terra); }
+
+        .res-wp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.2rem; margin-top: 1.5rem; }
+        .res-wp-card {
+            background: var(--color-white);
+            border: 1px solid var(--color-border-secondary);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .res-wp-stage {
+            aspect-ratio: 16 / 9;
+            background: var(--color-offblack);
+            position: relative;
+            overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .res-wp-stage.portrait { aspect-ratio: 9 / 16; max-height: 400px; margin: 0 auto; }
+        .res-wp-stage svg { width: 100%; height: 100%; display: block; }
+        .res-wp-body { padding: 1.1rem 1.4rem 1.4rem; }
+        .res-wp-name { font-family: var(--font-deck); font-weight: 500; font-size: 1.05rem; color: var(--color-ink); margin-bottom: 0.2rem; }
+        .res-wp-spec { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.1em; color: var(--color-muted); text-transform: uppercase; margin-bottom: 0.7rem; }
+        .res-wp-dl {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            background: var(--color-ink); color: var(--color-sand);
+            border: none;
+            padding: 0.5rem 0.9rem;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.65rem; font-weight: 500;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background var(--duration-micro) var(--easing-standard);
+        }
+        .res-wp-dl:hover { background: var(--color-terra); }
+
+        .res-fig-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; }
+        .res-fig-card {
+            background: var(--color-white);
+            border: 1px solid var(--color-border-secondary);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .res-fig-stage {
+            aspect-ratio: 1 / 1;
+            background: var(--color-sand);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--color-ink);
+            --core-color: var(--color-terra);
+            position: relative;
+        }
+        .res-fig-stage.dark { background: var(--color-offblack); color: var(--color-sand); }
+        .res-fig-stage svg { width: 100%; height: 100%; display: block; }
+        .res-fig-stage .res-fig-tag {
+            position: absolute; top: 0.7rem; left: 0.9rem;
+            font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.16em;
+            text-transform: uppercase; color: var(--color-terra);
+        }
+        .res-fig-body { padding: 1.2rem 1.4rem 1.4rem; }
+        .res-fig-name { font-family: var(--font-deck); font-weight: 500; font-size: 1.1rem; color: var(--color-ink); margin-bottom: 0.2rem; }
+        .res-fig-desc { font-family: var(--font-text); font-size: 0.9rem; line-height: 1.5; color: var(--color-text-secondary); margin: 0; }
+        .res-fig-spec { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.1em; color: var(--color-sea); text-transform: uppercase; margin-top: 0.5rem; }
+    </style>
+
+    <section>
+        <div class="section-tag">13.10 · texturas · wallpapers · 3D</div>
+        <h2>Texturas, wallpapers y volúmenes 3D</h2>
+        <p>Extensión visual del lenguaje halftone más allá del manual. Texturas tile para backgrounds, wallpapers full-screen, y volúmenes 3D generados con la misma gramática de dots por densidad. Todos descargables como SVG vectorial — escalan sin pérdida.</p>
+
+        <h3 style="margin-top: 2.5rem;">Texturas · tiles repetibles</h3>
+        <p>Patrones modulares que se aplican como <code>background-image: url(…) repeat</code>. Cada uno extiende la familia halftone editorial del cap. 06.5 a escala de fondo.</p>
+
+        <div class="res-textures-grid">
+            <div class="res-tex-card">
+                <div class="res-tex-tile" style="background-image: url('data:image/svg+xml;utf8,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;24&quot; height=&quot;24&quot;><circle cx=&quot;12&quot; cy=&quot;12&quot; r=&quot;1.4&quot; fill=&quot;%232C2C28&quot; opacity=&quot;0.5&quot;/></svg>'); background-repeat: repeat;"></div>
+                <div class="res-tex-body">
+                    <div class="res-tex-name">Grain · regular</div>
+                    <div class="res-tex-spec">24×24 · sp 24 · r 1.4</div>
+                    <button class="res-tex-dl" data-tex="grain-regular">Descargar tile</button>
+                </div>
+            </div>
+
+            <div class="res-tex-card">
+                <div class="res-tex-tile" style="background-image: url('data:image/svg+xml;utf8,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;20&quot; height=&quot;20&quot;><circle cx=&quot;5&quot; cy=&quot;5&quot; r=&quot;0.8&quot; fill=&quot;%232C2C28&quot;/><circle cx=&quot;15&quot; cy=&quot;5&quot; r=&quot;0.8&quot; fill=&quot;%232C2C28&quot;/><circle cx=&quot;10&quot; cy=&quot;10&quot; r=&quot;1.2&quot; fill=&quot;%23B8896A&quot;/><circle cx=&quot;5&quot; cy=&quot;15&quot; r=&quot;0.8&quot; fill=&quot;%232C2C28&quot;/><circle cx=&quot;15&quot; cy=&quot;15&quot; r=&quot;0.8&quot; fill=&quot;%232C2C28&quot;/></svg>'); background-repeat: repeat;"></div>
+                <div class="res-tex-body">
+                    <div class="res-tex-name">Mesh + acento</div>
+                    <div class="res-tex-spec">20×20 · 5 dots · terra core</div>
+                    <button class="res-tex-dl" data-tex="mesh-accent">Descargar tile</button>
+                </div>
+            </div>
+
+            <div class="res-tex-card">
+                <div class="res-tex-tile" style="background-image: url('data:image/svg+xml;utf8,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;30&quot; height=&quot;30&quot;><circle cx=&quot;15&quot; cy=&quot;15&quot; r=&quot;4&quot; fill=&quot;none&quot; stroke=&quot;%232C2C28&quot; stroke-width=&quot;0.4&quot; opacity=&quot;0.4&quot;/><circle cx=&quot;15&quot; cy=&quot;15&quot; r=&quot;8&quot; fill=&quot;none&quot; stroke=&quot;%232C2C28&quot; stroke-width=&quot;0.4&quot; opacity=&quot;0.25&quot;/><circle cx=&quot;15&quot; cy=&quot;15&quot; r=&quot;1&quot; fill=&quot;%23B8896A&quot;/></svg>'); background-repeat: repeat;"></div>
+                <div class="res-tex-body">
+                    <div class="res-tex-name">Topográfico</div>
+                    <div class="res-tex-spec">30×30 · 2 anillos · terra core</div>
+                    <button class="res-tex-dl" data-tex="topo">Descargar tile</button>
+                </div>
+            </div>
+
+            <div class="res-tex-card">
+                <div class="res-tex-tile dark" style="background-image: url('data:image/svg+xml;utf8,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;24&quot; height=&quot;24&quot;><circle cx=&quot;12&quot; cy=&quot;12&quot; r=&quot;1.4&quot; fill=&quot;%23F4F0E8&quot; opacity=&quot;0.35&quot;/></svg>'); background-repeat: repeat; background-color: #1A1A18;"></div>
+                <div class="res-tex-body">
+                    <div class="res-tex-name">Grain · negativo</div>
+                    <div class="res-tex-spec">24×24 · sand sobre offblack</div>
+                    <button class="res-tex-dl" data-tex="grain-negative">Descargar tile</button>
+                </div>
+            </div>
+
+            <div class="res-tex-card">
+                <div class="res-tex-tile" style="background-image: url('data:image/svg+xml;utf8,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;40&quot; height=&quot;40&quot;><circle cx=&quot;5&quot; cy=&quot;5&quot; r=&quot;0.4&quot; fill=&quot;%232C2C28&quot;/><circle cx=&quot;15&quot; cy=&quot;15&quot; r=&quot;0.7&quot; fill=&quot;%232C2C28&quot;/><circle cx=&quot;25&quot; cy=&quot;25&quot; r=&quot;1&quot; fill=&quot;%232C2C28&quot;/><circle cx=&quot;35&quot; cy=&quot;35&quot; r=&quot;1.4&quot; fill=&quot;%23B8896A&quot;/></svg>'); background-repeat: repeat;"></div>
+                <div class="res-tex-body">
+                    <div class="res-tex-name">Drift diagonal</div>
+                    <div class="res-tex-spec">40×40 · 4 stops · gradiente</div>
+                    <button class="res-tex-dl" data-tex="drift">Descargar tile</button>
+                </div>
+            </div>
+
+            <div class="res-tex-card">
+                <div class="res-tex-tile" style="background-image: url('data:image/svg+xml;utf8,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;32&quot; height=&quot;32&quot;><circle cx=&quot;4&quot; cy=&quot;8&quot; r=&quot;0.8&quot; fill=&quot;%232C2C28&quot;/><circle cx=&quot;12&quot; cy=&quot;6&quot; r=&quot;1.1&quot; fill=&quot;%232C2C28&quot;/><circle cx=&quot;20&quot; cy=&quot;10&quot; r=&quot;1.3&quot; fill=&quot;%23B8896A&quot;/><circle cx=&quot;28&quot; cy=&quot;8&quot; r=&quot;0.7&quot; fill=&quot;%232C2C28&quot;/><circle cx=&quot;6&quot; cy=&quot;20&quot; r=&quot;1&quot; fill=&quot;%232C2C28&quot;/><circle cx=&quot;14&quot; cy=&quot;24&quot; r=&quot;0.6&quot; fill=&quot;%232C2C28&quot;/><circle cx=&quot;22&quot; cy=&quot;22&quot; r=&quot;0.9&quot; fill=&quot;%232C2C28&quot;/><circle cx=&quot;28&quot; cy=&quot;26&quot; r=&quot;0.5&quot; fill=&quot;%232C2C28&quot;/></svg>'); background-repeat: repeat;"></div>
+                <div class="res-tex-body">
+                    <div class="res-tex-name">Constelación</div>
+                    <div class="res-tex-spec">32×32 · 8 dots · irregular</div>
+                    <button class="res-tex-dl" data-tex="constellation">Descargar tile</button>
+                </div>
+            </div>
+        </div>
+
+        <h3 style="margin-top: 3rem;">Wallpapers · pantalla completa</h3>
+        <p>Cuatro wallpapers generados con halftone. Cada uno está construido con los mismos algoritmos del cap. 07 — el sistema en escala monumental. Vectoriales: una sola descarga vale para cualquier resolución.</p>
+
+        <div class="res-wp-grid">
+            <div class="res-wp-card">
+                <div class="res-wp-stage" style="color: var(--color-sand); --core-color: var(--color-terra);">
+                    <svg id="wp-field-desktop" viewBox="0 0 1920 1080"></svg>
+                </div>
+                <div class="res-wp-body">
+                    <div class="res-wp-name">Campo radial · desktop</div>
+                    <div class="res-wp-spec">1920×1080 · ratio 16:9 · offblack + halftone</div>
+                    <button class="res-wp-dl" data-wp="field-desktop">Descargar SVG</button>
+                </div>
+            </div>
+
+            <div class="res-wp-card">
+                <div class="res-wp-stage" style="color: var(--color-ink); --core-color: var(--color-terra); background: var(--color-sand);">
+                    <svg id="wp-topo-desktop" viewBox="0 0 1920 1080"></svg>
+                </div>
+                <div class="res-wp-body">
+                    <div class="res-wp-name">Topografía · sand</div>
+                    <div class="res-wp-spec">1920×1080 · sand bg · ink halftone</div>
+                    <button class="res-wp-dl" data-wp="topo-desktop">Descargar SVG</button>
+                </div>
+            </div>
+
+            <div class="res-wp-card">
+                <div class="res-wp-stage portrait" style="color: var(--color-terra); --core-color: var(--color-sand); background: var(--color-offblack);">
+                    <svg id="wp-gota-mobile" viewBox="0 0 1080 1920"></svg>
+                </div>
+                <div class="res-wp-body">
+                    <div class="res-wp-name">Gota oversized · mobile</div>
+                    <div class="res-wp-spec">1080×1920 · ratio 9:16 · offblack + terra</div>
+                    <button class="res-wp-dl" data-wp="gota-mobile">Descargar SVG</button>
+                </div>
+            </div>
+
+            <div class="res-wp-card">
+                <div class="res-wp-stage portrait" style="background: linear-gradient(135deg, #B8896A 0%, #E2DDD4 60%, #F4F0E8 100%); color: var(--color-ink); --core-color: var(--color-ink);">
+                    <svg id="wp-sunset-mobile" viewBox="0 0 1080 1920"></svg>
+                </div>
+                <div class="res-wp-body">
+                    <div class="res-wp-name">Sunset gradient · mobile</div>
+                    <div class="res-wp-spec">1080×1920 · gradiente capa 2 · halftone overlay</div>
+                    <button class="res-wp-dl" data-wp="sunset-mobile">Descargar SVG</button>
+                </div>
+            </div>
+        </div>
+
+        <h3 style="margin-top: 3rem;">Volúmenes 3D halftone</h3>
+        <p>El lenguaje halftone proyectado en 3D. Cada figura es un <strong>point cloud</strong> distribuido sobre una superficie matemática — esfera (Fibonacci spiral), gota revolucionada (silueta 2D extruida 360°), torus (donut). Proyección ortográfica, tamaño y opacidad por profundidad Z, núcleo terra al frente.</p>
+
+        <div class="res-fig-grid">
+            <div class="res-fig-card">
+                <div class="res-fig-stage">
+                    <span class="res-fig-tag">3D.A · esfera</span>
+                    <svg id="fig-sphere" viewBox="0 0 300 300"></svg>
+                </div>
+                <div class="res-fig-body">
+                    <div class="res-fig-name">Esfera halftone</div>
+                    <p class="res-fig-desc">600 puntos sobre superficie esférica (Fibonacci spiral). Frontales grandes y opacos, traseros pequeños y tenues. Tilt 20° para perspectiva.</p>
+                    <div class="res-fig-spec">600 pts · R 100 · proyección ortográfica</div>
+                    <button class="res-wp-dl" data-fig="sphere" style="margin-top: 0.8rem;">Descargar SVG</button>
+                </div>
+            </div>
+
+            <div class="res-fig-card">
+                <div class="res-fig-stage dark">
+                    <span class="res-fig-tag" style="color: var(--color-terra);">3D.B · gota</span>
+                    <svg id="fig-gota" viewBox="0 0 300 300"></svg>
+                </div>
+                <div class="res-fig-body">
+                    <div class="res-fig-name">Gota volumétrica</div>
+                    <p class="res-fig-desc">La silueta 2D del símbolo (cap. 03) revolucionada 360° en torno al eje vertical. Dots distribuidos en la superficie. El núcleo terra queda al frente.</p>
+                    <div class="res-fig-spec">500 pts · revolución 360° · núcleo z=máx</div>
+                    <button class="res-wp-dl" data-fig="gota" style="margin-top: 0.8rem;">Descargar SVG</button>
+                </div>
+            </div>
+
+            <div class="res-fig-card">
+                <div class="res-fig-stage">
+                    <span class="res-fig-tag">3D.C · torus</span>
+                    <svg id="fig-torus" viewBox="0 0 300 300"></svg>
+                </div>
+                <div class="res-fig-body">
+                    <div class="res-fig-name">Torus halftone</div>
+                    <p class="res-fig-desc">Donut paramétrico — radio mayor R=80, radio menor r=30. 700 puntos distribuidos en la superficie con tilt 25° para vista superior. Para piezas técnicas y poster.</p>
+                    <div class="res-fig-spec">700 pts · R 80 · r 30 · tilt 25°</div>
+                    <button class="res-wp-dl" data-fig="torus" style="margin-top: 0.8rem;">Descargar SVG</button>
+                </div>
+            </div>
+        </div>
+
+        <p style="margin-top: 2rem; font-size: 0.95rem;"><strong>Aplicaciones:</strong> los volúmenes 3D se usan en piezas editoriales largas (artículos, presentaciones), heros de portada, ilustración de conceptos (datos, inteligencia, sistema). <strong>Restricción:</strong> nunca en UI funcional ni componentes — pertenecen al registro expresivo.</p>
+    </section>
+
+    <div class="meta-strip">
+        <span class="tag">v1.0</span><span class="sep">·</span>
+        <span>2026.05.15</span><span class="sep">·</span>
+        <span>Mallorca / 39.5696° N</span><span class="sep">·</span>
+        <span>FMTA—13—Recursos</span><span class="sep">·</span>
+        <span>13 capítulos · 6 texturas · 4 wallpapers · 3 volúmenes 3D</span>
+    </div>
+
+</div>
 
 <footer>
-    <svg width="24" height="30" viewBox="0 0 160 200" style="opacity: 0.8; margin: 0 auto;">
-        <path d="M80 12 C80 12 104 52 116 88 C126 118 122 152 102 168 C92 176 80 178 80 178 C80 178 68 176 58 168 C38 152 34 118 44 88 C56 52 80 12 80 12 Z" fill="none" stroke="var(--color-terra)" stroke-width="4"/>
-        <circle cx="80" cy="130" r="6" fill="var(--color-terra)"/>
-    </svg>
+    <nav class="chapter-nav">
+        <a href="12_aplicaciones.html">← Anterior: 12 Aplicaciones</a>
+        <a href="index.html">Volver al índice</a>
+        <a href="01_introduccion.html">Empezar por 01 →</a>
+    </nav>
+    <span class="footer-mark">
+        <svg width="24" height="30" viewBox="0 0 160 200" aria-hidden="true"><use href="#drop-simple"/></svg>
+    </span>
 </footer>
+
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+<script>
+// ============================================================
+// Master pack generator
+// ============================================================
+(function() {
+    const btn = document.getElementById('masterBtn');
+    const status = document.getElementById('masterStatus');
+    if (!btn) return;
+
+    // Inline files content (versiones canónicas, mismo contenido que los packs por capítulo)
+    const masterCSS = [
+        '/* ForMeta · master.css · v1.0 · 2026.05.15',
+        '   Todos los tokens del sistema fusionados. Importar como punto único.',
+        '*/',
+        '',
+        '/* ===== TIPOGRAFÍA — usar @font-face propio ===== */',
+        ':root {',
+        '  --font-display: "Canela Trial", "Cormorant Garamond", Garamond, Georgia, serif;',
+        '  --font-deck:    "Canela Deck Trial", "Cormorant Garamond", Garamond, Georgia, serif;',
+        '  --font-text:    "Canela Text Trial", "Cormorant Garamond", Garamond, Georgia, serif;',
+        '  --font-cond:    "Canela Condensed Trial", "Cormorant Garamond", Garamond, Georgia, serif;',
+        '  --font-mono:    "IBM Plex Mono", "DM Mono", "Courier New", Courier, monospace;',
+        '',
+        '  /* ===== COLOR · capa 01 sólida ===== */',
+        '  --color-ink: #2C2C28;',
+        '  --color-terra: #B8896A;',
+        '  --color-terra-deep: #A37A5A;',
+        '  --color-sand: #F4F0E8;',
+        '  --color-sea: #7A9AAA;',
+        '  --color-stone: #E2DDD4;',
+        '  --color-sage: #8FA892;',
+        '  --color-white: #FFFFFF;',
+        '  --color-offblack: #1A1A18;',
+        '  --color-muted: #7A7870;',
+        '',
+        '  /* Estados */',
+        '  --color-alert: #D05A5A;',
+        '  --color-warning: #D9A35A;',
+        '  --color-success: #7A9F7E;',
+        '  --color-info: #6F8FA0;',
+        '',
+        '  /* Roles */',
+        '  --color-bg: var(--color-sand);',
+        '  --color-text: var(--color-ink);',
+        '  --color-text-secondary: var(--color-muted);',
+        '  --color-border-secondary: rgba(44, 44, 40, 0.1);',
+        '',
+        '  /* ===== COLOR · capa 02 gradientes editoriales ===== */',
+        '  --g-sunset: linear-gradient(135deg, #B8896A 0%, #E2DDD4 60%, #F4F0E8 100%);',
+        '  --g-deepwater: linear-gradient(180deg, #7A9AAA 0%, #2C2C28 100%);',
+        '  --g-pinar: linear-gradient(160deg, #8FA892 0%, #E2DDD4 100%);',
+        '  --g-night: linear-gradient(180deg, #2C2C28 0%, #1A1A18 100%);',
+        '  --g-dawn: linear-gradient(120deg, #F4F0E8 0%, #B8896A 70%, #7A9AAA 100%);',
+        '',
+        '  /* ===== COLOR · capa 04 espectro generativo (uso restringido) ===== */',
+        '  --g-iris: conic-gradient(from 180deg at 50% 50%, #8E5DBF 0deg, #D04AC2 72deg, #4ABFD0 144deg, #4AD0A6 216deg, #D0B14A 288deg, #8E5DBF 360deg);',
+        '  --g-chrome: linear-gradient(135deg, #F5F5F2 0%, #C8C8C5 25%, #A8A8A5 50%, #D5D5D2 75%, #F5F5F2 100%);',
+        '  --g-aurora: linear-gradient(135deg, #F5C8A3 0%, #D1A5C8 35%, #A5C5D1 70%, #F4F0E8 100%);',
+        '',
+        '  /* ===== SPACING (cap. 09) ===== */',
+        '  --space-xs: 0.5rem;   /* 8px */',
+        '  --space-sm: 1.5rem;   /* 24px */',
+        '  --space-md: 3rem;     /* 48px */',
+        '  --space-lg: 6rem;     /* 96px */',
+        '  --space-xl: 10rem;    /* 160px */',
+        '',
+        '  /* Containers */',
+        '  --container-narrow:   720px;',
+        '  --container-default: 1200px;',
+        '  --container-wide:    1440px;',
+        '',
+        '  /* Breakpoints */',
+        '  --bp-mobile:   600px;',
+        '  --bp-tablet:   900px;',
+        '  --bp-desktop: 1200px;',
+        '',
+        '  /* ===== MOTION (cap. 08) ===== */',
+        '  --easing-expressive: cubic-bezier(0.16, 1, 0.3, 1);',
+        '  --easing-standard:   cubic-bezier(0.4, 0, 0.2, 1);',
+        '  --easing-enter:      cubic-bezier(0, 0, 0.2, 1);',
+        '  --easing-exit:       cubic-bezier(0.4, 0, 1, 1);',
+        '',
+        '  --duration-micro:     200ms;',
+        '  --duration-short:     400ms;',
+        '  --duration-medium:   1500ms;',
+        '  --duration-editorial: 4000ms;',
+        '}',
+        '',
+        '/* Reduced motion */',
+        '@media (prefers-reduced-motion: reduce) {',
+        '  *, *::before, *::after {',
+        '    animation-duration: 0.01ms !important;',
+        '    animation-iteration-count: 1 !important;',
+        '    transition-duration: 0.01ms !important;',
+        '  }',
+        '}'
+    ].join('\n');
+
+    const masterReadme = [
+        '# ForMeta · Master Pack · v1.0',
+        '## 2026.05.15 · Mallorca',
+        '',
+        'El starter kit completo del sistema de marca ForMeta.',
+        'Todos los tokens, assets y plantillas en un solo bundle.',
+        '',
+        '## Estructura',
+        '',
+        '```',
+        'formeta-master-v1.0/',
+        '├── master.css            # Todos los tokens fusionados',
+        '├── 03-logo/              # Símbolo halftone + logotype',
+        '│   ├── symbol-halftone-color.svg',
+        '│   ├── symbol-halftone-mono.svg',
+        '│   ├── symbol-halftone-negative.svg',
+        '│   ├── symbol-simple.svg',
+        '│   └── favicon.svg',
+        '├── 07-illustration/',
+        '│   └── halftone-tool.js  # fillPath + fillField helpers',
+        '├── 08-motion/',
+        '│   ├── motion-tokens.css',
+        '│   └── motion-keyframes.css',
+        '├── 09-spacing/',
+        '│   ├── spacing-tokens.css',
+        '│   └── grid-system.css',
+        '├── 10-components/',
+        '│   ├── components.css',
+        '│   └── components.js',
+        '├── 13-templates/',
+        '│   ├── html-starter.html',
+        '│   ├── social-card.svg',
+        '│   └── letterhead.html',
+        '└── README.md (this file)',
+        '```',
+        '',
+        '## Uso básico',
+        '',
+        '```html',
+        '<link rel="stylesheet" href="master.css">',
+        '<link rel="stylesheet" href="10-components/components.css">',
+        '<scr' + 'ipt src="10-components/components.js"><\/scr' + 'ipt>',
+        '```',
+        '',
+        '## Dependencias',
+        '',
+        '- **Canela** (Commercial Type) · TRIAL · licenciar antes de publicar.',
+        '  Canela no está incluido en este pack. Descargar desde el manual',
+        '  o adquirir licencia en commercialtype.com',
+        '- **IBM Plex Mono** (SIL OFL) · libre · descargar de IBM/Google Fonts',
+        '',
+        '## Mapeo a capítulos del manual',
+        '',
+        '| Carpeta | Capítulo | Contenido |',
+        '|---------|----------|-----------|',
+        '| (raíz)  | master.css fusiona 04, 05, 08, 09 |',
+        '| 03      | 03. Logo | SVGs del símbolo |',
+        '| 07      | 07. Ilustración | halftone-tool.js |',
+        '| 08      | 08. Animación | curvas + keyframes |',
+        '| 09      | 09. Espaciado | tokens + grid |',
+        '| 10      | 10. Componentes | css + js |',
+        '| 13      | 13. Recursos | plantillas |',
+        '',
+        '## Gobernanza',
+        '',
+        'Cambios fundacionales requieren aprobación de los dos fundadores',
+        'y bump de versión. Ver capítulo 01 y 13.9 del manual.',
+        '',
+        '## Licencias',
+        '',
+        '- Canela: comercial · licenciar',
+        '- IBM Plex Mono: SIL OFL · libre',
+        '- Símbolo halftone: propio ForMeta',
+        '- Tokens CSS: propio ForMeta',
+        '- JSZip (no incluido en pack): MIT'
+    ].join('\n');
+
+    // Symbol SVGs
+    function buildSymbolSVG(strokeColor, coreColor) {
+        // Halftone serializado · uso recipe del manual
+        // (genera puntos al vuelo)
+        const cv = document.createElement('canvas'); cv.width = 160; cv.height = 200;
+        const ctx = cv.getContext('2d');
+        const gota = "M80 12 C80 12 104 52 116 88 C126 118 122 152 102 168 C92 176 80 178 80 178 C80 178 68 176 58 168 C38 152 34 118 44 88 C56 52 80 12 80 12 Z";
+        const path = new Path2D(gota);
+        let circles = '';
+        const sp = 8;
+        for (let y = sp/2; y < 200; y += sp) {
+            const ri = Math.round((y - sp/2) / sp);
+            const xo = (ri % 2 === 0) ? 0 : sp/2;
+            for (let x = sp/2 + xo; x < 160; x += sp) {
+                if (!ctx.isPointInPath(path, x, y)) continue;
+                const dx = x - 80, dy = y - 130;
+                const d = Math.sqrt(dx*dx + dy*dy);
+                const r = Math.max(0.4, 2.8 - d/38 * 2.8);
+                if (r < 0.35 || d < 6) continue;
+                circles += `<circle cx="${x.toFixed(2)}" cy="${y.toFixed(2)}" r="${r.toFixed(2)}" fill="${strokeColor}"/>`;
+            }
+        }
+        circles += `<circle cx="80" cy="130" r="4" fill="${coreColor}"/>`;
+        return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 200" width="160" height="200">${circles}</svg>\n`;
+    }
+
+    const symbolSimple = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 200" width="160" height="200"><path d="M80 12 C80 12 104 52 116 88 C126 118 122 152 102 168 C92 176 80 178 80 178 C80 178 68 176 58 168 C38 152 34 118 44 88 C56 52 80 12 80 12 Z" fill="none" stroke="#B8896A" stroke-width="4" stroke-linejoin="round"/><circle cx="80" cy="130" r="6" fill="#B8896A"/></svg>\n';
+
+    const favicon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 200" width="64" height="64"><path d="M80 12 C80 12 104 52 116 88 C126 118 122 152 102 168 C92 176 80 178 80 178 C80 178 68 176 58 168 C38 152 34 118 44 88 C56 52 80 12 80 12 Z" fill="none" stroke="#2C2C28" stroke-width="6" stroke-linejoin="round"/><circle cx="80" cy="130" r="8" fill="#B8896A"/></svg>\n';
+
+    // HTML starter template
+    const htmlStarter = [
+        '<!DOCTYPE html>',
+        '<html lang="es">',
+        '<head>',
+        '  <meta charset="UTF-8">',
+        '  <meta name="viewport" content="width=device-width, initial-scale=1.0">',
+        '  <title>ForMeta · Pieza nueva</title>',
+        '  <link rel="stylesheet" href="../master.css">',
+        '  <link rel="stylesheet" href="../10-components/components.css">',
+        '  <style>',
+        '    body { background: var(--color-sand); color: var(--color-ink);',
+        '      font-family: var(--font-text); font-size: 17px; line-height: 1.7;',
+        '      -webkit-font-smoothing: antialiased; }',
+        '    .container { max-width: var(--container-default); margin: 0 auto;',
+        '      padding: var(--space-md) var(--space-sm); }',
+        '    h1 { font-family: var(--font-display); font-weight: 300; font-size: 5rem;',
+        '      line-height: 1.05; letter-spacing: -0.02em; margin-bottom: var(--space-xs); }',
+        '  </style>',
+        '</head>',
+        '<body>',
+        '  <svg style="display:none" aria-hidden="true">',
+        '    <defs>',
+        '      <symbol id="drop" viewBox="0 0 160 200"></symbol>',
+        '    </defs>',
+        '  </svg>',
+        '  <scr' + 'ipt>',
+        '    // Generador halftone para el símbolo (poblar #drop al cargar)',
+        '    // Ver halftone-tool.js en 07-illustration/',
+        '  <\/scr' + 'ipt>',
+        '  <div class="container">',
+        '    <h1>Título de la pieza</h1>',
+        '    <p>Contenido base. Editar libremente.</p>',
+        '  </div>',
+        '  <scr' + 'ipt src="../10-components/components.js"><\/scr' + 'ipt>',
+        '</body>',
+        '</html>'
+    ].join('\n');
+
+    // Social card template (OG 1200x630)
+    const socialCard = buildSymbolSVG('#B8896A', '#F4F0E8').replace(/viewBox="[^"]+"/, 'viewBox="0 0 1200 630"').replace(/width="\d+" height="\d+"/, 'width="1200" height="630"').replace('<circle cx="80" cy="130"', '<rect width="1200" height="630" fill="#1A1A18"/><circle cx="80" cy="130"');
+    // Hand-craft a proper OG card
+    function buildOGCard() {
+        const gota = "M80 12 C80 12 104 52 116 88 C126 118 122 152 102 168 C92 176 80 178 80 178 C80 178 68 176 58 168 C38 152 34 118 44 88 C56 52 80 12 80 12 Z";
+        const path = new Path2D(gota);
+        const cv = document.createElement('canvas'); cv.width = 160; cv.height = 200;
+        const ctx = cv.getContext('2d');
+        let dots = '';
+        for (let y = 4; y < 200; y += 8) {
+            const ri = Math.round((y - 4) / 8);
+            const xo = (ri % 2 === 0) ? 0 : 4;
+            for (let x = 4 + xo; x < 160; x += 8) {
+                if (!ctx.isPointInPath(path, x, y)) continue;
+                const dx = x - 80, dy = y - 130;
+                const d = Math.sqrt(dx*dx + dy*dy);
+                const r = Math.max(0.4, 2.8 - d/38 * 2.8);
+                if (r < 0.35 || d < 6) continue;
+                dots += `<circle cx="${x}" cy="${y}" r="${r.toFixed(2)}" fill="#B8896A"/>`;
+            }
+        }
+        dots += '<circle cx="80" cy="130" r="4" fill="#F4F0E8"/>';
+        return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <rect width="1200" height="630" fill="#1A1A18"/>
+  <g transform="translate(140 175) scale(2.0)">${dots}</g>
+  <text x="1080" y="200" text-anchor="end" font-family="monospace" font-size="14" letter-spacing="2.2" fill="#B8896A">FORMETA · MALLORCA</text>
+  <text x="1080" y="305" text-anchor="end" font-family="serif" font-size="78" font-weight="300" fill="#F4F0E8" letter-spacing="-1.6">Dar forma</text>
+  <text x="1080" y="395" text-anchor="end" font-family="serif" font-size="78" font-weight="300" fill="#F4F0E8" letter-spacing="-1.6">a las cosas.</text>
+  <text x="1080" y="590" text-anchor="end" font-family="monospace" font-size="11" letter-spacing="1.6" fill="#E2DDD4" opacity="0.6">v1.0 · 2026.05 · formeta.es</text>
+</svg>
+`;
+    }
+
+    btn.addEventListener('click', async function() {
+        if (typeof JSZip === 'undefined') {
+            status.textContent = 'JSZip no cargado.';
+            status.classList.add('error'); return;
+        }
+        btn.disabled = true; status.classList.remove('error');
+        status.textContent = 'Generando master pack…';
+
+        try {
+            const zip = new JSZip();
+            const root = zip.folder('formeta-master-v1.0');
+
+            status.textContent = 'Añadiendo master.css y README…';
+            root.file('master.css', masterCSS);
+            root.file('README.md', masterReadme);
+
+            status.textContent = 'Añadiendo 03 · logo…';
+            const logoFolder = root.folder('03-logo');
+            logoFolder.file('symbol-halftone-color.svg', buildSymbolSVG('#2C2C28', '#B8896A'));
+            logoFolder.file('symbol-halftone-mono.svg', buildSymbolSVG('#2C2C28', '#2C2C28'));
+            logoFolder.file('symbol-halftone-negative.svg', buildSymbolSVG('#F4F0E8', '#B8896A'));
+            logoFolder.file('symbol-simple.svg', symbolSimple);
+            logoFolder.file('favicon.svg', favicon);
+
+            status.textContent = 'Añadiendo 07 · ilustración…';
+            const illusFolder = root.folder('07-illustration');
+            const halftoneTool = `// halftone-tool.js · ForMeta v1.0
+// fillPath(svgEl, pathD, focal, opts) — halftone dentro de silueta
+// fillField(svgEl, densityFn, opts) — halftone por función de densidad
+// Ver capítulo 07 del manual para receta completa.
+
+const SVGNS = "http://www.w3.org/2000/svg";
+
+export function fillPath(svgEl, pathD, focal, opts = {}) {
+  const sp = opts.spacing || 9;
+  const maxR = opts.maxR || 3.2;
+  const minR = opts.minR || 0.4;
+  const decay = opts.decay || 110;
+  const w = opts.width, h = opts.height;
+  const coreR = opts.coreR != null ? opts.coreR : 5;
+  const cv = document.createElement("canvas");
+  cv.width = w; cv.height = h;
+  const ctx = cv.getContext("2d");
+  const path = new Path2D(pathD);
+  for (let y = sp/2; y < h; y += sp) {
+    const ri = Math.round((y - sp/2) / sp);
+    const xo = (ri % 2 === 0) ? 0 : sp/2;
+    for (let x = sp/2 + xo; x < w; x += sp) {
+      if (!ctx.isPointInPath(path, x, y)) continue;
+      const dx = x - focal[0], dy = y - focal[1];
+      const d = Math.sqrt(dx*dx + dy*dy);
+      const r = Math.max(minR, maxR - d/decay * maxR);
+      if (r < 0.35 || d < coreR + 2) continue;
+      const c = document.createElementNS(SVGNS, "circle");
+      c.setAttribute("cx", x.toFixed(2));
+      c.setAttribute("cy", y.toFixed(2));
+      c.setAttribute("r", r.toFixed(2));
+      c.setAttribute("fill", opts.color || "currentColor");
+      svgEl.appendChild(c);
+    }
+  }
+  if (coreR > 0) {
+    const core = document.createElementNS(SVGNS, "circle");
+    core.setAttribute("cx", focal[0]);
+    core.setAttribute("cy", focal[1]);
+    core.setAttribute("r", coreR);
+    core.setAttribute("fill", opts.coreColor || "var(--core-color, #B8896A)");
+    svgEl.appendChild(core);
+  }
+}
+
+export function fillField(svgEl, densityFn, opts = {}) {
+  const sp = opts.spacing || 9;
+  const maxR = opts.maxR || 3;
+  const minR = opts.minR || 0.3;
+  const w = opts.width, h = opts.height;
+  for (let y = sp/2; y < h; y += sp) {
+    const ri = Math.round((y - sp/2) / sp);
+    const xo = (ri % 2 === 0) ? 0 : sp/2;
+    for (let x = sp/2 + xo; x < w; x += sp) {
+      const density = densityFn(x, y);
+      if (density <= 0) continue;
+      const r = minR + density * (maxR - minR);
+      if (r < 0.35) continue;
+      const c = document.createElementNS(SVGNS, "circle");
+      c.setAttribute("cx", x.toFixed(2));
+      c.setAttribute("cy", y.toFixed(2));
+      c.setAttribute("r", r.toFixed(2));
+      c.setAttribute("fill", opts.color || "currentColor");
+      svgEl.appendChild(c);
+    }
+  }
+}
+`;
+            illusFolder.file('halftone-tool.js', halftoneTool);
+
+            status.textContent = 'Añadiendo 13 · templates…';
+            const tplFolder = root.folder('13-templates');
+            tplFolder.file('html-starter.html', htmlStarter);
+            tplFolder.file('social-card.svg', buildOGCard());
+            tplFolder.file('letterhead.html',
+                '<!DOCTYPE html>\n<html lang="es">\n<head>\n  <meta charset="UTF-8">\n  <title>ForMeta · Letterhead</title>\n  <link rel="stylesheet" href="../master.css">\n  <style>\n    body { background: var(--color-sand); padding: var(--space-md); font-family: var(--font-text); }\n    .letter { max-width: var(--container-narrow); margin: 0 auto; background: var(--color-white); padding: var(--space-lg) var(--space-md); border-radius: 4px; }\n    .head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: var(--space-md); padding-bottom: var(--space-sm); border-bottom: 1px solid var(--color-border-secondary); }\n    .meta { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.16em; color: var(--color-muted); text-align: right; }\n    .body { font-family: var(--font-text); font-size: 1rem; line-height: 1.7; color: var(--color-ink); }\n  </style>\n</head>\n<body>\n  <div class="letter">\n    <div class="head">\n      <svg viewBox="0 0 160 200" width="40" height="50"><!-- Pegar aquí el símbolo halftone --></svg>\n      <div class="meta">FORMETA · MALLORCA<br>2026.05.15<br>v1.0</div>\n    </div>\n    <div class="body">\n      <p>Estimada Cooperativa,</p>\n      <p>Cuerpo de la carta. Canela Text Regular sobre fondo white dentro de container narrow.</p>\n      <p>Atentamente,<br>ForMeta</p>\n    </div>\n  </div>\n</body>\n</html>\n'
+            );
+
+            status.textContent = 'Generando .zip final…';
+            const blob = await zip.generateAsync({ type: 'blob' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url; a.download = 'formeta-master-v1.0.zip';
+            document.body.appendChild(a); a.click(); document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            status.textContent = '✓ Master pack descargado · master.css + 4 carpetas + README';
+        } catch (err) {
+            console.error(err); status.classList.add('error');
+            status.textContent = '✗ ' + (err.message || 'Error al empaquetar');
+        } finally { btn.disabled = false; }
+    });
+
+    // Templates individual download
+    function downloadFile(filename, content, mime) {
+        const blob = new Blob([content], { type: mime || 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = filename;
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+    document.getElementById('tpl-html')?.addEventListener('click', () => downloadFile('html-starter.html', htmlStarter, 'text/html'));
+    document.getElementById('tpl-social')?.addEventListener('click', () => downloadFile('social-card.svg', buildOGCard(), 'image/svg+xml'));
+    document.getElementById('tpl-letter')?.addEventListener('click', () => downloadFile('letterhead.html',
+        '<!DOCTYPE html>\n<html lang="es">\n<head>\n  <meta charset="UTF-8">\n  <title>ForMeta · Letterhead</title>\n  <link rel="stylesheet" href="master.css">\n</head>\n<body>\n  <!-- Letterhead base -->\n</body>\n</html>\n',
+        'text/html'));
+})();
+</script>
+
+<!-- ============================================================ -->
+<!-- 13.10 · texturas, wallpapers y volúmenes 3D · generators     -->
+<!-- ============================================================ -->
+<script>
+(function() {
+    const SVGNS = 'http://www.w3.org/2000/svg';
+
+    function appendDot(svgEl, x, y, r, fill, opacity) {
+        const c = document.createElementNS(SVGNS, 'circle');
+        c.setAttribute('cx', x.toFixed(1));
+        c.setAttribute('cy', y.toFixed(1));
+        c.setAttribute('r', r.toFixed(2));
+        c.setAttribute('fill', fill);
+        if (opacity != null && opacity < 1) c.setAttribute('opacity', opacity.toFixed(2));
+        svgEl.appendChild(c);
+    }
+
+    // ============================================================
+    // WALLPAPER · Radial halftone field
+    // ============================================================
+    function fillRadialField(svgEl, w, h, cx, cy, decay, spacing, dotColor, coreColor) {
+        const maxR = 4.2;
+        for (let y = spacing/2; y < h; y += spacing) {
+            const ri = Math.round((y - spacing/2) / spacing);
+            const xo = (ri % 2 === 0) ? 0 : spacing/2;
+            for (let x = spacing/2 + xo; x < w; x += spacing) {
+                const dx = x - cx, dy = y - cy;
+                const d = Math.sqrt(dx*dx + dy*dy);
+                const r = Math.max(0.5, maxR - d / decay * maxR);
+                if (r < 0.6) continue;
+                appendDot(svgEl, x, y, r, dotColor);
+            }
+        }
+        appendDot(svgEl, cx, cy, 14, coreColor);
+    }
+
+    // WALLPAPER · Topographic wave
+    function fillTopoWave(svgEl, w, h, spacing, dotColor, coreColor) {
+        const cv = document.createElement('canvas');
+        cv.width = w; cv.height = h;
+        const ctx = cv.getContext('2d');
+        const wavePath = 'M0 0 L0 ' + (h*0.72) + ' C' + (w*0.2) + ' ' + (h*0.6) + ' ' + (w*0.4) + ' ' + (h*0.82) + ' ' + (w*0.55) + ' ' + (h*0.65) + ' C' + (w*0.7) + ' ' + (h*0.48) + ' ' + (w*0.85) + ' ' + (h*0.72) + ' ' + w + ' ' + (h*0.62) + ' L' + w + ' 0 Z';
+        const path = new Path2D(wavePath);
+        const focal = [w/2, h*0.18];
+        const decay = w * 0.45;
+        const maxR = 4;
+        for (let y = spacing/2; y < h; y += spacing) {
+            const ri = Math.round((y - spacing/2) / spacing);
+            const xo = (ri % 2 === 0) ? 0 : spacing/2;
+            for (let x = spacing/2 + xo; x < w; x += spacing) {
+                if (!ctx.isPointInPath(path, x, y)) continue;
+                const dx = x - focal[0], dy = y - focal[1];
+                const d = Math.sqrt(dx*dx + dy*dy);
+                const r = Math.max(0.5, maxR - d / decay * maxR);
+                if (r < 0.6) continue;
+                appendDot(svgEl, x, y, r, dotColor);
+            }
+        }
+        appendDot(svgEl, focal[0], focal[1], 16, coreColor);
+    }
+
+    // WALLPAPER · Oversized gota
+    function fillScaledGota(svgEl, w, h, spacing, dotColor, coreColor, scaleFactor) {
+        const cv = document.createElement('canvas'); cv.width = 160; cv.height = 200;
+        const ctx = cv.getContext('2d');
+        const path = new Path2D('M80 12 C80 12 104 52 116 88 C126 118 122 152 102 168 C92 176 80 178 80 178 C80 178 68 176 58 168 C38 152 34 118 44 88 C56 52 80 12 80 12 Z');
+        const scale = Math.min(w / 160, h / 200) * (scaleFactor || 0.85);
+        const offsetX = (w - 160 * scale) / 2;
+        const offsetY = (h - 200 * scale) / 2;
+        const focal = [offsetX + 80 * scale, offsetY + 130 * scale];
+        const decay = Math.min(w, h) * 0.55;
+        const maxR = Math.max(spacing * 0.42, 3);
+        for (let y = spacing/2; y < h; y += spacing) {
+            const ri = Math.round((y - spacing/2) / spacing);
+            const xo = (ri % 2 === 0) ? 0 : spacing/2;
+            for (let x = spacing/2 + xo; x < w; x += spacing) {
+                const lx = (x - offsetX) / scale;
+                const ly = (y - offsetY) / scale;
+                if (lx < 0 || lx > 160 || ly < 0 || ly > 200) continue;
+                if (!ctx.isPointInPath(path, lx, ly)) continue;
+                const dx = x - focal[0], dy = y - focal[1];
+                const d = Math.sqrt(dx*dx + dy*dy);
+                const r = Math.max(0.6, maxR - d / decay * maxR);
+                if (r < 0.7) continue;
+                appendDot(svgEl, x, y, r, dotColor);
+            }
+        }
+        appendDot(svgEl, focal[0], focal[1], spacing * 0.7, coreColor);
+    }
+
+    // Populate wallpapers with literal colors (no currentColor)
+    fillRadialField(document.getElementById('wp-field-desktop'), 1920, 1080, 960, 540, 720, 20, '#F4F0E8', '#B8896A');
+    fillTopoWave(document.getElementById('wp-topo-desktop'), 1920, 1080, 18, '#2C2C28', '#B8896A');
+    fillScaledGota(document.getElementById('wp-gota-mobile'), 1080, 1920, 24, '#B8896A', '#F4F0E8', 0.82);
+    fillScaledGota(document.getElementById('wp-sunset-mobile'), 1080, 1920, 28, '#2C2C28', '#2C2C28', 0.75);
+
+    // For mobile wallpapers stages, prepend bg rect for visual preview
+    function injectBg(svgEl, w, h, fill) {
+        const rect = document.createElementNS(SVGNS, 'rect');
+        rect.setAttribute('width', w); rect.setAttribute('height', h);
+        rect.setAttribute('fill', fill);
+        svgEl.insertBefore(rect, svgEl.firstChild);
+    }
+    injectBg(document.getElementById('wp-field-desktop'), 1920, 1080, '#1A1A18');
+    injectBg(document.getElementById('wp-topo-desktop'), 1920, 1080, '#F4F0E8');
+    injectBg(document.getElementById('wp-gota-mobile'), 1080, 1920, '#1A1A18');
+    // sunset-mobile: inject linear gradient
+    (function() {
+        const svg = document.getElementById('wp-sunset-mobile');
+        const defs = document.createElementNS(SVGNS, 'defs');
+        defs.innerHTML = '<linearGradient id="wpSunset" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#B8896A"/><stop offset="60%" stop-color="#E2DDD4"/><stop offset="100%" stop-color="#F4F0E8"/></linearGradient>';
+        const rect = document.createElementNS(SVGNS, 'rect');
+        rect.setAttribute('width', 1080); rect.setAttribute('height', 1920);
+        rect.setAttribute('fill', 'url(#wpSunset)');
+        svg.insertBefore(rect, svg.firstChild);
+        svg.insertBefore(defs, svg.firstChild);
+    })();
+
+    // ============================================================
+    // 3D FIGURES · halftone point clouds
+    // ============================================================
+
+    function sphereHalftone(svgEl, N, R, cx, cy, tiltDeg, dotColor, coreColor) {
+        const phi = (1 + Math.sqrt(5)) / 2;
+        const tilt = (tiltDeg || 18) * Math.PI / 180;
+        const pts = [];
+        for (let i = 0; i < N; i++) {
+            const t = (i + 0.5) / N;
+            const inc = Math.acos(1 - 2 * t);
+            const az = 2 * Math.PI * i / phi;
+            const x = R * Math.sin(inc) * Math.cos(az);
+            const y = R * Math.sin(inc) * Math.sin(az);
+            const z = R * Math.cos(inc);
+            const yR = y * Math.cos(tilt) - z * Math.sin(tilt);
+            const zR = y * Math.sin(tilt) + z * Math.cos(tilt);
+            pts.push({ x: cx + x, y: cy + yR, z: zR });
+        }
+        pts.sort((a, b) => a.z - b.z);
+        pts.forEach(p => {
+            const ratio = (p.z + R) / (2 * R);
+            appendDot(svgEl, p.x, p.y, 0.7 + ratio * 2.6, dotColor, 0.3 + ratio * 0.7);
+        });
+        appendDot(svgEl, cx, cy, 4.5, coreColor);
+    }
+
+    function torusHalftone(svgEl, N, R, r, cx, cy, tiltDeg, dotColor, coreColor) {
+        const tilt = (tiltDeg || 25) * Math.PI / 180;
+        const pts = [];
+        for (let i = 0; i < N; i++) {
+            const u = 2 * Math.PI * (i / N);
+            const v = 2 * Math.PI * Math.random();
+            const x = (R + r * Math.cos(v)) * Math.cos(u);
+            const y = (R + r * Math.cos(v)) * Math.sin(u);
+            const z = r * Math.sin(v);
+            const yR = y * Math.cos(tilt) - z * Math.sin(tilt);
+            const zR = y * Math.sin(tilt) + z * Math.cos(tilt);
+            pts.push({ x: cx + x, y: cy + yR, z: zR });
+        }
+        pts.sort((a, b) => a.z - b.z);
+        pts.forEach(p => {
+            const ratio = (p.z + (R + r)) / (2 * (R + r));
+            appendDot(svgEl, p.x, p.y, 0.7 + ratio * 1.9, dotColor, 0.4 + ratio * 0.6);
+        });
+        appendDot(svgEl, cx, cy, 4.5, coreColor);
+    }
+
+    function gotaVolumetrica(svgEl, N, cx, cy, scale, tiltDeg, dotColor, coreColor) {
+        const tilt = (tiltDeg || 12) * Math.PI / 180;
+        function halfWidth(y_l) {
+            if (y_l < -88 || y_l > 88) return 0;
+            if (y_l <= 0) {
+                const t = (y_l + 88) / 88;
+                return 44 * Math.sqrt(t);
+            }
+            const t = y_l / 88;
+            return 44 * Math.sqrt(Math.max(0, 1 - t * t));
+        }
+        const pts = [];
+        for (let i = 0; i < N; i++) {
+            const y_l = (Math.random() - 0.5) * 176;
+            const hw = halfWidth(y_l);
+            if (hw < 1) continue;
+            const theta = Math.random() * 2 * Math.PI;
+            const x = hw * Math.cos(theta);
+            const z = hw * Math.sin(theta);
+            const yR = y_l * Math.cos(tilt) - z * Math.sin(tilt);
+            const zR = y_l * Math.sin(tilt) + z * Math.cos(tilt);
+            pts.push({ x: cx + x * scale, y: cy + yR * scale, z: zR * scale });
+        }
+        pts.sort((a, b) => a.z - b.z);
+        pts.forEach(p => {
+            const ratio = Math.max(0, Math.min(1, (p.z + 60) / 120));
+            appendDot(svgEl, p.x, p.y, 0.7 + ratio * 2.0, dotColor, 0.4 + ratio * 0.6);
+        });
+        // Core at gota focal point (local y = 42, after tilt + scale)
+        const yCore = 42 * Math.cos(tilt) * scale;
+        appendDot(svgEl, cx, cy + yCore, 4.5, coreColor);
+    }
+
+    // Populate figures with literal colors per stage tint
+    sphereHalftone(document.getElementById('fig-sphere'), 600, 110, 150, 150, 18, '#2C2C28', '#B8896A');
+    gotaVolumetrica(document.getElementById('fig-gota'), 500, 150, 150, 1.4, 12, '#F4F0E8', '#B8896A');
+    torusHalftone(document.getElementById('fig-torus'), 700, 75, 28, 150, 150, 28, '#2C2C28', '#B8896A');
+
+    // ============================================================
+    // DOWNLOADS · texturas, wallpapers, figuras
+    // ============================================================
+
+    function downloadString(filename, content) {
+        const blob = new Blob([content], { type: 'image/svg+xml' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = filename;
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+
+    function serializeWallpaper(svgEl, viewBox) {
+        // Serialize current children directly — they already have literal colors and bg
+        const xmlSerializer = new XMLSerializer();
+        let content = '';
+        Array.from(svgEl.children).forEach(node => {
+            content += xmlSerializer.serializeToString(node);
+        });
+        return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="' + viewBox + '">' + content + '</svg>\n';
+    }
+
+    // Texture tiles (literal SVG strings)
+    const textureTiles = {
+        'grain-regular': '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1.4" fill="#2C2C28" opacity="0.5"/></svg>',
+        'mesh-accent': '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><circle cx="5" cy="5" r="0.8" fill="#2C2C28"/><circle cx="15" cy="5" r="0.8" fill="#2C2C28"/><circle cx="10" cy="10" r="1.2" fill="#B8896A"/><circle cx="5" cy="15" r="0.8" fill="#2C2C28"/><circle cx="15" cy="15" r="0.8" fill="#2C2C28"/></svg>',
+        'topo': '<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="4" fill="none" stroke="#2C2C28" stroke-width="0.4" opacity="0.4"/><circle cx="15" cy="15" r="8" fill="none" stroke="#2C2C28" stroke-width="0.4" opacity="0.25"/><circle cx="15" cy="15" r="1" fill="#B8896A"/></svg>',
+        'grain-negative': '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><rect width="24" height="24" fill="#1A1A18"/><circle cx="12" cy="12" r="1.4" fill="#F4F0E8" opacity="0.35"/></svg>',
+        'drift': '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"><circle cx="5" cy="5" r="0.4" fill="#2C2C28"/><circle cx="15" cy="15" r="0.7" fill="#2C2C28"/><circle cx="25" cy="25" r="1" fill="#2C2C28"/><circle cx="35" cy="35" r="1.4" fill="#B8896A"/></svg>',
+        'constellation': '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><circle cx="4" cy="8" r="0.8" fill="#2C2C28"/><circle cx="12" cy="6" r="1.1" fill="#2C2C28"/><circle cx="20" cy="10" r="1.3" fill="#B8896A"/><circle cx="28" cy="8" r="0.7" fill="#2C2C28"/><circle cx="6" cy="20" r="1" fill="#2C2C28"/><circle cx="14" cy="24" r="0.6" fill="#2C2C28"/><circle cx="22" cy="22" r="0.9" fill="#2C2C28"/><circle cx="28" cy="26" r="0.5" fill="#2C2C28"/></svg>'
+    };
+
+    document.querySelectorAll('[data-tex]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const id = btn.dataset.tex;
+            if (textureTiles[id]) downloadString('texture-' + id + '.svg', textureTiles[id]);
+        });
+    });
+
+    const wpMap = {
+        'field-desktop':  { id: 'wp-field-desktop',  vb: '0 0 1920 1080' },
+        'topo-desktop':   { id: 'wp-topo-desktop',   vb: '0 0 1920 1080' },
+        'gota-mobile':    { id: 'wp-gota-mobile',    vb: '0 0 1080 1920' },
+        'sunset-mobile':  { id: 'wp-sunset-mobile',  vb: '0 0 1080 1920' }
+    };
+    document.querySelectorAll('[data-wp]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const id = btn.dataset.wp;
+            const cfg = wpMap[id];
+            if (!cfg) return;
+            downloadString('wallpaper-' + id + '.svg', serializeWallpaper(document.getElementById(cfg.id), cfg.vb));
+        });
+    });
+
+    const figMap = {
+        'sphere': { id: 'fig-sphere', vb: '0 0 300 300', bg: '#F4F0E8' },
+        'gota':   { id: 'fig-gota',   vb: '0 0 300 300', bg: '#1A1A18' },
+        'torus':  { id: 'fig-torus',  vb: '0 0 300 300', bg: '#F4F0E8' }
+    };
+    document.querySelectorAll('[data-fig]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const id = btn.dataset.fig;
+            const cfg = figMap[id];
+            if (!cfg) return;
+            const xmlSer = new XMLSerializer();
+            let content = '<rect width="300" height="300" fill="' + cfg.bg + '"/>';
+            Array.from(document.getElementById(cfg.id).children).forEach(node => {
+                content += xmlSer.serializeToString(node);
+            });
+            downloadString('volume-' + id + '.svg',
+                '<svg xmlns="http://www.w3.org/2000/svg" viewBox="' + cfg.vb + '">' + content + '</svg>\n'
+            );
+        });
+    });
+})();
+</script>
+
 </body>
 </html>

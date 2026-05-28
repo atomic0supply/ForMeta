@@ -16,7 +16,7 @@
   font-size: 0.66rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--terracotta);
+  color: var(--color-terra);
 }
 
 .title {
@@ -32,10 +32,10 @@
   align-items: center;
   gap: 8px;
   padding: 9px 20px;
-  border: 1px solid var(--ink);
+  border: 1px solid var(--color-ink);
   border-radius: 999px;
-  background: var(--ink);
-  color: var(--sand);
+  background: var(--color-ink);
+  color: var(--color-sand);
   font-family: var(--font-mono), monospace;
   font-size: 0.68rem;
   letter-spacing: 0.16em;
@@ -46,12 +46,12 @@
 }
 
 .btnNew:hover {
-  background: var(--terracotta);
-  border-color: var(--terracotta);
+  background: var(--color-terra);
+  border-color: var(--color-terra);
 }
 
 .empty {
-  color: var(--muted);
+  color: var(--color-muted-strong);
   font-size: 0.95rem;
   line-height: 1.8;
 }
@@ -74,9 +74,9 @@
   font-size: 0.62rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--color-muted-strong);
   padding-bottom: 10px;
-  border-bottom: 1px solid var(--line-soft);
+  border-bottom: 1px solid var(--color-border-soft);
 }
 
 .linksGrid {
@@ -90,7 +90,7 @@
   align-items: center;
   gap: 14px;
   padding: 14px 18px;
-  border: 1px solid var(--line-soft);
+  border: 1px solid var(--color-border-soft);
   border-radius: var(--radius-sm);
   background: rgba(244, 240, 232, 0.5);
   text-decoration: none;
@@ -102,7 +102,7 @@
 
 .linkCard:hover {
   background: rgba(244, 240, 232, 0.95);
-  border-color: var(--line);
+  border-color: var(--color-border);
   transform: translateY(-1px);
 }
 
@@ -113,7 +113,7 @@
 
 .linkTitle {
   font-size: 0.95rem;
-  color: var(--ink);
+  color: var(--color-ink);
   display: block;
   white-space: nowrap;
   overflow: hidden;
@@ -123,7 +123,7 @@
 .linkDesc {
   font-family: var(--font-mono), monospace;
   font-size: 0.62rem;
-  color: var(--muted);
+  color: var(--color-muted-strong);
   display: block;
   margin-top: 2px;
   white-space: nowrap;
@@ -146,31 +146,31 @@
 
 .btnAction {
   background: none;
-  border: 1px solid var(--line);
+  border: 1px solid var(--color-border);
   border-radius: 999px;
   padding: 4px 10px;
   font-family: var(--font-mono), monospace;
   font-size: 0.58rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--color-muted-strong);
   transition:
     color var(--motion-fast) var(--ease-smooth),
     border-color var(--motion-fast) var(--ease-smooth);
 }
 
 .btnAction:hover {
-  color: var(--ink);
+  color: var(--color-ink);
   border-color: rgba(44, 44, 40, 0.4);
 }
 
 .btnDanger {
-  color: var(--danger);
+  color: var(--color-alert);
   border-color: rgba(208, 90, 90, 0.35);
 }
 
 .btnDanger:hover {
-  border-color: var(--danger);
+  border-color: var(--color-alert);
 }
 
 /* Drawer */
@@ -197,8 +197,8 @@
   z-index: 50;
   width: 460px;
   max-width: calc(100vw - 40px);
-  background: var(--sand-soft);
-  border-left: 1px solid var(--line);
+  background: var(--color-sand-soft);
+  border-left: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
   transform: translateX(100%);
@@ -215,10 +215,10 @@
   align-items: center;
   justify-content: space-between;
   padding: 24px 28px;
-  border-bottom: 1px solid var(--line-soft);
+  border-bottom: 1px solid var(--color-border-soft);
   position: sticky;
   top: 0;
-  background: var(--sand-soft);
+  background: var(--color-sand-soft);
   z-index: 1;
 }
 
@@ -227,18 +227,18 @@
   font-size: 0.66rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--terracotta);
+  color: var(--color-terra);
 }
 
 .drawerClose {
   background: none;
   border: none;
-  color: var(--muted);
+  color: var(--color-muted-strong);
   padding: 4px 8px;
   transition: color var(--motion-fast) var(--ease-smooth);
 }
 
-.drawerClose:hover { color: var(--ink); }
+.drawerClose:hover { color: var(--color-ink); }
 
 .form {
   padding: 28px;
@@ -259,18 +259,18 @@
   font-size: 0.62rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--terracotta);
+  color: var(--color-terra);
 }
 
 .input {
   background: none;
   border: none;
-  border-bottom: 1px solid var(--stone-strong);
+  border-bottom: 1px solid var(--color-stone-strong);
   border-radius: 0;
   padding: 8px 0;
-  font-family: var(--font-body), serif;
+  font-family: var(--font-text), serif;
   font-size: 1rem;
-  color: var(--ink);
+  color: var(--color-ink);
   transition: border-color var(--motion-fast) var(--ease-smooth);
   width: 100%;
   -webkit-appearance: none;
@@ -279,7 +279,7 @@
 
 .input:focus {
   outline: none;
-  border-bottom-color: var(--terracotta);
+  border-bottom-color: var(--color-terra);
 }
 
 .textarea {
@@ -302,30 +302,30 @@
 
 .btnCancel {
   background: none;
-  border: 1px solid var(--line);
+  border: 1px solid var(--color-border);
   border-radius: 999px;
   padding: 9px 20px;
   font-family: var(--font-mono), monospace;
   font-size: 0.66rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--color-muted-strong);
   transition:
     color var(--motion-fast) var(--ease-smooth),
     border-color var(--motion-fast) var(--ease-smooth);
 }
 
 .btnCancel:hover {
-  color: var(--ink);
+  color: var(--color-ink);
   border-color: rgba(44, 44, 40, 0.4);
 }
 
 .btnSave {
   padding: 9px 24px;
-  border: 1px solid var(--ink);
+  border: 1px solid var(--color-ink);
   border-radius: 999px;
-  background: var(--ink);
-  color: var(--sand);
+  background: var(--color-ink);
+  color: var(--color-sand);
   font-family: var(--font-mono), monospace;
   font-size: 0.66rem;
   letter-spacing: 0.14em;
@@ -336,8 +336,8 @@
 }
 
 .btnSave:hover:not(:disabled) {
-  background: var(--terracotta);
-  border-color: var(--terracotta);
+  background: var(--color-terra);
+  border-color: var(--color-terra);
 }
 
 .btnSave:disabled {
@@ -354,13 +354,13 @@
   font-size: 0.66rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--danger);
+  color: var(--color-alert);
   transition: background var(--motion-fast) var(--ease-smooth), border-color var(--motion-fast) var(--ease-smooth);
 }
 
 .btnDelete:hover {
   background: rgba(208, 90, 90, 0.08);
-  border-color: var(--danger);
+  border-color: var(--color-alert);
 }
 
 @media (max-width: 640px) {

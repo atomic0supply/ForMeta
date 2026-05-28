@@ -3,15 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>4. Tipografía - ForMeta Guía de Estilo</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+    <title>04. Tipografía - ForMeta Guía de Estilo</title>
+
     <style>
+        /* ------------------------------------------------------------
+           @font-face — subset curado.
+           Las fuentes Canela están en Trial: licenciar antes de publicar.
+           Cuando se licencien, renombrar 'Canela Trial' → 'Canela', etc.
+           IBM Plex Mono es OFL: libre de licencia.
+           ------------------------------------------------------------ */
+        @font-face {
+            font-family: 'Canela Trial';
+            src: url('typo/Canela_Collection/Canela Family/Canela-Light-Trial.otf') format('opentype');
+            font-weight: 300; font-style: normal; font-display: swap;
+        }
+        @font-face {
+            font-family: 'Canela Trial';
+            src: url('typo/Canela_Collection/Canela Family/Canela-LightItalic-Trial.otf') format('opentype');
+            font-weight: 300; font-style: italic; font-display: swap;
+        }
+        @font-face {
+            font-family: 'Canela Trial';
+            src: url('typo/Canela_Collection/Canela Family/Canela-Medium-Trial.otf') format('opentype');
+            font-weight: 500; font-style: normal; font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Canela Deck Trial';
+            src: url('typo/Canela_Collection/Canela Deck Family/CanelaDeck-Light-Trial.otf') format('opentype');
+            font-weight: 300; font-style: normal; font-display: swap;
+        }
+        @font-face {
+            font-family: 'Canela Deck Trial';
+            src: url('typo/Canela_Collection/Canela Deck Family/CanelaDeck-LightItalic-Trial.otf') format('opentype');
+            font-weight: 300; font-style: italic; font-display: swap;
+        }
+        @font-face {
+            font-family: 'Canela Deck Trial';
+            src: url('typo/Canela_Collection/Canela Deck Family/CanelaDeck-Medium-Trial.otf') format('opentype');
+            font-weight: 500; font-style: normal; font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Canela Text Trial';
+            src: url('typo/Canela_Collection/Canela Text Family/CanelaText-Regular-Trial.otf') format('opentype');
+            font-weight: 400; font-style: normal; font-display: swap;
+        }
+        @font-face {
+            font-family: 'Canela Text Trial';
+            src: url('typo/Canela_Collection/Canela Text Family/CanelaText-RegularItalic-Trial.otf') format('opentype');
+            font-weight: 400; font-style: italic; font-display: swap;
+        }
+        @font-face {
+            font-family: 'Canela Text Trial';
+            src: url('typo/Canela_Collection/Canela Text Family/CanelaText-Medium-Trial.otf') format('opentype');
+            font-weight: 500; font-style: normal; font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Canela Condensed Trial';
+            src: url('typo/Canela_Collection/Canela Condensed Family/CanelaCondensed-Medium-Trial.otf') format('opentype');
+            font-weight: 500; font-style: normal; font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'IBM Plex Mono';
+            src: url('typo/IBM_PLEX/IBMPlexMono-Regular.ttf') format('truetype');
+            font-weight: 400; font-style: normal; font-display: swap;
+        }
+        @font-face {
+            font-family: 'IBM Plex Mono';
+            src: url('typo/IBM_PLEX/IBMPlexMono-Italic.ttf') format('truetype');
+            font-weight: 400; font-style: italic; font-display: swap;
+        }
+        @font-face {
+            font-family: 'IBM Plex Mono';
+            src: url('typo/IBM_PLEX/IBMPlexMono-Medium.ttf') format('truetype');
+            font-weight: 500; font-style: normal; font-display: swap;
+        }
+
         :root {
-            --font-mono: 'DM Mono', 'Courier New', Courier, monospace;
-            --font-serif: 'Cormorant Garamond', Garamond, Georgia, serif;
-            
+            --font-display: 'Canela Trial', 'Cormorant Garamond', Garamond, Georgia, serif;
+            --font-deck:    'Canela Deck Trial', 'Cormorant Garamond', Garamond, Georgia, serif;
+            --font-text:    'Canela Text Trial', 'Cormorant Garamond', Garamond, Georgia, serif;
+            --font-cond:    'Canela Condensed Trial', 'Cormorant Garamond', Garamond, Georgia, serif;
+            --font-mono:    'IBM Plex Mono', 'DM Mono', 'Courier New', Courier, monospace;
+
             --color-ink: #2C2C28;
             --color-terra: #B8896A;
             --color-sand: #F4F0E8;
@@ -22,12 +99,12 @@
             --color-offblack: #1A1A18;
             --color-muted: #7A7870;
             --color-alert: #d05a5a;
-            
+
             --color-bg: var(--color-sand);
             --color-text: var(--color-ink);
             --color-text-secondary: var(--color-muted);
             --color-border-secondary: rgba(44, 44, 40, 0.1);
-            
+
             --spacing-xs: 0.5rem;
             --spacing-sm: 1.5rem;
             --spacing-md: 3rem;
@@ -35,424 +112,758 @@
             --spacing-xl: 10rem;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        body {background-color: var(--color-sand);
+        body {
+            background-color: var(--color-sand);
             color: var(--color-text);
-            /* Escala indicada dice: Body = Cormorant Garamond Light 11-13pt */
-            font-family: var(--font-serif);
-            font-weight: 300;
-            font-size: 1.15rem;
-            font-weight: 300;
-            font-size: 1.25rem; /* ~12pt context */
-            line-height: 1.8;
+            font-family: var(--font-text);
+            font-weight: 400;
+            font-size: 17px;
+            line-height: 1.7;
             -webkit-font-smoothing: antialiased;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: var(--spacing-md) var(--spacing-sm);
-        }
-
-        /* Typography */
-        h1, h2, h3 {
-            font-family: var(--font-serif);
-            font-weight: 300;
-            color: var(--color-ink);
+            flex: 1;
         }
 
         h1 {
-            font-size: 4.5rem;
+            font-family: var(--font-display);
+            font-weight: 300;
+            font-size: 5rem;
             line-height: 1.05;
-            letter-spacing: -0.01em;
+            letter-spacing: -0.02em;
+            color: var(--color-ink);
             margin-bottom: var(--spacing-xs);
         }
 
         h2 {
+            font-family: var(--font-deck);
+            font-weight: 300;
             font-size: 2.5rem;
-            line-height: 1.2;
+            line-height: 1.15;
+            letter-spacing: -0.01em;
+            color: var(--color-ink);
             margin-bottom: var(--spacing-sm);
             padding-bottom: 1rem;
             border-bottom: 1px solid var(--color-border-secondary);
         }
 
         h3 {
+            font-family: var(--font-deck);
+            font-weight: 400;
             font-size: 1.5rem;
             line-height: 1.3;
-            margin-bottom: 1rem;
+            color: var(--color-ink);
             margin-top: 2rem;
+            margin-bottom: 1rem;
         }
 
         p {
+            font-family: var(--font-text);
             color: var(--color-text-secondary);
             max-width: 650px;
             margin-bottom: var(--spacing-sm);
         }
 
-        .intro {
-            margin-bottom: var(--spacing-xl);
+        .intro { margin-bottom: var(--spacing-xl); }
+
+        .intro p.lead {
+            font-family: var(--font-deck);
+            font-style: italic;
+            font-weight: 300;
+            font-size: 1.5rem;
+            line-height: 1.4;
+            color: var(--color-ink);
+            max-width: 720px;
+            margin-top: var(--spacing-sm);
         }
 
         .lbl {
             font-family: var(--font-mono);
             font-size: 11px;
-            letter-spacing: 0.2em;
+            font-weight: 400;
+            letter-spacing: 0.16em;
             text-transform: uppercase;
             color: var(--color-text-secondary);
             margin-top: 1rem;
             margin-bottom: 0.5rem;
         }
 
-        /* Type Specimen Box */
-        .type-showcase {
+        section { margin-bottom: var(--spacing-xl); }
+
+        /* -------- Showcase cards (light) -------- */
+        .specimen {
             background: var(--color-white);
             border: 1px solid var(--color-border-secondary);
             border-radius: 8px;
-            padding: 3rem;
-            margin-bottom: 3rem;
+            padding: 2.5rem;
+            margin-bottom: 1.5rem;
         }
+        .specimen.dark {
+            background: var(--color-offblack);
+            border-color: rgba(255,255,255,0.08);
+            color: var(--color-sand);
+        }
+        .specimen.dark .spec-name { color: var(--color-sand); }
+        .specimen.dark .spec-meta { color: var(--color-terra); }
+        .specimen.dark .spec-body { color: var(--color-stone); }
 
-        .showcase-header {
+        .spec-head {
             display: flex;
             justify-content: space-between;
             align-items: baseline;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid var(--color-stone);
+            gap: 1rem;
+            padding-bottom: 1.2rem;
+            margin-bottom: 1.8rem;
+            border-bottom: 1px solid rgba(44, 44, 40, 0.08);
         }
+        .specimen.dark .spec-head { border-bottom-color: rgba(255,255,255,0.08); }
 
-        .family-name {
-            font-family: var(--font-serif); /* keep interface elements sans or serif as needed, using what we have */
-            font-size: 1.25rem;
+        .spec-name {
+            font-family: var(--font-text);
+            font-size: 1rem;
+            font-weight: 500;
             color: var(--color-ink);
-            letter-spacing: 0.05em;
+            letter-spacing: 0.02em;
         }
 
-        .family-role {
+        .spec-meta {
             font-family: var(--font-mono);
-            font-size: 0.8rem;
-            letter-spacing: 0.1em;
-            color: var(--color-terra);
+            font-size: 0.7rem;
+            font-weight: 400;
+            letter-spacing: 0.16em;
             text-transform: uppercase;
+            color: var(--color-terra);
+            text-align: right;
         }
 
-        /* Cormorant Specimen */
-        .specimen-serif {
-            font-family: var(--font-serif);
+        .spec-body { color: var(--color-ink); }
+
+        /* Display specimens — Canela */
+        .demo-display {
+            font-family: var(--font-display);
             font-weight: 300;
-        }
-
-        .specimen-serif-hero {
-            font-size: 4rem;
-            line-height: 1.1;
-            color: var(--color-ink);
-            margin-bottom: 1.5rem;
-            letter-spacing: -0.01em;
-        }
-
-        .specimen-serif-sub {
-            font-size: 2.5rem;
-            line-height: 1.2;
-            color: var(--color-text-secondary);
+            font-size: 4.5rem;
+            line-height: 1.05;
+            letter-spacing: -0.02em;
             margin-bottom: 1rem;
         }
-
-        .specimen-serif-body {
+        .demo-deck {
+            font-family: var(--font-deck);
+            font-weight: 300;
+            font-size: 2.25rem;
+            line-height: 1.2;
+            margin-bottom: 0.8rem;
+        }
+        .demo-deck-italic {
+            font-family: var(--font-deck);
+            font-weight: 300;
+            font-style: italic;
             font-size: 1.5rem;
             line-height: 1.4;
+            color: var(--color-text-secondary);
+            margin-bottom: 0.5rem;
+        }
+        .demo-text {
+            font-family: var(--font-text);
+            font-weight: 400;
+            font-size: 1.0625rem;
+            line-height: 1.7;
             color: var(--color-ink);
-            max-width: 800px;
+            max-width: 60ch;
         }
-
-        /* DM Mono Specimen */
-        .specimen-mono {
-            font-family: var(--font-mono);
-            font-weight: 300;
-        }
-
-        .specimen-mono-block {
-            background: var(--color-stone);
-            padding: 1.5rem;
-            border-radius: 4px;
-            color: var(--color-ink);
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
-            line-height: 1.6;
-            letter-spacing: 0.1em;
-        }
-
-        .specimen-mono-light {
-            font-size: 0.9rem;
-            letter-spacing: 0.2em;
-            color: var(--color-muted);
+        .demo-text em { font-style: italic; color: var(--color-terra); }
+        .demo-cond {
+            font-family: var(--font-cond);
+            font-weight: 500;
+            font-size: 5rem;
+            line-height: 1;
+            letter-spacing: -0.01em;
             text-transform: uppercase;
-            margin-bottom: 2rem;
+            color: var(--color-ink);
         }
-
-        .specimen-mono-accent {
-            color: var(--color-terra);
+        .demo-mono-block {
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            line-height: 1.7;
+            color: var(--color-ink);
+            background: var(--color-sand);
+            padding: 1.2rem 1.4rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
         }
+        .demo-mono-label {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--color-muted);
+        }
+        .demo-mono-accent { color: var(--color-terra); }
 
-        /* Escala Tipográfica Table */
+        /* -------- Scale table -------- */
         .table-wrapper {
             width: 100%;
             overflow-x: auto;
-            margin-bottom: 3rem;
             background: var(--color-white);
             border-radius: 8px;
             border: 1px solid var(--color-border-secondary);
         }
-
         table {
             width: 100%;
             border-collapse: collapse;
             font-family: var(--font-mono);
-            font-size: 0.95rem;
+            font-size: 0.85rem;
         }
-
         th, td {
             text-align: left;
-            padding: 1.2rem;
+            padding: 1rem 1.2rem;
             border-bottom: 1px solid var(--color-border-secondary);
+            vertical-align: top;
         }
-
         th {
             font-weight: 400;
             color: var(--color-muted);
             background: rgba(0,0,0,0.02);
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             text-transform: uppercase;
-            letter-spacing: 0.1em;
+            letter-spacing: 0.12em;
         }
-
-        tr:last-child td {
-            border-bottom: none;
-        }
-
-        .scale-nivel {
-            color: var(--color-ink);
-            font-weight: 500;
-        }
-
-        .scale-fuente {
-            color: var(--color-terra);
-        }
-
+        tr:last-child td { border-bottom: none; }
+        .scale-rol { color: var(--color-ink); font-weight: 500; }
+        .scale-font { color: var(--color-terra); }
         .scale-uso {
             color: var(--color-text-secondary);
-            font-family: var(--font-serif);
-            font-size: 1.1rem;
-            font-weight: 300;
+            font-family: var(--font-text);
+            font-size: 1rem;
+            font-weight: 400;
             letter-spacing: 0;
         }
 
-        /* Fallback Box */
+        /* -------- Dark/light comparison grid -------- */
+        .mode-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        @media (max-width: 800px) {
+            .mode-grid { grid-template-columns: 1fr; }
+        }
+
+        /* -------- Metadata strip (firma) -------- */
+        .meta-strip {
+            background: var(--color-offblack);
+            color: var(--color-sand);
+            padding: 1.2rem 1.6rem;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        .meta-strip span { color: var(--color-stone); }
+        .meta-strip .sep { color: var(--color-terra); }
+        .meta-strip .tag {
+            color: var(--color-terra);
+            font-weight: 500;
+        }
+
+        /* -------- Do / Don't pairing -------- */
+        .pair-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        @media (max-width: 800px) {
+            .pair-grid { grid-template-columns: 1fr; }
+        }
+        .pair {
+            background: var(--color-white);
+            border: 1px solid var(--color-border-secondary);
+            border-radius: 8px;
+            padding: 1.8rem;
+            position: relative;
+        }
+        .pair::before {
+            content: attr(data-label);
+            position: absolute;
+            top: -10px;
+            left: 1.5rem;
+            background: var(--color-sand);
+            padding: 0 0.6rem;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            letter-spacing: 0.16em;
+            font-weight: 500;
+        }
+        .pair.do::before { content: 'SÍ'; color: var(--color-sage); }
+        .pair.dont::before { content: 'NO'; color: var(--color-alert); }
+        .pair p { margin-bottom: 0.5rem; color: var(--color-ink); }
+        .pair .why {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+            color: var(--color-text-secondary);
+            margin-top: 1rem;
+            text-transform: none;
+        }
+
+        /* -------- Fallback box -------- */
         .fallback-box {
             background: var(--color-ink);
             color: var(--color-sand);
             border-radius: 8px;
             padding: 2.5rem;
-            position: relative;
         }
-
         .fallback-box h3 {
             color: var(--color-terra);
             font-family: var(--font-mono);
-            font-size: 1rem;
+            font-size: 0.9rem;
+            font-weight: 500;
             text-transform: uppercase;
-            letter-spacing: 0.15em;
+            letter-spacing: 0.16em;
             margin-top: 0;
             margin-bottom: 1.5rem;
             border-bottom: 1px solid rgba(255,255,255,0.1);
             padding-bottom: 1rem;
         }
-
         .fallback-rule {
             font-family: var(--font-mono);
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-            letter-spacing: 0.05em;
+            font-size: 0.85rem;
+            margin-bottom: 0.8rem;
             display: flex;
+            gap: 1rem;
         }
-
         .fallback-rule strong {
-            width: 90px;
+            width: 110px;
             color: var(--color-sage);
-            font-weight: 400;
+            font-weight: 500;
+            flex-shrink: 0;
         }
-        
-        .fallback-rule span {
-            opacity: 0.8;
-        }
-
+        .fallback-rule span { opacity: 0.85; word-break: break-word; }
         .email-warning {
             margin-top: 2rem;
             padding-top: 1.5rem;
             border-top: 1px solid rgba(255,255,255,0.1);
-            font-family: var(--font-serif);
-            font-size: 1.25rem;
-            line-height: 1.4;
+            font-family: var(--font-text);
+            font-size: 1.0625rem;
+            line-height: 1.6;
             color: var(--color-stone);
         }
+        .email-warning strong { color: var(--color-alert); font-weight: 500; }
 
-        .email-warning strong {
-            color: var(--color-alert);
-            font-weight: 400;
+        /* -------- License notice -------- */
+        .license-notice {
+            background: var(--color-white);
+            border-left: 3px solid var(--color-alert);
+            padding: 1.4rem 1.6rem;
+            border-radius: 4px;
+            font-family: var(--font-text);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--color-ink);
+            max-width: 800px;
         }
+        .license-notice strong { color: var(--color-alert); font-weight: 500; }
 
+        /* -------- Footer / nav -------- */
+        footer {
+            text-align: center;
+            margin-top: var(--spacing-xl);
+            padding: var(--spacing-md) 0;
+            border-top: 1px solid var(--color-border-secondary);
+        }
+        .chapter-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 800px;
+            margin: 0 auto var(--spacing-md);
+            padding: 0 var(--spacing-sm);
+        }
+        .chapter-nav a {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .chapter-nav a:hover { color: var(--color-terra); }
+        @media (max-width: 600px) {
+            .chapter-nav { flex-direction: column; gap: 1rem; text-align: center; }
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
+
     <div class="intro">
         <div class="lbl">Sección 04</div>
         <h1>Tipografía</h1>
-        <p>Sistema tipográfico. Una combinación sobria que contrapone la elegancia atemporal del mundo editorial con el rigor técnico del desarrollo de software.</p>
+        <p class="lead">Dos voces: una editorial, una de sistema. La primera dice quiénes somos. La segunda dice qué hacemos.</p>
     </div>
 
-    <!-- 1. Cormorant Garamond -->
-    <div class="type-showcase">
-        <div class="showcase-header">
-            <div class="family-name specimen-serif">Cormorant Garamond</div>
-            <div class="family-role">Display / Editorial</div>
-        </div>
-        <div class="specimen-serif">
-            <div class="specimen-serif-hero">Dar forma a las cosas.</div>
-            <div class="specimen-serif-sub">Software construido desde la raíz.</div>
-            <div class="specimen-serif-body">Inteligencia aplicada con precisión meridiana.</div>
-        </div>
-    </div>
+    <!-- ============================================================ -->
+    <!-- 01. Sistema -->
+    <!-- ============================================================ -->
+    <section>
+        <h2>Sistema</h2>
+        <p>El sistema combina dos familias. <strong>Canela</strong> (Commercial Type, 2016) aporta la voz editorial: contraste alto, terminales en bola, herencia clásica con corte contemporáneo. <strong>IBM Plex Mono</strong> aporta la voz de sistema: monoespaciada, humanista, técnica sin frialdad. La tensión entre ambas expresa el concepto IApp — oficio y máquina, en registros distintos pero coherentes.</p>
 
-    <!-- 2. DM Mono -->
-    <div class="type-showcase">
-        <div class="showcase-header">
-            <div class="family-name specimen-mono">DM Mono</div>
-            <div class="family-role">Etiquetas / Código / Datos</div>
-        </div>
-        <div class="specimen-mono">
-            <div class="specimen-mono-light">01 — SOFTWARE A MEDIDA <span class="specimen-mono-accent">·</span> AI INTEGRATION</div>
-            <div class="specimen-mono-block">
-                model.perceive(context) &rarr; agent.execute(plan)
+        <h3>Canela — voz editorial</h3>
+        <p>Canela viene dibujada en cuatro variantes ópticas. Cada una está optimizada para un rango de tamaños distinto. No son intercambiables.</p>
+
+        <div class="specimen">
+            <div class="spec-head">
+                <div class="spec-name">Canela</div>
+                <div class="spec-meta">Display · ≥ 60px · Light 300</div>
             </div>
-            <div style="font-size: 1rem; letter-spacing: 0.15em; margin-top: 1.5rem; color: var(--color-muted); text-transform: uppercase;">
-                less is more
+            <div class="spec-body">
+                <div class="demo-display">Dar forma a las cosas.</div>
+                <div class="demo-mono-label">A1 — Hero · portadas · pieza única</div>
             </div>
         </div>
-    </div>
 
-    <!-- 3. Escala Tipográfica -->
-    <h2>Escala Tipográfica</h2>
-    <div class="table-wrapper">
-        <table>
-            <thead>
-                <tr>
-                    <th>Nivel</th>
-                    <th>Fuente</th>
-                    <th>Tam.</th>
-                    <th>L-H</th>
-                    <th>L-S</th>
-                    <th>Uso</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="scale-nivel">H1</td>
-                    <td class="scale-fuente">Cormorant Garamond Light</td>
-                    <td>48–96pt</td>
-                    <td>1.05</td>
-                    <td>-0.01em</td>
-                    <td class="scale-uso">Portada · hero</td>
-                </tr>
-                <tr>
-                    <td class="scale-nivel">H2</td>
-                    <td class="scale-fuente">Cormorant Garamond Light</td>
-                    <td>28–36pt</td>
-                    <td>1.2</td>
-                    <td>0</td>
-                    <td class="scale-uso">Títulos sección</td>
-                </tr>
-                <tr>
-                    <td class="scale-nivel">H3</td>
-                    <td class="scale-fuente">Cormorant Garamond Light</td>
-                    <td>20–24pt</td>
-                    <td>1.3</td>
-                    <td>0</td>
-                    <td class="scale-uso">Subtítulos</td>
-                </tr>
-                <tr>
-                    <td class="scale-nivel">Body</td>
-                    <td class="scale-fuente">Cormorant Garamond Light</td>
-                    <td>11–13pt</td>
-                    <td>1.8</td>
-                    <td>0</td>
-                    <td class="scale-uso">Cuerpo de texto</td>
-                </tr>
-                <tr>
-                    <td class="scale-nivel">Label</td>
-                    <td class="scale-fuente" style="color: var(--color-sea)">DM Mono Light</td>
-                    <td>8–10pt</td>
-                    <td>1.4</td>
-                    <td>+0.2em</td>
-                    <td class="scale-uso">Etiquetas · índices</td>
-                </tr>
-                <tr>
-                    <td class="scale-nivel">Code</td>
-                    <td class="scale-fuente" style="color: var(--color-sea)">DM Mono Light</td>
-                    <td>9–11pt</td>
-                    <td>1.6</td>
-                    <td>+0.1em</td>
-                    <td class="scale-uso">Código · paths</td>
-                </tr>
-                <tr>
-                    <td class="scale-nivel">Caption</td>
-                    <td class="scale-fuente">Cormorant Garamond Lgt</td>
-                    <td>10pt</td>
-                    <td>1.6</td>
-                    <td>0</td>
-                    <td class="scale-uso">Notas al pie</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <!-- 4. Fallback Stack -->
-    <div class="fallback-box">
-        <h3>Fallback Stack</h3>
-        
-        <div class="fallback-rule">
-            <strong>Display</strong>
-            <span>'Cormorant Garamond', 'Garamond', 'Georgia', serif</span>
-        </div>
-        <div class="fallback-rule">
-            <strong>Mono</strong>
-            <span>'DM Mono', 'Courier New', 'Courier', monospace</span>
+        <div class="specimen">
+            <div class="spec-head">
+                <div class="spec-name">Canela Deck</div>
+                <div class="spec-meta">Subhead · 22–60px · Light 300</div>
+            </div>
+            <div class="spec-body">
+                <div class="demo-deck">Software construido desde la raíz, no comprado en un catálogo.</div>
+                <div class="demo-deck-italic">Una decisión por proceso, no por producto.</div>
+                <div class="demo-mono-label">A2 — Titulares H2/H3 · leads</div>
+            </div>
         </div>
 
-        <div class="email-warning">
-            En email HTML usar exclusivamente <i>Georgia</i> + <i>Courier New</i>. <br>
-            <strong>Nunca Arial, Inter ni Helvetica.</strong>
+        <div class="specimen">
+            <div class="spec-head">
+                <div class="spec-name">Canela Text</div>
+                <div class="spec-meta">Body · 13–20px · Regular 400</div>
+            </div>
+            <div class="spec-body">
+                <div class="demo-text">
+                    Canela Text está dibujada para tamaños pequeños. Mantiene la legibilidad donde Canela Display pierde definición — el grosor de trazo es ligeramente mayor, el contraste algo menor, y la altura de x más generosa. <em>El italic se reserva para énfasis editorial</em>, nunca para resaltar palabras técnicas.
+                </div>
+                <div class="demo-mono-label" style="margin-top: 1.5rem;">A3 — Cuerpo de texto · captions · notas</div>
+            </div>
         </div>
-    </div>
-    
-    <div style="margin-top: 4rem; text-align: center; color: var(--color-terra); opacity: 0.6; font-family: var(--font-serif); font-size: 1.5rem; letter-spacing: 0.1em; padding-bottom: 2rem;">
-        ForMeta ·
-    </div>
-    
+
+        <div class="specimen">
+            <div class="spec-head">
+                <div class="spec-name">Canela Condensed</div>
+                <div class="spec-meta">Acento · ≥ 72px · Medium 500</div>
+            </div>
+            <div class="spec-body">
+                <div class="demo-cond">FORMITAR</div>
+                <div class="demo-mono-label" style="margin-top: 0.8rem;">A4 — Solo en piezas tipo poster · nunca en UI</div>
+            </div>
+        </div>
+
+        <h3 style="margin-top: 4rem;">IBM Plex Mono — voz de sistema</h3>
+        <p>Plex Mono se usa para todo lo que es metadato, etiqueta, código, dato técnico o firma. Es la capa de información que rodea al contenido editorial — fechas, versiones, índices, IDs.</p>
+
+        <div class="specimen">
+            <div class="spec-head">
+                <div class="spec-name">IBM Plex Mono</div>
+                <div class="spec-meta">System · 11–14px · Regular 400</div>
+            </div>
+            <div class="spec-body">
+                <div class="demo-mono-block">
+                    model.perceive(context) <span class="demo-mono-accent">→</span> agent.execute(plan)
+                </div>
+                <div class="demo-mono-label">01 — SOFTWARE A MEDIDA <span class="demo-mono-accent">·</span> AI INTEGRATION</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 02. Escala -->
+    <!-- ============================================================ -->
+    <section>
+        <h2>Escala tipográfica</h2>
+        <p>La escala está pensada para pantalla (px). Para imprenta se convierte a pt manteniendo proporciones — no se traduce 1:1. Una unidad = 1px.</p>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rol</th>
+                        <th>Familia</th>
+                        <th>Peso</th>
+                        <th>Tamaño</th>
+                        <th>Line-h</th>
+                        <th>Tracking</th>
+                        <th>Uso</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="scale-rol">H1 Hero</td>
+                        <td class="scale-font">Canela</td>
+                        <td>Light 300</td>
+                        <td>64–96</td>
+                        <td>1.05</td>
+                        <td>−0.02em</td>
+                        <td class="scale-uso">Portadas · piezas únicas</td>
+                    </tr>
+                    <tr>
+                        <td class="scale-rol">H2</td>
+                        <td class="scale-font">Canela Deck</td>
+                        <td>Light 300</td>
+                        <td>40–48</td>
+                        <td>1.15</td>
+                        <td>−0.01em</td>
+                        <td class="scale-uso">Títulos de sección</td>
+                    </tr>
+                    <tr>
+                        <td class="scale-rol">H3</td>
+                        <td class="scale-font">Canela Deck</td>
+                        <td>Regular 400</td>
+                        <td>24–28</td>
+                        <td>1.25</td>
+                        <td>0</td>
+                        <td class="scale-uso">Subtítulos</td>
+                    </tr>
+                    <tr>
+                        <td class="scale-rol">Lead</td>
+                        <td class="scale-font">Canela Text</td>
+                        <td>Regular 400 ital.</td>
+                        <td>20–22</td>
+                        <td>1.4</td>
+                        <td>0</td>
+                        <td class="scale-uso">Entradilla bajo H1</td>
+                    </tr>
+                    <tr>
+                        <td class="scale-rol">Body</td>
+                        <td class="scale-font">Canela Text</td>
+                        <td>Regular 400</td>
+                        <td>17</td>
+                        <td>1.7</td>
+                        <td>0</td>
+                        <td class="scale-uso">Cuerpo de texto</td>
+                    </tr>
+                    <tr>
+                        <td class="scale-rol">Caption</td>
+                        <td class="scale-font">Canela Text</td>
+                        <td>Regular 400</td>
+                        <td>13–14</td>
+                        <td>1.6</td>
+                        <td>0</td>
+                        <td class="scale-uso">Notas · pies · captions</td>
+                    </tr>
+                    <tr>
+                        <td class="scale-rol">Display acento</td>
+                        <td class="scale-font">Canela Condensed</td>
+                        <td>Medium 500</td>
+                        <td>72+</td>
+                        <td>1.0</td>
+                        <td>−0.01em</td>
+                        <td class="scale-uso">Posters · tag lines</td>
+                    </tr>
+                    <tr>
+                        <td class="scale-rol">Label</td>
+                        <td class="scale-font" style="color: var(--color-sea)">IBM Plex Mono</td>
+                        <td>Regular 400</td>
+                        <td>11–12</td>
+                        <td>1.4</td>
+                        <td>+0.16em</td>
+                        <td class="scale-uso">Eyebrows · índices · uppercase</td>
+                    </tr>
+                    <tr>
+                        <td class="scale-rol">Metadata</td>
+                        <td class="scale-font" style="color: var(--color-sea)">IBM Plex Mono</td>
+                        <td>Regular 400</td>
+                        <td>13–14</td>
+                        <td>1.5</td>
+                        <td>+0.05em</td>
+                        <td class="scale-uso">Fechas · versiones · IDs</td>
+                    </tr>
+                    <tr>
+                        <td class="scale-rol">Code</td>
+                        <td class="scale-font" style="color: var(--color-sea)">IBM Plex Mono</td>
+                        <td>Regular 400</td>
+                        <td>14</td>
+                        <td>1.7</td>
+                        <td>0</td>
+                        <td class="scale-uso">Snippets · paths · llamadas</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 03. Modo claro / oscuro -->
+    <!-- ============================================================ -->
+    <section>
+        <h2>Modo claro y modo oscuro</h2>
+        <p>El sistema vive en dos modos. <strong>Claro</strong> (ink sobre sand) es el modo por defecto — manual, web pública, presentaciones de cliente. <strong>Oscuro</strong> (sand sobre offblack) es para piezas con carga editorial alta — redes, posters, lanzamientos, comunicación de marca. Canela rinde especialmente bien en oscuro: el contraste se intensifica y las terminales en bola ganan presencia.</p>
+
+        <div class="mode-grid">
+            <div class="specimen">
+                <div class="spec-head">
+                    <div class="spec-name">Modo claro</div>
+                    <div class="spec-meta">Default · web · cliente</div>
+                </div>
+                <div class="spec-body">
+                    <div class="demo-mono-label" style="margin-bottom: 1rem;">2026.05 — FORMETA · MALLORCA</div>
+                    <div style="font-family: var(--font-display); font-weight: 300; font-size: 3rem; line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 0.8rem;">Inteligencia aplicada con precisión meridiana.</div>
+                    <div style="font-family: var(--font-text); font-size: 1rem; line-height: 1.7; color: var(--color-text-secondary); max-width: 50ch;">
+                        Construimos software que entiende contexto, no software que ejecuta reglas. La diferencia se nota desde la primera semana.
+                    </div>
+                </div>
+            </div>
+
+            <div class="specimen dark">
+                <div class="spec-head">
+                    <div class="spec-name">Modo oscuro</div>
+                    <div class="spec-meta">Editorial · redes · poster</div>
+                </div>
+                <div class="spec-body">
+                    <div style="font-family: var(--font-mono); font-size: 0.7rem; font-weight: 400; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-terra); margin-bottom: 1rem;">2026.05 — FORMETA · MALLORCA</div>
+                    <div style="font-family: var(--font-display); font-weight: 300; font-size: 3rem; line-height: 1.05; letter-spacing: -0.02em; color: var(--color-sand); margin-bottom: 0.8rem;">Inteligencia aplicada con precisión meridiana.</div>
+                    <div style="font-family: var(--font-text); font-size: 1rem; line-height: 1.7; color: var(--color-stone); max-width: 50ch;">
+                        Construimos software que entiende contexto, no software que ejecuta reglas. La diferencia se nota desde la primera semana.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 04. Patrón firma — metadata strip -->
+    <!-- ============================================================ -->
+    <section>
+        <h2>Patrón firma · metadata strip</h2>
+        <p>Una tira de metadatos en Plex Mono al pie o al margen de cada pieza. Es la firma visual de ForMeta: información técnica tratada como ornamento. Indica versión, fecha, contexto y origen. No es decoración — es trazabilidad hecha objeto.</p>
+
+        <div class="meta-strip">
+            <span class="tag">v1.0</span>
+            <span class="sep">·</span>
+            <span>2026.05.15</span>
+            <span class="sep">·</span>
+            <span>Mallorca / 39.5696° N</span>
+            <span class="sep">·</span>
+            <span>FMTA—04—Tipografía</span>
+            <span class="sep">·</span>
+            <span>00:02:54:30</span>
+        </div>
+
+        <p style="margin-top: 2rem;">Reglas del patrón: siempre Plex Mono Regular, 11–13px, tracking +0.16em, uppercase. Separador en color terra. Los campos se eligen según pieza — fecha y versión son obligatorios; localización, ID y timestamp son opcionales según contexto.</p>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 05. Pareo — sí / no -->
+    <!-- ============================================================ -->
+    <section>
+        <h2>Pareo y errores</h2>
+        <p>Las reglas de pareo entre las dos familias son pocas pero estrictas. Romperlas hace que el sistema pierda lo que lo distingue.</p>
+
+        <div class="pair-grid">
+            <div class="pair do">
+                <div style="font-family: var(--font-display); font-weight: 300; font-size: 2rem; line-height: 1.1; color: var(--color-ink); margin-bottom: 0.5rem;">Diez clientes.</div>
+                <div style="font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-terra);">2026 · MALLORCA</div>
+                <div class="why">Canela arriba, Plex Mono debajo como firma. Jerarquía clara: voz primero, dato después.</div>
+            </div>
+            <div class="pair dont">
+                <div style="font-family: var(--font-mono); font-size: 1.6rem; line-height: 1.1; color: var(--color-ink); margin-bottom: 0.5rem;">Diez clientes.</div>
+                <div style="font-family: var(--font-display); font-style: italic; font-size: 1rem; color: var(--color-terra);">2026 · Mallorca</div>
+                <div class="why">Mono para titular, serif para metadato. Invierte los roles y rompe la lógica del sistema.</div>
+            </div>
+
+            <div class="pair do">
+                <div style="font-family: var(--font-text); font-size: 1.0625rem; line-height: 1.7; color: var(--color-ink);">
+                    Reducimos el tiempo de gestión de pedidos de <em style="color: var(--color-terra)">40 minutos a 3</em>.
+                </div>
+                <div class="why">Italic de Canela Text para énfasis editorial. Cifras dentro del flujo, no fuera.</div>
+            </div>
+            <div class="pair dont">
+                <div style="font-family: var(--font-text); font-size: 1.0625rem; line-height: 1.7; color: var(--color-ink);">
+                    Reducimos el tiempo de gestión de pedidos de <strong style="font-weight: 700">40 minutos a 3</strong>.
+                </div>
+                <div class="why">Bold para énfasis. El sistema no incluye bold de Canela Text — la negrita rompe el ritmo del párrafo.</div>
+            </div>
+
+            <div class="pair do">
+                <div style="font-family: var(--font-deck); font-weight: 300; font-size: 1.5rem; line-height: 1.3; color: var(--color-ink);">No imponemos procesos. Damos forma a los que ya funcionan.</div>
+                <div class="why">Una sola familia por bloque tipográfico. Sin mezclar serif con mono dentro de la misma frase.</div>
+            </div>
+            <div class="pair dont">
+                <div style="font-size: 1.5rem; line-height: 1.3; color: var(--color-ink);">
+                    <span style="font-family: var(--font-deck); font-weight: 300;">No imponemos procesos.</span>
+                    <span style="font-family: var(--font-mono); font-size: 1.1rem;">Damos forma a los que ya funcionan.</span>
+                </div>
+                <div class="why">Mezcla de familias dentro de la misma frase. El sistema separa voces — no las cose.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 06. Fallback stack -->
+    <!-- ============================================================ -->
+    <section>
+        <h2>Fallback stack</h2>
+        <p>Cuando las fuentes no cargan — email, PDF sin embed, navegadores antiguos — el sistema degrada a una cascada conocida. Nunca a Arial, nunca a Helvetica, nunca a Inter.</p>
+
+        <div class="fallback-box">
+            <h3>Stack web</h3>
+            <div class="fallback-rule"><strong>Display</strong><span>'Canela', 'Cormorant Garamond', Garamond, Georgia, serif</span></div>
+            <div class="fallback-rule"><strong>Deck</strong><span>'Canela Deck', 'Cormorant Garamond', Garamond, Georgia, serif</span></div>
+            <div class="fallback-rule"><strong>Text</strong><span>'Canela Text', 'Cormorant Garamond', Garamond, Georgia, serif</span></div>
+            <div class="fallback-rule"><strong>Condensed</strong><span>'Canela Condensed', 'Cormorant Garamond', Garamond, Georgia, serif</span></div>
+            <div class="fallback-rule"><strong>Mono</strong><span>'IBM Plex Mono', 'DM Mono', 'Courier New', Courier, monospace</span></div>
+
+            <div class="email-warning">
+                En email HTML, donde no se embeben webfonts, usar exclusivamente <i>Georgia</i> + <i>Courier New</i>.
+                <br><strong>Nunca Arial, Inter ni Helvetica.</strong>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 07. Licencia -->
+    <!-- ============================================================ -->
+    <section>
+        <h2>Licencia</h2>
+        <p>Canela es una tipografía comercial de Commercial Type (Miguel Reyes, 2016). IBM Plex Mono es de IBM bajo licencia SIL OFL — libre de licencia.</p>
+
+        <div class="license-notice">
+            <strong>Estado actual:</strong> los archivos en <code style="font-family: var(--font-mono); font-size: 0.85rem;">typo/Canela_Collection/</code> son <strong>Trial</strong>. Solo válidos para maquetar este manual. <strong>Antes de publicar el manual online, antes de enviar entregables a cliente y antes de usar Canela en piezas comerciales, hay que licenciar el subset curado en commercialtype.com</strong> y reemplazar los archivos Trial por los licenciados (renombrar también el <code style="font-family: var(--font-mono); font-size: 0.85rem;">font-family</code>: <code style="font-family: var(--font-mono); font-size: 0.85rem;">'Canela Trial'</code> → <code style="font-family: var(--font-mono); font-size: 0.85rem;">'Canela'</code>, etc.).
+        </div>
+
+        <p style="margin-top: 1.5rem;"><strong>Subset a licenciar:</strong> Canela Light + Light Italic + Medium; Canela Deck Light + Light Italic + Medium; Canela Text Regular + Regular Italic + Medium; Canela Condensed Medium. Total: 10 cuts.</p>
+    </section>
+
 </div>
 
-
-<footer style="text-align: center; margin-top: var(--spacing-xl); padding: var(--spacing-md) 0; border-top: 1px solid var(--color-border-secondary);">
-    <svg width="24" height="30" viewBox="0 0 160 200" style="opacity: 0.8; margin: 0 auto;">
+<footer>
+    <nav class="chapter-nav">
+        <a href="03_logo.html">← Anterior: 03 Logo</a>
+        <a href="index.html">Índice</a>
+        <a href="05_color.html">Siguiente: 05 Color →</a>
+    </nav>
+    <svg width="24" height="30" viewBox="0 0 160 200" style="opacity: 0.8; margin: 0 auto;" aria-hidden="true">
          <path d="M80 12 C80 12 104 52 116 88 C126 118 122 152 102 168 C92 176 80 178 80 178 C80 178 68 176 58 168 C38 152 34 118 44 88 C56 52 80 12 80 12 Z" fill="none" stroke="var(--color-terra)" stroke-width="4"/>
          <circle cx="80" cy="130" r="6" fill="var(--color-terra)"/>
     </svg>
 </footer>
-</body>
 
+</body>
 </html>

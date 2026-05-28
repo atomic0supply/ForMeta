@@ -3,16 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>6. Iconos - ForMeta Guía de Estilo</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <title>06. Iconografía - ForMeta Guía de Estilo</title>
+
     <style>
+        /* ============================================================
+           BLOQUE TIPOGRÁFICO (extraer a assets/style.css en migración).
+           ============================================================ */
+        @font-face { font-family: 'Canela Trial'; src: url('typo/Canela_Collection/Canela Family/Canela-Light-Trial.otf') format('opentype'); font-weight: 300; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Canela Trial'; src: url('typo/Canela_Collection/Canela Family/Canela-LightItalic-Trial.otf') format('opentype'); font-weight: 300; font-style: italic; font-display: swap; }
+        @font-face { font-family: 'Canela Deck Trial'; src: url('typo/Canela_Collection/Canela Deck Family/CanelaDeck-Light-Trial.otf') format('opentype'); font-weight: 300; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Canela Deck Trial'; src: url('typo/Canela_Collection/Canela Deck Family/CanelaDeck-LightItalic-Trial.otf') format('opentype'); font-weight: 300; font-style: italic; font-display: swap; }
+        @font-face { font-family: 'Canela Text Trial'; src: url('typo/Canela_Collection/Canela Text Family/CanelaText-Regular-Trial.otf') format('opentype'); font-weight: 400; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Canela Text Trial'; src: url('typo/Canela_Collection/Canela Text Family/CanelaText-RegularItalic-Trial.otf') format('opentype'); font-weight: 400; font-style: italic; font-display: swap; }
+        @font-face { font-family: 'Canela Text Trial'; src: url('typo/Canela_Collection/Canela Text Family/CanelaText-Medium-Trial.otf') format('opentype'); font-weight: 500; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'IBM Plex Mono'; src: url('typo/IBM_PLEX/IBMPlexMono-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'IBM Plex Mono'; src: url('typo/IBM_PLEX/IBMPlexMono-Medium.ttf') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
+
         :root {
-            --font-mono: 'DM Mono', 'Courier New', Courier, monospace;
-            --font-serif: 'Cormorant Garamond', Garamond, Georgia, serif;
-            
+            --font-display: 'Canela Trial', Georgia, serif;
+            --font-deck:    'Canela Deck Trial', Georgia, serif;
+            --font-text:    'Canela Text Trial', Georgia, serif;
+            --font-mono:    'IBM Plex Mono', 'Courier New', monospace;
+
             --color-ink: #2C2C28;
             --color-terra: #B8896A;
             --color-sand: #F4F0E8;
@@ -22,13 +34,16 @@
             --color-white: #FFFFFF;
             --color-offblack: #1A1A18;
             --color-muted: #7A7870;
-            --color-alert: #d05a5a;
-            
+            --color-alert: #D05A5A;
+            --color-warning: #D9A35A;
+            --color-success: #7A9F7E;
+            --color-info: #6F8FA0;
+
             --color-bg: var(--color-sand);
             --color-text: var(--color-ink);
             --color-text-secondary: var(--color-muted);
             --color-border-secondary: rgba(44, 44, 40, 0.1);
-            
+
             --spacing-xs: 0.5rem;
             --spacing-sm: 1.5rem;
             --spacing-md: 3rem;
@@ -36,562 +51,841 @@
             --spacing-xl: 10rem;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             background-color: var(--color-sand);
             color: var(--color-text);
-            font-family: var(--font-serif);
-            font-weight: 300;
-            font-size: 1.15rem;
-            line-height: 1.8;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: var(--spacing-md) var(--spacing-sm);
-        }
-
-        /* Typography */
-        h1 {
-            font-family: var(--font-serif);
-            font-size: 3.5rem;
-            font-weight: 300;
-            margin-bottom: var(--spacing-xs);
-            color: var(--color-ink);
-            letter-spacing: -0.01em;
-        }
-
-        h2 {
-            font-family: var(--font-serif);
-            font-size: 2.5rem;
-            font-weight: 300;
-            margin-bottom: var(--spacing-sm);
-            padding-bottom: 1rem;
-            border-bottom: 1px solid var(--color-border-secondary);
-        }
-
-        h3 {
-            font-family: var(--font-serif);
-            font-size: 1.5rem;
+            font-family: var(--font-text);
             font-weight: 400;
-            margin-bottom: 1rem;
-            margin-top: 2rem;
-            color: var(--color-ink);
-        }
-
-        p {
-            color: var(--color-text-secondary);
-            max-width: 650px;
-            margin-bottom: var(--spacing-sm);
-        }
-
-        .intro {
-            margin-bottom: var(--spacing-xl);
-        }
-
-        .lbl {
-            font-family: var(--font-mono);
-            font-size: 11px;
-            letter-spacing: 0.16em;
-            text-transform: uppercase;
-            color: var(--color-text-secondary);
-            margin-top: 1rem;
-        }
-        
-        section {
-            margin-bottom: var(--spacing-xl);
-        }
-
-        /* Icon Grid */
-        .icon-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .icon-grid-item {
+            font-size: 17px;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
             display: flex;
             flex-direction: column;
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: var(--spacing-md) var(--spacing-sm); flex: 1; }
+
+        h1 { font-family: var(--font-display); font-weight: 300; font-size: 5rem; line-height: 1.05; letter-spacing: -0.02em; color: var(--color-ink); margin-bottom: var(--spacing-xs); }
+        h2 { font-family: var(--font-deck); font-weight: 300; font-size: 2.5rem; line-height: 1.15; letter-spacing: -0.01em; color: var(--color-ink); margin-bottom: var(--spacing-sm); padding-bottom: 1rem; border-bottom: 1px solid var(--color-border-secondary); }
+        h3 { font-family: var(--font-deck); font-weight: 400; font-size: 1.5rem; line-height: 1.3; color: var(--color-ink); margin-top: 2rem; margin-bottom: 1rem; }
+
+        p { font-family: var(--font-text); color: var(--color-text-secondary); max-width: 720px; margin-bottom: var(--spacing-sm); }
+        p strong { color: var(--color-ink); font-weight: 500; }
+        code { font-family: var(--font-mono); font-size: 0.85em; background: var(--color-stone); padding: 0.1em 0.4em; border-radius: 3px; color: var(--color-ink); }
+
+        .intro { margin-bottom: var(--spacing-xl); display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: end; }
+        .intro-text { max-width: 720px; }
+        .intro p.lead { font-family: var(--font-deck); font-style: italic; font-weight: 300; font-size: 1.5rem; line-height: 1.4; color: var(--color-ink); max-width: 720px; margin-top: var(--spacing-sm); }
+        .intro-mark { color: var(--color-terra); --core-color: var(--color-ink); }
+        .intro-mark svg { width: 120px; height: 150px; display: block; }
+        @media (max-width: 720px) {
+            .intro { grid-template-columns: 1fr; }
+            .intro-mark { order: -1; }
+            .intro-mark svg { width: 80px; height: 100px; }
+        }
+
+        .lbl { font-family: var(--font-mono); font-size: 11px; font-weight: 400; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-text-secondary); margin-top: 1rem; margin-bottom: 0.5rem; }
+
+        section { margin-bottom: var(--spacing-xl); }
+        .section-tag { font-family: var(--font-mono); font-size: 0.7rem; font-weight: 400; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-terra); margin-bottom: 0.5rem; }
+
+        /* -------- Icon system core -------- */
+        .icon {
+            display: inline-block;
+            vertical-align: middle;
+            color: currentColor;
+        }
+        .icon svg {
+            display: block;
+            width: 100%;
+            height: 100%;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .icon svg .fill { fill: currentColor; stroke: none; }
+        .icon svg .accent { stroke: var(--color-terra); }
+        .icon svg .accent-fill { fill: var(--color-terra); stroke: none; }
+
+        .icon-24 { width: 24px; height: 24px; }
+        .icon-32 { width: 32px; height: 32px; }
+        .icon-48 { width: 48px; height: 48px; }
+        .icon-64 { width: 64px; height: 64px; }
+
+        /* -------- Specs diagram -------- */
+        .specs-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            background: var(--color-white);
+            border: 1px solid var(--color-border-secondary);
+            border-radius: 8px;
+            padding: 2rem;
+            align-items: center;
+        }
+        @media (max-width: 800px) { .specs-grid { grid-template-columns: 1fr; } }
+        .specs-visual {
+            background: var(--color-sand);
+            border-radius: 6px;
+            padding: 2rem;
+            display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.8rem;
-            padding: 1.5rem 1rem;
+            min-height: 280px;
+        }
+        .specs-info h3 { margin-top: 0; }
+        .specs-info p { font-size: 0.95rem; max-width: 100%; margin-bottom: 0.4rem; }
+        .specs-info code { font-size: 0.85em; }
+
+        /* -------- Icon grid -------- */
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        .icon-card {
             background: var(--color-white);
             border: 1px solid var(--color-border-secondary);
             border-radius: 8px;
-            color: var(--color-ink);
-            transition: transform 0.3s ease;
-        }
-        
-        .icon-grid-item:hover {
-            transform: translateY(-3px);
-            border-color: var(--color-stone);
-        }
-
-        .icon-label {
-            font-family: var(--font-mono);
-            font-size: 10px;
-            color: var(--color-text-secondary);
-            text-transform: lowercase;
-            letter-spacing: 0.05em;
-        }
-
-        /* Scale showcase */
-        .scale-box {
-            display: flex;
-            align-items: flex-end;
-            gap: 2.5rem;
-            background: var(--color-white);
-            padding: 3rem;
-            border-radius: 8px;
-            border: 1px solid var(--color-border-secondary);
-            flex-wrap: wrap;
-        }
-
-        .scale-item {
+            padding: 1.4rem 1rem 1rem;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 1rem;
-        }
-
-        .scale-label {
-            font-family: var(--font-mono);
-            font-size: 10px;
-            color: var(--color-muted);
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            text-align: center;
-        }
-        
-        .scale-label span {
-            display: block;
-            margin-top: 4px;
-            color: var(--color-terra);
-        }
-
-        /* Rules Cards */
-        .rule-list {
-            list-style: none;
-            counter-reset: rule-counter;
-            margin-top: 2rem;
-        }
-        
-        .rule-list li {
+            gap: 0.8rem;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s;
             position: relative;
-            padding-left: 3rem;
-            margin-bottom: 1.5rem;
-            font-weight: 300;
-            max-width: 800px;
-            line-height: 1.6;
+        }
+        .icon-card:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.04); }
+        .icon-card .icon-display {
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: var(--color-ink);
         }
-        
-        .rule-list li::before {
-            counter-increment: rule-counter;
-            content: "0" counter(rule-counter);
-            position: absolute;
-            left: 0;
-            top: 0.1rem;
+        .icon-card.semantic-success .icon-display { color: var(--color-success); }
+        .icon-card.semantic-alert .icon-display { color: var(--color-alert); }
+        .icon-card.semantic-warning .icon-display { color: var(--color-warning); }
+        .icon-card.semantic-info .icon-display { color: var(--color-info); }
+        .icon-card .icon-name {
             font-family: var(--font-mono);
-            font-size: 14px;
-            color: var(--color-terra);
+            font-size: 0.65rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--color-muted);
+            text-align: center;
         }
 
-        /* Context Examples */
+        /* -------- Context examples -------- */
         .context-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
         }
-
+        @media (max-width: 700px) { .context-grid { grid-template-columns: 1fr; } }
         .context-card {
             background: var(--color-white);
             border: 1px solid var(--color-border-secondary);
             border-radius: 8px;
-            padding: 2.5rem 2rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            padding: 1.5rem;
+        }
+        .context-card h4 {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--color-terra);
+            margin-bottom: 1rem;
+            font-weight: 500;
         }
 
-        .context-lbl {
+        .btn-sample {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--color-ink);
+            color: var(--color-sand);
+            border: none;
+            padding: 0.7rem 1.1rem;
+            border-radius: 6px;
             font-family: var(--font-mono);
-            font-size: 11px;
-            color: var(--color-muted);
-            margin-bottom: 1.5rem;
+            font-size: 0.75rem;
+            font-weight: 500;
             letter-spacing: 0.1em;
             text-transform: uppercase;
+            cursor: pointer;
         }
+        .btn-sample.ghost { background: transparent; color: var(--color-ink); border: 1px solid var(--color-border-secondary); }
 
-        .btn {
-            font-family: var(--font-serif);
-            font-size: 1.15rem;
-            font-weight: 400;
-            padding: 0.6rem 1.4rem;
-            border-radius: 6px;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.6rem;
-            cursor: default;
-        }
-        
-        .btn-primary {
-            background: var(--color-terra);
-            color: var(--color-white);
-            border: 1px solid var(--color-terra);
-        }
-
-        .btn-secondary {
-            background: var(--color-sand);
-            color: var(--color-ink);
-            border: 1px solid var(--color-stone);
-        }
-        
-        .input-wrapper {
-            position: relative;
-            width: 100%;
-            max-width: 240px;
-        }
-        
-        .input-wrapper svg {
-            position: absolute;
-            left: 0.8rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--color-muted);
-        }
-        
-        .input-field {
-            font-family: var(--font-serif);
-            font-size: 1.1rem;
-            width: 100%;
-            padding: 0.6rem 1rem 0.6rem 2.6rem;
-            border: 1px solid var(--color-stone);
+        .alert-sample {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+            padding: 1rem 1.2rem;
             border-radius: 6px;
             background: var(--color-sand);
-            color: var(--color-ink);
-            outline: none;
-        }
-        
-        .input-field::placeholder { color: var(--color-muted); }
-        
-        .badge {
-            font-family: var(--font-mono);
-            font-size: 0.85rem;
-            letter-spacing: 0.05em;
-            padding: 0.3rem 0.8rem;
-            border-radius: 100px;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-            background: rgba(143, 168, 146, 0.15); /* Sage alpha */
-            color: #557559; /* Dark sage */
-            border: 1px solid rgba(143, 168, 146, 0.3);
-        }
-
-        /* Vocab Grid */
-        .vocab-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 1.5rem;
-        }
-        
-        .vocab-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1.2rem;
-            background: var(--color-white);
-            border: 1px solid var(--color-border-secondary);
-            border-radius: 8px;
-        }
-        
-        .vocab-icon {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .vocab-text {
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .vocab-name {
-            font-family: var(--font-mono);
-            font-size: 11px;
-            letter-spacing: 0.05em;
-            color: var(--color-ink);
-            margin-bottom: 0.2rem;
-        }
-        
-        .vocab-role {
-            font-family: var(--font-serif);
+            font-family: var(--font-text);
             font-size: 0.95rem;
-            color: var(--color-text-secondary);
-            line-height: 1.2;
+            color: var(--color-ink);
+            margin-bottom: 0.6rem;
         }
-        
-        /* Functional Colors */
-        .color-sea { color: var(--color-sea); }
-        .color-terra { color: var(--color-terra); }
-        .color-sage { color: var(--color-sage); }
-        .color-ink { color: var(--color-ink); }
-        .color-muted { color: var(--color-muted); }
+        .alert-sample.success { background: rgba(122, 159, 126, 0.12); }
+        .alert-sample.alert   { background: rgba(208, 90, 90, 0.10); }
+        .alert-sample.warning { background: rgba(217, 163, 90, 0.12); }
+        .alert-sample.info    { background: rgba(111, 143, 160, 0.12); }
+        .alert-sample .icon { flex-shrink: 0; margin-top: 1px; }
+        .alert-sample.success .icon { color: var(--color-success); }
+        .alert-sample.alert .icon   { color: var(--color-alert); }
+        .alert-sample.warning .icon { color: var(--color-warning); }
+        .alert-sample.info .icon    { color: var(--color-info); }
 
-        footer {
-            text-align: center;
-            margin-top: var(--spacing-xl);
-            padding: var(--spacing-md) 0;
-            border-top: 1px solid var(--color-border-secondary);
+        .list-sample {
+            list-style: none;
+            font-family: var(--font-text);
+            font-size: 0.95rem;
         }
+        .list-sample li {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.6rem 0;
+            border-bottom: 1px solid var(--color-border-secondary);
+            color: var(--color-ink);
+        }
+        .list-sample li:last-child { border-bottom: none; }
+        .list-sample .icon { color: var(--color-terra); }
+
+        /* -------- Rules -------- */
+        .rule-list { list-style: none; counter-reset: rule-counter; margin-top: 1rem; }
+        .rule-list li {
+            position: relative;
+            padding-left: 3rem;
+            margin-bottom: 1.4rem;
+            font-family: var(--font-text);
+            font-size: 1.0625rem;
+            line-height: 1.55;
+            color: var(--color-ink);
+            max-width: 820px;
+        }
+        .rule-list li::before {
+            counter-increment: rule-counter;
+            content: "0" counter(rule-counter);
+            position: absolute; left: 0; top: 0.1rem;
+            font-family: var(--font-mono);
+            font-size: 13px;
+            color: var(--color-terra);
+        }
+        .rule-list strong { color: var(--color-ink); font-weight: 500; }
+
+        /* -------- Don'ts -------- */
+        .dont-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 1rem; margin-top: 1.5rem; }
+        .dont { background: var(--color-white); border: 1px solid var(--color-border-secondary); border-radius: 8px; padding: 1.2rem; position: relative; }
+        .dont::before {
+            content: 'NO'; position: absolute; top: -10px; left: 1rem;
+            background: var(--color-sand); padding: 0 0.5rem;
+            font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.16em;
+            color: var(--color-alert); font-weight: 500;
+        }
+        .dont-display { height: 60px; display: flex; align-items: center; justify-content: center; background: var(--color-sand); border-radius: 4px; margin-bottom: 0.8rem; }
+        .dont-reason { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.05em; color: var(--color-text-secondary); margin: 0; }
+
+        /* -------- Download / pack -------- */
+        .download-section { background: var(--color-ink); color: var(--color-sand); border-radius: 8px; padding: 2.5rem; }
+        .download-section h3 { color: var(--color-sand); margin-top: 0; }
+        .download-section p { color: var(--color-stone); }
+        .download-cta {
+            display: inline-flex; align-items: center; gap: 0.8rem;
+            background: var(--color-terra); color: var(--color-sand); border: none;
+            padding: 1rem 1.6rem; border-radius: 6px;
+            font-family: var(--font-mono); font-size: 0.8rem; font-weight: 500;
+            letter-spacing: 0.16em; text-transform: uppercase; cursor: pointer;
+            transition: background 0.3s, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            margin-top: 1rem;
+        }
+        .download-cta:hover { background: #A37A5A; transform: translateY(-2px); }
+        .download-cta:disabled { opacity: 0.5; cursor: wait; }
+        .download-cta svg { width: 14px; height: 14px; }
+        .download-status { margin-top: 1rem; font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-sage); min-height: 1.2em; }
+        .download-status.error { color: var(--color-alert); }
+
+        /* -------- Meta strip / nav -------- */
+        .meta-strip { background: var(--color-offblack); color: var(--color-sand); padding: 1.2rem 1.6rem; border-radius: 4px; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.16em; text-transform: uppercase; display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: var(--spacing-md); }
+        .meta-strip span { color: var(--color-stone); }
+        .meta-strip .sep { color: var(--color-terra); }
+        .meta-strip .tag { color: var(--color-terra); font-weight: 500; }
+
+        footer { text-align: center; margin-top: var(--spacing-xl); padding: var(--spacing-md) 0; border-top: 1px solid var(--color-border-secondary); }
+        .chapter-nav { display: flex; justify-content: space-between; align-items: center; max-width: 800px; margin: 0 auto var(--spacing-md); padding: 0 var(--spacing-sm); }
+        .chapter-nav a { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-text-secondary); text-decoration: none; transition: color 0.3s ease; }
+        .chapter-nav a:hover { color: var(--color-terra); }
+        @media (max-width: 600px) { .chapter-nav { flex-direction: column; gap: 1rem; text-align: center; } }
+        .footer-mark { color: var(--color-terra); display: inline-block; opacity: 0.7; }
     </style>
 </head>
 <body>
 
+<svg style="position:absolute; width:0; height:0; overflow:hidden" aria-hidden="true">
+    <defs>
+        <symbol id="drop-halftone" viewBox="0 0 160 200"></symbol>
+        <symbol id="drop-simple" viewBox="0 0 160 200">
+            <path d="M80 12 C80 12 104 52 116 88 C126 118 122 152 102 168 C92 176 80 178 80 178 C80 178 68 176 58 168 C38 152 34 118 44 88 C56 52 80 12 80 12 Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>
+            <circle cx="80" cy="130" r="6" fill="currentColor"/>
+        </symbol>
+    </defs>
+</svg>
+
+<script>
+(function() {
+    const FOCAL_X = 80, FOCAL_Y = 130;
+    const GOTA_D = "M80 12 C80 12 104 52 116 88 C126 118 122 152 102 168 C92 176 80 178 80 178 C80 178 68 176 58 168 C38 152 34 118 44 88 C56 52 80 12 80 12 Z";
+    const opts = { spacing: 8, maxR: 2.8, minR: 0.4, decay: 38, coreR: 4 };
+    function generate(symbolEl) {
+        while (symbolEl.firstChild) symbolEl.removeChild(symbolEl.firstChild);
+        const canvas = document.createElement('canvas');
+        canvas.width = 160; canvas.height = 200;
+        const ctx = canvas.getContext('2d');
+        const path = new Path2D(GOTA_D);
+        const SVGNS = 'http://www.w3.org/2000/svg';
+        const sp = opts.spacing;
+        for (let y = sp / 2; y < 200; y += sp) {
+            const rowIdx = Math.round((y - sp / 2) / sp);
+            const xOff = (rowIdx % 2 === 0) ? 0 : sp / 2;
+            for (let x = sp / 2 + xOff; x < 160; x += sp) {
+                if (!ctx.isPointInPath(path, x, y)) continue;
+                const dx = x - FOCAL_X, dy = y - FOCAL_Y;
+                const d = Math.sqrt(dx * dx + dy * dy);
+                const r = Math.max(opts.minR, opts.maxR - d / opts.decay * opts.maxR);
+                if (r < 0.35 || d < 6) continue;
+                const c = document.createElementNS(SVGNS, 'circle');
+                c.setAttribute('cx', x.toFixed(2));
+                c.setAttribute('cy', y.toFixed(2));
+                c.setAttribute('r', r.toFixed(2));
+                c.setAttribute('fill', 'currentColor');
+                symbolEl.appendChild(c);
+            }
+        }
+        const core = document.createElementNS(SVGNS, 'circle');
+        core.setAttribute('cx', FOCAL_X);
+        core.setAttribute('cy', FOCAL_Y);
+        core.setAttribute('r', opts.coreR);
+        core.setAttribute('fill', 'var(--core-color, #B8896A)');
+        symbolEl.appendChild(core);
+    }
+    const sym = document.getElementById('drop-halftone');
+    if (sym) generate(sym);
+})();
+</script>
+
 <div class="container">
+
     <div class="intro">
-        <div class="lbl">Sección 06</div>
-        <h1>Iconografía</h1>
-        <p>El sistema tiene cinco capas estructurales. Un marco para representar información de forma universal, manteniendo una modulación sutil y el rigor de ForMeta.</p>
+        <div class="intro-text">
+            <div class="lbl">Sección 06</div>
+            <h1>Iconografía</h1>
+            <p class="lead">Cinco capas. Acción, objeto, concepto, estado, marca.</p>
+        </div>
+        <div class="intro-mark">
+            <svg viewBox="0 0 160 200"><use href="#drop-halftone"/></svg>
+        </div>
     </div>
 
-    <!-- 1. Librería Base -->
     <section>
-        <h2>6.1 Librería Base</h2>
-        <p>Utilizamos el core set de <strong>Lucide</strong>. Un conjunto filtrado de 40 iconos cubre el 90% de los escenarios en aplicaciones de gestión de procesos. Todo se diseña por defecto a 24px con un <i>stroke</i> de 1.5.</p>
-        
-        <div class="icon-grid">
-            <div class="icon-grid-item"><i data-lucide="archive" width="24" height="24" stroke-width="1.5"></i><span class="icon-label">archive</span></div>
-            <div class="icon-grid-item"><i data-lucide="arrow-right" width="24" height="24" stroke-width="1.5"></i><span class="icon-label">arrow</span></div>
-            <div class="icon-grid-item"><i data-lucide="bell" width="24" height="24" stroke-width="1.5"></i><span class="icon-label">bell</span></div>
-            <div class="icon-grid-item"><i data-lucide="calendar" width="24" height="24" stroke-width="1.5"></i><span class="icon-label">calendar</span></div>
-            <div class="icon-grid-item"><i data-lucide="check" width="24" height="24" stroke-width="1.5"></i><span class="icon-label">check</span></div>
-            <div class="icon-grid-item"><i data-lucide="chevron-down" width="24" height="24" stroke-width="1.5"></i><span class="icon-label">chevron</span></div>
-            <div class="icon-grid-item"><i data-lucide="clipboard" width="24" height="24" stroke-width="1.5"></i><span class="icon-label">clip</span></div>
-            <div class="icon-grid-item"><i data-lucide="clock" width="24" height="24" stroke-width="1.5"></i><span class="icon-label">clock</span></div>
-            <div class="icon-grid-item"><i data-lucide="copy" width="24" height="24" stroke-width="1.5"></i><span class="icon-label">copy</span></div>
-            <div class="icon-grid-item"><i data-lucide="cpu" width="24" height="24" stroke-width="1.5"></i><span class="icon-label">cpu</span></div>
-            <div class="icon-grid-item"><i data-lucide="credit-card" width="24" height="24" stroke-width="1.5"></i><span class="icon-label">card</span></div>
-            <div class="icon-grid-item"><i data-lucide="database" width="24" height="24" stroke-width="1.5"></i><span class="icon-label">db</span></div>
-            <div class="icon-grid-item"><i data-lucide="download" width="24" height="24" stroke-width="1.5"></i><span class="icon-label">dl</span></div>
-            <div class="icon-grid-item"><i data-lucide="edit" width="24" height="24" stroke-width="1.5"></i><span class="icon-label">edit</span></div>
-            <div class="icon-grid-item"><i data-lucide="eye" width="24" height="24" stroke-width="1.5"></i><span class="icon-label">eye</span></div>
-            <div class="icon-grid-item"><i data-lucide="file-text" width="24" height="24" stroke-width="1.5"></i><span class="icon-label">file</span></div>
-            <div class="icon-grid-item"><i data-lucide="filter" width="24" height="24" stroke-width="1.5"></i><span class="icon-label">filter</span></div>
-            <div class="icon-grid-item"><i data-lucide="folder" width="24" height="24" stroke-width="1.5"></i><span class="icon-label">folder</span></div>
-            <div class="icon-grid-item"><i data-lucide="home" width="24" height="24" stroke-width="1.5"></i><span class="icon-label">home</span></div>
-            <div class="icon-grid-item"><i data-lucide="image" width="24" height="24" stroke-width="1.5"></i><span class="icon-label">img</span></div>
-            <div class="icon-grid-item"><i data-lucide="info" width="24" height="24" stroke-width="1.5"></i><span class="icon-label">info</span></div>
-            <div class="icon-grid-item"><i data-lucide="layers" width="24" height="24" stroke-width="1.5"></i><span class="icon-label">layer</span></div>
-            <div class="icon-grid-item"><i data-lucide="layout-grid" width="24" height="24" stroke-width="1.5"></i><span class="icon-label">layout</span></div>
-            <div class="icon-grid-item"><i data-lucide="link" width="24" height="24" stroke-width="1.5"></i><span class="icon-label">link</span></div>
-            <div class="icon-grid-item"><i data-lucide="list" width="24" height="24" stroke-width="1.5"></i><span class="icon-label">list</span></div>
-            <div class="icon-grid-item"><i data-lucide="mail" width="24" height="24" stroke-width="1.5"></i><span class="icon-label">mail</span></div>
-            <div class="icon-grid-item"><i data-lucide="map-pin" width="24" height="24" stroke-width="1.5"></i><span class="icon-label">map</span></div>
-            <div class="icon-grid-item"><i data-lucide="menu" width="24" height="24" stroke-width="1.5"></i><span class="icon-label">menu</span></div>
-            <div class="icon-grid-item"><i data-lucide="message-square" width="24" height="24" stroke-width="1.5"></i><span class="icon-label">msgs</span></div>
-            <div class="icon-grid-item"><i data-lucide="more-horizontal" width="24" height="24" stroke-width="1.5"></i><span class="icon-label">more</span></div>
-            <div class="icon-grid-item"><i data-lucide="paperclip" width="24" height="24" stroke-width="1.5"></i><span class="icon-label">clip</span></div>
-            <div class="icon-grid-item"><i data-lucide="plus" width="24" height="24" stroke-width="1.5"></i><span class="icon-label">plus</span></div>
-            <div class="icon-grid-item"><i data-lucide="search" width="24" height="24" stroke-width="1.5"></i><span class="icon-label">search</span></div>
-            <div class="icon-grid-item"><i data-lucide="settings" width="24" height="24" stroke-width="1.5"></i><span class="icon-label">config</span></div>
-            <div class="icon-grid-item"><i data-lucide="share" width="24" height="24" stroke-width="1.5"></i><span class="icon-label">share</span></div>
-            <div class="icon-grid-item"><i data-lucide="shield" width="24" height="24" stroke-width="1.5"></i><span class="icon-label">shield</span></div>
-            <div class="icon-grid-item"><i data-lucide="trash" width="24" height="24" stroke-width="1.5"></i><span class="icon-label">trash</span></div>
-            <div class="icon-grid-item"><i data-lucide="user" width="24" height="24" stroke-width="1.5"></i><span class="icon-label">user</span></div>
-            <div class="icon-grid-item"><i data-lucide="users" width="24" height="24" stroke-width="1.5"></i><span class="icon-label">users</span></div>
-            <div class="icon-grid-item"><i data-lucide="x" width="24" height="24" stroke-width="1.5"></i><span class="icon-label">close</span></div>
+        <div class="section-tag">06.0 · sistema</div>
+        <h2>Sistema técnico</h2>
+        <p>Todos los iconos se construyen sobre la misma rejilla, con el mismo trazo y las mismas reglas. La consistencia técnica es lo que permite que iconos de capas distintas vivan juntos sin desentonar.</p>
+
+        <div class="specs-grid">
+            <div class="specs-visual">
+                <svg viewBox="-10 -10 140 140" width="240" height="240">
+                    <defs>
+                        <pattern id="g6-grid" width="5" height="5" patternUnits="userSpaceOnUse">
+                            <path d="M 5 0 L 0 0 0 5" fill="none" stroke="#B8896A" stroke-width="0.2" opacity="0.4"/>
+                        </pattern>
+                    </defs>
+                    <rect x="0" y="0" width="120" height="120" fill="url(#g6-grid)"/>
+                    <rect x="10" y="10" width="100" height="100" fill="none" stroke="#B8896A" stroke-width="0.5" stroke-dasharray="3 2" opacity="0.7"/>
+                    <g stroke="#B8896A" stroke-width="1" fill="none" opacity="0.8">
+                        <path d="M-4 0 L4 0 M0 -4 L0 4"/>
+                        <path d="M116 0 L124 0 M120 -4 L120 4"/>
+                        <path d="M-4 120 L4 120 M0 116 L0 124"/>
+                        <path d="M116 120 L124 120 M120 116 L120 124"/>
+                    </g>
+                    <g stroke="#2C2C28" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                        <circle cx="50" cy="50" r="30"/>
+                        <line x1="71" y1="71" x2="100" y2="100"/>
+                    </g>
+                    <text x="60" y="-3" text-anchor="middle" font-family="monospace" font-size="6" fill="#B8896A">24 × 24</text>
+                </svg>
+            </div>
+            <div class="specs-info">
+                <h3>Especificaciones</h3>
+                <p><strong>Rejilla:</strong> <code>24×24</code> unidades. El centro óptico cae en (12, 12).</p>
+                <p><strong>Padding:</strong> <code>2 unidades</code> mínimo desde el borde. Zona útil 20×20.</p>
+                <p><strong>Trazo:</strong> <code>2 unidades</code>. Sin variación dentro de un icono.</p>
+                <p><strong>Caps y joins:</strong> <code>round</code> siempre. Nunca square ni butt.</p>
+                <p><strong>Color:</strong> <code>currentColor</code> en stroke. Permite tintar desde CSS.</p>
+                <p><strong>Anclas:</strong> los puntos clave caen en líneas de la rejilla. Sin sub-pixel.</p>
+                <p><strong>Optical alignment:</strong> los iconos circulares pueden romper la rejilla 1 unidad para corregir percepción visual. Documentar la excepción.</p>
+            </div>
         </div>
     </section>
 
-    <!-- 2. Escala de Tamaños -->
     <section>
-        <h2>6.2 Escala de Tamaños</h2>
-        <p>Existen cinco tamaños únicamente: 16, 20, 24, 32 y 48px. Nada intermedio. El grosor de la línea óptica se altera programáticamente para compensar la percepción.</p>
-        
-        <div class="scale-box">
-            <div class="scale-item">
-                <i data-lucide="settings" width="16" height="16" stroke-width="1.75"></i>
-                <div class="scale-label">16px <span>SW 1.75</span></div>
-            </div>
-            <div class="scale-item">
-                <i data-lucide="settings" width="20" height="20" stroke-width="1.5"></i>
-                <div class="scale-label">20px <span>SW 1.5</span></div>
-            </div>
-            <div class="scale-item">
-                <i data-lucide="settings" width="24" height="24" stroke-width="1.5"></i>
-                <div class="scale-label">24px (Base) <span>SW 1.5</span></div>
-            </div>
-            <div class="scale-item">
-                <i data-lucide="settings" width="32" height="32" stroke-width="1.5"></i>
-                <div class="scale-label">32px <span>SW 1.5</span></div>
-            </div>
-            <div class="scale-item">
-                <i data-lucide="settings" width="48" height="48" stroke-width="1.25"></i>
-                <div class="scale-label">48px <span>SW 1.25</span></div>
+        <div class="section-tag">06.1 · capa de acción</div>
+        <h2>Capa 01 · Acción</h2>
+        <p>Verbos de interfaz. Lo que el usuario puede hacer. Stroke ink puro, ningún acento. Se usan en botones, menús, toolbars.</p>
+
+        <div class="icon-grid">
+            <div class="icon-card" data-name="search"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24"><circle cx="10" cy="10" r="6"/><line x1="14.5" y1="14.5" x2="20" y2="20"/></svg></span></div><div class="icon-name">search</div></div>
+            <div class="icon-card" data-name="save"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24"><path d="M12 3 v12"/><path d="M7 11 l5 5 l5 -5"/><path d="M4 19 h16"/></svg></span></div><div class="icon-name">save</div></div>
+            <div class="icon-card" data-name="upload"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24"><path d="M12 19 v-12"/><path d="M7 11 l5 -5 l5 5"/><path d="M4 19 h16"/></svg></span></div><div class="icon-name">upload</div></div>
+            <div class="icon-card" data-name="share"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24"><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><line x1="8.2" y1="11" x2="15.8" y2="7"/><line x1="8.2" y1="13" x2="15.8" y2="17"/></svg></span></div><div class="icon-name">share</div></div>
+            <div class="icon-card" data-name="edit"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24"><path d="M4 20 l3 -1 l11 -11 l-2 -2 l-11 11 z"/><path d="M14 6 l2 2"/></svg></span></div><div class="icon-name">edit</div></div>
+            <div class="icon-card" data-name="trash"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24"><path d="M4 6 h16"/><path d="M9 6 v-2 h6 v2"/><path d="M6 6 l1 14 h10 l1 -14"/><line x1="10" y1="10" x2="10" y2="17"/><line x1="14" y1="10" x2="14" y2="17"/></svg></span></div><div class="icon-name">trash</div></div>
+            <div class="icon-card" data-name="plus"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></div><div class="icon-name">plus</div></div>
+            <div class="icon-card" data-name="settings"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/><circle cx="9" cy="7" r="2" fill="var(--color-white)"/><circle cx="15" cy="12" r="2" fill="var(--color-white)"/><circle cx="11" cy="17" r="2" fill="var(--color-white)"/></svg></span></div><div class="icon-name">settings</div></div>
+            <div class="icon-card" data-name="filter"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24"><path d="M4 5 h16 l-6 8 v6 l-4 -2 v-4 z"/></svg></span></div><div class="icon-name">filter</div></div>
+            <div class="icon-card" data-name="close"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg></span></div><div class="icon-name">close</div></div>
+            <div class="icon-card" data-name="check"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24"><path d="M5 12 l5 5 l9 -10"/></svg></span></div><div class="icon-name">check</div></div>
+            <div class="icon-card" data-name="copy"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="1"/><path d="M4 16 v-12 h12"/></svg></span></div><div class="icon-name">copy</div></div>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-tag">06.2 · capa de objeto</div>
+        <h2>Capa 02 · Objeto</h2>
+        <p>Sustantivos del trabajo. Las cosas con las que se interactúa. Stroke ink puro. Se usan en listados, tarjetas, etiquetas, breadcrumbs.</p>
+
+        <div class="icon-grid">
+            <div class="icon-card" data-name="document"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24"><path d="M6 3 h9 l4 4 v14 h-13 z"/><path d="M15 3 v4 h4"/><line x1="9" y1="12" x2="16" y2="12"/><line x1="9" y1="16" x2="16" y2="16"/></svg></span></div><div class="icon-name">document</div></div>
+            <div class="icon-card" data-name="mail"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="13" rx="1"/><path d="M3 8 l9 6 l9 -6"/></svg></span></div><div class="icon-name">mail</div></div>
+            <div class="icon-card" data-name="user"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="3.5"/><path d="M5 20 c0 -4 3 -6.5 7 -6.5 s7 2.5 7 6.5"/></svg></span></div><div class="icon-name">user</div></div>
+            <div class="icon-card" data-name="invoice"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24"><path d="M5 3 h14 v18 l-2.5 -2 l-2.5 2 l-2 -2 l-2 2 l-2.5 -2 l-2.5 2 z"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="13" x2="14" y2="13"/></svg></span></div><div class="icon-name">invoice</div></div>
+            <div class="icon-card" data-name="calendar"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="1"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="16" y1="3" x2="16" y2="7"/><circle cx="8" cy="15" r="0.8" fill="currentColor" stroke="none"/></svg></span></div><div class="icon-name">calendar</div></div>
+            <div class="icon-card" data-name="clock"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7 v5 l3 2"/></svg></span></div><div class="icon-name">clock</div></div>
+            <div class="icon-card" data-name="folder"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24"><path d="M3 7 v12 h18 v-11 h-10 l-2 -1 z"/></svg></span></div><div class="icon-name">folder</div></div>
+            <div class="icon-card" data-name="tag"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24"><path d="M3 12 l9 -9 h8 v8 l-9 9 z"/><circle cx="16" cy="8" r="1.5" fill="currentColor" stroke="none"/></svg></span></div><div class="icon-name">tag</div></div>
+            <div class="icon-card" data-name="link"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24"><path d="M10 14 l4 -4"/><path d="M8 16 l-2 2 a3 3 0 0 1 -4 -4 l3 -3 a3 3 0 0 1 4 0"/><path d="M16 8 l2 -2 a3 3 0 0 1 4 4 l-3 3 a3 3 0 0 1 -4 0"/></svg></span></div><div class="icon-name">link</div></div>
+            <div class="icon-card" data-name="pin"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24"><path d="M12 3 c-3 0 -5 2.5 -5 6 c0 4 5 12 5 12 s5 -8 5 -12 c0 -3.5 -2 -6 -5 -6 z"/><circle cx="12" cy="9.5" r="2"/></svg></span></div><div class="icon-name">pin</div></div>
+            <div class="icon-card" data-name="image"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="1"/><circle cx="9" cy="10" r="1.5"/><path d="M3 17 l5 -5 l4 4 l3 -3 l6 6"/></svg></span></div><div class="icon-name">image</div></div>
+            <div class="icon-card" data-name="package"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24"><path d="M4 8 l8 -4 l8 4 v9 l-8 4 l-8 -4 z"/><path d="M4 8 l8 4 l8 -4"/><path d="M12 12 v9"/></svg></span></div><div class="icon-name">package</div></div>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-tag">06.3 · capa de concepto</div>
+        <h2>Capa 03 · Concepto</h2>
+        <p>Ideas abstractas — inteligencia, dato, integración, automatización. Pueden incorporar un <strong>punto terra</strong> como acento (eco del núcleo del símbolo). Se usan en marketing, secciones de funcionalidad, documentación técnica.</p>
+
+        <div class="icon-grid">
+            <div class="icon-card" data-name="intelligence"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24"><path d="M12 3 l8 4 v10 l-8 4 l-8 -4 v-10 z"/><circle class="accent-fill" cx="12" cy="12" r="2"/><line x1="12" y1="5.5" x2="12" y2="10"/><line x1="5.5" y1="9" x2="10" y2="11"/><line x1="18.5" y1="9" x2="14" y2="11"/><line x1="6" y1="15" x2="10" y2="13"/><line x1="18" y1="15" x2="14" y2="13"/></svg></span></div><div class="icon-name">intelligence</div></div>
+            <div class="icon-card" data-name="data"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="7" ry="2.5"/><path d="M5 6 v6 c0 1.5 3 2.5 7 2.5 s7 -1 7 -2.5 v-6"/><path d="M5 12 v6 c0 1.5 3 2.5 7 2.5 s7 -1 7 -2.5 v-6"/></svg></span></div><div class="icon-name">data</div></div>
+            <div class="icon-card" data-name="integration"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle class="accent-fill" cx="12" cy="18" r="2.5"/><line x1="7.5" y1="7.5" x2="10.5" y2="15.5"/><line x1="16.5" y1="7.5" x2="13.5" y2="15.5"/><line x1="8.5" y1="6" x2="15.5" y2="6"/></svg></span></div><div class="icon-name">integration</div></div>
+            <div class="icon-card" data-name="automation"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24"><path d="M12 4 a8 8 0 1 1 -8 8"/><path d="M7 9 l-3 3 l3 3"/><circle class="accent-fill" cx="12" cy="12" r="1.6"/></svg></span></div><div class="icon-name">automation</div></div>
+            <div class="icon-card" data-name="velocity"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24"><path d="M13 3 l-8 11 h6 l-1 7 l8 -11 h-6 z"/></svg></span></div><div class="icon-name">velocity</div></div>
+            <div class="icon-card" data-name="origin"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24"><path d="M12 3 c0 0 4 5.5 4 10 c0 3.5 -2 6 -4 6 c-2 0 -4 -2.5 -4 -6 c0 -4.5 4 -10 4 -10 z"/><circle class="accent-fill" cx="12" cy="14.5" r="1.5"/></svg></span></div><div class="icon-name">origin</div></div>
+            <div class="icon-card" data-name="network"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="1.6" fill="currentColor" stroke="none"/><circle cx="18" cy="6" r="1.6" fill="currentColor" stroke="none"/><circle cx="6" cy="18" r="1.6" fill="currentColor" stroke="none"/><circle cx="18" cy="18" r="1.6" fill="currentColor" stroke="none"/><circle class="accent-fill" cx="12" cy="12" r="2.2"/><line x1="7" y1="7" x2="11" y2="11"/><line x1="17" y1="7" x2="13" y2="11"/><line x1="7" y1="17" x2="11" y2="13"/><line x1="17" y1="17" x2="13" y2="13"/></svg></span></div><div class="icon-name">network</div></div>
+            <div class="icon-card" data-name="local"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24"><path d="M3 14 c1 -2 3 -3 6 -3 c2 0 3 1 5 1 c3 0 6 1 7 3 c0 2 -3 4 -9 4 c-5 0 -9 -2 -9 -5 z"/><circle class="accent-fill" cx="9" cy="13" r="1.2"/></svg></span></div><div class="icon-name">local</div></div>
+            <div class="icon-card" data-name="formitar"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24"><path d="M5 14 c0 -3 2 -5 4 -6"/><path d="M19 10 c0 3 -2 5 -4 6"/><path d="M9 8 l3 -3 l3 3"/><path d="M9 16 l3 3 l3 -3"/><circle class="accent-fill" cx="12" cy="12" r="2"/></svg></span></div><div class="icon-name">formitar</div></div>
+            <div class="icon-card" data-name="model"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><circle class="accent-fill" cx="9" cy="9" r="1.4"/><circle cx="15" cy="9" r="1.4" fill="currentColor" stroke="none"/><circle cx="9" cy="15" r="1.4" fill="currentColor" stroke="none"/><circle cx="15" cy="15" r="1.4" fill="currentColor" stroke="none"/><line x1="9" y1="10.5" x2="9" y2="13.5"/><line x1="15" y1="10.5" x2="15" y2="13.5"/><line x1="10.5" y1="9" x2="13.5" y2="9"/><line x1="10.5" y1="15" x2="13.5" y2="15"/></svg></span></div><div class="icon-name">model</div></div>
+            <div class="icon-card" data-name="time-saved"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7 v5 l3.5 2"/><circle class="accent-fill" cx="12" cy="12" r="1.4"/></svg></span></div><div class="icon-name">time-saved</div></div>
+            <div class="icon-card" data-name="craft"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24"><path d="M5 19 l5 -5"/><path d="M9 15 l5 -5 l3 3 l-5 5 z"/><path d="M14 10 l3 -3 l3 3 l-3 3"/><circle class="accent-fill" cx="18.5" cy="8.5" r="1.2"/></svg></span></div><div class="icon-name">craft</div></div>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-tag">06.4 · capa de estado</div>
+        <h2>Capa 04 · Estado</h2>
+        <p>Feedback semántico. Color codificado — no se mezcla con la paleta editorial. Cada estado va acompañado de texto (nunca solo el color: accesibilidad).</p>
+
+        <div class="icon-grid">
+            <div class="icon-card semantic-success" data-name="status-success"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M7 12 l4 4 l6 -7"/></svg></span></div><div class="icon-name">success</div></div>
+            <div class="icon-card semantic-alert" data-name="status-error"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><line x1="8.5" y1="8.5" x2="15.5" y2="15.5"/><line x1="15.5" y1="8.5" x2="8.5" y2="15.5"/></svg></span></div><div class="icon-name">error</div></div>
+            <div class="icon-card semantic-warning" data-name="status-warning"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24"><path d="M12 4 l9 16 h-18 z"/><line x1="12" y1="10" x2="12" y2="14"/><circle cx="12" cy="17" r="0.8" fill="currentColor" stroke="none"/></svg></span></div><div class="icon-name">warning</div></div>
+            <div class="icon-card semantic-info" data-name="status-info"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="8" r="0.8" fill="currentColor" stroke="none"/><line x1="12" y1="11" x2="12" y2="17"/></svg></span></div><div class="icon-name">info</div></div>
+            <div class="icon-card semantic-info" data-name="status-loading"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24"><circle cx="6" cy="12" r="2" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="2" fill="currentColor" stroke="none"/><circle cx="18" cy="12" r="2" fill="currentColor" stroke="none"/></svg></span></div><div class="icon-name">loading</div></div>
+            <div class="icon-card semantic-success" data-name="status-online"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" opacity="0.3"/><circle cx="12" cy="12" r="4" fill="currentColor" stroke="none"/></svg></span></div><div class="icon-name">online</div></div>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-tag">06.5 · capa de marca</div>
+        <h2>Capa 05 · Marca</h2>
+        <p>Símbolo de marca + marcadores de navegación + familia editorial halftone. La gota es la única excepción al sistema 24×24 (se construye en 160×200, como define el capítulo 03). Los chevrons y flechas mantienen las especificaciones estándar. Los marcadores halftone (burst, strip, bullet, grain, corner, focal) son piezas <strong>editoriales</strong> — comparten lenguaje con el símbolo: dots agrupados, núcleo terra, gradación por tamaño. Se usan en piezas largas: leadlines, dividers, paginación, watermarks, callouts.</p>
+
+        <h3 style="margin-top: 2.5rem;">Marca + navegación</h3>
+        <div class="icon-grid">
+            <div class="icon-card" data-name="drop-simple"><div class="icon-display" style="color: var(--color-terra);"><span class="icon icon-48"><svg viewBox="0 0 160 200"><use href="#drop-simple"/></svg></span></div><div class="icon-name">drop · simple</div></div>
+            <div class="icon-card" data-name="drop-halftone"><div class="icon-display" style="color: var(--color-ink); --core-color: var(--color-terra);"><span class="icon icon-48"><svg viewBox="0 0 160 200"><use href="#drop-halftone"/></svg></span></div><div class="icon-name">drop · halftone</div></div>
+            <div class="icon-card" data-name="chevron-right"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24"><path d="M9 6 l6 6 l-6 6"/></svg></span></div><div class="icon-name">chevron-right</div></div>
+            <div class="icon-card" data-name="chevron-left"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24"><path d="M15 6 l-6 6 l6 6"/></svg></span></div><div class="icon-name">chevron-left</div></div>
+            <div class="icon-card" data-name="chevron-up"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24"><path d="M6 15 l6 -6 l6 6"/></svg></span></div><div class="icon-name">chevron-up</div></div>
+            <div class="icon-card" data-name="chevron-down"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24"><path d="M6 9 l6 6 l6 -6"/></svg></span></div><div class="icon-name">chevron-down</div></div>
+            <div class="icon-card" data-name="arrow-right"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24"><line x1="4" y1="12" x2="20" y2="12"/><path d="M14 6 l6 6 l-6 6"/></svg></span></div><div class="icon-name">arrow-right</div></div>
+            <div class="icon-card" data-name="external"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24"><path d="M14 4 h6 v6"/><line x1="20" y1="4" x2="12" y2="12"/><path d="M19 13 v6 h-14 v-14 h6"/></svg></span></div><div class="icon-name">external</div></div>
+            <div class="icon-card" data-name="divider"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24"><circle cx="6" cy="12" r="0.9" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="0.9" fill="currentColor" stroke="none"/><circle cx="18" cy="12" r="0.9" fill="currentColor" stroke="none"/></svg></span></div><div class="icon-name">divider</div></div>
+        </div>
+
+        <h3 style="margin-top: 3rem;">Familia halftone editorial</h3>
+        <div class="icon-grid">
+            <div class="icon-card" data-name="halftone-burst"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24">
+                <circle class="accent-fill" cx="12" cy="12" r="1.8"/>
+                <circle cx="12" cy="4" r="1.2" fill="currentColor" stroke="none"/>
+                <circle cx="20" cy="12" r="1.2" fill="currentColor" stroke="none"/>
+                <circle cx="12" cy="20" r="1.2" fill="currentColor" stroke="none"/>
+                <circle cx="4" cy="12" r="1.2" fill="currentColor" stroke="none"/>
+                <circle cx="17.7" cy="6.3" r="0.7" fill="currentColor" stroke="none"/>
+                <circle cx="17.7" cy="17.7" r="0.7" fill="currentColor" stroke="none"/>
+                <circle cx="6.3" cy="17.7" r="0.7" fill="currentColor" stroke="none"/>
+                <circle cx="6.3" cy="6.3" r="0.7" fill="currentColor" stroke="none"/>
+            </svg></span></div><div class="icon-name">halftone-burst</div></div>
+
+            <div class="icon-card" data-name="halftone-strip"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24">
+                <circle cx="2" cy="12" r="0.4" fill="currentColor" stroke="none"/>
+                <circle cx="5" cy="12" r="0.7" fill="currentColor" stroke="none"/>
+                <circle cx="8" cy="12" r="1.1" fill="currentColor" stroke="none"/>
+                <circle class="accent-fill" cx="12" cy="12" r="1.6"/>
+                <circle cx="16" cy="12" r="1.1" fill="currentColor" stroke="none"/>
+                <circle cx="19" cy="12" r="0.7" fill="currentColor" stroke="none"/>
+                <circle cx="22" cy="12" r="0.4" fill="currentColor" stroke="none"/>
+            </svg></span></div><div class="icon-name">halftone-strip</div></div>
+
+            <div class="icon-card" data-name="halftone-bullet"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24">
+                <g fill="currentColor" stroke="none">
+                    <circle cx="8" cy="8" r="1"/><circle cx="12" cy="8" r="1"/><circle cx="16" cy="8" r="1"/>
+                    <circle cx="8" cy="12" r="1"/><circle class="accent-fill" cx="12" cy="12" r="1.4"/><circle cx="16" cy="12" r="1"/>
+                    <circle cx="8" cy="16" r="1"/><circle cx="12" cy="16" r="1"/><circle cx="16" cy="16" r="1"/>
+                </g>
+            </svg></span></div><div class="icon-name">halftone-bullet</div></div>
+
+            <div class="icon-card" data-name="halftone-grain"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24">
+                <g fill="currentColor" stroke="none">
+                    <circle cx="5" cy="5" r="0.65"/><circle cx="9.5" cy="5" r="0.65"/><circle cx="14.5" cy="5" r="0.65"/><circle cx="19" cy="5" r="0.65"/>
+                    <circle cx="5" cy="9.5" r="0.65"/><circle cx="9.5" cy="9.5" r="0.65"/><circle cx="14.5" cy="9.5" r="0.65"/><circle cx="19" cy="9.5" r="0.65"/>
+                    <circle cx="5" cy="14.5" r="0.65"/><circle cx="9.5" cy="14.5" r="0.65"/><circle class="accent-fill" cx="14.5" cy="14.5" r="0.9"/><circle cx="19" cy="14.5" r="0.65"/>
+                    <circle cx="5" cy="19" r="0.65"/><circle cx="9.5" cy="19" r="0.65"/><circle cx="14.5" cy="19" r="0.65"/><circle cx="19" cy="19" r="0.65"/>
+                </g>
+            </svg></span></div><div class="icon-name">halftone-grain</div></div>
+
+            <div class="icon-card" data-name="halftone-corner"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24">
+                <g fill="currentColor" stroke="none">
+                    <circle class="accent-fill" cx="4" cy="4" r="1.5"/>
+                    <circle cx="9" cy="4" r="1"/>
+                    <circle cx="14" cy="4" r="0.7"/>
+                    <circle cx="19" cy="4" r="0.4"/>
+                    <circle cx="4" cy="9" r="1"/>
+                    <circle cx="4" cy="14" r="0.7"/>
+                    <circle cx="4" cy="19" r="0.4"/>
+                </g>
+            </svg></span></div><div class="icon-name">halftone-corner</div></div>
+
+            <div class="icon-card" data-name="halftone-focal"><div class="icon-display"><span class="icon icon-32"><svg viewBox="0 0 24 24">
+                <g fill="currentColor" stroke="none">
+                    <circle class="accent-fill" cx="12" cy="12" r="1.8"/>
+                    <circle cx="12" cy="7" r="0.9"/><circle cx="17" cy="12" r="0.9"/><circle cx="12" cy="17" r="0.9"/><circle cx="7" cy="12" r="0.9"/>
+                    <circle cx="12" cy="3" r="0.5"/><circle cx="21" cy="12" r="0.5"/><circle cx="12" cy="21" r="0.5"/><circle cx="3" cy="12" r="0.5"/>
+                    <circle cx="18.4" cy="5.6" r="0.5"/><circle cx="18.4" cy="18.4" r="0.5"/><circle cx="5.6" cy="18.4" r="0.5"/><circle cx="5.6" cy="5.6" r="0.5"/>
+                </g>
+            </svg></span></div><div class="icon-name">halftone-focal</div></div>
+        </div>
+
+        <h3 style="margin-top: 3rem;">En editorial</h3>
+        <p>Cómo se usan los marcadores halftone en piezas reales: <code>burst</code> marca novedades; <code>strip</code> separa secciones largas; <code>focal</code> introduce un párrafo destacado; <code>bullet</code> abre listas editoriales; <code>grain</code> firma esquinas como watermark; <code>corner</code> enmarca pull quotes.</p>
+
+        <div class="context-card" style="margin-top: 1rem;">
+            <h4>Pieza editorial · ejemplo</h4>
+            <div style="position: relative; padding: 2rem 1.5rem 1.5rem; background: var(--color-sand); border-radius: 6px;">
+                <!-- corner top-left -->
+                <span class="icon icon-24" style="color: var(--color-ink); position: absolute; top: 0.6rem; left: 0.6rem;"><svg viewBox="0 0 24 24"><g fill="currentColor" stroke="none"><circle class="accent-fill" cx="4" cy="4" r="1.5"/><circle cx="9" cy="4" r="1"/><circle cx="14" cy="4" r="0.7"/><circle cx="19" cy="4" r="0.4"/><circle cx="4" cy="9" r="1"/><circle cx="4" cy="14" r="0.7"/><circle cx="4" cy="19" r="0.4"/></g></svg></span>
+                <!-- burst tag -->
+                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+                    <span class="icon icon-24" style="color: var(--color-ink);"><svg viewBox="0 0 24 24"><circle class="accent-fill" cx="12" cy="12" r="1.8"/><circle cx="12" cy="4" r="1.2" fill="currentColor" stroke="none"/><circle cx="20" cy="12" r="1.2" fill="currentColor" stroke="none"/><circle cx="12" cy="20" r="1.2" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1.2" fill="currentColor" stroke="none"/><circle cx="17.7" cy="6.3" r="0.7" fill="currentColor" stroke="none"/><circle cx="17.7" cy="17.7" r="0.7" fill="currentColor" stroke="none"/><circle cx="6.3" cy="17.7" r="0.7" fill="currentColor" stroke="none"/><circle cx="6.3" cy="6.3" r="0.7" fill="currentColor" stroke="none"/></svg></span>
+                    <span style="font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-terra); font-weight: 500;">Nuevo · IApp · 2026.05</span>
+                </div>
+                <div style="font-family: var(--font-display); font-weight: 300; font-size: 2.4rem; line-height: 1.1; letter-spacing: -0.02em; color: var(--color-ink); max-width: 500px;">Cogemos el conocimiento que ya existe y le damos forma.</div>
+                <!-- strip divider -->
+                <div style="display: flex; justify-content: center; margin: 1.5rem 0;">
+                    <span class="icon icon-32" style="color: var(--color-ink);"><svg viewBox="0 0 24 24"><circle cx="2" cy="12" r="0.4" fill="currentColor" stroke="none"/><circle cx="5" cy="12" r="0.7" fill="currentColor" stroke="none"/><circle cx="8" cy="12" r="1.1" fill="currentColor" stroke="none"/><circle class="accent-fill" cx="12" cy="12" r="1.6"/><circle cx="16" cy="12" r="1.1" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="0.7" fill="currentColor" stroke="none"/><circle cx="22" cy="12" r="0.4" fill="currentColor" stroke="none"/></svg></span>
+                </div>
+                <!-- bullet list -->
+                <ul style="list-style: none; font-family: var(--font-text); font-size: 0.95rem; color: var(--color-ink);">
+                    <li style="display: flex; align-items: center; gap: 0.7rem; padding: 0.4rem 0;">
+                        <span class="icon icon-24" style="color: var(--color-ink); flex-shrink: 0;"><svg viewBox="0 0 24 24"><g fill="currentColor" stroke="none"><circle cx="8" cy="8" r="1"/><circle cx="12" cy="8" r="1"/><circle cx="16" cy="8" r="1"/><circle cx="8" cy="12" r="1"/><circle class="accent-fill" cx="12" cy="12" r="1.4"/><circle cx="16" cy="12" r="1"/><circle cx="8" cy="16" r="1"/><circle cx="12" cy="16" r="1"/><circle cx="16" cy="16" r="1"/></g></svg></span>
+                        Modelos que entienden contexto, no reglas fijas
+                    </li>
+                    <li style="display: flex; align-items: center; gap: 0.7rem; padding: 0.4rem 0;">
+                        <span class="icon icon-24" style="color: var(--color-ink); flex-shrink: 0;"><svg viewBox="0 0 24 24"><g fill="currentColor" stroke="none"><circle cx="8" cy="8" r="1"/><circle cx="12" cy="8" r="1"/><circle cx="16" cy="8" r="1"/><circle cx="8" cy="12" r="1"/><circle class="accent-fill" cx="12" cy="12" r="1.4"/><circle cx="16" cy="12" r="1"/><circle cx="8" cy="16" r="1"/><circle cx="12" cy="16" r="1"/><circle cx="16" cy="16" r="1"/></g></svg></span>
+                        Trabajo redibujado desde la inteligencia
+                    </li>
+                    <li style="display: flex; align-items: center; gap: 0.7rem; padding: 0.4rem 0;">
+                        <span class="icon icon-24" style="color: var(--color-ink); flex-shrink: 0;"><svg viewBox="0 0 24 24"><g fill="currentColor" stroke="none"><circle cx="8" cy="8" r="1"/><circle cx="12" cy="8" r="1"/><circle cx="16" cy="8" r="1"/><circle cx="8" cy="12" r="1"/><circle class="accent-fill" cx="12" cy="12" r="1.4"/><circle cx="16" cy="12" r="1"/><circle cx="8" cy="16" r="1"/><circle cx="12" cy="16" r="1"/><circle cx="16" cy="16" r="1"/></g></svg></span>
+                        Resultado medible — minutos, no procesos
+                    </li>
+                </ul>
+                <!-- grain watermark bottom right -->
+                <span class="icon icon-24" style="color: var(--color-muted); position: absolute; bottom: 0.6rem; right: 0.8rem; opacity: 0.45;"><svg viewBox="0 0 24 24"><g fill="currentColor" stroke="none"><circle cx="5" cy="5" r="0.65"/><circle cx="9.5" cy="5" r="0.65"/><circle cx="14.5" cy="5" r="0.65"/><circle cx="19" cy="5" r="0.65"/><circle cx="5" cy="9.5" r="0.65"/><circle cx="9.5" cy="9.5" r="0.65"/><circle cx="14.5" cy="9.5" r="0.65"/><circle cx="19" cy="9.5" r="0.65"/><circle cx="5" cy="14.5" r="0.65"/><circle cx="9.5" cy="14.5" r="0.65"/><circle class="accent-fill" cx="14.5" cy="14.5" r="0.9"/><circle cx="19" cy="14.5" r="0.65"/><circle cx="5" cy="19" r="0.65"/><circle cx="9.5" cy="19" r="0.65"/><circle cx="14.5" cy="19" r="0.65"/><circle cx="19" cy="19" r="0.65"/></g></svg></span>
             </div>
         </div>
     </section>
-    
-    <!-- 3. Reglas -->
+
     <section>
-        <h2>6.3 Reglas de Uso</h2>
-        <p>Lo más importante es lo que no se hace. El tratamiento visual estricto separa el software de una simple página web.</p>
+        <div class="section-tag">06.6 · contexto</div>
+        <h2>Iconos en contexto</h2>
+        <p>Cómo se ven en piezas reales. Los iconos siempre acompañan a texto — el texto define la acción, el icono la refuerza visualmente.</p>
+
+        <div class="context-grid">
+            <div class="context-card">
+                <h4>Botones</h4>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.6rem;">
+                    <button class="btn-sample"><span class="icon icon-24"><svg viewBox="0 0 24 24"><path d="M12 3 v12"/><path d="M7 11 l5 5 l5 -5"/><path d="M4 19 h16"/></svg></span> Guardar</button>
+                    <button class="btn-sample"><span class="icon icon-24"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span> Nuevo cliente</button>
+                    <button class="btn-sample ghost"><span class="icon icon-24"><svg viewBox="0 0 24 24"><path d="M4 5 h16 l-6 8 v6 l-4 -2 v-4 z"/></svg></span> Filtrar</button>
+                </div>
+            </div>
+
+            <div class="context-card">
+                <h4>Alertas</h4>
+                <div class="alert-sample success"><span class="icon icon-24"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M7 12 l4 4 l6 -7"/></svg></span> Pedido guardado correctamente.</div>
+                <div class="alert-sample alert"><span class="icon icon-24"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><line x1="8.5" y1="8.5" x2="15.5" y2="15.5"/><line x1="15.5" y1="8.5" x2="8.5" y2="15.5"/></svg></span> No se pudo conectar al servidor.</div>
+                <div class="alert-sample warning"><span class="icon icon-24"><svg viewBox="0 0 24 24"><path d="M12 4 l9 16 h-18 z"/><line x1="12" y1="10" x2="12" y2="14"/><circle cx="12" cy="17" r="0.8" fill="currentColor" stroke="none"/></svg></span> El cliente no tiene método de pago configurado.</div>
+                <div class="alert-sample info"><span class="icon icon-24"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="8" r="0.8" fill="currentColor" stroke="none"/><line x1="12" y1="11" x2="12" y2="17"/></svg></span> Procesando inventario. Tiempo estimado: 2 min.</div>
+            </div>
+
+            <div class="context-card">
+                <h4>Listado</h4>
+                <ul class="list-sample">
+                    <li><span class="icon icon-24"><svg viewBox="0 0 24 24"><path d="M6 3 h9 l4 4 v14 h-13 z"/><path d="M15 3 v4 h4"/><line x1="9" y1="12" x2="16" y2="12"/><line x1="9" y1="16" x2="16" y2="16"/></svg></span> Propuesta_v2.pdf</li>
+                    <li><span class="icon icon-24"><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="3.5"/><path d="M5 20 c0 -4 3 -6.5 7 -6.5 s7 2.5 7 6.5"/></svg></span> Cooperativa Sant Joan</li>
+                    <li><span class="icon icon-24"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="1"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="16" y1="3" x2="16" y2="7"/></svg></span> Reunión · 18 mayo</li>
+                </ul>
+            </div>
+
+            <div class="context-card">
+                <h4>Métricas</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div>
+                        <span class="icon icon-24" style="color: var(--color-terra);"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7 v5 l3.5 2"/><circle class="accent-fill" cx="12" cy="12" r="1.4"/></svg></span>
+                        <div style="font-family: var(--font-display); font-size: 2rem; line-height: 1; color: var(--color-ink); margin-top: 0.5rem;">−37 min</div>
+                        <div style="font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-muted); margin-top: 0.3rem;">Tiempo ahorrado / pedido</div>
+                    </div>
+                    <div>
+                        <span class="icon icon-24" style="color: var(--color-terra);"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="1.6" fill="currentColor" stroke="none"/><circle cx="18" cy="6" r="1.6" fill="currentColor" stroke="none"/><circle cx="6" cy="18" r="1.6" fill="currentColor" stroke="none"/><circle cx="18" cy="18" r="1.6" fill="currentColor" stroke="none"/><circle class="accent-fill" cx="12" cy="12" r="2.2"/><line x1="7" y1="7" x2="11" y2="11"/><line x1="17" y1="7" x2="13" y2="11"/><line x1="7" y1="17" x2="11" y2="13"/><line x1="17" y1="17" x2="13" y2="13"/></svg></span>
+                        <div style="font-family: var(--font-display); font-size: 2rem; line-height: 1; color: var(--color-ink); margin-top: 0.5rem;">10</div>
+                        <div style="font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-muted); margin-top: 0.3rem;">Clientes activos</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-tag">reglas</div>
+        <h2>Reglas de uso</h2>
         <ul class="rule-list">
-            <li><strong>Nada de iconos rellenos.</strong> Transmitimos ligereza operativa.</li>
-            <li><strong>Nada de Terracota como color funcional.</strong> Terracota es acento de marca (botones o branding), no una señal de alerta, error o success en la interfaz.</li>
-            <li><strong>Nunca un icono solo en una acción crítica.</strong> Confirmar pagos, borrar registros o aplicar cambios drásticos siempre requiere etiqueta de texto explícita.</li>
+            <li><strong>Un icono nunca va solo.</strong> Siempre acompaña a texto. Excepción: en toolbars compactos donde el icono tiene tooltip al hover.</li>
+            <li><strong>Mismo trazo, mismo tamaño.</strong> Dentro de una pieza, todos los iconos usan el mismo tamaño (24 o 32 px). No mezclar.</li>
+            <li><strong>El acento terra solo en capa 03.</strong> Capas 01 y 02 son ink puro. El acento terra está reservado para iconos conceptuales — lo que la marca enfatiza.</li>
+            <li><strong>Color semántico solo en capa 04.</strong> Success no se usa fuera de un estado. Si un icono de acción necesita color, usar terra (no sage ni alert).</li>
+            <li><strong>Stroke 2 unidades, siempre.</strong> No engrosar para "destacar" — destacar es con jerarquía tipográfica, no con peso visual del icono.</li>
+            <li><strong>No animar iconos de capas 01–02.</strong> Si un icono necesita movimiento (loading, success transition), pertenece a capa 04. Animación micro: 200–300ms, ease-out.</li>
+            <li><strong>Optical alignment vence a la rejilla.</strong> Si un icono circular se ve descentrado en su contexto, ajustarlo manualmente 1 unidad y documentar la excepción.</li>
         </ul>
     </section>
 
-    <!-- 4. Iconos en contexto -->
     <section>
-        <h2>6.4 Iconos en Contexto</h2>
-        <p>Unificamos la coherencia entre el icono y la topografía del UI.</p>
-        
-        <div class="context-grid">
-            <div class="context-card">
-                <div class="context-lbl">Botón Primario</div>
-                <button class="btn btn-primary"><i data-lucide="plus" width="18" height="18" stroke-width="2"></i><span>Nuevo Proyecto</span></button>
+        <div class="section-tag">usos incorrectos</div>
+        <h2>Lo que no se hace</h2>
+        <div class="dont-grid">
+            <div class="dont">
+                <div class="dont-display"><span class="icon icon-32" style="color: var(--color-ink);"><svg viewBox="0 0 24 24" style="fill: var(--color-ink); stroke: none;"><circle cx="10" cy="10" r="6"/><line x1="14.5" y1="14.5" x2="20" y2="20" stroke="var(--color-ink)" stroke-width="2"/></svg></span></div>
+                <p class="dont-reason">No rellenar sólido. Los iconos son stroke.</p>
             </div>
-            
-            <div class="context-card">
-                <div class="context-lbl">Botón Secundario</div>
-                <button class="btn btn-secondary"><i data-lucide="filter" width="18" height="18" stroke-width="1.75"></i><span>Filtrar</span></button>
+            <div class="dont">
+                <div class="dont-display"><span class="icon icon-32" style="color: var(--color-ink);"><svg viewBox="0 0 24 24" style="stroke-width: 4;"><circle cx="10" cy="10" r="6"/><line x1="14.5" y1="14.5" x2="20" y2="20"/></svg></span></div>
+                <p class="dont-reason">No engrosar el trazo. Siempre 2 unidades.</p>
             </div>
-            
-            <div class="context-card" style="grid-column: span 1;">
-                <div class="context-lbl">Input Prefijo</div>
-                <div class="input-wrapper">
-                    <i data-lucide="search" width="18" height="18"></i>
-                    <input type="text" placeholder="Buscar procesos..." class="input-field">
+            <div class="dont">
+                <div class="dont-display"><span class="icon icon-32" style="color: #D04AC2;"><svg viewBox="0 0 24 24"><circle cx="10" cy="10" r="6"/><line x1="14.5" y1="14.5" x2="20" y2="20"/></svg></span></div>
+                <p class="dont-reason">No usar color fuera de paleta marca.</p>
+            </div>
+            <div class="dont">
+                <div class="dont-display"><span class="icon icon-32" style="color: var(--color-ink); transform: rotate(15deg);"><svg viewBox="0 0 24 24"><circle cx="10" cy="10" r="6"/><line x1="14.5" y1="14.5" x2="20" y2="20"/></svg></span></div>
+                <p class="dont-reason">No rotar. Los iconos viven en su orientación.</p>
+            </div>
+            <div class="dont">
+                <div class="dont-display"><span class="icon icon-32" style="color: var(--color-ink); filter: drop-shadow(2px 2px 3px rgba(0,0,0,0.4));"><svg viewBox="0 0 24 24"><circle cx="10" cy="10" r="6"/><line x1="14.5" y1="14.5" x2="20" y2="20"/></svg></span></div>
+                <p class="dont-reason">No añadir sombras ni efectos.</p>
+            </div>
+            <div class="dont">
+                <div class="dont-display"><span class="icon icon-32" style="color: var(--color-ink);"><svg viewBox="0 0 24 24" style="stroke-linecap: butt; stroke-linejoin: miter;"><circle cx="10" cy="10" r="6"/><line x1="14.5" y1="14.5" x2="20" y2="20"/></svg></span></div>
+                <p class="dont-reason">No caps butt ni joins miter. Round siempre.</p>
+            </div>
+            <div class="dont">
+                <div class="dont-display" style="display: flex; align-items: center; gap: 0.4rem;">
+                    <span class="icon icon-24" style="color: var(--color-ink);"><svg viewBox="0 0 24 24"><path d="M12 3 v12"/><path d="M7 11 l5 5 l5 -5"/><path d="M4 19 h16"/></svg></span>
+                    <span class="icon icon-32" style="color: var(--color-ink);"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
                 </div>
+                <p class="dont-reason">No mezclar tamaños en la misma pieza.</p>
             </div>
-            
-            <div class="context-card" style="grid-column: span 1;">
-                <div class="context-lbl">Status Badge</div>
-                <span class="badge"><i data-lucide="check-circle" width="14" height="14" stroke-width="2"></i><span>Completado</span></span>
+            <div class="dont">
+                <div class="dont-display"><span class="icon icon-32" style="color: var(--color-success);"><svg viewBox="0 0 24 24"><path d="M12 3 v12"/><path d="M7 11 l5 5 l5 -5"/><path d="M4 19 h16"/></svg></span></div>
+                <p class="dont-reason">No color semántico fuera de capa 04.</p>
             </div>
         </div>
     </section>
 
-    <!-- 5. Vocabulario funcional -->
     <section>
-        <h2>6.5 Vocabulario Funcional de ForMeta</h2>
-        <p>Los 16 iconos con mayor presencia en los productos que construimos. Clasificados por su rol y el color semántico que adoptan de forma inherente cuando comunican estado (dejando Ink para el uso neutral general).</p>
-        
-        <!-- Sea (Tech/AI) -->
-        <h3 style="margin-top: 2rem;">Inteligencia y Tecnología (Color: Sea)</h3>
-        <div class="vocab-grid">
-            <div class="vocab-item">
-                <div class="vocab-icon color-sea"><i data-lucide="cpu" width="24" height="24" stroke-width="1.5"></i></div>
-                <div class="vocab-text"><span class="vocab-name">CPU</span><span class="vocab-role">Proceso / Engine</span></div>
-            </div>
-            <div class="vocab-item">
-                <div class="vocab-icon color-sea"><i data-lucide="sparkles" width="24" height="24" stroke-width="1.5"></i></div>
-                <div class="vocab-text"><span class="vocab-name">SPARKLES</span><span class="vocab-role">Inferencia / AI</span></div>
-            </div>
-            <div class="vocab-item">
-                <div class="vocab-icon color-sea"><i data-lucide="network" width="24" height="24" stroke-width="1.5"></i></div>
-                <div class="vocab-text"><span class="vocab-name">NETWORK</span><span class="vocab-role">APIs / Integraciones</span></div>
-            </div>
+        <div class="section-tag">06.7 · descarga</div>
+        <h2>Descarga</h2>
+
+        <div class="download-section">
+            <h3>Pack de iconos · SVG</h3>
+            <p>Todos los iconos del sistema en SVG independiente, organizados por carpetas de capa. Cada archivo es <code>currentColor</code>-compatible — el color se hereda del contexto donde se use.</p>
+
+            <button class="download-cta" id="downloadIconsBtn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                Descargar pack iconos (.zip)
+            </button>
+            <div class="download-status" id="downloadIconsStatus"></div>
         </div>
 
-        <!-- Terracota (Acciones/Branding) -->
-        <h3 style="margin-top: 2.5rem;">Carga Narrativa / Acciones (Color: Terracota)</h3>
-        <div class="vocab-grid">
-            <div class="vocab-item">
-                <div class="vocab-icon color-terra"><i data-lucide="play" width="24" height="24" stroke-width="1.5"></i></div>
-                <div class="vocab-text"><span class="vocab-name">PLAY</span><span class="vocab-role">Ejecución Activa</span></div>
-            </div>
-            <div class="vocab-item">
-                <div class="vocab-icon color-terra"><i data-lucide="map-pin" width="24" height="24" stroke-width="1.5"></i></div>
-                <div class="vocab-text"><span class="vocab-name">MAP PIN</span><span class="vocab-role">Proximidad Local</span></div>
-            </div>
-            <div class="vocab-item">
-                <div class="vocab-icon color-terra"><i data-lucide="zap" width="24" height="24" stroke-width="1.5"></i></div>
-                <div class="vocab-text"><span class="vocab-name">ZAP</span><span class="vocab-role">Flash Action</span></div>
-            </div>
+        <div class="meta-strip">
+            <span class="tag">v1.0</span><span class="sep">·</span>
+            <span>2026.05.15</span><span class="sep">·</span>
+            <span>Mallorca / 39.5696° N</span><span class="sep">·</span>
+            <span>FMTA—06—Iconos</span><span class="sep">·</span>
+            <span>5 capas · 57 iconos · 6 halftone editorial</span>
         </div>
-
-        <!-- Sage (Positivo) -->
-        <h3 style="margin-top: 2.5rem;">Confirmación / Positive Status (Color: Sage)</h3>
-        <div class="vocab-grid">
-            <div class="vocab-item">
-                <div class="vocab-icon color-sage"><i data-lucide="check-circle" width="24" height="24" stroke-width="1.5"></i></div>
-                <div class="vocab-text"><span class="vocab-name">CHECK</span><span class="vocab-role">Tarea completada</span></div>
-            </div>
-            <div class="vocab-item">
-                <div class="vocab-icon color-sage"><i data-lucide="shield-check" width="24" height="24" stroke-width="1.5"></i></div>
-                <div class="vocab-text"><span class="vocab-name">SHIELD</span><span class="vocab-role">Seguro / Validado</span></div>
-            </div>
-            <div class="vocab-item">
-                <div class="vocab-icon color-sage"><i data-lucide="thumbs-up" width="24" height="24" stroke-width="1.5"></i></div>
-                <div class="vocab-text"><span class="vocab-name">THUMBS UP</span><span class="vocab-role">Aceptación</span></div>
-            </div>
-        </div>
-
-        <!-- Ink (Estructura/Nav) -->
-        <h3 style="margin-top: 2.5rem;">Estructura y Navegación (Color: Ink)</h3>
-        <div class="vocab-grid">
-            <div class="vocab-item">
-                <div class="vocab-icon color-ink"><i data-lucide="layout-grid" width="24" height="24" stroke-width="1.5"></i></div>
-                <div class="vocab-text"><span class="vocab-name">LAYOUT</span><span class="vocab-role">Dashboard</span></div>
-            </div>
-            <div class="vocab-item">
-                <div class="vocab-icon color-ink"><i data-lucide="folder" width="24" height="24" stroke-width="1.5"></i></div>
-                <div class="vocab-text"><span class="vocab-name">FOLDER</span><span class="vocab-role">Directorio Master</span></div>
-            </div>
-            <div class="vocab-item">
-                <div class="vocab-icon color-ink"><i data-lucide="menu" width="24" height="24" stroke-width="1.5"></i></div>
-                <div class="vocab-text"><span class="vocab-name">MENU</span><span class="vocab-role">Hamburguesa Nav</span></div>
-            </div>
-            <div class="vocab-item">
-                <div class="vocab-icon color-ink"><i data-lucide="home" width="24" height="24" stroke-width="1.5"></i></div>
-                <div class="vocab-text"><span class="vocab-name">HOME</span><span class="vocab-role">Raíz del tenant</span></div>
-            </div>
-        </div>
-
-        <!-- Muted (Secundaria) -->
-        <h3 style="margin-top: 2.5rem;">Información Secundaria (Color: Muted)</h3>
-        <div class="vocab-grid">
-            <div class="vocab-item">
-                <div class="vocab-icon color-muted"><i data-lucide="info" width="24" height="24" stroke-width="1.5"></i></div>
-                <div class="vocab-text"><span class="vocab-name">INFO</span><span class="vocab-role">Details / Tooltip</span></div>
-            </div>
-            <div class="vocab-item">
-                <div class="vocab-icon color-muted"><i data-lucide="help-circle" width="24" height="24" stroke-width="1.5"></i></div>
-                <div class="vocab-text"><span class="vocab-name">HELP</span><span class="vocab-role">Asistencia</span></div>
-            </div>
-            <div class="vocab-item">
-                <div class="vocab-icon color-muted"><i data-lucide="clock" width="24" height="24" stroke-width="1.5"></i></div>
-                <div class="vocab-text"><span class="vocab-name">CLOCK</span><span class="vocab-role">Historial / Log</span></div>
-            </div>
-        </div>
-
     </section>
+
 </div>
 
 <footer>
-    <svg width="24" height="30" viewBox="0 0 160 200" style="opacity: 0.8; margin: 0 auto;">
-         <path d="M80 12 C80 12 104 52 116 88 C126 118 122 152 102 168 C92 176 80 178 80 178 C80 178 68 176 58 168 C38 152 34 118 44 88 C56 52 80 12 80 12 Z" fill="none" stroke="var(--color-terra)" stroke-width="4"/>
-         <circle cx="80" cy="130" r="6" fill="var(--color-terra)"/>
-    </svg>
+    <nav class="chapter-nav">
+        <a href="05_color.html">← Anterior: 05 Color</a>
+        <a href="index.html">Índice</a>
+        <a href="07_ilustracion.html">Siguiente: 07 Ilustración →</a>
+    </nav>
+    <span class="footer-mark">
+        <svg width="24" height="30" viewBox="0 0 160 200" aria-hidden="true"><use href="#drop-simple"/></svg>
+    </span>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 <script>
-    lucide.createIcons();
+(function() {
+    const btn = document.getElementById('downloadIconsBtn');
+    const status = document.getElementById('downloadIconsStatus');
+    if (!btn) return;
+
+    const layerMap = {
+        'search': '01-action', 'save': '01-action', 'upload': '01-action', 'share': '01-action',
+        'edit': '01-action', 'trash': '01-action', 'plus': '01-action', 'settings': '01-action',
+        'filter': '01-action', 'close': '01-action', 'check': '01-action', 'copy': '01-action',
+        'document': '02-object', 'mail': '02-object', 'user': '02-object', 'invoice': '02-object',
+        'calendar': '02-object', 'clock': '02-object', 'folder': '02-object', 'tag': '02-object',
+        'link': '02-object', 'pin': '02-object', 'image': '02-object', 'package': '02-object',
+        'intelligence': '03-concept', 'data': '03-concept', 'integration': '03-concept',
+        'automation': '03-concept', 'velocity': '03-concept', 'origin': '03-concept',
+        'network': '03-concept', 'local': '03-concept', 'formitar': '03-concept',
+        'model': '03-concept', 'time-saved': '03-concept', 'craft': '03-concept',
+        'status-success': '04-status', 'status-error': '04-status', 'status-warning': '04-status',
+        'status-info': '04-status', 'status-loading': '04-status', 'status-online': '04-status',
+        'drop-simple': '05-brand', 'drop-halftone': '05-brand',
+        'chevron-right': '05-brand', 'chevron-left': '05-brand',
+        'chevron-up': '05-brand', 'chevron-down': '05-brand',
+        'arrow-right': '05-brand', 'external': '05-brand', 'divider': '05-brand',
+        'halftone-burst': '05-brand/halftone', 'halftone-strip': '05-brand/halftone',
+        'halftone-bullet': '05-brand/halftone', 'halftone-grain': '05-brand/halftone',
+        'halftone-corner': '05-brand/halftone', 'halftone-focal': '05-brand/halftone'
+    };
+
+    function serializeIcon(svgEl) {
+        // Clone, replace currentColor with explicit ink; ensure xmlns is on root
+        const clone = svgEl.cloneNode(true);
+        clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+        if (!clone.getAttribute('width')) clone.setAttribute('width', '24');
+        if (!clone.getAttribute('height')) clone.setAttribute('height', '24');
+        // Apply default stroke styles inline so the file is self-contained
+        clone.setAttribute('fill', clone.getAttribute('fill') || 'none');
+        clone.setAttribute('stroke', '#2C2C28');
+        clone.setAttribute('stroke-width', '2');
+        clone.setAttribute('stroke-linecap', 'round');
+        clone.setAttribute('stroke-linejoin', 'round');
+        let html = clone.outerHTML.replace(/currentColor/g, '#2C2C28');
+        return html + '\n';
+    }
+
+    function serializeHalftoneDrop(coreColor) {
+        const sym = document.getElementById('drop-halftone');
+        if (!sym) return '';
+        let content = '';
+        Array.from(sym.children).forEach(node => {
+            const c = node.cloneNode(true);
+            if (c.getAttribute('fill') === 'currentColor') c.setAttribute('fill', '#2C2C28');
+            const f = c.getAttribute('fill') || '';
+            if (f.startsWith('var(--core-color')) c.setAttribute('fill', coreColor);
+            content += c.outerHTML;
+        });
+        return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 200" width="160" height="200">' + content + '</svg>\n';
+    }
+
+    function serializeSimpleDrop() {
+        return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 200" width="160" height="200"><path d="M80 12 C80 12 104 52 116 88 C126 118 122 152 102 168 C92 176 80 178 80 178 C80 178 68 176 58 168 C38 152 34 118 44 88 C56 52 80 12 80 12 Z" fill="none" stroke="#B8896A" stroke-width="4" stroke-linejoin="round"/><circle cx="80" cy="130" r="6" fill="#B8896A"/></svg>\n';
+    }
+
+    btn.addEventListener('click', async function() {
+        if (typeof JSZip === 'undefined') {
+            status.textContent = 'JSZip no cargado.';
+            status.classList.add('error'); return;
+        }
+        btn.disabled = true; status.classList.remove('error');
+
+        try {
+            const zip = new JSZip();
+            const root = zip.folder('formeta-icons-v1.0');
+            const cards = document.querySelectorAll('.icon-card[data-name]');
+            let count = 0;
+
+            cards.forEach(card => {
+                const name = card.dataset.name;
+                const svg = card.querySelector('.icon-display svg');
+                if (!svg) return;
+                const layer = layerMap[name] || 'misc';
+                const folder = root.folder(layer);
+                let content;
+                if (name === 'drop-halftone') content = serializeHalftoneDrop('#B8896A');
+                else if (name === 'drop-simple') content = serializeSimpleDrop();
+                else content = serializeIcon(svg);
+                folder.file(name + '.svg', content);
+                count++;
+            });
+
+            status.textContent = 'Empaquetando ' + count + ' iconos...';
+            const zipBlob = await zip.generateAsync({ type: 'blob' });
+            const url = URL.createObjectURL(zipBlob);
+            const a = document.createElement('a');
+            a.href = url; a.download = 'formeta-icons-v1.0.zip';
+            document.body.appendChild(a); a.click(); document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            status.textContent = '✓ Pack descargado · ' + count + ' iconos en 5 capas';
+        } catch (err) {
+            console.error(err); status.classList.add('error');
+            status.textContent = '✗ ' + (err.message || 'Error al empaquetar');
+        } finally { btn.disabled = false; }
+    });
+})();
 </script>
+
 </body>
 </html>
