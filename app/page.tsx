@@ -5,6 +5,7 @@ import { Footer } from "@/components/landing/Footer";
 import { HeroSection } from "@/components/landing/HeroSection";
 import { HudChrome } from "@/components/landing/HudChrome";
 import { IappSection } from "@/components/landing/IappSection";
+import { IridescentBackdrop } from "@/components/landing/IridescentBackdrop";
 import { LandingEffects } from "@/components/landing/LandingEffects";
 import { ManifiestoSection } from "@/components/landing/ManifiestoSection";
 import { ProcesoSection } from "@/components/landing/ProcesoSection";
@@ -42,6 +43,7 @@ const TICKER_2 = [
 export default function HomePage() {
   return (
     <div className={styles.root}>
+      <IridescentBackdrop />
       <AmbientBackdrop />
       <DropCanvas />
       <ScrollProgress />

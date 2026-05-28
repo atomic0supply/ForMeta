@@ -14,12 +14,82 @@
 }
 
 /* ============================================================
+   IRIDESCENT BACKDROP — fondo en movimiento + liquid
+   ============================================================ */
+.irisDefs {
+  position: absolute;
+  width: 0; height: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.iris {
+  position: fixed;
+  inset: -10%;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  filter: url(#iris-liquid) saturate(1.05);
+  opacity: 0.5;
+  mix-blend-mode: normal;
+}
+.irisBlob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(40px);
+  will-change: transform;
+}
+.irisBlob1 {
+  top: -10%; left: -10%;
+  width: 70vmax; height: 70vmax;
+  background: conic-gradient(from 0deg at 50% 50%,
+    var(--iris-1) 0deg,
+    var(--iris-2) 72deg,
+    var(--iris-3) 144deg,
+    var(--iris-4) 216deg,
+    var(--iris-5) 288deg,
+    var(--iris-1) 360deg);
+  animation: irisFloat1 28s ease-in-out infinite;
+  opacity: 0.6;
+}
+.irisBlob2 {
+  top: 5%; right: -25%;
+  width: 60vmax; height: 60vmax;
+  background: linear-gradient(135deg, var(--iris-3) 0%, var(--iris-4) 45%, var(--iris-5) 100%);
+  animation: irisFloat2 34s ease-in-out infinite reverse;
+  opacity: 0.55;
+}
+.irisBlob3 {
+  bottom: -25%; left: 20%;
+  width: 65vmax; height: 65vmax;
+  background: radial-gradient(circle at 50% 50%, var(--iris-2) 0%, var(--iris-1) 55%, transparent 90%);
+  animation: irisFloat3 30s ease-in-out infinite;
+  opacity: 0.5;
+}
+@keyframes irisFloat1 {
+  0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+  33%      { transform: translate(15vw, 18vh) rotate(120deg) scale(1.15); }
+  66%      { transform: translate(5vw, 32vh) rotate(240deg) scale(0.95); }
+}
+@keyframes irisFloat2 {
+  0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+  50%      { transform: translate(-22vw, 24vh) rotate(180deg) scale(1.2); }
+}
+@keyframes irisFloat3 {
+  0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+  50%      { transform: translate(-15vw, -22vh) rotate(-180deg) scale(1.1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .irisBlob1, .irisBlob2, .irisBlob3 { animation: none; }
+  .iris { filter: none; opacity: 0.32; }
+}
+
+/* ============================================================
    AMBIENT BACKDROP
    ============================================================ */
 .bgGrid {
   position: fixed;
   inset: 0;
-  z-index: 0;
+  z-index: 1;
   pointer-events: none;
   background-image:
     linear-gradient(to right, rgba(44, 44, 40, 0.04) 1px, transparent 1px),
@@ -38,7 +108,7 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  z-index: 1;
+  z-index: 2;
   pointer-events: none;
   opacity: 1;
   transition: opacity var(--duration-short) var(--easing-standard);
@@ -193,7 +263,7 @@
 /* ============================================================
    SECTIONS — shared
    ============================================================ */
-.section { position: relative; z-index: 2; }
+.section { position: relative; z-index: 3; }
 
 .sectionTag {
   font-family: var(--font-mono);
@@ -564,7 +634,7 @@
    IAPP
    ============================================================ */
 .iapp {
-  background: var(--color-sand);
+  background: rgba(244, 240, 232, 0.88);
   padding: var(--spacing-xl) var(--spacing-sm);
 }
 .iappInner { max-width: 1180px; margin: 0 auto; }
@@ -646,7 +716,7 @@
    PROCESO
    ============================================================ */
 .proceso {
-  background: var(--color-stone);
+  background: rgba(226, 221, 212, 0.88);
   padding: var(--spacing-xl) var(--spacing-sm);
   position: relative;
 }
@@ -732,7 +802,7 @@
    STACK
    ============================================================ */
 .stack {
-  background: var(--color-sand);
+  background: rgba(244, 240, 232, 0.88);
   padding: var(--spacing-xl) var(--spacing-sm);
 }
 .stackInner {
@@ -849,7 +919,7 @@
    PRODUCTOS
    ============================================================ */
 .productos {
-  background: var(--color-sand);
+  background: rgba(244, 240, 232, 0.88);
   padding: var(--spacing-xl) var(--spacing-sm);
 }
 .productosInner { max-width: 1280px; margin: 0 auto; }
@@ -1213,7 +1283,7 @@
   padding: 2rem var(--spacing-sm);
   border-top: 1px solid rgba(244, 240, 232, 0.08);
   position: relative;
-  z-index: 2;
+  z-index: 3;
 }
 .footerInner {
   max-width: 1180px;
