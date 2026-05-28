@@ -1070,6 +1070,141 @@
 }
 
 /* ============================================================
+   CONTACTO · MINI FORM
+   ============================================================ */
+.formCard {
+  margin-top: 2rem;
+  background: rgba(244, 240, 232, 0.04);
+  border: 1px solid rgba(184, 137, 106, 0.4);
+  border-radius: 10px;
+  padding: 2rem;
+  display: flex; flex-direction: column; gap: 1.4rem;
+  color: var(--color-sand);
+}
+.formIntro {
+  display: flex; flex-direction: column; gap: 0.6rem;
+  padding-bottom: 1.2rem;
+  border-bottom: 1px dashed rgba(244, 240, 232, 0.12);
+}
+.formIntro p {
+  font-family: var(--font-deck);
+  font-style: italic;
+  color: var(--color-stone);
+  font-size: 1rem;
+  margin: 0;
+  line-height: 1.5;
+}
+.formTag {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-terra);
+}
+.formField {
+  display: flex; flex-direction: column; gap: 0.55rem;
+}
+.formField label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-stone);
+  opacity: 0.78;
+}
+.formField input,
+.formField textarea {
+  width: 100%;
+  background: transparent;
+  border: 1px solid rgba(184, 137, 106, 0.3);
+  border-radius: 4px;
+  padding: 0.85rem 1rem;
+  font-family: var(--font-deck);
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--color-sand);
+  transition: border-color var(--duration-micro) var(--easing-standard),
+              background var(--duration-micro);
+  resize: vertical;
+  font-style: italic;
+}
+.formField input::placeholder,
+.formField textarea::placeholder {
+  color: rgba(226, 221, 212, 0.45);
+  font-style: italic;
+}
+.formField input:focus,
+.formField textarea:focus {
+  outline: none;
+  border-color: var(--color-terra);
+  background: rgba(184, 137, 106, 0.06);
+}
+.formField textarea {
+  font-family: var(--font-text);
+  font-style: normal;
+  min-height: 100px;
+}
+
+.formActions {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.6rem;
+  margin-top: 0.4rem;
+}
+.formMeta {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-stone);
+  opacity: 0.5;
+}
+
+/* Success state */
+.formSuccess {
+  display: flex; flex-direction: column; gap: 1.2rem;
+  align-items: flex-start;
+}
+.formSuccess p {
+  font-family: var(--font-text);
+  color: var(--color-stone);
+  line-height: 1.6;
+  margin: 0;
+  font-size: 1rem;
+}
+.formSuccessTag {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-terra);
+}
+.formInlineLink {
+  color: var(--color-terra);
+  border-bottom: 1px dashed currentColor;
+  transition: color var(--duration-micro);
+}
+.formInlineLink:hover { color: var(--color-sand); }
+
+/* ============================================================
+   FOOTER · ACCESO INTRANET
+   ============================================================ */
+.footerAccess {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-stone);
+  opacity: 0.6;
+  transition: opacity var(--duration-micro), color var(--duration-micro);
+}
+.footerAccess:hover { opacity: 1; color: var(--color-terra); }
+.footerAccess::after {
+  content: '↗';
+  font-size: 0.85rem;
+  letter-spacing: 0;
+}
+
+/* ============================================================
    FOOTER
    ============================================================ */
 .footer {

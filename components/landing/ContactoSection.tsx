@@ -1,5 +1,7 @@
 import styles from "@/styles/landing.module.css";
 
+import { ContactoForm } from "./ContactoForm";
+
 export function ContactoSection() {
   return (
     <section className={`${styles.section} ${styles.contacto}`} id="contacto">
@@ -27,9 +29,7 @@ export function ContactoSection() {
               <b>·</b> Cliente nº 11 · plaza disponible Q3 2026
             </span>
           </div>
-        </div>
-        <div>
-          <div className={styles.contactoCard}>
+          <div className={styles.contactoCard} style={{ marginTop: "2rem" }}>
             <div className={styles.row}>
               <span>email</span>
               <span>hola@formeta.es</span>
@@ -51,16 +51,9 @@ export function ContactoSection() {
               <span>1.0 · 2026.05.27</span>
             </div>
           </div>
-          <div className={styles.contactoActions}>
-            <a href="mailto:hola@formeta.es" className={`${styles.btn} ${styles.btnTerra}`}>
-              <span>Escribir</span>
-              <span className={styles.btnArrow}>→</span>
-            </a>
-            <a href="#hero" className={`${styles.btn} ${styles.btnGhost}`}>
-              <span>Volver al inicio</span>
-              <span className={styles.btnArrow}>↻</span>
-            </a>
-          </div>
+        </div>
+        <div>
+          <ContactoForm />
         </div>
       </div>
     </section>

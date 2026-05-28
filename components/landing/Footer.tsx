@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import styles from "@/styles/landing.module.css";
 
 export function Footer() {
@@ -13,6 +15,9 @@ export function Footer() {
         <span>
           FMTA—LANDING <span className={styles.footerSep}>·</span> hecho con menos
         </span>
+        <Link href="/login" className={styles.footerAccess} aria-label="Acceso intranet">
+          <span>acceso intranet</span>
+        </Link>
       </div>
     </footer>
   );
