@@ -5,12 +5,18 @@ import { useEffect, useRef } from "react";
 import styles from "@/styles/landing.module.css";
 
 /**
- * Motor de partículas Three.js — la "gota" del hero.
- * Genera ~2000 puntos muestreados desde el path SVG canónico, los
- * arregla con un spring hacia el target, los desplaza por proximidad
- * al cursor en el hero y atenúa la opacidad al hacer scroll.
- * Three.js se carga dinámicamente para no inflar el First Load JS.
- * Respeta prefers-reduced-motion (render estático, sin animación).
+ * Motor WebGL del hero:
+ * - Fondo iridiscente líquido (fullscreen shader fragment con simplex
+ *   noise 3D + paleta iris + bloom + vignette).
+ * - Encima: gota Three.js (~2000 partículas, spring hacia path, cursor
+ *   repulsion, fade al scrollar).
+ *
+ * Todo en el mismo canvas → sin coste de capas CSS extra ni
+ * mix-blend, y permite que la luz iridiscente del fondo "bañe" la
+ * silueta oscura de la gota.
+ *
+ * Carga dinámica de three. Respeta prefers-reduced-motion (sin animación
+ * de partículas y sin pulso de tiempo en el fondo).
  */
 
 const GOTA_D =
@@ -18,7 +24,7 @@ const GOTA_D =
 const FOCAL_X = 80;
 const FOCAL_Y = 130;
 const DENSITY = 2000;
-const PALETTE = { core: "#2C2C28", edge: "#B8896A" };
+const PARTICLE_PALETTE = { core: "#2C2C28", edge: "#B8896A" };
 
 function samplePathPoints(count: number) {
   if (typeof document === "undefined") return [];
@@ -41,6 +47,56 @@ function samplePathPoints(count: number) {
   }
   return points;
 }
+
+/** Simplex noise 3D (Ashima Arts, dominio público) compartido por el shader del bg. */
+const SIMPLEX_GLSL = `
+vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+vec4 mod289(vec4 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+vec4 permute(vec4 x) { return mod289(((x*34.0)+1.0)*x); }
+vec4 taylorInvSqrt(vec4 r) { return 1.79284291400159 - 0.85373472095314 * r; }
+float snoise(vec3 v) {
+  const vec2 C = vec2(1.0/6.0, 1.0/3.0);
+  const vec4 D = vec4(0.0, 0.5, 1.0, 2.0);
+  vec3 i  = floor(v + dot(v, C.yyy));
+  vec3 x0 = v - i + dot(i, C.xxx);
+  vec3 g = step(x0.yzx, x0.xyz);
+  vec3 l = 1.0 - g;
+  vec3 i1 = min(g.xyz, l.zxy);
+  vec3 i2 = max(g.xyz, l.zxy);
+  vec3 x1 = x0 - i1 + C.xxx;
+  vec3 x2 = x0 - i2 + C.yyy;
+  vec3 x3 = x0 - D.yyy;
+  i = mod289(i);
+  vec4 p = permute(permute(permute(
+    i.z + vec4(0.0, i1.z, i2.z, 1.0))
+    + i.y + vec4(0.0, i1.y, i2.y, 1.0))
+    + i.x + vec4(0.0, i1.x, i2.x, 1.0));
+  float n_ = 0.142857142857;
+  vec3 ns = n_ * D.wyz - D.xzx;
+  vec4 j = p - 49.0 * floor(p * ns.z * ns.z);
+  vec4 x_ = floor(j * ns.z);
+  vec4 y_ = floor(j - 7.0 * x_);
+  vec4 x = x_ * ns.x + ns.yyyy;
+  vec4 y = y_ * ns.x + ns.yyyy;
+  vec4 h = 1.0 - abs(x) - abs(y);
+  vec4 b0 = vec4(x.xy, y.xy);
+  vec4 b1 = vec4(x.zw, y.zw);
+  vec4 s0 = floor(b0)*2.0 + 1.0;
+  vec4 s1 = floor(b1)*2.0 + 1.0;
+  vec4 sh = -step(h, vec4(0.0));
+  vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy;
+  vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww;
+  vec3 p0 = vec3(a0.xy, h.x);
+  vec3 p1 = vec3(a0.zw, h.y);
+  vec3 p2 = vec3(a1.xy, h.z);
+  vec3 p3 = vec3(a1.zw, h.w);
+  vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2,p2), dot(p3,p3)));
+  p0 *= norm.x; p1 *= norm.y; p2 *= norm.z; p3 *= norm.w;
+  vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);
+  m = m * m;
+  return 42.0 * dot(m*m, vec4(dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3)));
+}
+`;
 
 export function DropCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -65,7 +121,9 @@ export function DropCanvas() {
         antialias: true,
         powerPreference: "high-performance",
       });
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      // Capped at 1.5 — el bg quad llena la pantalla, cada píxel cuesta.
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+      renderer.autoClear = true;
 
       const scene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(36, 1, 0.1, 2000);
@@ -77,12 +135,108 @@ export function DropCanvas() {
         renderer.setSize(w, h, false);
         camera.aspect = w / h;
         camera.updateProjectionMatrix();
+        bgMat.uniforms.uResolution.value.set(w * renderer.getPixelRatio(), h * renderer.getPixelRatio());
       }
+
+      /* =====================================================
+         BG QUAD — iridescent liquid fullscreen shader
+         ===================================================== */
+      const bgGeom = new THREE.PlaneGeometry(2, 2);
+      const bgMat = new THREE.ShaderMaterial({
+        uniforms: {
+          uTime: { value: 0 },
+          uResolution: { value: new THREE.Vector2(1, 1) },
+          uOpacity: { value: 0.62 },
+          uReduced: { value: reducedMotion ? 1.0 : 0.0 },
+        },
+        vertexShader: `
+          varying vec2 vUv;
+          void main() {
+            vUv = uv;
+            // Position directly in clip space → siempre fullscreen
+            gl_Position = vec4(position.xy, 0.999, 1.0);
+          }
+        `,
+        fragmentShader: `
+          uniform float uTime;
+          uniform vec2 uResolution;
+          uniform float uOpacity;
+          uniform float uReduced;
+          varying vec2 vUv;
+
+          ${SIMPLEX_GLSL}
+
+          void main() {
+            float aspect = uResolution.x / max(uResolution.y, 1.0);
+            vec2 p = (vUv - 0.5) * vec2(aspect, 1.0) * 1.7;
+
+            float t = mix(uTime * 0.085, 0.5, uReduced);
+
+            // 3 octavas de simplex 3D → liquid flow
+            float n1 = snoise(vec3(p * 1.15, t));
+            float n2 = snoise(vec3(p * 2.4 + vec2(34.7, 12.1), t * 1.32)) * 0.55;
+            float n3 = snoise(vec3(p * 4.6 - vec2(67.3, 21.7), t * 1.71)) * 0.28;
+            float n = (n1 + n2 + n3) / 1.83;
+
+            // Paleta iris ForMeta (--iris-1..5)
+            vec3 c1 = vec3(0.557, 0.365, 0.749); // #8e5dbf
+            vec3 c2 = vec3(0.816, 0.290, 0.761); // #d04ac2
+            vec3 c3 = vec3(0.290, 0.749, 0.816); // #4abfd0
+            vec3 c4 = vec3(0.290, 0.816, 0.651); // #4ad0a6
+            vec3 c5 = vec3(0.816, 0.694, 0.290); // #d0b14a
+
+            // Mapa de hue → ciclo 5 colores + shift temporal sutil
+            float h = n * 0.5 + 0.5;
+            h = fract(h + uTime * 0.012 * (1.0 - uReduced));
+
+            vec3 col;
+            if (h < 0.2)      col = mix(c1, c2, h / 0.2);
+            else if (h < 0.4) col = mix(c2, c3, (h - 0.2) / 0.2);
+            else if (h < 0.6) col = mix(c3, c4, (h - 0.4) / 0.2);
+            else if (h < 0.8) col = mix(c4, c5, (h - 0.6) / 0.2);
+            else              col = mix(c5, c1, (h - 0.8) / 0.2);
+
+            // Thin-film interference: shift por gradiente local de noise
+            float eps = 0.012;
+            float dx = snoise(vec3((p + vec2(eps, 0.0)) * 1.15, t)) - n1;
+            float dy = snoise(vec3((p + vec2(0.0, eps)) * 1.15, t)) - n1;
+            float grad = length(vec2(dx, dy)) * 28.0;
+            col += vec3(0.18, 0.14, 0.22) * grad;
+
+            // Bloom suave en zonas brillantes
+            float bright = clamp(n * 0.5 + 0.5, 0.0, 1.0);
+            col += pow(bright, 4.0) * vec3(0.28, 0.22, 0.34);
+
+            // Vignette radial — foco central
+            float d = length((vUv - 0.5) * vec2(aspect, 1.0));
+            float vig = smoothstep(1.25, 0.15, d);
+            col *= 0.55 + 0.6 * vig;
+
+            // Base sand de marca debajo (donde el shader pasa por areas oscuras)
+            vec3 sand = vec3(0.957, 0.941, 0.910);
+            col = mix(sand, col, uOpacity);
+
+            gl_FragColor = vec4(col, 1.0);
+          }
+        `,
+        depthTest: false,
+        depthWrite: false,
+        transparent: false,
+      });
+      const bgMesh = new THREE.Mesh(bgGeom, bgMat);
+      bgMesh.frustumCulled = false;
+      bgMesh.renderOrder = -10;
+      scene.add(bgMesh);
+
       window.addEventListener("resize", resize);
       resize();
 
+      /* =====================================================
+         PARTICLE GOTA (encima del bg)
+         ===================================================== */
       const drop = samplePathPoints(DENSITY);
-      while (drop.length < DENSITY) drop.push(drop[drop.length % Math.max(1, drop.length)] || { x: 80, y: 130, d: 0 });
+      while (drop.length < DENSITY)
+        drop.push(drop[drop.length % Math.max(1, drop.length)] || { x: 80, y: 130, d: 0 });
 
       const count = DENSITY;
       const basePositions = new Float32Array(count * 3);
@@ -92,8 +246,8 @@ export function DropCanvas() {
       const sizes = new Float32Array(count);
       const dropDist = new Float32Array(count);
 
-      const palCore = new THREE.Color(PALETTE.core);
-      const palEdge = new THREE.Color(PALETTE.edge);
+      const palCore = new THREE.Color(PARTICLE_PALETTE.core);
+      const palEdge = new THREE.Color(PARTICLE_PALETTE.edge);
 
       for (let i = 0; i < count; i++) {
         const a = drop[i];
@@ -161,9 +315,12 @@ export function DropCanvas() {
       const points = new THREE.Points(geom, mat);
       points.scale.set(0.42, 0.42, 0.42);
       points.position.y = 30;
+      points.renderOrder = 0;
       scene.add(points);
 
-      // Pointer state
+      /* =====================================================
+         INTERACTION — pointer + scroll
+         ===================================================== */
       const pointer = { x: 9999, y: 9999, active: false, worldX: 9999, worldY: 9999 };
       let scrollY = window.scrollY;
       let scrollProgress = 0;
@@ -203,6 +360,8 @@ export function DropCanvas() {
           window.removeEventListener("pointerleave", onPointerLeave);
           window.removeEventListener("scroll", onScroll);
           window.removeEventListener("resize", resize);
+          bgGeom.dispose();
+          bgMat.dispose();
           geom.dispose();
           mat.dispose();
           renderer.dispose();
@@ -210,12 +369,14 @@ export function DropCanvas() {
         return;
       }
 
-      // Animation loop
       let lastT = performance.now();
 
       function tick(now: number) {
         const dt = Math.min(0.05, (now - lastT) / 1000);
         lastT = now;
+
+        // BG fluid uniform tick
+        bgMat.uniforms.uTime.value = now * 0.001;
 
         const time = now * 0.001;
         const pos = posAttr.array as Float32Array;
@@ -292,6 +453,8 @@ export function DropCanvas() {
         window.removeEventListener("pointerleave", onPointerLeave);
         window.removeEventListener("scroll", onScroll);
         window.removeEventListener("resize", resize);
+        bgGeom.dispose();
+        bgMat.dispose();
         geom.dispose();
         mat.dispose();
         renderer.dispose();
