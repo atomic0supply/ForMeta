@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 
 export default function FieldPage() {
   return (
-    <ProductShell>
+    <ProductShell accent="field">
       <ProductHud code="FIELD" />
 
       <main id="main" tabIndex={-1}>

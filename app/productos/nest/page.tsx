@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 
 export default function NestPage() {
   return (
-    <ProductShell>
+    <ProductShell accent="nest">
       <ProductHud code="NEST" />
 
       <main id="main" tabIndex={-1}>

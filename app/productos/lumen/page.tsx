@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 
 export default function LumenPage() {
   return (
-    <ProductShell>
+    <ProductShell accent="lumen">
       <ProductHud code="LUMEN" />
 
       <main id="main" tabIndex={-1}>

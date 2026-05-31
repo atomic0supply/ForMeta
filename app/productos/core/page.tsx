@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 
 export default function CorePage() {
   return (
-    <ProductShell>
+    <ProductShell accent="core">
       <ProductHud code="CORE" />
 
       <main id="main" tabIndex={-1}>

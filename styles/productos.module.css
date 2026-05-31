@@ -2,8 +2,15 @@
    ForMeta · Producto subpages — port de productos/_brand.css
    ============================================================ */
 
-.root { width: 100%; }
-.root :global(::selection) { background: var(--color-terra); color: var(--color-sand); }
+.root {
+  width: 100%;
+  /* Accent por producto · sobreescrito por inline style en ProductShell.
+     Por defecto cae a la paleta ForMeta terra para no romper. */
+  --product-accent: var(--product-accent);
+  --product-accent-rgb: 184, 137, 106;
+  --product-accent-strong: var(--color-terra-strong);
+}
+.root :global(::selection) { background: var(--product-accent); color: var(--color-sand); }
 
 
 /* ── Ambient grid ── */
@@ -23,13 +30,13 @@
 .scrollProgress {
   position: fixed; top: 0; left: 0;
   width: 2px; height: 100vh;
-  background: rgba(184, 137, 106, 0.08);
+  background: rgba(var(--product-accent-rgb), 0.08);
   z-index: 60; pointer-events: none;
 }
 .scrollProgress .bar {
   position: absolute; top: 0; left: 0; right: 0;
   height: 0%;
-  background: var(--color-terra);
+  background: var(--product-accent);
   transition: height 60ms linear;
 }
 
@@ -54,11 +61,11 @@
   -webkit-backdrop-filter: blur(4px);
 }
 .hudCluster { display: flex; align-items: center; gap: 1.2rem; flex-wrap: wrap; }
-.hudSep { color: var(--color-terra); opacity: 0.65; }
+.hudSep { color: var(--product-accent); opacity: 0.65; }
 .hudCorner {
   position: absolute;
   width: 14px; height: 14px;
-  border: 1px solid var(--color-terra);
+  border: 1px solid var(--product-accent);
   opacity: 0.5;
 }
 .hudCorner.tl { top: 12px; left: 12px; border-right: none; border-bottom: none; }
@@ -71,7 +78,7 @@
   font-size: 1.1rem; letter-spacing: -0.01em;
   color: var(--color-ink); text-transform: none;
 }
-.hudMark b { font-weight: 400; font-style: normal; color: var(--color-terra); }
+.hudMark b { font-weight: 400; font-style: normal; color: var(--product-accent); }
 .hudBack {
   display: inline-flex; align-items: center; gap: 0.5rem;
   color: var(--color-text-secondary);
@@ -86,9 +93,9 @@
   font-size: 11px;
   transition: all var(--duration-micro);
 }
-.hudBack:hover { color: var(--color-terra); }
+.hudBack:hover { color: var(--product-accent); }
 .hudBack:hover::before {
-  border-color: var(--color-terra); background: var(--color-terra);
+  border-color: var(--product-accent); background: var(--product-accent);
   color: var(--color-sand); transform: translateX(-2px);
 }
 
@@ -99,12 +106,12 @@
   font-size: 0.7rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--color-terra);
+  color: var(--product-accent);
   margin-bottom: 1rem;
   display: flex; align-items: center; gap: 0.6rem;
 }
 .sectionTag::before {
-  content: ''; width: 24px; height: 1px; background: var(--color-terra); display: inline-block;
+  content: ''; width: 24px; height: 1px; background: var(--product-accent); display: inline-block;
 }
 
 /* ── Buttons ── */
@@ -123,12 +130,12 @@
   display: inline-flex; align-items: center; gap: 0.8rem;
   cursor: pointer;
 }
-.btn:hover { background: var(--color-terra); border-color: var(--color-terra); transform: translateY(-2px); }
+.btn:hover { background: var(--product-accent); border-color: var(--product-accent); transform: translateY(-2px); }
 .btn .btnArrow { transition: transform var(--duration-short) var(--easing-expressive); display: inline-block; }
 .btn:hover .btnArrow { transform: translateX(4px); }
 .btnGhost { background: transparent; color: var(--color-ink); border-color: var(--color-border-secondary); }
-.btnGhost:hover { color: var(--color-terra); border-color: var(--color-terra); background: transparent; }
-.btnAccent { background: var(--color-terra); border-color: var(--color-terra); color: var(--color-sand); }
+.btnGhost:hover { color: var(--product-accent); border-color: var(--product-accent); background: transparent; }
+.btnAccent { background: var(--product-accent); border-color: var(--product-accent); color: var(--color-sand); }
 .btnAccent:hover { background: var(--color-ink); border-color: var(--color-ink); }
 
 /* ── Product hero ── */
@@ -144,11 +151,11 @@
   font-size: 0.72rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--color-terra);
+  color: var(--product-accent);
   display: flex; align-items: center; gap: 0.8rem;
   margin-bottom: 2.5rem;
 }
-.prodEyebrow .ridge { display: inline-block; width: 28px; height: 1px; background: var(--color-terra); }
+.prodEyebrow .ridge { display: inline-block; width: 28px; height: 1px; background: var(--product-accent); }
 .prodCode {
   font-family: var(--font-mono);
   font-size: 0.95rem;
@@ -167,7 +174,7 @@
   margin: 0 0 1.4rem;
   text-wrap: balance;
 }
-.prodHero h1 em { font-style: italic; color: var(--color-terra); }
+.prodHero h1 em { font-style: italic; color: var(--product-accent); }
 .prodHero .lead {
   font-family: var(--font-deck);
   font-style: italic;
@@ -197,7 +204,7 @@
   font-family: var(--font-deck); font-style: italic;
 }
 .prodHero .heroSpec .sp b.accent {
-  color: var(--color-terra); font-style: normal;
+  color: var(--product-accent); font-style: normal;
   font-family: var(--font-mono); font-weight: 500;
   letter-spacing: 0.04em; font-size: 0.95rem;
 }
@@ -205,7 +212,7 @@
 .prodHero .ornament {
   position: absolute; right: -120px; bottom: 4rem;
   width: 540px; height: 540px; pointer-events: none;
-  opacity: 0.5; color: var(--color-terra);
+  opacity: 0.5; color: var(--product-accent);
 }
 @media (max-width: 900px) { .prodHero .ornament { display: none; } }
 
@@ -217,7 +224,7 @@
   position: relative; overflow: hidden;
 }
 .darkSlab .inner { max-width: 1180px; margin: 0 auto; }
-.darkSlab .sectionTag { color: var(--color-terra); }
+.darkSlab .sectionTag { color: var(--product-accent); }
 .darkSlab h2 {
   font-family: var(--font-display);
   font-weight: 300;
@@ -227,7 +234,7 @@
   max-width: 18ch;
   margin: 0 0 var(--spacing-md);
 }
-.darkSlab h2 em { color: var(--color-terra); font-style: italic; }
+.darkSlab h2 em { color: var(--product-accent); font-style: italic; }
 .darkSlab .body p {
   color: var(--color-stone);
   font-family: var(--font-text);
@@ -255,7 +262,7 @@
 .painList .painItem .pn {
   font-family: var(--font-mono);
   font-size: 0.7rem; letter-spacing: 0.16em;
-  color: var(--color-terra); min-width: 4ch;
+  color: var(--product-accent); min-width: 4ch;
 }
 .painList .painItem .pt {
   color: var(--color-stone); font-size: 1rem; line-height: 1.55;
@@ -279,7 +286,7 @@
   max-width: 18ch;
   margin: 0 0 var(--spacing-md);
 }
-.sol h2 em { color: var(--color-terra); font-style: italic; }
+.sol h2 em { color: var(--product-accent); font-style: italic; }
 
 .solSteps {
   display: grid;
@@ -297,11 +304,11 @@
   transition: transform var(--duration-short) var(--easing-expressive),
               box-shadow var(--duration-short), border-color var(--duration-short);
 }
-.solStep:hover { transform: translateY(-4px); box-shadow: 0 18px 36px rgba(0,0,0,0.06); border-color: var(--color-terra); }
+.solStep:hover { transform: translateY(-4px); box-shadow: 0 18px 36px rgba(0,0,0,0.06); border-color: var(--product-accent); }
 .solStep .stepTag {
   font-family: var(--font-mono);
   font-size: 0.7rem; letter-spacing: 0.18em;
-  color: var(--color-terra); margin-bottom: 1.2rem;
+  color: var(--product-accent); margin-bottom: 1.2rem;
 }
 .solStep h3 {
   font-family: var(--font-deck);
@@ -320,7 +327,7 @@
   color: var(--color-muted);
   text-transform: uppercase;
 }
-.solStep .stepMeta b { color: var(--color-terra); font-weight: 500; }
+.solStep .stepMeta b { color: var(--product-accent); font-weight: 500; }
 
 /* ============================================================
    PRODUCT VISUALIZATIONS — chart / waveform / flow graph
@@ -344,7 +351,7 @@
   text-transform: uppercase;
   flex-wrap: wrap; gap: 0.5rem;
 }
-.chartHead b { color: var(--color-terra); font-weight: 500; }
+.chartHead b { color: var(--product-accent); font-weight: 500; }
 .chartSvg { width: 100%; height: auto; display: block; }
 .chartLegend {
   display: flex; gap: 1.4rem; margin-top: 1rem;
@@ -372,7 +379,7 @@
   margin-bottom: 1rem;
   flex-wrap: wrap; gap: 0.5rem;
 }
-.vcHead b { color: var(--color-terra); font-weight: 500; }
+.vcHead b { color: var(--product-accent); font-weight: 500; }
 
 .waveform {
   width: 100%;
@@ -402,7 +409,7 @@
   max-width: 38ch;
 }
 .vcQuote::before,
-.vcQuote::after { content: '"'; color: var(--color-terra); margin: 0 0.1em; }
+.vcQuote::after { content: '"'; color: var(--product-accent); margin: 0 0.1em; }
 
 .vcReply {
   margin-top: 1rem;
@@ -417,12 +424,12 @@
   font-size: 0.7rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--color-terra);
+  color: var(--product-accent);
   margin-bottom: 0.5rem;
 }
 .vcReply b { color: var(--color-ink); font-weight: 500; }
 .rCheck { padding: 0.15rem 0; }
-.rCheck::before { content: '✓ '; color: var(--color-terra); }
+.rCheck::before { content: '✓ '; color: var(--product-accent); }
 
 .langStrip {
   margin-top: 2rem;
@@ -440,7 +447,7 @@
   transition: transform var(--duration-short) var(--easing-expressive),
               border-color var(--duration-short);
 }
-.lang:hover { transform: translateY(-2px); border-color: var(--color-terra); }
+.lang:hover { transform: translateY(-2px); border-color: var(--product-accent); }
 .lName {
   font-family: var(--font-display);
   font-style: italic;
@@ -451,7 +458,7 @@
   font-family: var(--font-mono);
   font-size: 0.7rem;
   letter-spacing: 0.16em;
-  color: var(--color-terra);
+  color: var(--product-accent);
 }
 
 /* ── Flow card (graph + agents strip) ── */
@@ -472,7 +479,7 @@
   margin-bottom: 1.2rem;
   flex-wrap: wrap; gap: 0.5rem;
 }
-.fcHead b { color: var(--color-terra); font-weight: 500; }
+.fcHead b { color: var(--product-accent); font-weight: 500; }
 
 .flowGraph { width: 100%; height: auto; display: block; }
 .nodeBox {
@@ -480,9 +487,9 @@
   stroke: var(--color-border-secondary);
   stroke-width: 1;
 }
-.nodeBox.nodeInput { fill: rgba(143, 168, 146, 0.12); stroke: var(--color-terra); }
+.nodeBox.nodeInput { fill: rgba(143, 168, 146, 0.12); stroke: var(--product-accent); }
 .nodeBox.nodeAgent { fill: var(--color-ink); stroke: var(--color-ink); }
-.nodeBox.nodeOutput { fill: rgba(143, 168, 146, 0.08); stroke: var(--color-terra); }
+.nodeBox.nodeOutput { fill: rgba(143, 168, 146, 0.08); stroke: var(--product-accent); }
 .nodeLabel {
   font-family: "IBM Plex Mono", monospace;
   font-size: 11px;
@@ -497,7 +504,7 @@
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
-.nodeSub.nodeSubAgent { fill: var(--color-terra); }
+.nodeSub.nodeSubAgent { fill: var(--product-accent); }
 
 .flowEdge {
   fill: none;
@@ -507,11 +514,11 @@
   opacity: 0.5;
 }
 .flowEdge.flowEdgeActive {
-  stroke: var(--color-terra);
+  stroke: var(--product-accent);
   stroke-width: 1.4;
   opacity: 1;
 }
-.flowPulse { fill: var(--color-terra); }
+.flowPulse { fill: var(--product-accent); }
 @media (prefers-reduced-motion: reduce) {
   .flowPulse { display: none; }
 }
@@ -531,13 +538,13 @@
   transition: transform var(--duration-short) var(--easing-expressive),
               border-color var(--duration-short);
 }
-.agentTile:hover { transform: translateY(-3px); border-color: var(--color-terra); }
+.agentTile:hover { transform: translateY(-3px); border-color: var(--product-accent); }
 .aTag {
   font-family: var(--font-mono);
   font-size: 0.65rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--color-terra);
+  color: var(--product-accent);
   margin-bottom: 0.5rem;
 }
 .aName {
@@ -575,7 +582,7 @@
   max-width: 22ch;
   margin: 0;
 }
-.metrics h2 em { color: var(--color-terra); font-style: italic; }
+.metrics h2 em { color: var(--product-accent); font-style: italic; }
 .metricsHead .meta {
   font-family: var(--font-mono);
   font-size: 0.7rem; letter-spacing: 0.18em;
@@ -583,7 +590,7 @@
   color: var(--color-text-secondary);
   text-align: right;
 }
-.metricsHead .meta b { color: var(--color-terra); font-weight: 500; }
+.metricsHead .meta b { color: var(--product-accent); font-weight: 500; }
 @media (max-width: 720px) { .metricsHead .meta { text-align: left; } }
 
 .metricsGrid {
@@ -599,7 +606,7 @@
   display: flex; flex-direction: column; gap: 0.5rem;
   transition: transform var(--duration-short) var(--easing-expressive), border-color var(--duration-short);
 }
-.metric:hover { transform: translateY(-3px); border-color: var(--color-terra); }
+.metric:hover { transform: translateY(-3px); border-color: var(--product-accent); }
 .metric .mKey {
   font-family: var(--font-mono);
   font-size: 0.7rem; letter-spacing: 0.16em;
@@ -613,7 +620,7 @@
   color: var(--color-ink);
   display: flex; align-items: baseline; gap: 0.4rem;
 }
-.metric .mBig em { color: var(--color-terra); font-style: italic; }
+.metric .mBig em { color: var(--product-accent); font-style: italic; }
 .metric .mBig sup {
   font-size: 0.42em;
   font-family: var(--font-mono);
@@ -633,7 +640,7 @@
   font-family: var(--font-mono);
   font-size: 0.65rem; letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--color-terra);
+  color: var(--product-accent);
   display: flex; align-items: center; gap: 0.4rem;
   padding-top: 1rem;
   border-top: 1px dashed var(--color-border-secondary);
@@ -654,7 +661,7 @@
   max-width: 22ch;
   margin: 0 0 var(--spacing-md);
 }
-.cases h2 em { color: var(--color-terra); font-style: italic; }
+.cases h2 em { color: var(--product-accent); font-style: italic; }
 .casesList { display: grid; grid-template-columns: 1fr; border-top: 1px solid var(--color-border-secondary); }
 .caseRow {
   display: grid;
@@ -665,12 +672,12 @@
   align-items: center;
   transition: background var(--duration-micro);
 }
-.caseRow:hover { background: rgba(184, 137, 106, 0.04); }
-.caseRow .cNum { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.16em; color: var(--color-terra); }
+.caseRow:hover { background: rgba(var(--product-accent-rgb), 0.04); }
+.caseRow .cNum { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.16em; color: var(--product-accent); }
 .caseRow .cWho { font-family: var(--font-deck); font-style: italic; font-size: 1.15rem; color: var(--color-ink); }
 .caseRow .cWhat { font-family: var(--font-text); color: var(--color-text-secondary); font-size: 0.96rem; line-height: 1.55; }
 .caseRow .cOut { font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.04em; color: var(--color-ink); text-align: right; }
-.caseRow .cOut b { color: var(--color-terra); font-weight: 500; }
+.caseRow .cOut b { color: var(--product-accent); font-weight: 500; }
 @media (max-width: 900px) {
   .caseRow { grid-template-columns: 70px 1fr; }
   .caseRow .cWhat, .caseRow .cOut { grid-column: 1 / -1; padding-left: 70px; }
@@ -689,7 +696,7 @@
   display: grid; grid-template-columns: 1.4fr 1fr; gap: var(--spacing-lg); align-items: end;
 }
 @media (max-width: 900px) { .ctaInner { grid-template-columns: 1fr; align-items: start; } }
-.cta .sectionTag { color: var(--color-terra); }
+.cta .sectionTag { color: var(--product-accent); }
 .cta h2 {
   font-family: var(--font-display);
   font-weight: 300;
@@ -699,7 +706,7 @@
   max-width: 16ch;
   margin: 0 0 2rem;
 }
-.cta h2 em { color: var(--color-terra); font-style: italic; }
+.cta h2 em { color: var(--product-accent); font-style: italic; }
 .cta .lead {
   font-family: var(--font-deck);
   font-style: italic; font-weight: 300;
@@ -710,10 +717,10 @@
 }
 .ctaActions { display: flex; flex-wrap: wrap; gap: 1rem; }
 .ctaActions .btnGhost { color: var(--color-stone); border-color: rgba(244, 240, 232, 0.2); }
-.ctaActions .btnGhost:hover { color: var(--color-terra); border-color: var(--color-terra); }
+.ctaActions .btnGhost:hover { color: var(--product-accent); border-color: var(--product-accent); }
 .ctaCard {
   background: rgba(244, 240, 232, 0.04);
-  border: 1px solid rgba(184, 137, 106, 0.4);
+  border: 1px solid rgba(var(--product-accent-rgb), 0.4);
   border-radius: 8px;
   padding: 1.8rem;
   font-family: var(--font-mono);
@@ -750,8 +757,8 @@
   color: var(--color-muted);
   flex-wrap: wrap; gap: 1rem;
 }
-.footer b { color: var(--color-terra); font-weight: 500; }
-.footer .footerSep { color: var(--color-terra); }
+.footer b { color: var(--product-accent); font-weight: 500; }
+.footer .footerSep { color: var(--product-accent); }
 
 /* ── Reveal + word reveal ── */
 .reveal {
@@ -780,13 +787,13 @@
   position: relative;
   width: 100%;
   margin: 0;
-  border: 1px dashed rgba(184, 137, 106, 0.45);
+  border: 1px dashed rgba(var(--product-accent-rgb), 0.45);
   border-radius: 10px;
   background:
     repeating-linear-gradient(
       135deg,
-      rgba(184, 137, 106, 0.05) 0,
-      rgba(184, 137, 106, 0.05) 1px,
+      rgba(var(--product-accent-rgb), 0.05) 0,
+      rgba(var(--product-accent-rgb), 0.05) 1px,
       transparent 1px,
       transparent 14px
     ),
@@ -804,17 +811,17 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 50% 40%, rgba(184, 137, 106, 0.08), transparent 65%);
+  background: radial-gradient(circle at 50% 40%, rgba(var(--product-accent-rgb), 0.08), transparent 65%);
   pointer-events: none;
   z-index: 0;
 }
-.imgPh:hover { border-color: var(--color-terra); transform: translateY(-2px); }
+.imgPh:hover { border-color: var(--product-accent); transform: translateY(-2px); }
 .imgPh > * { position: relative; z-index: 1; }
 
 .imgPhCorner {
   position: absolute;
   width: 14px; height: 14px;
-  border: 1px solid var(--color-terra);
+  border: 1px solid var(--product-accent);
   opacity: 0.7;
 }
 .imgPhTl { top: 8px; left: 8px; border-right: none; border-bottom: none; }
@@ -827,7 +834,7 @@
   font-size: 0.66rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--color-terra);
+  color: var(--product-accent);
   display: inline-flex;
   align-items: center;
   gap: 0.55rem;
@@ -835,7 +842,7 @@
 .imgPhSlotDot {
   width: 6px; height: 6px;
   border-radius: 50%;
-  background: var(--color-terra);
+  background: var(--product-accent);
   display: inline-block;
   animation: phPulse 2.2s ease-in-out infinite;
 }
@@ -941,18 +948,18 @@
   padding: 1.6rem 1.4rem 1.5rem;
   transition: transform var(--duration-short) var(--easing-expressive), border-color var(--duration-short);
 }
-.feature:hover { transform: translateY(-3px); border-color: var(--color-terra); }
+.feature:hover { transform: translateY(-3px); border-color: var(--product-accent); }
 .featureTag {
   font-family: var(--font-mono);
   font-size: 0.66rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--color-terra);
+  color: var(--product-accent);
   margin-bottom: 0.7rem;
   display: flex; align-items: center; gap: 0.5rem;
 }
 .featureTag::before {
-  content: ''; width: 18px; height: 1px; background: var(--color-terra);
+  content: ''; width: 18px; height: 1px; background: var(--product-accent);
 }
 .feature h4 {
   font-family: var(--font-deck);
@@ -1001,7 +1008,7 @@
   font-size: 0.9rem;
   line-height: 1.55;
 }
-.specVal b { color: var(--color-terra); font-weight: 500; }
+.specVal b { color: var(--product-accent); font-weight: 500; }
 
 /* ============================================================
    PILL ROW · etiquetas inline
@@ -1020,7 +1027,7 @@
   color: var(--color-text-secondary);
   background: var(--color-white);
 }
-.pill b { color: var(--color-terra); font-weight: 500; }
+.pill b { color: var(--product-accent); font-weight: 500; }
 
 /* ============================================================
    SECCIÓN DETALLE · bloque alternante texto + visual
@@ -1040,7 +1047,7 @@
   max-width: 22ch;
   margin: 0 0 var(--spacing-md);
 }
-.detail h2 em { color: var(--color-terra); font-style: italic; }
+.detail h2 em { color: var(--product-accent); font-style: italic; }
 
 .detailBlock {
   display: grid;
@@ -1060,7 +1067,7 @@
   font-size: 0.7rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--color-terra);
+  color: var(--product-accent);
   margin-bottom: 0.8rem;
 }
 .detailBlock h3 {
@@ -1071,7 +1078,7 @@
   color: var(--color-ink);
   margin: 0 0 1rem;
 }
-.detailBlock h3 em { color: var(--color-terra); font-style: italic; }
+.detailBlock h3 em { color: var(--product-accent); font-style: italic; }
 .detailBlock p {
   font-family: var(--font-text);
   font-size: 1rem;
@@ -1097,8 +1104,8 @@
   content: '';
   position: absolute; left: 0; top: 0.55em;
   width: 8px; height: 8px;
-  border-left: 1.5px solid var(--color-terra);
-  border-bottom: 1.5px solid var(--color-terra);
+  border-left: 1.5px solid var(--product-accent);
+  border-bottom: 1.5px solid var(--product-accent);
   transform: rotate(-45deg);
 }
 .bulletCheck li b { color: var(--color-ink); font-weight: 500; }

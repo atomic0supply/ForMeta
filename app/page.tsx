@@ -1,4 +1,5 @@
 import { AmbientBackdrop } from "@/components/landing/AmbientBackdrop";
+import { ColaboradoresSection } from "@/components/landing/ColaboradoresSection";
 import { ContactoSection } from "@/components/landing/ContactoSection";
 import { CustomCursor } from "@/components/landing/CustomCursor";
 import { FaqSection } from "@/components/landing/FaqSection";
@@ -66,6 +67,7 @@ export default function HomePage() {
         <StackSection />
         <QuoteSection />
         <ProductosSection />
+        <ColaboradoresSection />
         <ContactoSection />
       </main>
 

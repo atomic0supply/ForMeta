@@ -142,9 +142,11 @@ export function FluidBackdrop() {
             float bright = clamp(h - 0.55, 0.0, 1.0);
             col += pow(bright, 4.0) * vec3(0.10, 0.06, 0.03);
 
+            // Vignette muy suave para no crear un "halo circular" central
+            // que compita con el wordmark. Casi uniforme.
             float d = length((vUv - 0.5) * vec2(aspect, 1.0));
-            float vig = smoothstep(1.45, 0.18, d);
-            col *= 0.72 + 0.4 * vig;
+            float vig = smoothstep(1.6, 0.4, d);
+            col *= 0.88 + 0.14 * vig;
 
             col = mix(sand, col, uOpacity);
             gl_FragColor = vec4(col, 1.0);

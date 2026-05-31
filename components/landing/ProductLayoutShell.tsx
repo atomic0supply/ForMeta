@@ -1,8 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import type { CSSProperties } from "react";
 
 import styles from "@/styles/productos.module.css";
+
+import { PRODUCT_ACCENTS, type ProductSlug } from "./product-accents";
 
 import { CustomCursor } from "./CustomCursor";
 import { FluidBackdrop } from "./FluidBackdrop";
@@ -89,9 +92,24 @@ export function ProductEffects() {
   return null;
 }
 
-export function ProductShell({ children }: { children: React.ReactNode }) {
+type ProductShellProps = {
+  children: React.ReactNode;
+  /** Slug del producto · selecciona accent de PRODUCT_ACCENTS */
+  accent?: ProductSlug;
+};
+
+export function ProductShell({ children, accent }: ProductShellProps) {
+  const palette = accent ? PRODUCT_ACCENTS[accent] : undefined;
+  const accentVars = palette
+    ? ({
+        "--product-accent": palette.color,
+        "--product-accent-rgb": palette.rgb,
+        "--product-accent-strong": palette.strong,
+      } as CSSProperties)
+    : undefined;
+
   return (
-    <div className={styles.root}>
+    <div className={styles.root} data-product={accent} style={accentVars}>
       <SkipLink />
       <FluidBackdrop />
       <div className={styles.bgGrid} aria-hidden="true" />

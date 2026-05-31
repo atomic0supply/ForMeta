@@ -7,7 +7,7 @@ export function ContactoSection() {
     <section className={`${styles.section} ${styles.contacto}`} id="contacto">
       <div className={styles.contactoInner}>
         <div>
-          <div className={styles.sectionTag}>07 · conversación</div>
+          <div className={styles.sectionTag}>08 · conversación</div>
           <h2
             className={styles.reveal}
             dangerouslySetInnerHTML={{

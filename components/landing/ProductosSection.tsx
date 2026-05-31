@@ -1,5 +1,7 @@
 import Link from "next/link";
+import type { CSSProperties } from "react";
 
+import { PRODUCT_ACCENTS } from "@/components/landing/product-accents";
 import styles from "@/styles/landing.module.css";
 
 const PRODUCTS = [
@@ -53,7 +55,7 @@ const PRODUCTS = [
     meta1: "servicios en campo",
     meta2: "informe en minutos",
   },
-];
+] as const;
 
 export function ProductosSection() {
   return (
@@ -78,34 +80,43 @@ export function ProductosSection() {
         </div>
 
         <div className={styles.productosGrid}>
-          {PRODUCTS.map((p) => (
-            <Link
-              key={p.slug}
-              href={`/productos/${p.slug}`}
-              className={`${styles.productoCard} magnetic`}
-              data-prod={p.slug}
-            >
-              <div className={styles.pcNum}>
-                <span>{p.code}</span>
-                <span className={styles.pcArrow}>↗</span>
-              </div>
-              <div className={styles.pcName}>
-                <em>{p.name}</em> {p.tagPrefix}
-              </div>
-              <div className={styles.pcTag}>{p.tag}</div>
-              <div className={styles.pcBullets}>
-                {p.bullets.map((b) => (
-                  <span key={b}>{b}</span>
-                ))}
-              </div>
-              <div className={styles.pcMeta}>
-                <span>{p.meta1}</span>
-                <span>
-                  <b>{p.meta2}</b>
-                </span>
-              </div>
-            </Link>
-          ))}
+          {PRODUCTS.map((p) => {
+            const palette = PRODUCT_ACCENTS[p.slug];
+            const accentVars = {
+              "--prod-accent": palette.color,
+              "--prod-accent-rgb": palette.rgb,
+            } as CSSProperties;
+            return (
+              <Link
+                key={p.slug}
+                href={`/productos/${p.slug}`}
+                className={`${styles.productoCard} magnetic`}
+                data-prod={p.slug}
+                style={accentVars}
+              >
+                <div className={styles.pcNum}>
+                  <span className={styles.pcChip} aria-hidden="true" />
+                  <span>{p.code}</span>
+                  <span className={styles.pcArrow}>↗</span>
+                </div>
+                <div className={styles.pcName}>
+                  <em>{p.name}</em> {p.tagPrefix}
+                </div>
+                <div className={styles.pcTag}>{p.tag}</div>
+                <div className={styles.pcBullets}>
+                  {p.bullets.map((b) => (
+                    <span key={b}>{b}</span>
+                  ))}
+                </div>
+                <div className={styles.pcMeta}>
+                  <span>{p.meta1}</span>
+                  <span>
+                    <b>{p.meta2}</b>
+                  </span>
+                </div>
+              </Link>
+            );
+          })}
         </div>
       </div>
     </section>

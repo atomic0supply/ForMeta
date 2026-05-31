@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 
 export default function AxonPage() {
   return (
-    <ProductShell>
+    <ProductShell accent="axon">
       <ProductHud code="AXON" />
 
       <main id="main" tabIndex={-1}>
