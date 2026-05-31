@@ -11,7 +11,7 @@ const ITEMS: Array<{ n: string; label: string; href: string; ext?: boolean }> = 
   { n: "05", label: "Stack", href: "#stack" },
   { n: "06", label: "Productos", href: "#productos" },
   { n: "07", label: "Colaboradores", href: "#colaboradores" },
-  { n: "08", label: "Contacto", href: "#contacto" },
+  { n: "08", label: "Contacto", href: "/contacto", ext: true },
   { n: "—", label: "Acceso intranet", href: "/login", ext: true },
 ];
 

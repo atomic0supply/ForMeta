@@ -46,7 +46,7 @@ export default function CorePage() {
                 <span>Ver cómo funciona</span>
                 <span className={styles.btnArrow}>↓</span>
               </a>
-              <Link href="/#contacto" className={`${styles.btn} ${styles.btnGhost} magnetic`}>
+              <Link href="/contacto" className={`${styles.btn} ${styles.btnGhost} magnetic`}>
                 <span>Hablar con nosotros</span>
                 <span className={styles.btnArrow}>→</span>
               </Link>
@@ -435,7 +435,7 @@ export default function CorePage() {
                 nadie la encuentra, probablemente FMTA—CORE encaje.
               </p>
               <div className={styles.ctaActions}>
-                <Link href="/#contacto" className={`${styles.btn} ${styles.btnAccent}`}>
+                <Link href="/contacto" className={`${styles.btn} ${styles.btnAccent}`}>
                   <span>Hablar 30 min</span>
                   <span className={styles.btnArrow}>→</span>
                 </Link>

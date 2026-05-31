@@ -1375,15 +1375,20 @@
 .stackRow {
   border-top: 1px solid var(--color-border-secondary);
   padding: 1.4rem 1rem 1.4rem 0;
-  display: flex; flex-direction: column; gap: 0.4rem;
+  display: grid;
+  grid-template-columns: 1fr 200px;
+  gap: 1.2rem;
+  align-items: center;
   transition: background var(--duration-micro);
 }
+@media (max-width: 720px) { .stackRow { grid-template-columns: 1fr; } }
 .stackRow:hover { background: rgba(184, 137, 106, 0.04); }
 .stackRow:nth-last-child(-n+2) { border-bottom: 1px solid var(--color-border-secondary); }
 @media (max-width: 600px) {
   .stackRow:nth-last-child(-n+2) { border-bottom: none; }
   .stackRow:last-child { border-bottom: 1px solid var(--color-border-secondary); }
 }
+.stackText { display: flex; flex-direction: column; gap: 0.35rem; min-width: 0; }
 .stackRow .vendor {
   font-family: var(--font-deck);
   font-weight: 500;
@@ -1405,6 +1410,101 @@
   color: var(--color-text-secondary);
   letter-spacing: 0.04em;
 }
+
+/* ── Logo placeholder por proveedor del stack ── */
+.stackLogo {
+  position: relative;
+  margin: 0;
+  width: 100%;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0.55rem 0.7rem;
+  border: 1px dashed rgba(184, 137, 106, 0.4);
+  border-radius: 6px;
+  background:
+    repeating-linear-gradient(
+      135deg,
+      rgba(184, 137, 106, 0.04) 0,
+      rgba(184, 137, 106, 0.04) 1px,
+      transparent 1px,
+      transparent 12px
+    ),
+    var(--color-white);
+  transition: border-color var(--duration-short), transform var(--duration-short) var(--easing-expressive);
+  isolation: isolate;
+  overflow: hidden;
+}
+.stackLogo > * { position: relative; z-index: 1; }
+.stackRow:hover .stackLogo { border-color: var(--color-terra); transform: translateY(-1px); }
+
+.stackLogoCorner {
+  position: absolute;
+  width: 8px; height: 8px;
+  border: 1px solid var(--color-terra);
+  opacity: 0.6;
+}
+.stackLogoTl { top: 4px; left: 4px; border-right: none; border-bottom: none; }
+.stackLogoTr { top: 4px; right: 4px; border-left: none; border-bottom: none; }
+.stackLogoBl { bottom: 4px; left: 4px; border-right: none; border-top: none; }
+.stackLogoBr { bottom: 4px; right: 4px; border-left: none; border-top: none; }
+
+.stackLogoHead {
+  font-family: var(--font-mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-terra);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.stackLogoDot {
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--color-terra);
+  animation: stackDot 2.2s ease-in-out infinite;
+}
+@keyframes stackDot {
+  0%, 100% { opacity: 0.35; transform: scale(0.85); }
+  50%      { opacity: 1;    transform: scale(1.1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .stackLogoDot { animation: none; opacity: 0.8; }
+}
+
+.stackLogoBody {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 0.1rem;
+  line-height: 1.15;
+}
+.stackLogoName {
+  font-family: var(--font-deck);
+  font-style: italic;
+  font-size: 0.78rem;
+  color: var(--color-ink);
+}
+.stackLogoHint {
+  font-family: var(--font-mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.04em;
+  color: var(--color-text-secondary);
+}
+.stackLogoFoot {
+  font-family: var(--font-mono);
+  font-size: 0.54rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  text-align: center;
+}
+.stackLogoFoot em { color: var(--color-ink); font-style: normal; font-weight: 500; }
 
 /* ============================================================
    TICKER
@@ -2071,4 +2171,353 @@
   .hudDot, .heroTopStrip .htsLive::before { animation: none; }
   .heroScrollCue .cueLine { animation: none; transform: scaleY(1); }
   .tickerTrack { animation: none; }
+}
+
+/* ============================================================
+   CONTACTO · TEASER en landing
+   ============================================================ */
+.contactoTeaser {
+  background: var(--color-offblack);
+  color: var(--color-sand);
+  padding: var(--spacing-xl) var(--spacing-sm);
+  position: relative;
+  overflow: hidden;
+}
+.contactoTeaser::before {
+  content: '';
+  position: absolute; left: 0; right: 0; top: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-terra) 30%, var(--color-terra) 70%, transparent);
+  opacity: 0.5;
+}
+.contactoTeaserInner {
+  max-width: 760px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.4rem;
+}
+.contactoTeaserInner .sectionTag { color: var(--color-terra); justify-content: center; }
+.contactoTeaserH2 {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(2.4rem, 5.5vw, 4.4rem);
+  line-height: 1.06;
+  letter-spacing: -0.02em;
+  color: var(--color-sand);
+  margin: 0;
+  text-wrap: balance;
+}
+.contactoTeaserH2 em { color: var(--color-terra); font-style: italic; }
+.contactoTeaserLead {
+  font-family: var(--font-deck);
+  font-style: italic;
+  font-weight: 300;
+  font-size: 1.25rem;
+  color: var(--color-stone);
+  max-width: 36ch;
+  margin: 0;
+}
+.contactoTeaserActions { margin-top: 0.6rem; }
+.contactoTeaserMeta {
+  margin-top: 1.4rem;
+  padding-top: 1.2rem;
+  width: 100%;
+  border-top: 1px dashed rgba(244, 240, 232, 0.12);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-stone);
+  opacity: 0.6;
+}
+.contactoTeaserMeta b { color: var(--color-terra); font-weight: 500; }
+
+/* ============================================================
+   CONTACTO · PÁGINA /contacto
+   ============================================================ */
+.contactoPage {
+  position: relative;
+  z-index: 3;
+  padding: 8rem var(--spacing-sm) 4rem;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* ── Hero de la página ── */
+.contactoPageHero {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.4rem;
+  margin-bottom: var(--spacing-lg);
+  max-width: 880px;
+}
+.contactoEyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-terra);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+.contactoEyebrowLine {
+  display: inline-block;
+  width: 28px; height: 1px;
+  background: var(--color-terra);
+}
+.contactoH1 {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(2.8rem, 7vw, 5.8rem);
+  line-height: 0.98;
+  letter-spacing: -0.025em;
+  color: var(--color-ink);
+  margin: 0;
+  text-wrap: balance;
+}
+.contactoH1 em { color: var(--color-terra); font-style: italic; }
+.contactoPageLead {
+  font-family: var(--font-deck);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(1.2rem, 1.7vw, 1.5rem);
+  line-height: 1.45;
+  color: var(--color-ink);
+  max-width: 52ch;
+  margin: 0.4rem 0 0;
+}
+.contactoPageMeta {
+  margin-top: 1rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--color-border-secondary);
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+.contactoPageMeta b { color: var(--color-terra); font-weight: 500; }
+
+/* ── Grid: form + sidebar ── */
+.contactoPageGrid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: var(--spacing-lg);
+  align-items: start;
+  margin-bottom: var(--spacing-lg);
+}
+@media (max-width: 900px) {
+  .contactoPageGrid { grid-template-columns: 1fr; gap: var(--spacing-md); }
+}
+
+.contactoFormCol {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+/* ── Garantía ── */
+.contactoGarantia {
+  padding: 2rem 2rem;
+  border: 1px solid var(--color-border-secondary);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.45);
+}
+.contactoGarantiaTag {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-terra);
+  margin-bottom: 0.8rem;
+}
+.contactoGarantiaTitle {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(1.6rem, 2.6vw, 2.2rem);
+  line-height: 1.15;
+  color: var(--color-ink);
+  margin: 0 0 1.4rem;
+  letter-spacing: -0.015em;
+}
+.contactoGarantiaTitle em { color: var(--color-terra); font-style: italic; }
+.contactoGarantiaList {
+  list-style: none;
+  margin: 0; padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+.contactoGarantiaList li {
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  gap: 0.8rem;
+  align-items: baseline;
+  font-family: var(--font-text);
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--color-text-secondary);
+}
+.contactoGarantiaList li b { color: var(--color-ink); font-weight: 500; }
+.gCheck {
+  color: var(--color-terra);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px; height: 20px;
+}
+
+/* ── Sidebar derecha ── */
+.contactoSidebar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  position: sticky;
+  top: 96px;
+}
+@media (max-width: 900px) {
+  .contactoSidebar { position: static; }
+}
+
+/* Tarjeta canales directos */
+.contactoSidebarCard {
+  background: var(--color-offblack);
+  color: var(--color-stone);
+  border-radius: 10px;
+  padding: 1.8rem 1.8rem;
+  border: 1px solid rgba(184, 137, 106, 0.4);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  line-height: 1.7;
+}
+.csTag {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-terra);
+  margin-bottom: 0.8rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px dashed rgba(244, 240, 232, 0.16);
+}
+.csRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.45rem 0;
+  border-bottom: 1px dashed rgba(244, 240, 232, 0.1);
+  align-items: center;
+}
+.csRow:last-child { border-bottom: none; }
+.csRow > span:first-child {
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.66rem;
+}
+.csRow > span:last-child,
+.csLink { color: var(--color-sand); }
+.csLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: color var(--duration-micro);
+}
+.csLink:hover { color: var(--color-terra); }
+
+/* ── Mapa Mallorca card ── */
+.contactoMapCard {
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid var(--color-border-secondary);
+  border-radius: 10px;
+  padding: 1.4rem 1.4rem 1.6rem;
+}
+.cmHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.8rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px dashed var(--color-border-secondary);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+.cmTag { color: var(--color-terra); }
+.cmHeaderRight {
+  font-family: var(--font-deck);
+  font-style: italic;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 0.95rem;
+  color: var(--color-ink);
+}
+.mallorcaMap {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.cmFooter {
+  margin-top: 0.8rem;
+  padding-top: 0.8rem;
+  border-top: 1px dashed var(--color-border-secondary);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.cmFooterRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+.cmFooterKey { color: var(--color-terra); }
+
+/* ── Outro ── */
+.contactoOutro {
+  margin-top: var(--spacing-md);
+  padding-top: var(--spacing-md);
+  border-top: 1px solid var(--color-border-secondary);
+}
+.contactoOutroLine { display: none; }
+.contactoOutroText {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  align-items: center;
+  text-align: center;
+}
+.contactoOutroText p {
+  font-family: var(--font-deck);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(1.3rem, 2vw, 1.8rem);
+  color: var(--color-ink);
+  margin: 0;
+}
+.contactoOutroActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
 }

@@ -33,7 +33,7 @@ export function HudChrome() {
           <a href="#proceso">Proceso</a>
           <a href="#stack">Stack</a>
           <a href="#productos">Productos</a>
-          <a href="#contacto">Contacto</a>
+          <a href="/contacto">Contacto</a>
         </nav>
         <MobileNav />
       </div>

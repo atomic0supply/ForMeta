@@ -47,7 +47,7 @@ export default function AxonPage() {
                 <span>Ver cómo funciona</span>
                 <span className={styles.btnArrow}>↓</span>
               </a>
-              <Link href="/#contacto" className={`${styles.btn} ${styles.btnGhost} magnetic`}>
+              <Link href="/contacto" className={`${styles.btn} ${styles.btnGhost} magnetic`}>
                 <span>Hablar con nosotros</span>
                 <span className={styles.btnArrow}>→</span>
               </Link>
@@ -429,7 +429,7 @@ export default function AxonPage() {
                 tú estás disponible, probablemente FMTA—AXON encaje.
               </p>
               <div className={styles.ctaActions}>
-                <Link href="/#contacto" className={`${styles.btn} ${styles.btnAccent}`}>
+                <Link href="/contacto" className={`${styles.btn} ${styles.btnAccent}`}>
                   <span>Hablar 30 min</span>
                   <span className={styles.btnArrow}>→</span>
                 </Link>

@@ -1,59 +1,45 @@
+import Link from "next/link";
+
+import { IconArrowRight } from "@/components/icons";
 import styles from "@/styles/landing.module.css";
 
-import { ContactoForm } from "./ContactoForm";
-
+/**
+ * Teaser de contacto en la landing — la página completa con form, mapa
+ * de Mallorca y detalles vive en /contacto.
+ *
+ * Aquí solo invitamos a hacer click. Mantiene el id "#contacto" para
+ * que el section-counter y los hashes existentes sigan funcionando.
+ */
 export function ContactoSection() {
   return (
-    <section className={`${styles.section} ${styles.contacto}`} id="contacto">
-      <div className={styles.contactoInner}>
-        <div>
-          <div className={styles.sectionTag}>08 · conversación</div>
-          <h2
-            className={styles.reveal}
-            dangerouslySetInnerHTML={{
-              __html: "Cuéntanos qué <em>no funciona</em>. Empezamos por ahí.",
-            }}
-          />
-          <p className={`${styles.lead} ${styles.reveal}`}>
-            Sin formularios de 14 campos. Una conversación de 30 minutos. Si encaja,
-            encaja. Si no, también es información.
-          </p>
-          <div className={styles.contactoMeta}>
-            <span>
-              <b>·</b> Respondemos en &lt; 24h
+    <section className={`${styles.section} ${styles.contactoTeaser}`} id="contacto">
+      <div className={styles.contactoTeaserInner}>
+        <div className={styles.sectionTag}>08 · conversación</div>
+        <h2
+          className={`${styles.contactoTeaserH2} ${styles.reveal}`}
+          dangerouslySetInnerHTML={{
+            __html: "Cuéntanos qué <em>no funciona</em>.<br/>Empezamos por ahí.",
+          }}
+        />
+        <p className={`${styles.contactoTeaserLead} ${styles.reveal}`}>
+          30 minutos. Sin formularios de 14 campos. Si encaja, encaja.
+        </p>
+        <div className={styles.contactoTeaserActions}>
+          <Link
+            href="/contacto"
+            className={`${styles.btn} ${styles.btnTerra} magnetic`}
+            data-cursor="conversar"
+          >
+            <span>Empezar conversación</span>
+            <span className={styles.btnArrow}>
+              <IconArrowRight size={16} />
             </span>
-            <span>
-              <b>·</b> Visita Mallorca · café incluido
-            </span>
-            <span>
-              <b>·</b> Cliente nº 11 · plaza disponible Q3 2026
-            </span>
-          </div>
-          <div className={styles.contactoCard} style={{ marginTop: "2rem" }}>
-            <div className={styles.row}>
-              <span>email</span>
-              <span>hola@formeta.es</span>
-            </div>
-            <div className={styles.row}>
-              <span>signal</span>
-              <span>+34 6 · solicitar</span>
-            </div>
-            <div className={styles.row}>
-              <span>github</span>
-              <span>@atomic0supply</span>
-            </div>
-            <div className={styles.row}>
-              <span>coords</span>
-              <span>39.5696° N, 2.6502° E</span>
-            </div>
-            <div className={styles.row}>
-              <span>v</span>
-              <span>1.0 · 2026.05.27</span>
-            </div>
-          </div>
+          </Link>
         </div>
-        <div>
-          <ContactoForm />
+        <div className={styles.contactoTeaserMeta}>
+          <span><b>·</b> Respondemos en &lt; 24h</span>
+          <span><b>·</b> Visita al estudio · café incluido</span>
+          <span><b>·</b> Mallorca · 39.5696° N</span>
         </div>
       </div>
     </section>
