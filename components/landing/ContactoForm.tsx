@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 
+import { IconArrowRight, IconRefresh } from "@/components/icons";
 import styles from "@/styles/landing.module.css";
 
 /**
@@ -52,9 +53,12 @@ export function ContactoForm() {
             type="button"
             className={`${styles.btn} ${styles.btnGhost}`}
             onClick={() => setSubmitted(false)}
+            data-cursor="reabrir"
           >
             <span>Empezar de nuevo</span>
-            <span className={styles.btnArrow}>↻</span>
+            <span className={styles.btnArrow}>
+              <IconRefresh size={16} />
+            </span>
           </button>
         </div>
       </div>
@@ -107,9 +111,11 @@ export function ContactoForm() {
       </div>
 
       <div className={styles.formActions}>
-        <button type="submit" className={`${styles.btn} ${styles.btnTerra}`}>
+        <button type="submit" className={`${styles.btn} ${styles.btnTerra}`} data-cursor="enviar">
           <span>Empezar conversación</span>
-          <span className={styles.btnArrow}>→</span>
+          <span className={styles.btnArrow}>
+            <IconArrowRight size={16} />
+          </span>
         </button>
         <span className={styles.formMeta}>
           respondemos en &lt; 24h · sin formulario de seguimiento

@@ -1,6 +1,7 @@
 import { AmbientBackdrop } from "@/components/landing/AmbientBackdrop";
 import { ContactoSection } from "@/components/landing/ContactoSection";
 import { CustomCursor } from "@/components/landing/CustomCursor";
+import { FaqSection } from "@/components/landing/FaqSection";
 import { FluidBackdrop } from "@/components/landing/FluidBackdrop";
 import { Footer } from "@/components/landing/Footer";
 import { HeroSection } from "@/components/landing/HeroSection";
@@ -10,6 +11,7 @@ import { LandingEffects } from "@/components/landing/LandingEffects";
 import { ManifiestoSection } from "@/components/landing/ManifiestoSection";
 import { ProcesoSection } from "@/components/landing/ProcesoSection";
 import { ProductosSection } from "@/components/landing/ProductosSection";
+import { QuoteSection } from "@/components/landing/QuoteSection";
 import { ScrollProgress } from "@/components/landing/ScrollProgress";
 import { SectionCounter } from "@/components/landing/SectionCounter";
 import { SkipLink } from "@/components/landing/SkipLink";
@@ -57,8 +59,10 @@ export default function HomePage() {
         <Ticker variant="dark" items={TICKER_1} />
         <IappSection />
         <ProcesoSection />
+        <FaqSection />
         <Ticker variant="light" reverse items={TICKER_2} />
         <StackSection />
+        <QuoteSection />
         <ProductosSection />
         <ContactoSection />
       </main>

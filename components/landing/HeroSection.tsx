@@ -1,3 +1,4 @@
+import { IconArrowDown, IconArrowRight } from "@/components/icons";
 import styles from "@/styles/landing.module.css";
 
 import { GotaMesh } from "./GotaMesh";
@@ -31,16 +32,22 @@ export function HeroSection() {
           <a
             href="#productos"
             className={`${styles.btn} ${styles.btnTerra} magnetic`}
+            data-cursor="ver"
           >
             <span>Ver productos</span>
-            <span className={styles.btnArrow}>→</span>
+            <span className={styles.btnArrow}>
+              <IconArrowRight size={16} />
+            </span>
           </a>
           <a
             href="#manifiesto"
             className={`${styles.btn} ${styles.btnOutline} magnetic`}
+            data-cursor="leer"
           >
             <span>Leer manifiesto</span>
-            <span className={styles.btnArrow}>↓</span>
+            <span className={styles.btnArrow}>
+              <IconArrowDown size={16} />
+            </span>
           </a>
         </div>
       </div>
