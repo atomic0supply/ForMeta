@@ -680,10 +680,14 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: min(82vmin, 720px);
-  height: min(82vmin, 720px);
+  /* Anchura intencionalmente contenida: gota actúa como insignia detrás
+     del wordmark, no como protagonista. */
+  width: min(58vmin, 520px);
+  height: min(58vmin, 520px);
   z-index: 1;
   pointer-events: none;
+  /* Mejora la legibilidad del wordmark encima */
+  filter: drop-shadow(0 30px 60px rgba(44, 44, 40, 0.18));
 }
 
 /* ============================================================
