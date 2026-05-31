@@ -241,9 +241,23 @@
   letter-spacing: -0.01em;
   color: var(--color-ink);
   text-transform: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
 }
 .hud.dark .hudMark { color: var(--color-sand); }
 .hudMark b { font-weight: 400; font-style: normal; color: var(--color-terra); margin-right: 2px; }
+
+/* Isotipo F-dots — heredado del color del HUD vía currentColor */
+.isotipo {
+  display: inline-block;
+  flex-shrink: 0;
+  vertical-align: middle;
+  transition: filter var(--duration-micro);
+}
+/* En contextos oscuros, invertir los puntos ink → sand
+   (los puntos terra mantienen su color, son el acento) */
+.hud.dark .isotipo circle[fill="#2C2C28"] { fill: var(--color-sand); }
 
 /* ============================================================
    404 — not found page
@@ -595,6 +609,44 @@
   position: relative;
 }
 
+/* ============================================================
+   HERO WORDMARK — halftone dots (canónico de marca)
+   ============================================================ */
+.heroWordmark {
+  width: 100%;
+  max-width: 980px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.heroWordmarkSvg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.heroWordmarkDot {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: scale(0);
+  animation: dotAssembly 600ms var(--easing-expressive) forwards;
+  animation-delay: calc(var(--i, 0) * 6ms + 400ms);
+}
+@keyframes dotAssembly {
+  0%   { opacity: 0; transform: scale(0); }
+  60%  { opacity: var(--final-op, 1); transform: scale(1.1); }
+  100% { opacity: var(--final-op, 1); transform: scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .heroWordmarkDot {
+    opacity: var(--final-op, 1);
+    transform: none;
+    animation: none;
+  }
+}
+
+/* Legacy (no usado tras pasar a halftone) — mantenido por si volvemos */
 .heroMark {
   font-family: var(--font-display);
   font-weight: 300;

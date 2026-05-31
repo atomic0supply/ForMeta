@@ -1,5 +1,7 @@
 import styles from "@/styles/landing.module.css";
 
+import { HeroWordmark } from "./HeroWordmark";
+
 export function HeroSection() {
   return (
     <section className={`${styles.section} ${styles.hero}`} id="hero">
@@ -14,19 +16,10 @@ export function HeroSection() {
       </div>
 
       <div className={styles.heroCenter}>
-        <h1 className={styles.heroMark} aria-label="Formeta">
-          <span className={`${styles.hmPiece} ${styles.hmLeft}`}>For</span>
-          <span className={`${styles.hmPiece} ${styles.hmPivot}`} aria-hidden="true">
-            <span className={styles.crosshair} aria-hidden="true">
-              <span />
-              <span />
-              <span />
-              <span />
-            </span>
-            <span className={styles.hmAnchor} />
-          </span>
-          <span className={`${styles.hmPiece} ${styles.hmRight}`}>Meta</span>
+        <h1 className="visually-hidden" style={{ position: "absolute", width: 1, height: 1, padding: 0, margin: -1, overflow: "hidden", clip: "rect(0,0,0,0)", whiteSpace: "nowrap", border: 0 }}>
+          ForMeta
         </h1>
+        <HeroWordmark />
 
         <p className={styles.heroTag}>
           Software <em>formado</em> a la medida de tu empresa, no al revés.

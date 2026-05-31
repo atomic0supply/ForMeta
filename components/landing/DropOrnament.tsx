@@ -1,6 +1,15 @@
 /**
- * SVG estático de la gota en halftone (pre-renderizado server-side a partir del path).
- * Replica el `drop-ornament` que el HTML original genera dinámicamente con canvas/JS.
+ * DropOrnament — halftone canónico sobre el path real del símbolo gota.
+ *
+ * Genera una rejilla hexagonal-staggered de dots con radius variable
+ * según distancia al focal point. El SVG <clipPath> con el path
+ * canónico se encarga de recortar los dots a la silueta exacta — sin
+ * necesidad de point-in-path en JS.
+ *
+ * Parámetros del guide 03:
+ *   spacing 4, maxR 1.8, minR 0.25, decay 38, coreR 4, focal (80,130)
+ *
+ * El path canónico viene de public/brand/symbol-drop-ink.svg.
  */
 
 const GOTA_D =
@@ -8,39 +17,31 @@ const GOTA_D =
 const FOCAL_X = 80;
 const FOCAL_Y = 130;
 
-type DotPoint = { x: number; y: number; r: number };
+const SPACING = 4;
+const MAX_R = 1.8;
+const MIN_R = 0.25;
+const DECAY = 38;
+const CORE_R = 4;
+const CORE_INNER_CULL = 6; // dots dentro de este radio se eliminan (para que el core dot respire)
 
-/** Server-side halftone sampling: aproxima el resultado de Path2D + isPointInPath
- *  con una función polinomial cerrada del path (slow pero one-shot en render).
- *  Como aproximación, usamos una elipse vertical centrada en (80, 95) con un
- *  estrechamiento arriba — suficiente para el ornamento visual. */
-function generateDots(): DotPoint[] {
-  const dots: DotPoint[] = [];
-  const spacing = 4;
-  const maxR = 1.8;
-  const minR = 0.25;
-  const decay = 38;
+type Dot = { x: number; y: number; r: number };
 
-  for (let y = spacing / 2; y < 200; y += spacing) {
-    const rowIdx = Math.round((y - spacing / 2) / spacing);
-    const xOff = rowIdx % 2 === 0 ? 0 : spacing / 2;
-    for (let x = spacing / 2 + xOff; x < 160; x += spacing) {
-      // Aproximación del path "gota": elipse desplazada con cuello en y=12
-      // path real: y entre 12 y 178, x entre 34 y 126 con curvatura
-      const cy = 95;
-      const rx = 42 * (1 - Math.max(0, (12 - y) / 80));
-      const ry = 83;
+/** Rejilla hexagonal-staggered sobre 0..160 × 0..200, sin filtrar por path
+ *  (el <clipPath> SVG hace el filtrado a posteriori). Los dots fuera del
+ *  bounding box del path tampoco se renderizan visualmente (clip los recorta). */
+function generateDots(): Dot[] {
+  const dots: Dot[] = [];
+  for (let y = SPACING / 2; y < 200; y += SPACING) {
+    const rowIdx = Math.round((y - SPACING / 2) / SPACING);
+    const xOff = rowIdx % 2 === 0 ? 0 : SPACING / 2;
+    for (let x = SPACING / 2 + xOff; x < 160; x += SPACING) {
       const dx = x - FOCAL_X;
-      const dyy = y - cy;
-      const inside = (dx * dx) / (rx * rx) + (dyy * dyy) / (ry * ry) <= 1;
-      if (!inside) continue;
-
-      const distX = x - FOCAL_X;
-      const distY = y - FOCAL_Y;
-      const d = Math.sqrt(distX * distX + distY * distY);
-      const r = Math.max(minR, maxR - (d / decay) * maxR);
-      if (r < 0.2) continue;
-      if (d < 6) continue;
+      const dy = y - FOCAL_Y;
+      const d = Math.sqrt(dx * dx + dy * dy);
+      // dots cerca del focal se eliminan — espacio para el core
+      if (d < CORE_INNER_CULL) continue;
+      const r = Math.max(MIN_R, MAX_R - (d / DECAY) * MAX_R);
+      if (r < MIN_R) continue;
       dots.push({ x, y, r });
     }
   }
@@ -52,15 +53,24 @@ const DOTS = generateDots();
 export function DropOrnament({ className }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 160 200" aria-hidden="true">
-      <g>
+      <defs>
+        <clipPath id="drop-halftone-clip" clipPathUnits="userSpaceOnUse">
+          <path d={GOTA_D} />
+        </clipPath>
+      </defs>
+      <g clipPath="url(#drop-halftone-clip)">
         {DOTS.map((d, i) => (
-          <circle key={i} cx={d.x.toFixed(2)} cy={d.y.toFixed(2)} r={d.r.toFixed(2)} fill="currentColor" />
+          <circle
+            key={i}
+            cx={d.x.toFixed(2)}
+            cy={d.y.toFixed(2)}
+            r={d.r.toFixed(2)}
+            fill="currentColor"
+          />
         ))}
-        <circle cx={FOCAL_X} cy={FOCAL_Y} r="4" fill="var(--color-ink)" />
       </g>
+      {/* Core terra dot — siempre encima */}
+      <circle cx={FOCAL_X} cy={FOCAL_Y} r={CORE_R} fill="var(--color-terra)" />
     </svg>
   );
 }
-
-// Suppress unused warning for path constant (kept for future canvas-accurate version)
-void GOTA_D;

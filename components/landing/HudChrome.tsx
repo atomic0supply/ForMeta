@@ -1,5 +1,6 @@
 import styles from "@/styles/landing.module.css";
 
+import { Isotipo } from "./Isotipo";
 import { MobileNav } from "./MobileNav";
 
 export function HudChrome() {
@@ -14,7 +15,10 @@ export function HudChrome() {
         <div className={styles.hudCluster}>
           <span className={styles.hudDot} aria-hidden="true" />
           <span className={styles.hudMark}>
-            <b>For</b>Meta
+            <Isotipo size={20} />
+            <span>
+              <b>For</b>Meta
+            </span>
           </span>
           <span className={styles.hudSep}>·</span>
           <span className={styles.hudTag}>v1.0</span>
