@@ -8,6 +8,7 @@ import {
   ProductHud,
   ProductShell,
 } from "@/components/landing/ProductLayoutShell";
+import { VozCard } from "@/components/landing/VozCard";
 import styles from "@/styles/productos.module.css";
 
 export const metadata: Metadata = {
@@ -153,6 +154,8 @@ export default function VozPage() {
               <div className={styles.stepMeta}>confirmación verbal · trazabilidad completa</div>
             </div>
           </div>
+
+          <VozCard />
         </div>
       </section>
 

@@ -8,6 +8,7 @@ import {
   ProductHud,
   ProductShell,
 } from "@/components/landing/ProductLayoutShell";
+import { StockChart } from "@/components/landing/StockChart";
 import styles from "@/styles/productos.module.css";
 
 export const metadata: Metadata = {
@@ -152,6 +153,8 @@ export default function StockPage() {
               <div className={styles.stepMeta}>aprobación manual · semi-auto · full-auto</div>
             </div>
           </div>
+
+          <StockChart />
         </div>
       </section>
 

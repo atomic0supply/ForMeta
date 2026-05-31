@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { DropOrnament } from "@/components/landing/DropOrnament";
+import { FlowGraph } from "@/components/landing/FlowGraph";
 import {
   ProductEffects,
   ProductFooter,
@@ -147,6 +148,8 @@ export default function FlowPage() {
               <div className={styles.stepMeta}>log estructurado · explicabilidad · replay</div>
             </div>
           </div>
+
+          <FlowGraph />
         </div>
       </section>
 

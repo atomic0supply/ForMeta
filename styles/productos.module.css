@@ -322,6 +322,239 @@
 }
 .solStep .stepMeta b { color: var(--color-terra); font-weight: 500; }
 
+/* ============================================================
+   PRODUCT VISUALIZATIONS — chart / waveform / flow graph
+   ============================================================ */
+
+/* ── Stock chart ── */
+.stockChart {
+  background: var(--color-white);
+  border: 1px solid var(--color-border-secondary);
+  border-radius: 10px;
+  padding: 1.6rem;
+  margin-top: 2rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--color-text-secondary);
+}
+.chartHead {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-bottom: 1.2rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  flex-wrap: wrap; gap: 0.5rem;
+}
+.chartHead b { color: var(--color-terra); font-weight: 500; }
+.chartSvg { width: 100%; height: auto; display: block; }
+.chartLegend {
+  display: flex; gap: 1.4rem; margin-top: 1rem;
+  flex-wrap: wrap; font-size: 0.7rem; letter-spacing: 0.12em;
+}
+.chartLegend span { display: inline-flex; align-items: center; gap: 0.4rem; }
+.chartLegend i { width: 12px; height: 2px; display: inline-block; }
+
+/* ── Voz card (conversation + waveform) ── */
+.vozCard {
+  background: var(--color-white);
+  border: 1px solid var(--color-border-secondary);
+  border-radius: 10px;
+  padding: 1.8rem;
+  margin-top: 2rem;
+  color: var(--color-ink);
+}
+.vcHead {
+  display: flex; justify-content: space-between; align-items: baseline;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  margin-bottom: 1rem;
+  flex-wrap: wrap; gap: 0.5rem;
+}
+.vcHead b { color: var(--color-terra); font-weight: 500; }
+
+.waveform {
+  width: 100%;
+  height: 80px;
+  display: block;
+}
+.waveformBar {
+  transform-origin: center;
+  transform-box: fill-box;
+  animation: wfPulse 1.4s ease-in-out infinite;
+}
+@keyframes wfPulse {
+  0%, 100% { transform: scaleY(0.3); }
+  50%      { transform: scaleY(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .waveformBar { animation: none; transform: scaleY(0.65); }
+}
+
+.vcQuote {
+  font-family: var(--font-deck);
+  font-style: italic;
+  font-size: 1.2rem;
+  line-height: 1.5;
+  color: var(--color-ink);
+  margin: 1rem 0 1.5rem;
+  max-width: 38ch;
+}
+.vcQuote::before,
+.vcQuote::after { content: '"'; color: var(--color-terra); margin: 0 0.1em; }
+
+.vcReply {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px dashed var(--color-border-secondary);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  line-height: 1.7;
+  color: var(--color-text-secondary);
+}
+.rHead {
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-terra);
+  margin-bottom: 0.5rem;
+}
+.vcReply b { color: var(--color-ink); font-weight: 500; }
+.rCheck { padding: 0.15rem 0; }
+.rCheck::before { content: '✓ '; color: var(--color-terra); }
+
+.langStrip {
+  margin-top: 2rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+@media (max-width: 720px) { .langStrip { grid-template-columns: 1fr; } }
+.lang {
+  background: var(--color-sand);
+  border: 1px solid var(--color-border-secondary);
+  border-radius: 8px;
+  padding: 1.4rem 1.6rem;
+  display: flex; align-items: baseline; justify-content: space-between;
+  transition: transform var(--duration-short) var(--easing-expressive),
+              border-color var(--duration-short);
+}
+.lang:hover { transform: translateY(-2px); border-color: var(--color-terra); }
+.lName {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.3rem;
+  color: var(--color-ink);
+}
+.lTag {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  color: var(--color-terra);
+}
+
+/* ── Flow card (graph + agents strip) ── */
+.flowCard {
+  background: var(--color-white);
+  border: 1px solid var(--color-border-secondary);
+  border-radius: 10px;
+  padding: 1.8rem;
+  margin-top: 2rem;
+}
+.fcHead {
+  display: flex; justify-content: space-between; align-items: baseline;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  margin-bottom: 1.2rem;
+  flex-wrap: wrap; gap: 0.5rem;
+}
+.fcHead b { color: var(--color-terra); font-weight: 500; }
+
+.flowGraph { width: 100%; height: auto; display: block; }
+.nodeBox {
+  fill: var(--color-sand);
+  stroke: var(--color-border-secondary);
+  stroke-width: 1;
+}
+.nodeBox.nodeInput { fill: rgba(143, 168, 146, 0.12); stroke: var(--color-terra); }
+.nodeBox.nodeAgent { fill: var(--color-ink); stroke: var(--color-ink); }
+.nodeBox.nodeOutput { fill: rgba(143, 168, 146, 0.08); stroke: var(--color-terra); }
+.nodeLabel {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+  fill: var(--color-ink);
+  letter-spacing: 0.08em;
+}
+.nodeLabel.nodeLabelAgent { fill: var(--color-sand); }
+.nodeSub {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 9px;
+  fill: var(--color-muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.nodeSub.nodeSubAgent { fill: var(--color-terra); }
+
+.flowEdge {
+  fill: none;
+  stroke: var(--color-muted);
+  stroke-width: 1;
+  stroke-dasharray: 3 4;
+  opacity: 0.5;
+}
+.flowEdge.flowEdgeActive {
+  stroke: var(--color-terra);
+  stroke-width: 1.4;
+  opacity: 1;
+}
+.flowPulse { fill: var(--color-terra); }
+@media (prefers-reduced-motion: reduce) {
+  .flowPulse { display: none; }
+}
+
+.agentsStrip {
+  margin-top: 2rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+@media (max-width: 720px) { .agentsStrip { grid-template-columns: 1fr 1fr; } }
+.agentTile {
+  background: var(--color-white);
+  border: 1px solid var(--color-border-secondary);
+  border-radius: 8px;
+  padding: 1.4rem 1.2rem;
+  transition: transform var(--duration-short) var(--easing-expressive),
+              border-color var(--duration-short);
+}
+.agentTile:hover { transform: translateY(-3px); border-color: var(--color-terra); }
+.aTag {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-terra);
+  margin-bottom: 0.5rem;
+}
+.aName {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.25rem;
+  line-height: 1.1;
+  color: var(--color-ink);
+  margin-bottom: 0.4rem;
+}
+.aRole {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+}
+
 /* ── Metrics ── */
 .metrics {
   background: rgba(226, 221, 212, 0.88);
