@@ -21,6 +21,7 @@ export default function VozPage() {
     <ProductShell>
       <ProductHud code="VOZ" />
 
+      <main id="main" tabIndex={-1}>
       {/* HERO */}
       <section className={`${styles.section} ${styles.prodHero}`}>
         <div className={styles.prodHeroInner}>
@@ -295,6 +296,7 @@ export default function VozPage() {
           </div>
         </div>
       </section>
+      </main>
 
       <ProductFooter code="VOZ" clients="4 clientes" />
       <ProductEffects />

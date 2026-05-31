@@ -11,6 +11,7 @@ import { ProcesoSection } from "@/components/landing/ProcesoSection";
 import { ProductosSection } from "@/components/landing/ProductosSection";
 import { ScrollProgress } from "@/components/landing/ScrollProgress";
 import { SectionCounter } from "@/components/landing/SectionCounter";
+import { SkipLink } from "@/components/landing/SkipLink";
 import { StackSection } from "@/components/landing/StackSection";
 import { Ticker } from "@/components/landing/Ticker";
 import styles from "@/styles/landing.module.css";
@@ -42,21 +43,24 @@ const TICKER_2 = [
 export default function HomePage() {
   return (
     <div className={styles.root}>
+      <SkipLink />
       <FluidBackdrop />
       <AmbientBackdrop />
       <ScrollProgress />
       <SectionCounter />
       <HudChrome />
 
-      <HeroSection />
-      <ManifiestoSection />
-      <Ticker variant="dark" items={TICKER_1} />
-      <IappSection />
-      <ProcesoSection />
-      <Ticker variant="light" reverse items={TICKER_2} />
-      <StackSection />
-      <ProductosSection />
-      <ContactoSection />
+      <main id="main" tabIndex={-1}>
+        <HeroSection />
+        <ManifiestoSection />
+        <Ticker variant="dark" items={TICKER_1} />
+        <IappSection />
+        <ProcesoSection />
+        <Ticker variant="light" reverse items={TICKER_2} />
+        <StackSection />
+        <ProductosSection />
+        <ContactoSection />
+      </main>
 
       <Footer />
 

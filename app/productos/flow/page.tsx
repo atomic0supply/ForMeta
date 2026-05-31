@@ -21,6 +21,7 @@ export default function FlowPage() {
     <ProductShell>
       <ProductHud code="FLOW" />
 
+      <main id="main" tabIndex={-1}>
       {/* HERO */}
       <section className={`${styles.section} ${styles.prodHero}`}>
         <div className={styles.prodHeroInner}>
@@ -280,6 +281,7 @@ export default function FlowPage() {
           </div>
         </div>
       </section>
+      </main>
 
       <ProductFooter code="FLOW" clients="3 clientes" />
       <ProductEffects />

@@ -5,6 +5,7 @@ import Link from "next/link";
 import styles from "@/styles/productos.module.css";
 
 import { FluidBackdrop } from "./FluidBackdrop";
+import { SkipLink } from "./SkipLink";
 import { useAnimatedCounter } from "./hooks/useAnimatedCounter";
 import { useMagnetic } from "./hooks/useMagnetic";
 import { useReveal } from "./hooks/useReveal";
@@ -83,6 +84,7 @@ export function ProductEffects() {
 export function ProductShell({ children }: { children: React.ReactNode }) {
   return (
     <div className={styles.root}>
+      <SkipLink />
       <FluidBackdrop />
       <div className={styles.bgGrid} aria-hidden="true" />
       <div className={styles.scrollProgress} aria-hidden="true">

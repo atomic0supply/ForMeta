@@ -1,5 +1,7 @@
 import styles from "@/styles/landing.module.css";
 
+import { MobileNav } from "./MobileNav";
+
 export function HudChrome() {
   return (
     <div className={styles.hud} id="hud">
@@ -29,6 +31,7 @@ export function HudChrome() {
           <a href="#productos">Productos</a>
           <a href="#contacto">Contacto</a>
         </nav>
+        <MobileNav />
       </div>
 
       <div className={styles.hudBot}>

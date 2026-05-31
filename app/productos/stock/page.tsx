@@ -21,6 +21,7 @@ export default function StockPage() {
     <ProductShell>
       <ProductHud code="STOCK" />
 
+      <main id="main" tabIndex={-1}>
       {/* HERO */}
       <section className={`${styles.section} ${styles.prodHero}`}>
         <div className={styles.prodHeroInner}>
@@ -285,6 +286,7 @@ export default function StockPage() {
           </div>
         </div>
       </section>
+      </main>
 
       <ProductFooter code="STOCK" clients="3 clientes" />
       <ProductEffects />
