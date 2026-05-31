@@ -33,10 +33,12 @@ const TICKER_1 = [
 ];
 
 const TICKER_2 = [
-  "FMTA—STOCK · anticipación por SKU",
-  "FMTA—VOZ · manos libres",
-  "FMTA—FLOW · orquestación viva",
-  "40 → 3 min/día",
+  "FMTA—AXON · sistema nervioso",
+  "FMTA—LUMEN · marca en la calle",
+  "FMTA—CORE · OS del equipo",
+  "FMTA—NEST · gestor ↔ propietario",
+  "FMTA—FIELD · inspecciones IA",
+  "5 productos · 10 empresas",
   "cliente nº 11 · Q3 2026",
   "soporte continuo",
   "café incluido en visita",

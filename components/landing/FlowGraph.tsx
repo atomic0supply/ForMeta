@@ -1,7 +1,7 @@
 import styles from "@/styles/productos.module.css";
 
 /**
- * Visualización del producto FMTA—FLOW.
+ * Visualización de orquestación multi-agente (usado por FMTA—AXON).
  * Grafo: 3 inputs → 3 agents (orquestador en el medio) → 3 outputs.
  * Edges dashed con pulse circles que viajan por los paths via
  * <animateMotion>. Debajo, los 4 agents tipados (extractor, decisor,

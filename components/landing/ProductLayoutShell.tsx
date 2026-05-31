@@ -26,7 +26,7 @@ const WR_TARGETS = [
 ];
 
 type ProductHudProps = {
-  code: string; // e.g. "FMTA—STOCK"
+  code: string; // e.g. "FMTA—AXON"
 };
 
 export function ProductHud({ code }: ProductHudProps) {

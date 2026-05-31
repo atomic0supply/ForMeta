@@ -1,13 +1,11 @@
 import { IconArrowDown, IconArrowRight } from "@/components/icons";
 import styles from "@/styles/landing.module.css";
 
-import { GotaMesh } from "./GotaMesh";
 import { HeroWordmark } from "./HeroWordmark";
 
 export function HeroSection() {
   return (
     <section className={`${styles.section} ${styles.hero}`} id="hero">
-      <GotaMesh className={styles.gotaMesh} />
       <div className={styles.heroTopStrip}>
         <div className={styles.htsCell}>
           <span className={styles.htsKey}>{"// studio"}</span>

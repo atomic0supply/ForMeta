@@ -4,34 +4,54 @@ import styles from "@/styles/landing.module.css";
 
 const PRODUCTS = [
   {
-    slug: "stock",
-    code: "FMTA—STOCK · 01",
-    name: "Stock",
-    tagPrefix: "que se anticipa",
-    tag: "El sistema entiende patrones de consumo y actúa antes de que llegue el umbral.",
-    bullets: ["predicción por SKU", "auto-pedido", "integración con tu ERP"],
-    meta1: "3 clientes activos",
-    meta2: "40 → 3 min/día",
+    slug: "axon",
+    code: "FMTA—AXON · 01",
+    name: "Axon",
+    tagPrefix: "el sistema nervioso",
+    tag: "Agentes con IA que aprenden tu dominio, gestionan excepciones, se coordinan entre ellos y dejan traza auditable de cada decisión.",
+    bullets: ["agentes multi-dominio", "excepciones inteligentes", "auditoría completa"],
+    meta1: "operación 24/7",
+    meta2: "decisiones trazables",
   },
   {
-    slug: "voz",
-    code: "FMTA—VOZ · 02",
-    name: "Voz",
-    tagPrefix: "que opera",
-    tag: "Hablas con tu negocio en mallorquín, castellano o inglés. Las operaciones se ejecutan solas.",
-    bullets: ["captura por voz", "comandos en lenguaje natural", "offline-first en taller"],
-    meta1: "4 clientes activos",
-    meta2: "manos libres",
+    slug: "lumen",
+    code: "FMTA—LUMEN · 02",
+    name: "Lumen",
+    tagPrefix: "que ilumina la calle",
+    tag: "Tótems de información y animación para hostelería y comercio físico. Presencia de marca activa, dinámica e inteligente en el espacio físico.",
+    bullets: ["tótems digitales", "contenido dinámico", "marca viva"],
+    meta1: "hostelería · retail",
+    meta2: "espacio físico activo",
   },
   {
-    slug: "flow",
-    code: "FMTA—FLOW · 03",
-    name: "Flow",
-    tagPrefix: "que entiende",
-    tag: "Orquestación de procesos que aprende de tu equipo y se reconfigura sola.",
-    bullets: ["agentes especializados", "excepciones inteligentes", "panel de auditoría"],
-    meta1: "3 clientes activos",
-    meta2: "cero formularios",
+    slug: "core",
+    code: "FMTA—CORE · 03",
+    name: "Core",
+    tagPrefix: "el sistema operativo",
+    tag: "Wiki, tickets, inventario, tareas y ubicaciones en un solo lugar — con una IA que conecta todo y sabe el contexto antes de que se lo expliques.",
+    bullets: ["wiki + tickets + inventario", "IA contextual", "un solo sistema"],
+    meta1: "equipo unificado",
+    meta2: "contexto en vivo",
+  },
+  {
+    slug: "nest",
+    code: "FMTA—NEST · 04",
+    name: "Nest",
+    tagPrefix: "gestor ↔ propietario",
+    tag: "Plataforma que conecta al gestor con sus propietarios. CMS ligero, portal privado, liquidaciones automáticas y contratos digitales.",
+    bullets: ["portal por propietario", "liquidaciones auto", "contratos digitales"],
+    meta1: "alquiler · inmobiliarias",
+    meta2: "transparencia sin fricción",
+  },
+  {
+    slug: "field",
+    code: "FMTA—FIELD · 05",
+    name: "Field",
+    tagPrefix: "inspecciones inteligentes",
+    tag: "Formularios configurables, análisis automático de imágenes con IA e informes PDF listos para enviar. Sin papel, sin retrasos, sin errores.",
+    bullets: ["IA sobre imágenes", "formularios on-site", "PDF auto"],
+    meta1: "servicios en campo",
+    meta2: "informe en minutos",
   },
 ];
 
@@ -42,11 +62,11 @@ export function ProductosSection() {
         <div className={styles.sectionTag}>06 · productos</div>
         <div className={styles.productosHead}>
           <h2 className={styles.reveal}>
-            Tres IApps construidas <em>desde cero</em> para empresas reales.
+            Cinco IApps construidas <em>desde cero</em> para empresas reales.
           </h2>
           <div className={styles.headMeta}>
             <div>
-              <b>3</b> productos activos
+              <b>5</b> productos activos
             </div>
             <div>
               <b>10</b> empresas en producción
