@@ -4,12 +4,14 @@ import Link from "next/link";
 
 import styles from "@/styles/productos.module.css";
 
+import { CustomCursor } from "./CustomCursor";
 import { FluidBackdrop } from "./FluidBackdrop";
 import { SkipLink } from "./SkipLink";
 import { useAnimatedCounter } from "./hooks/useAnimatedCounter";
 import { useMagnetic } from "./hooks/useMagnetic";
 import { useReveal } from "./hooks/useReveal";
 import { useScrollProgress } from "./hooks/useScrollProgress";
+import { useTilt3D } from "./hooks/useTilt3D";
 import { useWordReveal } from "./hooks/useWordReveal";
 
 const ROOT_SELECTOR = `.${styles.root}`;
@@ -78,6 +80,12 @@ export function ProductEffects() {
   useMagnetic(ROOT_SELECTOR, ".magnetic", 0.18, 110, false);
   useScrollProgress("sp-bar");
   useAnimatedCounter(ROOT_SELECTOR);
+
+  // Tilt 3D en cards de solución, agentes y métricas
+  useTilt3D(ROOT_SELECTOR, `.${styles.solStep}`, 5);
+  useTilt3D(ROOT_SELECTOR, `.${styles.agentTile}`, 5);
+  useTilt3D(ROOT_SELECTOR, `.${styles.metric}`, 4);
+  useTilt3D(ROOT_SELECTOR, `.${styles.lang}`, 4);
   return null;
 }
 
@@ -91,6 +99,7 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
         <div className={styles.bar} id="sp-bar" />
       </div>
       {children}
+      <CustomCursor />
     </div>
   );
 }

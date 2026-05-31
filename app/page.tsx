@@ -1,5 +1,6 @@
 import { AmbientBackdrop } from "@/components/landing/AmbientBackdrop";
 import { ContactoSection } from "@/components/landing/ContactoSection";
+import { CustomCursor } from "@/components/landing/CustomCursor";
 import { FluidBackdrop } from "@/components/landing/FluidBackdrop";
 import { Footer } from "@/components/landing/Footer";
 import { HeroSection } from "@/components/landing/HeroSection";
@@ -65,6 +66,7 @@ export default function HomePage() {
       <Footer />
 
       <LandingEffects />
+      <CustomCursor />
     </div>
   );
 }

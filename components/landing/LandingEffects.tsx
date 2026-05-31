@@ -10,6 +10,7 @@ import { useMagnetic } from "./hooks/useMagnetic";
 import { useReveal } from "./hooks/useReveal";
 import { useScrollProgress } from "./hooks/useScrollProgress";
 import { useSectionCounter } from "./hooks/useSectionCounter";
+import { useTilt3D } from "./hooks/useTilt3D";
 import { useWordReveal } from "./hooks/useWordReveal";
 
 const DARK_SECTIONS = ["manifiesto", "contacto"];
@@ -31,9 +32,13 @@ export function LandingEffects() {
   // Word-by-word reveal in h2s
   useWordReveal(ROOT_SELECTOR, WR_TARGETS, styles.wordReveal, styles.wrWord, styles.in);
 
-  // Magnetic CTAs and product cards
+  // Magnetic CTAs (only — product cards van con tilt 3D ahora)
   useMagnetic(ROOT_SELECTOR, ".magnetic", 0.22, 90, false);
-  useMagnetic(ROOT_SELECTOR, `.${styles.productoCard}`, 0.04, 200, true);
+
+  // Tilt 3D en cards interiores (no chocan con magnetic — useTilt3D
+  // skipea elementos con .magnetic)
+  useTilt3D(ROOT_SELECTOR, `.${styles.iappCard}`, 6);
+  useTilt3D(ROOT_SELECTOR, `.${styles.procesoStep}`, 5);
 
   // Scroll progress bar
   useScrollProgress("sp-bar");

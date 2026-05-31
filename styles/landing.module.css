@@ -607,6 +607,83 @@
   gap: 2.4rem;
   text-align: center;
   position: relative;
+  z-index: 2;
+}
+
+/* ============================================================
+   CUSTOM CURSOR — sobrio, dot terra + ring magnético
+   ============================================================ */
+.cursorEnabled,
+.cursorEnabled body { cursor: none; }
+.cursorEnabled a,
+.cursorEnabled button,
+.cursorEnabled [role="button"],
+.cursorEnabled input,
+.cursorEnabled textarea,
+.cursorEnabled [data-cursor] { cursor: none; }
+
+.cursorDot,
+.cursorRing {
+  position: fixed;
+  top: 0; left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  will-change: transform;
+}
+.cursorDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-terra);
+  mix-blend-mode: difference;
+  transition: opacity var(--duration-micro);
+}
+.cursorRing {
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(184, 137, 106, 0.4);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: width 0.32s var(--easing-expressive),
+              height 0.32s var(--easing-expressive),
+              border-color 0.22s,
+              background 0.22s,
+              opacity var(--duration-micro);
+}
+.cursorRingActive {
+  width: 56px;
+  height: 56px;
+  border-color: var(--color-terra);
+  background: rgba(184, 137, 106, 0.06);
+}
+.cursorLabel {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-terra);
+  white-space: nowrap;
+}
+.cursorHidden { opacity: 0; }
+
+@media (pointer: coarse) {
+  .cursorDot, .cursorRing { display: none; }
+}
+
+/* ============================================================
+   HERO GOTA MESH — Three.js iridescente físico
+   ============================================================ */
+.gotaMesh {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(82vmin, 720px);
+  height: min(82vmin, 720px);
+  z-index: 1;
+  pointer-events: none;
 }
 
 /* ============================================================
