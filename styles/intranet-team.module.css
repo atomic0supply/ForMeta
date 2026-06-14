@@ -93,6 +93,19 @@
   gap: 12px;
 }
 
+.settingsFieldset {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.settingsFieldset:disabled {
+  opacity: 0.62;
+}
+
 .ticketConfigGrid,
 .ticketTemplateGrid {
   display: grid;

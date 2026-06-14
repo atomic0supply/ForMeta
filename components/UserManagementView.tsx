@@ -101,7 +101,7 @@ export function UserManagementView() {
   }, [currentUser?.geminiApiKey]);
 
   useEffect(() => {
-    if (!isAdmin) {
+    if (!currentUser) {
       setTicketSettings(DEFAULT_TICKET_SETTINGS);
       setTicketSettingsDraft(DEFAULT_TICKET_SETTINGS);
       return;
@@ -111,7 +111,7 @@ export function UserManagementView() {
       setTicketSettings(settings);
       setTicketSettingsDraft(settings);
     });
-  }, [isAdmin]);
+  }, [currentUser]);
 
   async function handleRoleChange(uid: string, role: UserRole) {
     await updateUserRole(uid, role);
@@ -148,7 +148,7 @@ export function UserManagementView() {
 
   async function handleSaveTicketSettings(e: React.FormEvent) {
     e.preventDefault();
-    if (!isAdmin) return;
+    if (!currentUser) return;
 
     setSavingTicketSettings(true);
     setTicketSettingsMessage(null);
@@ -224,24 +224,24 @@ export function UserManagementView() {
         </form>
       </section>
 
-      {isAdmin && (
-        <section className={styles.settingsCard}>
-          <div className={styles.settingsHeader}>
-            <div>
-              <p className={styles.sectionKicker}>Operativa</p>
-              <h2 className={styles.sectionTitle}>Sistema de tickets</h2>
-            </div>
-            <span className={styles.settingsStatus}>
-              {ticketSettings.supportEmail || "Sin email"}
-            </span>
+      <section className={styles.settingsCard}>
+        <div className={styles.settingsHeader}>
+          <div>
+            <p className={styles.sectionKicker}>Operativa</p>
+            <h2 className={styles.sectionTitle}>Sistema de tickets</h2>
           </div>
+          <span className={styles.settingsStatus}>
+            {ticketSettings.supportEmail || "Sin email"}
+          </span>
+        </div>
 
-          <p className={styles.settingsCopy}>
-            Configura el buzón de soporte, Proton Bridge, SLA y plantillas de respuesta.
-            La contraseña real del Bridge no se guarda aquí: usa el secret indicado en el worker.
-          </p>
+        <p className={styles.settingsCopy}>
+          Configura el buzón de soporte, Proton Bridge, SLA y plantillas de respuesta.
+          La contraseña real del Bridge no se guarda aquí: usa el secret indicado en el worker.
+        </p>
 
-          <form onSubmit={(e) => void handleSaveTicketSettings(e)} className={styles.settingsForm}>
+        <form onSubmit={(e) => void handleSaveTicketSettings(e)} className={styles.settingsForm}>
+          <fieldset className={styles.settingsFieldset} disabled={!currentUser || savingTicketSettings}>
             <div className={styles.ticketConfigGrid}>
               <label>
                 Email soporte
@@ -439,30 +439,31 @@ export function UserManagementView() {
                 ))}
               </div>
             </div>
+          </fieldset>
 
-            <div className={styles.settingsActions}>
-              <button
-                type="button"
-                onClick={() => setTicketSettingsDraft(ticketSettings)}
-                className={styles.secondaryBtn}
-                disabled={savingTicketSettings}
-              >
-                Restaurar
-              </button>
-              <button
-                type="submit"
-                className={styles.primaryBtn}
-                disabled={savingTicketSettings}
-              >
-                {savingTicketSettings ? "Guardando…" : "Guardar ticketing"}
-              </button>
-            </div>
-            {ticketSettingsMessage && (
-              <p className={styles.saveMessage}>{ticketSettingsMessage}</p>
-            )}
-          </form>
-        </section>
-      )}
+          <div className={styles.settingsActions}>
+            <button
+              type="button"
+              onClick={() => setTicketSettingsDraft(ticketSettings)}
+              className={styles.secondaryBtn}
+              disabled={!currentUser || savingTicketSettings}
+            >
+              Restaurar
+            </button>
+            <button
+              type="submit"
+              className={styles.primaryBtn}
+              disabled={!currentUser || savingTicketSettings}
+            >
+              {savingTicketSettings ? "Guardando…" : "Guardar ticketing"}
+            </button>
+          </div>
+          {ticketSettingsMessage && (
+            <p className={styles.saveMessage}>{ticketSettingsMessage}</p>
+          )}
+        </form>
+      </section>
+
 
       {/* Apariencia — shader wallpaper selector */}
       <section className={styles.settingsCard}>
