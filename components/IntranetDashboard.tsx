@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Clock, Command, Lightbulb, Plus, Search } from "lucide-react";
+import { Clock, Command, Inbox, Lightbulb, Plus, Search } from "lucide-react";
 
 import { ActivityFeed } from "@/components/ActivityFeed";
 import { TimeHeatmap } from "@/components/TimeHeatmap";
@@ -15,6 +15,11 @@ import {
 } from "@/lib/domains";
 import { listIdeas, type Idea } from "@/lib/ideas";
 import { subscribeToProjects, type Project } from "@/lib/projects";
+import {
+  subscribeToTickets,
+  ticketDueState,
+  type Ticket,
+} from "@/lib/tickets";
 import { subscribeToAllTimeEntries, type TimeEntry } from "@/lib/timeEntries";
 import { formatDuration, formatElapsed, useTimer } from "@/lib/timerContext";
 import { useCurrentUser } from "@/lib/useCurrentUser";
@@ -31,12 +36,14 @@ export function IntranetDashboard() {
   const [entries, setEntries]                 = useState<TimeEntry[]>([]);
   const [ideas, setIdeas]                     = useState<Idea[]>([]);
   const [expiringDomains, setExpiringDomains] = useState<Domain[]>([]);
+  const [tickets, setTickets]                 = useState<Ticket[]>([]);
 
   useEffect(() => {
     const unsubP = subscribeToProjects(setProjects);
     const unsubT = subscribeToAllTimeEntries(setEntries, 365);
     const unsubD = subscribeToExpiringDomains(setExpiringDomains, 60);
-    return () => { unsubP(); unsubT(); unsubD(); };
+    const unsubTickets = subscribeToTickets(setTickets);
+    return () => { unsubP(); unsubT(); unsubD(); unsubTickets(); };
   }, []);
 
   const loadIdeas = useCallback(async (uid: string) => {
@@ -76,6 +83,16 @@ export function IntranetDashboard() {
   const activeProjects = useMemo(
     () => projects.filter((p) => p.status === "activo").length,
     [projects],
+  );
+
+  const openTickets = useMemo(
+    () => tickets.filter((t) => t.status !== "cerrado" && t.status !== "spam").length,
+    [tickets],
+  );
+
+  const overdueTickets = useMemo(
+    () => tickets.filter((t) => ticketDueState(t) === "overdue").length,
+    [tickets],
   );
 
   const activeProjectsList = useMemo(
@@ -143,6 +160,7 @@ export function IntranetDashboard() {
         <p className={styles.actionSummary}>
           Tienes {activeProjects} proyecto{activeProjects !== 1 ? "s" : ""} activo{activeProjects !== 1 ? "s" : ""}
           {ideasUnclassified > 0 ? `, ${ideasUnclassified} idea${ideasUnclassified !== 1 ? "s" : ""} sin revisar` : ""}
+          {openTickets > 0 ? `, ${openTickets} ticket${openTickets !== 1 ? "s" : ""} abierto${openTickets !== 1 ? "s" : ""}` : ""}
           {activeTimer ? " y un timer activo" : ""}.
         </p>
         <div className={styles.actionBtns}>
@@ -151,6 +169,9 @@ export function IntranetDashboard() {
           </Link>
           <Link href="/intranet/tiempo" className={styles.actionBtn}>
             <Clock width={11} height={11} strokeWidth={2} /> Tiempo
+          </Link>
+          <Link href="/intranet/tickets" className={styles.actionBtn}>
+            <Inbox width={11} height={11} strokeWidth={2} /> Tickets
           </Link>
           <Link href="/intranet/ideas?nuevo=1" className={styles.actionBtn}>
             <Lightbulb width={11} height={11} strokeWidth={2} /> Nueva idea
@@ -203,6 +224,13 @@ export function IntranetDashboard() {
           <span className={styles.statPillLabel}>ideas</span>
           {ideasUnclassified > 0 && (
             <span className={styles.statPillDelta}>{ideasUnclassified} sin revisar</span>
+          )}
+        </div>
+        <div className={styles.statPill}>
+          <span className={styles.statPillValue}>{openTickets > 0 ? openTickets : "—"}</span>
+          <span className={styles.statPillLabel}>tickets</span>
+          {overdueTickets > 0 && (
+            <span className={styles.statPillDelta}>{overdueTickets} vencido{overdueTickets !== 1 ? "s" : ""}</span>
           )}
         </div>
       </div>

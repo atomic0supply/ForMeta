@@ -8,12 +8,14 @@ import {
   Clock,
   Folder,
   Globe,
+  Inbox,
   LayoutGrid,
   Lightbulb,
   Link2,
   MoreHorizontal,
   Pause,
   Play,
+  ReceiptText,
   Save,
   Search,
   Shield,
@@ -34,7 +36,9 @@ const navGroups = [
     items: [
       { href: "/intranet",           label: "Dashboard", exact: true,  icon: LayoutGrid },
       { href: "/intranet/proyectos", label: "Proyectos", exact: false, icon: Folder     },
+      { href: "/intranet/tickets",   label: "Tickets",   exact: false, icon: Inbox      },
       { href: "/intranet/clientes",  label: "Clientes",  exact: false, icon: Users      },
+      { href: "/intranet/fiscal",    label: "Fiscal",    exact: false, icon: ReceiptText },
     ],
   },
   {
@@ -59,6 +63,7 @@ const navGroups = [
 const bottomPrimary = [
   { href: "/intranet",           label: "Inicio",    exact: true,  icon: LayoutGrid },
   { href: "/intranet/proyectos", label: "Proyectos", exact: false, icon: Folder     },
+  { href: "/intranet/tickets",   label: "Tickets",   exact: false, icon: Inbox      },
   { href: "/intranet/tiempo",    label: "Tiempo",    exact: false, icon: Clock      },
   { href: "/intranet/ideas",     label: "Ideas",     exact: false, icon: Lightbulb  },
 ];
@@ -66,6 +71,7 @@ const bottomPrimary = [
 // "Más" sheet items (the rest)
 const moreItems = [
   { href: "/intranet/clientes",  label: "Clientes",  exact: false, icon: Users  },
+  { href: "/intranet/fiscal",    label: "Fiscal",    exact: false, icon: ReceiptText },
   { href: "/intranet/links",     label: "Links",     exact: false, icon: Link2  },
   { href: "/intranet/dominios",  label: "Dominios",  exact: false, icon: Globe  },
   { href: "/intranet/buscar",    label: "Buscar",    exact: false, icon: Search },

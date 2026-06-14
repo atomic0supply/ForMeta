@@ -28,6 +28,9 @@ export type Task = {
   dueDate: string; // "YYYY-MM-DD" or ""
   order: number;
   assignedTo?: { uid: string; name: string } | null;
+  githubIssueNumber?: number | null;
+  sourceTicketId?: string | null;
+  sourceTicketNumber?: string | null;
   createdAt: Timestamp | null;
 };
 

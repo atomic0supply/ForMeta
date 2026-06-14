@@ -60,6 +60,42 @@ service cloud.firestore {
       allow read, write: if isAuth();
     }
 
+    // Ticketing interno
+    match /tickets/{ticketId} {
+      allow read, create, update: if isAuth();
+      allow delete: if isAdmin();
+
+      match /messages/{messageId} {
+        allow read, create: if isAuth();
+        allow update, delete: if isAdmin();
+      }
+
+      match /events/{eventId} {
+        allow read, create: if isAuth();
+        allow update, delete: if false;
+      }
+    }
+
+    match /ticketMailOutbox/{outboxId} {
+      allow read, create, update: if isAuth();
+      allow delete: if isAdmin();
+    }
+
+    match /ticketProcessingErrors/{errorId} {
+      allow read, create, update: if isAuth();
+      allow delete: if isAdmin();
+    }
+
+    match /ticketSettings/{settingsId} {
+      allow read: if isAuth();
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /systemCounters/{counterId} {
+      allow read: if isAuth();
+      allow write: if isAdmin();
+    }
+
     // Ideas de negocio/desarrollo con análisis IA
     match /ideas/{ideaId} {
       allow read: if isAuth() && resource.data.userId == request.auth.uid;
@@ -83,6 +119,77 @@ service cloud.firestore {
       allow read: if isAuth();
       allow create: if isAuth();
       allow update, delete: if false;
+    }
+
+    // Núcleo fiscal y facturación
+    match /fiscalProfiles/{profileId} {
+      allow read, create, update: if isAuth();
+      allow delete: if false;
+    }
+
+    match /invoices/{invoiceId} {
+      allow read, create: if isAuth();
+      allow update: if isAuth() && resource.data.status == "issued" && (
+        request.resource.data.status == "cancelled" ||
+        (
+          request.resource.data.status == "issued" &&
+          request.resource.data.diff(resource.data).affectedKeys()
+            .hasOnly(["paymentStatus", "paidAt", "paidAmount"])
+        )
+      );
+      allow delete: if false;
+    }
+
+    match /fiscalEvents/{eventId} {
+      allow read: if isAuth();
+      allow create: if isAuth();
+      allow update, delete: if false;
+    }
+
+    match /fiscalLedger/{entryId} {
+      allow read: if isAuth();
+      allow create: if isAuth();
+      allow update, delete: if false;
+    }
+
+    match /expenses/{expenseId} {
+      allow read, create, update: if isAuth();
+      allow delete: if false;
+    }
+
+    match /recurringExpenses/{expenseId} {
+      allow read, create, update: if isAuth();
+      allow delete: if false;
+    }
+
+    match /quarterlyClosures/{closureId} {
+      allow read, create, update: if isAuth();
+      allow delete: if false;
+    }
+
+    match /fiscalWatcherAlerts/{alertId} {
+      allow read, create, update: if isAuth();
+      allow delete: if false;
+    }
+
+    match /fiscalWatcherSources/{sourceId} {
+      allow read, create, update: if isAuth();
+      allow delete: if false;
+    }
+
+    match /verifactuConfig/{configId} {
+      allow read, create, update: if isAuth();
+      allow delete: if false;
+    }
+
+    match /verifactuRecords/{recordId} {
+      allow read, create, update: if isAuth();
+      allow delete: if false;
+    }
+
+    match /fiscalCounters/{counterId} {
+      allow read, create, update: if isAuth();
+      allow delete: if false;
     }
 
     // Perfiles de usuario
