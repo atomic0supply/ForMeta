@@ -44,6 +44,26 @@ export type ClientLink = {
   url: string;
 };
 
+export type ClientViesStatus = "not_checked" | "valid" | "invalid" | "error";
+
+export type ClientTaxProfile = {
+  customerKind: "business" | "self_employed" | "individual";
+  countryCode: string;
+  taxId: string;
+  vatNumber: string;
+  fiscalName: string;
+  fiscalAddress: string;
+  postalCode: string;
+  city: string;
+  province: string;
+  viesStatus: ClientViesStatus;
+  viesCheckedAt: Timestamp | null;
+  viesName?: string;
+  viesAddress?: string;
+  viesRequestId?: string;
+  viesError?: string;
+};
+
 export type Client = {
   id: string;
   name: string;
@@ -57,6 +77,7 @@ export type Client = {
   website: string;
   contacts: ClientContact[];
   links: ClientLink[];
+  tax: ClientTaxProfile;
   notes: string;
   createdAt: Timestamp | null;
 };
@@ -67,6 +88,7 @@ export type ClientInput = Omit<Client, "id" | "createdAt">;
 
 function normalizeClient(id: string, raw: Record<string, unknown>): Client {
   const data = raw as Partial<Client>;
+  const tax = data.tax as Partial<ClientTaxProfile> | undefined;
   return {
     id,
     name:     data.name     ?? "",
@@ -78,6 +100,23 @@ function normalizeClient(id: string, raw: Record<string, unknown>): Client {
     website:  data.website  ?? "",
     contacts: Array.isArray(data.contacts) ? data.contacts : [],
     links:    Array.isArray(data.links)    ? data.links    : [],
+    tax: {
+      customerKind: tax?.customerKind ?? "business",
+      countryCode: (tax?.countryCode ?? "ES").toUpperCase(),
+      taxId: tax?.taxId ?? "",
+      vatNumber: tax?.vatNumber ?? "",
+      fiscalName: tax?.fiscalName ?? data.name ?? "",
+      fiscalAddress: tax?.fiscalAddress ?? "",
+      postalCode: tax?.postalCode ?? "",
+      city: tax?.city ?? "",
+      province: tax?.province ?? "",
+      viesStatus: tax?.viesStatus ?? "not_checked",
+      viesCheckedAt: (tax?.viesCheckedAt as Timestamp | null) ?? null,
+      viesName: tax?.viesName ?? "",
+      viesAddress: tax?.viesAddress ?? "",
+      viesRequestId: tax?.viesRequestId ?? "",
+      viesError: tax?.viesError ?? "",
+    },
     notes:    data.notes    ?? "",
     createdAt: (data.createdAt as Timestamp | null) ?? null,
   };
