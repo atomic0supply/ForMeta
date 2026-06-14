@@ -93,6 +93,71 @@
   gap: 12px;
 }
 
+.ticketConfigGrid,
+.ticketTemplateGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.ticketConfigGrid label,
+.ticketTemplateGrid label,
+.ticketSlaItem label {
+  display: grid;
+  gap: 6px;
+  color: var(--color-muted-strong);
+  font-family: var(--font-mono), monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.ticketConfigGrid input,
+.ticketTemplateGrid textarea,
+.ticketSlaItem input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.82);
+  color: var(--color-ink);
+  font: inherit;
+  letter-spacing: 0;
+  outline: none;
+}
+
+.ticketTemplateGrid textarea {
+  min-height: 118px;
+  resize: vertical;
+  line-height: 1.55;
+  text-transform: none;
+}
+
+.ticketSettingsBlock {
+  display: grid;
+  gap: 12px;
+  padding-top: 8px;
+}
+
+.ticketSlaGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.ticketSlaItem {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid var(--color-border-soft);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.36);
+}
+
+.ticketSlaItem strong {
+  font-weight: 500;
+}
+
 .fieldLabel {
   font-family: var(--font-mono), monospace;
   font-size: 0.58rem;
@@ -292,5 +357,11 @@
   .settingsActions {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .ticketConfigGrid,
+  .ticketTemplateGrid,
+  .ticketSlaGrid {
+    grid-template-columns: 1fr;
   }
 }
