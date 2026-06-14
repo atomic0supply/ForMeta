@@ -27,6 +27,19 @@ const emptyForm: ClientInput = {
   website: "",
   contacts: [],
   links: [],
+  tax: {
+    customerKind: "business",
+    countryCode: "ES",
+    taxId: "",
+    vatNumber: "",
+    fiscalName: "",
+    fiscalAddress: "",
+    postalCode: "",
+    city: "",
+    province: "",
+    viesStatus: "not_checked",
+    viesCheckedAt: null,
+  },
   notes: "",
 };
 
@@ -78,6 +91,7 @@ export function ClientsView() {
       website:  client.website,
       contacts: client.contacts,
       links:    client.links,
+      tax:      client.tax,
       notes:    client.notes,
     });
     setDrawerOpen(true);
@@ -340,7 +354,7 @@ export function ClientsView() {
               />
             </div>
             <p className={styles.formHint}>
-              Los contactos secundarios y links se editan desde la ficha del cliente.
+              Los contactos secundarios, links y datos fiscales avanzados se editan desde la ficha del cliente o Fiscal.
             </p>
           </div>
 
