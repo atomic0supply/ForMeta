@@ -102,6 +102,7 @@ export function ClientDetailView({ id }: { id: string }) {
       website:  client.website,
       contacts: client.contacts,
       links:    client.links,
+      tax:      client.tax,
       notes:    client.notes,
     });
     setEditing(true);
