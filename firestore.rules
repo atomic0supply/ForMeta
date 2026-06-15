@@ -202,5 +202,12 @@ service cloud.firestore {
       allow create, delete: if isAdmin();
       allow update: if isAdmin();
     }
+
+    // Roles dinámicos: cualquier usuario autenticado puede leerlos (para resolver
+    // sus módulos permitidos); solo los admins pueden crearlos/editarlos/borrarlos.
+    match /roles/{roleId} {
+      allow read: if isAuth();
+      allow create, update, delete: if isAdmin();
+    }
   }
 }

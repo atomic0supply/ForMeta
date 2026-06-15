@@ -1,14 +1,12 @@
 import {
   collection,
-  doc,
   onSnapshot,
   orderBy,
   query,
-  updateDoc,
   type Unsubscribe,
 } from "firebase/firestore";
 
-import { db } from "@/lib/firebase";
+import { auth, db } from "@/lib/firebase";
 import type { UserRole } from "@/lib/users";
 
 export type UserProfile = {
@@ -16,6 +14,7 @@ export type UserProfile = {
   email: string;
   displayName: string | null;
   role: UserRole;
+  roleId?: string | null;
   active: boolean;
   createdAt: { seconds: number } | null;
 };
@@ -34,12 +33,74 @@ export function subscribeToAllUsers(
   });
 }
 
+async function authHeaders(): Promise<HeadersInit> {
+  const token = await auth?.currentUser?.getIdToken();
+  if (!token) throw new Error("Sesión no válida");
+  return {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  };
+}
+
+async function parseError(res: Response): Promise<never> {
+  let message = "Error en la operación";
+  try {
+    const data = await res.json();
+    if (data?.error) message = data.error;
+  } catch {
+    /* ignore */
+  }
+  throw new Error(message);
+}
+
+export type CreateUserArgs = {
+  email: string;
+  password: string;
+  displayName?: string;
+  role?: UserRole;
+  roleId?: string | null;
+};
+
+export async function createUser(args: CreateUserArgs): Promise<string> {
+  const res = await fetch("/api/admin/users", {
+    method: "POST",
+    headers: await authHeaders(),
+    body: JSON.stringify(args),
+  });
+  if (!res.ok) await parseError(res);
+  const data = await res.json();
+  return data.uid as string;
+}
+
+export type UpdateUserArgs = {
+  role?: UserRole;
+  roleId?: string | null;
+  active?: boolean;
+  displayName?: string | null;
+};
+
+export async function updateUser(uid: string, updates: UpdateUserArgs): Promise<void> {
+  const res = await fetch(`/api/admin/users/${uid}`, {
+    method: "PATCH",
+    headers: await authHeaders(),
+    body: JSON.stringify(updates),
+  });
+  if (!res.ok) await parseError(res);
+}
+
+export async function deleteUser(uid: string): Promise<void> {
+  const res = await fetch(`/api/admin/users/${uid}`, {
+    method: "DELETE",
+    headers: await authHeaders(),
+  });
+  if (!res.ok) await parseError(res);
+}
+
+// Convenience wrappers kept for existing call sites.
 export async function updateUserRole(uid: string, role: UserRole): Promise<void> {
-  if (!db) throw new Error("Firebase no disponible");
-  await updateDoc(doc(db, "users", uid), { role });
+  await updateUser(uid, { role });
 }
 
 export async function setUserActive(uid: string, active: boolean): Promise<void> {
-  if (!db) throw new Error("Firebase no disponible");
-  await updateDoc(doc(db, "users", uid), { active });
+  await updateUser(uid, { active });
 }

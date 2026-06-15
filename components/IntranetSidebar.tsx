@@ -25,64 +25,89 @@ import {
 
 import { auth } from "@/lib/firebase";
 import { formatElapsed, useTimer } from "@/lib/timerContext";
+import { useCurrentUser } from "@/lib/useCurrentUser";
+import type { ModuleKey } from "@/lib/modules";
 import { BrandWordmark } from "@/components/BrandWordmark";
 import { clearSessionCookie } from "@/lib/session";
 import { openCommandPalette } from "@/lib/commandPalette";
 import styles from "@/styles/intranet-sidebar.module.css";
 
-const navGroups = [
+type NavItem = {
+  href: string;
+  label: string;
+  exact: boolean;
+  icon: typeof LayoutGrid;
+  module: ModuleKey;
+};
+
+const navGroups: { label: string; items: NavItem[] }[] = [
   {
     label: "Principal",
     items: [
-      { href: "/intranet",           label: "Dashboard", exact: true,  icon: LayoutGrid },
-      { href: "/intranet/proyectos", label: "Proyectos", exact: false, icon: Folder     },
-      { href: "/intranet/tickets",   label: "Tickets",   exact: false, icon: Inbox      },
-      { href: "/intranet/clientes",  label: "Clientes",  exact: false, icon: Users      },
-      { href: "/intranet/fiscal",    label: "Fiscal",    exact: false, icon: ReceiptText },
+      { href: "/intranet",           label: "Dashboard", exact: true,  icon: LayoutGrid,  module: "dashboard" },
+      { href: "/intranet/proyectos", label: "Proyectos", exact: false, icon: Folder,      module: "proyectos" },
+      { href: "/intranet/tickets",   label: "Tickets",   exact: false, icon: Inbox,       module: "tickets"   },
+      { href: "/intranet/clientes",  label: "Clientes",  exact: false, icon: Users,       module: "clientes"  },
+      { href: "/intranet/fiscal",    label: "Fiscal",    exact: false, icon: ReceiptText, module: "fiscal"    },
     ],
   },
   {
     label: "Operativa",
     items: [
-      { href: "/intranet/tiempo",    label: "Tiempo",    exact: false, icon: Clock      },
-      { href: "/intranet/ideas",     label: "Ideas",     exact: false, icon: Lightbulb  },
-      { href: "/intranet/links",     label: "Links",     exact: false, icon: Link2      },
-      { href: "/intranet/dominios",  label: "Dominios",  exact: false, icon: Globe      },
+      { href: "/intranet/tiempo",    label: "Tiempo",    exact: false, icon: Clock,     module: "tiempo"    },
+      { href: "/intranet/ideas",     label: "Ideas",     exact: false, icon: Lightbulb, module: "ideas"     },
+      { href: "/intranet/links",     label: "Links",     exact: false, icon: Link2,     module: "links"     },
+      { href: "/intranet/servicios", label: "Servicios", exact: false, icon: Globe,     module: "servicios" },
     ],
   },
   {
     label: "Sistema",
     items: [
-      { href: "/intranet/equipo",    label: "Equipo",    exact: false, icon: Shield     },
-      { href: "/intranet/buscar",    label: "Buscar",    exact: false, icon: Search     },
+      { href: "/intranet/equipo",    label: "Equipo",    exact: false, icon: Shield,  module: "equipo" },
+      { href: "/intranet/buscar",    label: "Buscar",    exact: false, icon: Search,  module: "buscar" },
     ],
   },
 ];
 
 // Bottom nav primary items (mobile)
-const bottomPrimary = [
-  { href: "/intranet",           label: "Inicio",    exact: true,  icon: LayoutGrid },
-  { href: "/intranet/proyectos", label: "Proyectos", exact: false, icon: Folder     },
-  { href: "/intranet/tickets",   label: "Tickets",   exact: false, icon: Inbox      },
-  { href: "/intranet/tiempo",    label: "Tiempo",    exact: false, icon: Clock      },
-  { href: "/intranet/ideas",     label: "Ideas",     exact: false, icon: Lightbulb  },
+const bottomPrimary: NavItem[] = [
+  { href: "/intranet",           label: "Inicio",    exact: true,  icon: LayoutGrid, module: "dashboard" },
+  { href: "/intranet/proyectos", label: "Proyectos", exact: false, icon: Folder,     module: "proyectos" },
+  { href: "/intranet/tickets",   label: "Tickets",   exact: false, icon: Inbox,      module: "tickets"   },
+  { href: "/intranet/tiempo",    label: "Tiempo",    exact: false, icon: Clock,      module: "tiempo"    },
+  { href: "/intranet/ideas",     label: "Ideas",     exact: false, icon: Lightbulb,  module: "ideas"     },
 ];
 
 // "Más" sheet items (the rest)
-const moreItems = [
-  { href: "/intranet/clientes",  label: "Clientes",  exact: false, icon: Users  },
-  { href: "/intranet/fiscal",    label: "Fiscal",    exact: false, icon: ReceiptText },
-  { href: "/intranet/links",     label: "Links",     exact: false, icon: Link2  },
-  { href: "/intranet/dominios",  label: "Dominios",  exact: false, icon: Globe  },
-  { href: "/intranet/buscar",    label: "Buscar",    exact: false, icon: Search },
-  { href: "/intranet/equipo",    label: "Equipo",    exact: false, icon: Shield },
+const moreItems: NavItem[] = [
+  { href: "/intranet/clientes",  label: "Clientes",  exact: false, icon: Users,       module: "clientes"  },
+  { href: "/intranet/fiscal",    label: "Fiscal",    exact: false, icon: ReceiptText, module: "fiscal"    },
+  { href: "/intranet/links",     label: "Links",     exact: false, icon: Link2,       module: "links"     },
+  { href: "/intranet/servicios", label: "Servicios", exact: false, icon: Globe,       module: "servicios" },
+  { href: "/intranet/buscar",    label: "Buscar",    exact: false, icon: Search,      module: "buscar"    },
+  { href: "/intranet/equipo",    label: "Equipo",    exact: false, icon: Shield,      module: "equipo"    },
 ];
 
 export function IntranetSidebar() {
   const pathname = usePathname();
   const router = useRouter();
+  const currentUser = useCurrentUser();
   const { activeTimer, elapsed, isPaused, start, pause, resume, stop } = useTimer();
   const [sheetOpen, setSheetOpen] = useState(false);
+
+  // While the user is loading, show everything to avoid a flash of empty nav;
+  // once resolved, admins see all and others only their granted modules.
+  function canSee(module: ModuleKey): boolean {
+    if (!currentUser) return true;
+    if (currentUser.role === "admin") return true;
+    return currentUser.modules.includes(module);
+  }
+
+  const visibleGroups = navGroups
+    .map((group) => ({ ...group, items: group.items.filter((item) => canSee(item.module)) }))
+    .filter((group) => group.items.length > 0);
+  const visibleBottom = bottomPrimary.filter((item) => canSee(item.module));
+  const visibleMore = moreItems.filter((item) => canSee(item.module));
 
   function isActive(href: string, exact: boolean) {
     return exact ? pathname === href : pathname.startsWith(href);
@@ -184,7 +209,7 @@ export function IntranetSidebar() {
         </div>
 
         <nav className={styles.nav} aria-label="Navegación intranet">
-          {navGroups.map((group, gi) => (
+          {visibleGroups.map((group, gi) => (
             <div key={group.label} className={styles.navGroup}>
               <span className={styles.navGroupLabel}>{group.label}</span>
               {group.items.map((item) => (
@@ -197,7 +222,7 @@ export function IntranetSidebar() {
                   {item.label}
                 </Link>
               ))}
-              {gi < navGroups.length - 1 && <div className={styles.navDivider} />}
+              {gi < visibleGroups.length - 1 && <div className={styles.navDivider} />}
             </div>
           ))}
         </nav>
@@ -242,7 +267,7 @@ export function IntranetSidebar() {
 
       {/* ── Mobile bottom nav ─────────────────────────────────────────────── */}
       <nav className={styles.bottomBar} aria-label="Navegación inferior">
-        {bottomPrimary.map((item) => {
+        {visibleBottom.map((item) => {
           const active = isActive(item.href, item.exact);
           return (
             <Link
@@ -289,7 +314,7 @@ export function IntranetSidebar() {
           </button>
         </div>
         <nav className={styles.sheetNav}>
-          {moreItems.map((item) => (
+          {visibleMore.map((item) => (
             <Link
               key={item.href}
               href={item.href}

@@ -4,11 +4,22 @@ import { useEffect, useState } from "react";
 
 import { useCurrentUser } from "@/lib/useCurrentUser";
 import {
+  createUser,
+  deleteUser,
   setUserActive,
   subscribeToAllUsers,
+  updateUser,
   updateUserRole,
   type UserProfile,
 } from "@/lib/adminUsers";
+import {
+  createRole,
+  deleteRole,
+  subscribeToRoles,
+  updateRole,
+  type Role,
+} from "@/lib/roles";
+import { MODULES, type ModuleKey } from "@/lib/modules";
 import type { TicketSeverity } from "@/lib/ticketAi";
 import {
   DEFAULT_TICKET_SETTINGS,
@@ -23,6 +34,15 @@ import {
 } from "@/lib/users";
 import styles from "@/styles/intranet-team.module.css";
 import shaderStyles from "@/styles/intranet-shader.module.css";
+
+// Modules that can be granted via dynamic roles (Equipo stays admin-only).
+const ASSIGNABLE_MODULES = MODULES.filter((m) => m.key !== "equipo");
+
+const EMPTY_ROLE_DRAFT: { name: string; description: string; modules: ModuleKey[] } = {
+  name: "",
+  description: "",
+  modules: [],
+};
 
 function initials(profile: UserProfile): string {
   const name = profile.displayName ?? profile.email ?? "?";
@@ -77,6 +97,133 @@ export function UserManagementView() {
       ? (localStorage.getItem("roqueta-wallpaper") as "none" | "bruma" | "flujo") ?? "none"
       : "none"),
   );
+
+  // ── Roles dinámicos ─────────────────────────────────────────────────────
+  const [roles, setRoles] = useState<Role[]>([]);
+  const [roleDraft, setRoleDraft] = useState(EMPTY_ROLE_DRAFT);
+  const [editingRoleId, setEditingRoleId] = useState<string | null>(null);
+  const [roleMessage, setRoleMessage] = useState<string | null>(null);
+  const [savingRole, setSavingRole] = useState(false);
+
+  // ── Alta de usuarios ────────────────────────────────────────────────────
+  const [newUser, setNewUser] = useState({
+    email: "",
+    displayName: "",
+    password: "",
+    role: "team" as UserRole,
+    roleId: "" as string,
+  });
+  const [creatingUser, setCreatingUser] = useState(false);
+  const [createUserMessage, setCreateUserMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!isAdmin) {
+      setRoles([]);
+      return;
+    }
+    return subscribeToRoles(setRoles);
+  }, [isAdmin]);
+
+  function toggleRoleModule(key: ModuleKey) {
+    setRoleDraft((prev) => ({
+      ...prev,
+      modules: prev.modules.includes(key)
+        ? prev.modules.filter((m) => m !== key)
+        : [...prev.modules, key],
+    }));
+  }
+
+  function startEditRole(role: Role) {
+    setEditingRoleId(role.id);
+    setRoleDraft({ name: role.name, description: role.description, modules: role.modules });
+    setRoleMessage(null);
+  }
+
+  function resetRoleDraft() {
+    setEditingRoleId(null);
+    setRoleDraft(EMPTY_ROLE_DRAFT);
+  }
+
+  async function handleSaveRole(e: React.FormEvent) {
+    e.preventDefault();
+    if (!roleDraft.name.trim()) {
+      setRoleMessage("El rol necesita un nombre.");
+      return;
+    }
+    setSavingRole(true);
+    setRoleMessage(null);
+    try {
+      if (editingRoleId) {
+        await updateRole(editingRoleId, {
+          name: roleDraft.name.trim(),
+          description: roleDraft.description.trim(),
+          modules: roleDraft.modules,
+        });
+        setRoleMessage("Rol actualizado.");
+      } else {
+        await createRole({
+          name: roleDraft.name.trim(),
+          description: roleDraft.description.trim(),
+          modules: roleDraft.modules,
+          isSystem: false,
+        });
+        setRoleMessage("Rol creado.");
+      }
+      resetRoleDraft();
+    } catch (err) {
+      setRoleMessage(err instanceof Error ? err.message : "No se pudo guardar el rol.");
+    } finally {
+      setSavingRole(false);
+    }
+  }
+
+  async function handleDeleteRole(roleId: string) {
+    if (!window.confirm("¿Eliminar este rol? Los usuarios que lo tengan quedarán sin módulos.")) {
+      return;
+    }
+    try {
+      await deleteRole(roleId);
+      if (editingRoleId === roleId) resetRoleDraft();
+    } catch (err) {
+      setRoleMessage(err instanceof Error ? err.message : "No se pudo eliminar el rol.");
+    }
+  }
+
+  async function handleCreateUser(e: React.FormEvent) {
+    e.preventDefault();
+    setCreatingUser(true);
+    setCreateUserMessage(null);
+    try {
+      await createUser({
+        email: newUser.email.trim(),
+        password: newUser.password,
+        displayName: newUser.displayName.trim() || undefined,
+        role: newUser.role,
+        roleId: newUser.role === "team" ? newUser.roleId || null : null,
+      });
+      setCreateUserMessage(`Usuario ${newUser.email.trim()} creado.`);
+      setNewUser({ email: "", displayName: "", password: "", role: "team", roleId: "" });
+    } catch (err) {
+      setCreateUserMessage(err instanceof Error ? err.message : "No se pudo crear el usuario.");
+    } finally {
+      setCreatingUser(false);
+    }
+  }
+
+  async function handleUserRoleId(uid: string, roleId: string) {
+    await updateUser(uid, { roleId: roleId || null });
+  }
+
+  async function handleDeleteUser(uid: string, label: string) {
+    if (!window.confirm(`¿Eliminar al usuario ${label}? Esta acción no se puede deshacer.`)) {
+      return;
+    }
+    try {
+      await deleteUser(uid);
+    } catch (err) {
+      window.alert(err instanceof Error ? err.message : "No se pudo eliminar el usuario.");
+    }
+  }
 
   function handleWallpaper(v: "none" | "bruma" | "flujo") {
     setWallpaper(v);
@@ -520,6 +667,198 @@ export function UserManagementView() {
         </div>
       </section>
 
+      {/* Roles dinámicos */}
+      {isAdmin && (
+        <section className={styles.settingsCard}>
+          <div className={styles.settingsHeader}>
+            <div>
+              <p className={styles.sectionKicker}>Permisos</p>
+              <h2 className={styles.sectionTitle}>Roles y acceso a módulos</h2>
+            </div>
+            <span className={styles.settingsStatus}>{roles.length} roles</span>
+          </div>
+          <p className={styles.settingsCopy}>
+            Define roles con los módulos a los que dan acceso. Los administradores ven
+            todos los módulos; el resto de usuarios solo los de su rol. El módulo Equipo
+            es siempre exclusivo de administradores.
+          </p>
+
+          {roles.length > 0 && (
+            <div className={styles.tableWrapper}>
+              <table className={styles.table}>
+                <thead>
+                  <tr>
+                    <th className={styles.th}>Rol</th>
+                    <th className={styles.th}>Módulos</th>
+                    <th className={styles.th}>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {roles.map((r) => (
+                    <tr key={r.id} className={styles.tr}>
+                      <td className={styles.td}>
+                        <span className={styles.userName}>{r.name}</span>
+                        {r.description && <p className={styles.email}>{r.description}</p>}
+                      </td>
+                      <td className={styles.td}>
+                        <span className={styles.email}>
+                          {r.modules.length > 0
+                            ? r.modules
+                                .map((m) => MODULES.find((x) => x.key === m)?.label ?? m)
+                                .join(", ")
+                            : "Sin módulos"}
+                        </span>
+                      </td>
+                      <td className={styles.td}>
+                        <div style={{ display: "flex", gap: 8 }}>
+                          <button type="button" className={styles.secondaryBtn} onClick={() => startEditRole(r)}>
+                            Editar
+                          </button>
+                          <button type="button" className={styles.secondaryBtn} onClick={() => void handleDeleteRole(r.id)}>
+                            Eliminar
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+
+          <form onSubmit={(e) => void handleSaveRole(e)} className={styles.settingsForm}>
+            <p className={styles.fieldLabel}>{editingRoleId ? "Editar rol" : "Nuevo rol"}</p>
+            <div className={styles.ticketConfigGrid}>
+              <label>
+                Nombre
+                <input
+                  value={roleDraft.name}
+                  onChange={(e) => setRoleDraft((p) => ({ ...p, name: e.target.value }))}
+                  placeholder="p. ej. Gestor"
+                />
+              </label>
+              <label>
+                Descripción
+                <input
+                  value={roleDraft.description}
+                  onChange={(e) => setRoleDraft((p) => ({ ...p, description: e.target.value }))}
+                  placeholder="Opcional"
+                />
+              </label>
+            </div>
+            <div className={styles.ticketSettingsBlock}>
+              <p className={styles.fieldLabel}>Módulos permitidos</p>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "10px 18px" }}>
+                {ASSIGNABLE_MODULES.map((m) => (
+                  <label key={m.key} style={{ display: "flex", alignItems: "center", gap: 6, flexDirection: "row" }}>
+                    <input
+                      type="checkbox"
+                      checked={roleDraft.modules.includes(m.key)}
+                      onChange={() => toggleRoleModule(m.key)}
+                      style={{ width: "auto" }}
+                    />
+                    {m.label}
+                  </label>
+                ))}
+              </div>
+            </div>
+            <div className={styles.settingsActions}>
+              {editingRoleId && (
+                <button type="button" className={styles.secondaryBtn} onClick={resetRoleDraft} disabled={savingRole}>
+                  Cancelar
+                </button>
+              )}
+              <button type="submit" className={styles.primaryBtn} disabled={savingRole}>
+                {savingRole ? "Guardando…" : editingRoleId ? "Guardar rol" : "Crear rol"}
+              </button>
+            </div>
+            {roleMessage && <p className={styles.saveMessage}>{roleMessage}</p>}
+          </form>
+        </section>
+      )}
+
+      {/* Alta de usuarios */}
+      {isAdmin && (
+        <section className={styles.settingsCard}>
+          <div className={styles.settingsHeader}>
+            <div>
+              <p className={styles.sectionKicker}>Administración</p>
+              <h2 className={styles.sectionTitle}>Crear usuario</h2>
+            </div>
+          </div>
+          <p className={styles.settingsCopy}>
+            Crea la cuenta en Firebase Authentication y su perfil. Comunica la contraseña
+            al usuario para que la cambie en su primer acceso.
+          </p>
+          <form onSubmit={(e) => void handleCreateUser(e)} className={styles.settingsForm}>
+            <fieldset className={styles.settingsFieldset} disabled={creatingUser}>
+              <div className={styles.ticketConfigGrid}>
+                <label>
+                  Email
+                  <input
+                    type="email"
+                    required
+                    value={newUser.email}
+                    onChange={(e) => setNewUser((p) => ({ ...p, email: e.target.value }))}
+                    autoComplete="off"
+                  />
+                </label>
+                <label>
+                  Nombre
+                  <input
+                    value={newUser.displayName}
+                    onChange={(e) => setNewUser((p) => ({ ...p, displayName: e.target.value }))}
+                    autoComplete="off"
+                  />
+                </label>
+                <label>
+                  Contraseña
+                  <input
+                    type="text"
+                    required
+                    minLength={6}
+                    value={newUser.password}
+                    onChange={(e) => setNewUser((p) => ({ ...p, password: e.target.value }))}
+                    autoComplete="off"
+                    placeholder="mín. 6 caracteres"
+                  />
+                </label>
+                <label>
+                  Rol
+                  <select
+                    value={newUser.role}
+                    onChange={(e) => setNewUser((p) => ({ ...p, role: e.target.value as UserRole }))}
+                  >
+                    <option value="team">Usuario (rol)</option>
+                    <option value="admin">Administrador</option>
+                  </select>
+                </label>
+                {newUser.role === "team" && (
+                  <label>
+                    Rol asignado
+                    <select
+                      value={newUser.roleId}
+                      onChange={(e) => setNewUser((p) => ({ ...p, roleId: e.target.value }))}
+                    >
+                      <option value="">Sin rol (sin módulos)</option>
+                      {roles.map((r) => (
+                        <option key={r.id} value={r.id}>{r.name}</option>
+                      ))}
+                    </select>
+                  </label>
+                )}
+              </div>
+            </fieldset>
+            <div className={styles.settingsActions}>
+              <button type="submit" className={styles.primaryBtn} disabled={creatingUser}>
+                {creatingUser ? "Creando…" : "Crear usuario"}
+              </button>
+            </div>
+            {createUserMessage && <p className={styles.saveMessage}>{createUserMessage}</p>}
+          </form>
+        </section>
+      )}
+
       {isAdmin && users.length === 0 && (
         <p className={styles.empty}>No hay usuarios registrados.</p>
       )}
@@ -532,7 +871,9 @@ export function UserManagementView() {
                 <th className={styles.th}>Usuario</th>
                 <th className={styles.th}>Email</th>
                 <th className={styles.th}>Rol</th>
+                <th className={styles.th}>Acceso</th>
                 <th className={styles.th}>Estado</th>
+                <th className={styles.th}></th>
               </tr>
             </thead>
             <tbody>
@@ -556,8 +897,24 @@ export function UserManagementView() {
                       onChange={(e) => void handleRoleChange(u.uid, e.target.value as UserRole)}
                     >
                       <option value="admin">Admin</option>
-                      <option value="team">Team</option>
+                      <option value="team">Usuario</option>
                     </select>
+                  </td>
+                  <td className={styles.td}>
+                    {u.role === "admin" ? (
+                      <span className={styles.email}>Todos los módulos</span>
+                    ) : (
+                      <select
+                        className={styles.roleSelect}
+                        value={u.roleId ?? ""}
+                        onChange={(e) => void handleUserRoleId(u.uid, e.target.value)}
+                      >
+                        <option value="">Sin rol</option>
+                        {roles.map((r) => (
+                          <option key={r.id} value={r.id}>{r.name}</option>
+                        ))}
+                      </select>
+                    )}
                   </td>
                   <td className={styles.td}>
                     <button
@@ -567,6 +924,17 @@ export function UserManagementView() {
                     >
                       {u.active ? "Activo" : "Inactivo"}
                     </button>
+                  </td>
+                  <td className={styles.td}>
+                    {u.uid !== currentUser?.uid && (
+                      <button
+                        type="button"
+                        className={styles.secondaryBtn}
+                        onClick={() => void handleDeleteUser(u.uid, u.displayName ?? u.email ?? u.uid)}
+                      >
+                        Eliminar
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))}

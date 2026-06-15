@@ -25,6 +25,8 @@ export async function ensureUserProfile({
     return;
   }
 
+  // merge:true — never clobber role/roleId/active if the profile already exists
+  // (e.g. an admin user logging in should stay admin).
   await setDoc(
     doc(db, "users", uid),
     {
