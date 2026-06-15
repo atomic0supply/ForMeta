@@ -19,6 +19,11 @@ param(
   [string]$Service   = "ticket-worker",
   [string]$GmailUser = "formeta@formeta.es",
   [string]$Bucket    = "fmeta-f9aed.firebasestorage.app",
+  # Buzón impersonado = formeta@formeta.es. Remitentes (alias send-as verificados):
+  [string]$SupportEmail    = "support@formeta.es", # tickets (From de acuses/respuestas)
+  [string]$SupportAlias    = "support@formeta.es", # solo crea tickets el correo a este alias
+  [string]$ClientFromEmail = "info@formeta.es",     # propuestas / comunicaciones
+  [string]$ClientFromName  = "Formeta",
   [Parameter(Mandatory = $true)][string]$GmailKeyPath
 )
 
@@ -84,7 +89,7 @@ Invoke-GcloudStep "Desplegando en Cloud Run" {
     --min-instances 1 `
     --max-instances 1 `
     --no-cpu-throttling `
-    --set-env-vars "GMAIL_USER=$GmailUser,FIREBASE_STORAGE_BUCKET=$Bucket,SUPPORT_EMAIL=$GmailUser" `
+    --set-env-vars "GMAIL_USER=$GmailUser,FIREBASE_STORAGE_BUCKET=$Bucket,SUPPORT_EMAIL=$SupportEmail,SUPPORT_ALIAS=$SupportAlias,CLIENT_FROM_EMAIL=$ClientFromEmail,CLIENT_FROM_NAME=$ClientFromName" `
     --set-secrets "GMAIL_SERVICE_ACCOUNT_JSON=GMAIL_SERVICE_ACCOUNT_JSON:latest"
 }
 

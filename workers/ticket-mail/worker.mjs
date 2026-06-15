@@ -14,7 +14,7 @@ const STORAGE_BUCKET =
   "";
 
 const DEFAULT_SETTINGS = {
-  supportEmail: process.env.SUPPORT_EMAIL || "help@formeta.es",
+  supportEmail: process.env.SUPPORT_EMAIL || "support@formeta.es",
   fromName: process.env.SUPPORT_FROM_NAME || "Formeta Soporte",
   provider: "gmail",
   // Buzón de Workspace que la cuenta de servicio impersona (domain-wide delegation).

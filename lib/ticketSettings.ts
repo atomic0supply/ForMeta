@@ -42,7 +42,7 @@ export type TicketMailSettings = {
 };
 
 export const DEFAULT_TICKET_SETTINGS: TicketMailSettings = {
-  supportEmail: "help@formeta.es",
+  supportEmail: "support@formeta.es",
   fromName: "Formeta Soporte",
   publicBaseUrl: "https://formeta.es/intranet/tickets",
   provider: "gmail",
