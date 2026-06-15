@@ -32,8 +32,23 @@ import {
   updateCurrentUserSettings,
   type UserRole,
 } from "@/lib/users";
+import { ServiceStatusTab } from "@/components/ServiceStatusTab";
 import styles from "@/styles/intranet-team.module.css";
+import tabStyles from "@/styles/intranet-servicios.module.css";
 import shaderStyles from "@/styles/intranet-shader.module.css";
+
+type TeamTab = "usuarios" | "roles" | "tickets" | "estado" | "preferencias";
+
+const ADMIN_TABS: { key: TeamTab; label: string }[] = [
+  { key: "usuarios", label: "Usuarios" },
+  { key: "roles", label: "Roles" },
+  { key: "tickets", label: "Tickets" },
+  { key: "estado", label: "Estado" },
+  { key: "preferencias", label: "Preferencias" },
+];
+const MEMBER_TABS: { key: TeamTab; label: string }[] = [
+  { key: "preferencias", label: "Preferencias" },
+];
 
 // Modules that can be granted via dynamic roles (Equipo stays admin-only).
 const ASSIGNABLE_MODULES = MODULES.filter((m) => m.key !== "equipo");
@@ -82,6 +97,8 @@ const TICKET_TEMPLATE_LABELS: Record<TicketTemplateKey, string> = {
 export function UserManagementView() {
   const currentUser = useCurrentUser();
   const isAdmin = currentUser?.role === "admin";
+  const visibleTabs = isAdmin ? ADMIN_TABS : MEMBER_TABS;
+  const [tab, setTab] = useState<TeamTab>("preferencias");
   const [users, setUsers] = useState<UserProfile[]>([]);
   const [geminiApiKey, setGeminiApiKey] = useState("");
   const [savingKey, setSavingKey] = useState(false);
@@ -115,6 +132,11 @@ export function UserManagementView() {
   });
   const [creatingUser, setCreatingUser] = useState(false);
   const [createUserMessage, setCreateUserMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Land admins on Usuarios, members on Preferencias when role resolves.
+    setTab(isAdmin ? "usuarios" : "preferencias");
+  }, [isAdmin]);
 
   useEffect(() => {
     if (!isAdmin) {
@@ -319,6 +341,20 @@ export function UserManagementView() {
         </div>
       </div>
 
+      <div className={tabStyles.tabs}>
+        {visibleTabs.map((t) => (
+          <button
+            key={t.key}
+            type="button"
+            onClick={() => setTab(t.key)}
+            className={`${tabStyles.tab} ${tab === t.key ? tabStyles.tabActive : ""}`}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
+
+      {tab === "preferencias" && (
       <section className={styles.settingsCard}>
         <div className={styles.settingsHeader}>
           <div>
@@ -370,7 +406,9 @@ export function UserManagementView() {
           {saveMessage && <p className={styles.saveMessage}>{saveMessage}</p>}
         </form>
       </section>
+      )}
 
+      {isAdmin && tab === "tickets" && (
       <section className={styles.settingsCard}>
         <div className={styles.settingsHeader}>
           <div>
@@ -562,9 +600,10 @@ export function UserManagementView() {
           )}
         </form>
       </section>
-
+      )}
 
       {/* Apariencia — shader wallpaper selector */}
+      {tab === "preferencias" && (
       <section className={styles.settingsCard}>
         <div className={styles.settingsHeader}>
           <div>
@@ -596,7 +635,9 @@ export function UserManagementView() {
           ))}
         </div>
       </section>
+      )}
 
+      {tab === "preferencias" && (
       <section className={styles.settingsCard}>
         <div className={styles.settingsHeader}>
           <div>
@@ -618,9 +659,10 @@ export function UserManagementView() {
           </a>
         </div>
       </section>
+      )}
 
       {/* Roles dinámicos */}
-      {isAdmin && (
+      {isAdmin && tab === "roles" && (
         <section className={styles.settingsCard}>
           <div className={styles.settingsHeader}>
             <div>
@@ -730,7 +772,7 @@ export function UserManagementView() {
       )}
 
       {/* Alta de usuarios */}
-      {isAdmin && (
+      {isAdmin && tab === "usuarios" && (
         <section className={styles.settingsCard}>
           <div className={styles.settingsHeader}>
             <div>
@@ -811,11 +853,11 @@ export function UserManagementView() {
         </section>
       )}
 
-      {isAdmin && users.length === 0 && (
+      {isAdmin && tab === "usuarios" && users.length === 0 && (
         <p className={styles.empty}>No hay usuarios registrados.</p>
       )}
 
-      {isAdmin && users.length > 0 && (
+      {isAdmin && tab === "usuarios" && users.length > 0 && (
         <div className={styles.tableWrapper}>
           <table className={styles.table}>
             <thead>
@@ -894,6 +936,8 @@ export function UserManagementView() {
           </table>
         </div>
       )}
+
+      {isAdmin && tab === "estado" && <ServiceStatusTab />}
     </main>
   );
 }
