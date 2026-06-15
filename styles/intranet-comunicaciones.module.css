@@ -81,6 +81,7 @@
 
 .cardSide { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; flex-shrink: 0; }
 .cardActions { display: inline-flex; align-items: center; gap: 6px; }
+.cellMuted { font-family: var(--font-mono), monospace; font-size: 0.7rem; letter-spacing: 0.04em; color: var(--color-muted-strong); }
 
 .statusBadge {
   display: inline-flex; align-items: center;

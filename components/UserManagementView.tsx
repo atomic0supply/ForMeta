@@ -477,6 +477,26 @@ export function UserManagementView() {
                 />
               </label>
               <label>
+                Remitente notificaciones (alias)
+                <input
+                  value={ticketSettingsDraft.clientFromEmail}
+                  onChange={(e) =>
+                    setTicketSettingsDraft((prev) => ({ ...prev, clientFromEmail: e.target.value }))
+                  }
+                  placeholder="info@formeta.es"
+                />
+              </label>
+              <label>
+                Nombre remitente notificaciones
+                <input
+                  value={ticketSettingsDraft.clientFromName}
+                  onChange={(e) =>
+                    setTicketSettingsDraft((prev) => ({ ...prev, clientFromName: e.target.value }))
+                  }
+                  placeholder="Formeta"
+                />
+              </label>
+              <label>
                 Poll segundos
                 <input
                   type="number"

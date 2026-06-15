@@ -97,6 +97,7 @@ export function CommunicationsView() {
   const [saving, setSaving] = useState(false);
   const [busyId, setBusyId] = useState("");
   const [notice, setNotice] = useState("");
+  const isAdmin = currentUser?.role === "admin";
 
   useEffect(() => {
     const unsubOut = subscribeToClientMailOutbox((data) => {
@@ -292,7 +293,7 @@ export function CommunicationsView() {
                         {STATUS_LABELS[item.status]}
                       </span>
                       <div className={styles.cardActions}>
-                        {item.status === "draft" && (
+                        {item.status === "draft" && isAdmin && (
                           <button
                             type="button"
                             className={styles.miniBtn}
@@ -301,6 +302,9 @@ export function CommunicationsView() {
                           >
                             Aprobar y enviar
                           </button>
+                        )}
+                        {item.status === "draft" && !isAdmin && (
+                          <span className={styles.cellMuted}>Requiere admin</span>
                         )}
                         {(item.status === "draft" || item.status === "failed") && (
                           <button

@@ -593,10 +593,17 @@ async function processClientOutbox() {
     .get();
 
   for (const doc of snap.docs) {
-    const item = doc.data();
-    try {
-      await doc.ref.update({ status: "sending", updatedAt: nowTimestamp() });
+    // Reclamo atómico: solo un tick/instancia puede pasar approved→sending. Si
+    // otro ya lo reclamó (o cambió de estado), se omite. Garantiza envío único.
+    const item = await db.runTransaction(async (tx) => {
+      const fresh = await tx.get(doc.ref);
+      if (!fresh.exists || fresh.data().status !== "approved") return null;
+      tx.update(doc.ref, { status: "sending", updatedAt: nowTimestamp() });
+      return fresh.data();
+    });
+    if (!item) continue;
 
+    try {
       const to = (item.to || []).map((contact) => contact.email).filter(Boolean).join(", ");
       const cc = (item.cc || []).map((contact) => contact.email).filter(Boolean).join(", ");
       if (!to) throw new Error("Sin destinatarios");

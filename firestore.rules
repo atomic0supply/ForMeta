@@ -86,15 +86,32 @@ service cloud.firestore {
       allow delete: if isAdmin();
     }
 
-    // Propuestas / presupuestos al cliente
+    // Propuestas / presupuestos al cliente.
+    // Inmutables una vez facturadas (convertedInvoiceId fijado) salvo admin.
     match /proposals/{proposalId} {
-      allow read, create, update: if isAuth();
+      allow read: if isAuth();
+      allow create: if isAuth();
+      allow update: if isAuth() && (
+        isAdmin() || resource.data.convertedInvoiceId == "" ||
+        !("convertedInvoiceId" in resource.data)
+      );
       allow delete: if isAdmin();
     }
 
-    // Cola de notificaciones a clientes (procesada por el worker)
+    // Cola de notificaciones a clientes (la envía el worker con Admin SDK, que
+    // ignora estas reglas). El frontend solo puede crear borradores y mover
+    // draft/failed → draft (editar) o → approved (aprobar = disparar envío, solo
+    // admin). Los estados sending/sent/failed los fija únicamente el worker, así
+    // que un correo ya enviado no puede reabrirse ni reenviarse desde la UI.
     match /clientMailOutbox/{outboxId} {
-      allow read, create, update: if isAuth();
+      allow read: if isAuth();
+      allow create: if isAuth() && request.resource.data.status == "draft";
+      allow update: if isAuth()
+        && resource.data.status in ["draft", "failed"]
+        && (
+          request.resource.data.status == "draft"
+          || (request.resource.data.status == "approved" && isAdmin())
+        );
       allow delete: if isAdmin();
     }
 
@@ -105,7 +122,7 @@ service cloud.firestore {
 
     match /ticketSettings/{settingsId} {
       allow read: if isAuth();
-      allow create, update: if isAuth();
+      allow create, update: if isAdmin();
       allow delete: if isAdmin();
     }
 
