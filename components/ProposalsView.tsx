@@ -1,6 +1,6 @@
 "use client";
 
-import { Plus, Trash2, X } from "lucide-react";
+import { Plus, Sparkles, Trash2, X } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { subscribeToClients, getClient, type Client } from "@/lib/clients";
@@ -82,6 +82,9 @@ export function ProposalsView() {
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [busyId, setBusyId] = useState<string>("");
   const [notice, setNotice] = useState<string>("");
+  const [aiText, setAiText] = useState("");
+  const [aiBusy, setAiBusy] = useState(false);
+  const [aiError, setAiError] = useState("");
   const titleRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -114,10 +117,17 @@ export function ProposalsView() {
     setForm((f) => ({ ...f, [key]: value }));
   }
 
+  function resetAi() {
+    setAiText("");
+    setAiError("");
+    setAiBusy(false);
+  }
+
   function openNew() {
     setEditing(null);
     setForm({ ...emptyForm(), validUntil: defaultDueDate(todayIso(), 30) });
     setConfirmDelete(false);
+    resetAi();
     setDrawerOpen(true);
   }
 
@@ -136,16 +146,64 @@ export function ProposalsView() {
       lines: p.lines.length ? p.lines : [makeProposalLine({ description: "", quantity: 1, unitPrice: 0 })],
     });
     setConfirmDelete(false);
+    resetAi();
     setDrawerOpen(true);
   }
 
   function closeDrawer() {
     setDrawerOpen(false);
     setConfirmDelete(false);
+    resetAi();
     setTimeout(() => {
       setEditing(null);
       setForm(emptyForm());
     }, 320);
+  }
+
+  // Pega texto libre → la IA rellena título, alcance y líneas de la propuesta.
+  async function handleAiFill() {
+    if (!aiText.trim()) {
+      setAiError("Pega primero las notas (email, apuntes…) que quieres convertir.");
+      return;
+    }
+    setAiBusy(true);
+    setAiError("");
+    try {
+      const res = await fetch("/api/proposals/ai-fill", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          text: aiText,
+          currency: form.currency,
+          apiKeyOverride: currentUser?.geminiApiKey?.trim() || "",
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setAiError(data?.disabledReason || data?.error || "La IA no está disponible ahora.");
+        return;
+      }
+      const aiLines: { description: string; quantity: number; unitPrice: number }[] =
+        Array.isArray(data.lines) ? data.lines : [];
+      setForm((f) => ({
+        ...f,
+        title: f.title.trim() ? f.title : (data.title || ""),
+        scope: data.scope || f.scope,
+        lines: aiLines.length
+          ? aiLines.map((l) =>
+              makeProposalLine({
+                description: l.description,
+                quantity: l.quantity,
+                unitPrice: l.unitPrice,
+              }),
+            )
+          : f.lines,
+      }));
+    } catch {
+      setAiError("No se ha podido contactar con la IA.");
+    } finally {
+      setAiBusy(false);
+    }
   }
 
   function handleClientChange(clientId: string) {
@@ -170,12 +228,12 @@ export function ProposalsView() {
       ...f,
       lines: f.lines.map((line) => {
         if (line.id !== id) return line;
+        // Conservar el id (la key de React) para no remontar el input y perder
+        // el foco en cada tecla; solo recalcular la base imponible.
         const next = { ...line, ...patch };
-        return makeProposalLine({
-          description: next.description,
-          quantity: next.quantity,
-          unitPrice: next.unitPrice,
-        });
+        const quantity = Number.isFinite(next.quantity) ? next.quantity : 0;
+        const unitPrice = Number.isFinite(next.unitPrice) ? next.unitPrice : 0;
+        return { ...next, taxableBase: Math.round(quantity * unitPrice * 100) / 100 };
       }),
     }));
   }
@@ -422,6 +480,28 @@ export function ProposalsView() {
           </button>
         </div>
         <form onSubmit={handleSubmit} className={styles.drawerBody}>
+          <div className={styles.aiPanel}>
+            <div className={styles.aiPanelHead}>
+              <Sparkles size={14} />
+              <span>Rellenar con IA</span>
+            </div>
+            <p className={styles.aiHint}>
+              Pega un email, notas o lo hablado con el cliente y la IA propondrá título,
+              alcance y líneas. Podrás revisarlo y editarlo antes de guardar.
+            </p>
+            <textarea
+              className={styles.textarea}
+              rows={3}
+              value={aiText}
+              onChange={(e) => setAiText(e.target.value)}
+              placeholder="Ej.: El cliente quiere una web de 5 páginas, dominio y mantenimiento anual…"
+            />
+            {aiError && <p className={styles.aiError}>{aiError}</p>}
+            <button type="button" className={styles.aiBtn} onClick={handleAiFill} disabled={aiBusy || !aiText.trim()}>
+              <Sparkles size={13} /> {aiBusy ? "Generando…" : "Generar propuesta"}
+            </button>
+          </div>
+
           <div className={styles.formGrid}>
             <div className={`${styles.field} ${styles.formGridFull}`}>
               <label className={styles.fieldLabel}>Título *</label>
