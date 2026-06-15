@@ -10,9 +10,9 @@
   flex: 0 0 auto;
 }
 
-/* Default: full wordmark (340 x 160) */
+/* Default: full wordmark (1149 x 245) */
 .wordmark[data-icon-only="false"] .mark {
-  aspect-ratio: 340 / 160;
+  aspect-ratio: 1149 / 245;
   height: auto;
 }
 

@@ -13,9 +13,9 @@ type BrandWordmarkProps = {
 };
 
 const WORDMARK_SRC: Record<Variant, string> = {
-  sand: "/brand/wordmark-dots.svg",
-  mono: "/brand/wordmark-dots-mono.svg",
-  negative: "/brand/wordmark-dots-negative.svg",
+  sand: "/brand/wordmark.svg",
+  mono: "/brand/wordmark-mono.svg",
+  negative: "/brand/wordmark-negative.svg",
 };
 
 const ISOTYPE_SRC: Record<Variant, string> = {
