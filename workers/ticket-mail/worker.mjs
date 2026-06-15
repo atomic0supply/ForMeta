@@ -18,7 +18,9 @@ const DEFAULT_SETTINGS = {
   fromName: process.env.SUPPORT_FROM_NAME || "Formeta Soporte",
   provider: "gmail",
   // Buzón de Workspace que la cuenta de servicio impersona (domain-wide delegation).
-  gmailUser: process.env.GMAIL_USER || process.env.SUPPORT_EMAIL || "help@formeta.es",
+  gmailUser: process.env.GMAIL_USER || process.env.SUPPORT_EMAIL || "formeta@formeta.es",
+  // Solo se crean tickets de correos dirigidos a este alias.
+  supportAlias: process.env.SUPPORT_ALIAS || "support@formeta.es",
   pollSeconds: Number(process.env.TICKET_WORKER_POLL_SECONDS || 60),
   maxAttachmentMb: Number(process.env.TICKET_MAX_ATTACHMENT_MB || 20),
   reopenWindowDays: Number(process.env.TICKET_REOPEN_WINDOW_DAYS || 14),
@@ -95,6 +97,34 @@ function gmailSubject() {
 
 function supportDomain() {
   return String(runtimeSettings.supportEmail || "formeta.es").split("@")[1] || "formeta.es";
+}
+
+function supportAlias() {
+  return String(runtimeSettings.supportAlias || "").trim().toLowerCase();
+}
+
+// Reúne todos los destinatarios visibles del correo (To, Cc, Bcc, Delivered-To).
+function collectRecipients(parsed) {
+  const out = [];
+  const add = (field) => {
+    for (const a of field?.value || []) {
+      if (a.address) out.push(String(a.address).toLowerCase());
+    }
+  };
+  add(parsed.to);
+  add(parsed.cc);
+  add(parsed.bcc);
+  const dt = parsed.headers?.get?.("delivered-to");
+  if (typeof dt === "string") out.push(dt.toLowerCase());
+  else if (Array.isArray(dt)) for (const x of dt) out.push(String(x).toLowerCase());
+  return out;
+}
+
+// True si el correo va dirigido al alias de soporte (o si no hay alias configurado).
+function addressedToAlias(parsed) {
+  const alias = supportAlias();
+  if (!alias) return true;
+  return collectRecipients(parsed).some((r) => r.includes(alias));
 }
 
 function normalizeMessageId(value) {
@@ -426,10 +456,15 @@ async function processParsedEmail(parsed, gmailThreadId = "") {
 }
 
 async function pollInbox() {
-  const messages = await listUnread(gmailSubject(), 25);
+  // Solo correos dirigidos al alias de soporte se convierten en tickets.
+  const alias = supportAlias();
+  const filter = alias ? `(to:${alias} OR cc:${alias} OR deliveredto:${alias})` : "";
+  const messages = await listUnread(gmailSubject(), 25, filter);
   for (const msg of messages) {
     try {
       const parsed = await simpleParser(msg.raw);
+      // Doble verificación en código (no tocar correos ajenos al alias).
+      if (!addressedToAlias(parsed)) continue;
       await processParsedEmail(parsed, msg.threadId || "");
       await markRead(gmailSubject(), msg.id);
     } catch (error) {

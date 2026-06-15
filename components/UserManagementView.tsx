@@ -463,7 +463,17 @@ export function UserManagementView() {
                   onChange={(e) =>
                     setTicketSettingsDraft((prev) => ({ ...prev, gmailUser: e.target.value }))
                   }
-                  placeholder="soporte@formeta.es"
+                  placeholder="formeta@formeta.es"
+                />
+              </label>
+              <label>
+                Alias de soporte (crea tickets)
+                <input
+                  value={ticketSettingsDraft.supportAlias}
+                  onChange={(e) =>
+                    setTicketSettingsDraft((prev) => ({ ...prev, supportAlias: e.target.value }))
+                  }
+                  placeholder="support@formeta.es"
                 />
               </label>
               <label>

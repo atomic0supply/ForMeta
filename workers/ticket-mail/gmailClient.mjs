@@ -58,12 +58,16 @@ export function makeMessageId(domain) {
   return `<${crypto.randomUUID()}@${host}>`;
 }
 
-/** Lista los correos no leídos del buzón. Devuelve [{ id, threadId, raw(Buffer) }]. */
-export async function listUnread(subject, maxResults = 25) {
+/**
+ * Lista los correos no leídos del buzón. Devuelve [{ id, threadId, raw(Buffer) }].
+ * filterQuery permite acotar (p. ej. al alias de soporte) con sintaxis de Gmail.
+ */
+export async function listUnread(subject, maxResults = 25, filterQuery = "") {
   const gmail = getGmailClient(subject);
+  const q = ["is:unread", "-in:chats", "-in:sent", filterQuery].filter(Boolean).join(" ");
   const list = await gmail.users.messages.list({
     userId: "me",
-    q: "is:unread -in:chats -in:sent",
+    q,
     maxResults,
   });
   const messages = list.data.messages || [];

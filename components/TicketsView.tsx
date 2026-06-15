@@ -928,7 +928,15 @@ export function TicketsView() {
                 <input
                   value={settingsDraft.gmailUser}
                   onChange={(event) => setSettingsDraft((prev) => ({ ...prev, gmailUser: event.target.value }))}
-                  placeholder="soporte@formeta.es"
+                  placeholder="formeta@formeta.es"
+                />
+              </label>
+              <label>
+                Alias de soporte (crea tickets)
+                <input
+                  value={settingsDraft.supportAlias}
+                  onChange={(event) => setSettingsDraft((prev) => ({ ...prev, supportAlias: event.target.value }))}
+                  placeholder="support@formeta.es"
                 />
               </label>
               <label>

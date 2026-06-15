@@ -30,6 +30,7 @@ export type TicketMailSettings = {
   publicBaseUrl: string;
   provider: TicketMailProvider;
   gmailUser: string; // buzón Workspace que la cuenta de servicio impersona
+  supportAlias: string; // solo se crean tickets de correos dirigidos a este alias
   pollSeconds: number;
   maxAttachmentMb: number;
   reopenWindowDays: number;
@@ -43,7 +44,8 @@ export const DEFAULT_TICKET_SETTINGS: TicketMailSettings = {
   fromName: "Formeta Soporte",
   publicBaseUrl: "https://formeta.es/intranet/tickets",
   provider: "gmail",
-  gmailUser: "help@formeta.es",
+  gmailUser: "formeta@formeta.es",
+  supportAlias: "support@formeta.es",
   pollSeconds: 60,
   maxAttachmentMb: 20,
   reopenWindowDays: 14,
