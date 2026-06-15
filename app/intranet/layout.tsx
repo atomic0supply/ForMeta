@@ -4,6 +4,7 @@ import { IntranetSidebar } from "@/components/IntranetSidebar";
 import { PWARegister } from "@/components/PWARegister";
 import { ShaderBackground } from "@/components/ShaderBackground";
 import { StopModal } from "@/components/StopModal";
+import { TicketNotifier } from "@/components/TicketNotifier";
 import { TimerProvider } from "@/lib/timerContext";
 import styles from "@/styles/intranet-layout.module.css";
 
@@ -23,6 +24,7 @@ export default function IntranetLayout({
       </div>
       <CommandPalette />
       <StopModal />
+      <TicketNotifier />
       <PWARegister />
     </TimerProvider>
   );

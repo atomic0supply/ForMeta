@@ -409,11 +409,17 @@ export function TicketsView() {
               summary: ticket.summary,
               status: ticket.status,
             })),
+          // Usa la clave Gemini personal del usuario si el servidor no tiene una global.
+          apiKeyOverride: currentUser?.geminiApiKey || undefined,
         }),
       });
       const data = await response.json();
       if (!response.ok) {
-        setAiError(data.error ?? "No se ha podido analizar el ticket.");
+        setAiError(
+          data.error ??
+            data.disabledReason ??
+            "No se ha podido analizar el ticket. Configura una clave Gemini en Equipo › Preferencias.",
+        );
         return;
       }
       const ai = data as TicketAiSuggestion;
@@ -772,22 +778,33 @@ export function TicketsView() {
                 {selected.ai.duplicateTicketNumber && (
                   <p className={styles.warning}>Posible duplicado: {selected.ai.duplicateTicketNumber}</p>
                 )}
+                {selected.ai.proposedTasks.length > 0 && !selected.projectId && (
+                  <p className={styles.warning}>
+                    Asigna un proyecto a este ticket para poder crear las tareas sugeridas.
+                  </p>
+                )}
                 <div className={styles.taskDrafts}>
-                  {selected.ai.proposedTasks.map((task, index) => (
-                    <div key={`${task.title}-${index}`} className={styles.taskDraft}>
-                      <strong>{task.title}</strong>
-                      <p>{task.description}</p>
-                      <button
-                        type="button"
-                        className={styles.secondaryButton}
-                        disabled={!selected.projectId || taskCreating[index]}
-                        onClick={() => void createSuggestedTask(index)}
-                      >
-                        <CheckCircle2 width={13} height={13} />
-                        Crear tarea
-                      </button>
-                    </div>
-                  ))}
+                  {selected.ai.proposedTasks.map((task, index) => {
+                    const alreadyCreated = selected.taskLinks.some(
+                      (link) => link.title === task.title,
+                    );
+                    return (
+                      <div key={`${task.title}-${index}`} className={styles.taskDraft}>
+                        <strong>{task.title}</strong>
+                        <p>{task.description}</p>
+                        <button
+                          type="button"
+                          className={styles.secondaryButton}
+                          disabled={!selected.projectId || taskCreating[index] || alreadyCreated}
+                          onClick={() => void createSuggestedTask(index)}
+                          title={!selected.projectId ? "Asigna un proyecto primero" : undefined}
+                        >
+                          <CheckCircle2 width={13} height={13} />
+                          {alreadyCreated ? "Tarea creada" : taskCreating[index] ? "Creando…" : "Crear tarea"}
+                        </button>
+                      </div>
+                    );
+                  })}
                 </div>
               </>
             ) : (

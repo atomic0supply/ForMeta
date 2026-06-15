@@ -1,0 +1,118 @@
+/* Toasts (top-right) + floating bell (bottom-right) for ticket notifications. */
+
+.toastWrap {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: min(360px, calc(100vw - 36px));
+}
+
+.toast {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  background: var(--card-bg);
+  border: 1px solid rgba(44, 44, 40, 0.1);
+  box-shadow: 0 10px 32px rgba(44, 44, 40, 0.16);
+  cursor: pointer;
+  animation: slideIn 240ms var(--ease-smooth);
+}
+
+.toastIcon {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: rgba(122, 154, 170, 0.16);
+  color: var(--color-sea);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.toastBody { flex: 1; min-width: 0; }
+.toastTitle { font-weight: 600; font-size: 0.86rem; color: var(--color-ink); }
+.toastSubtitle {
+  font-size: 0.78rem;
+  color: var(--color-muted-strong);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.toastClose {
+  border: none;
+  background: none;
+  color: var(--color-muted-strong);
+  cursor: pointer;
+  padding: 2px;
+  line-height: 0;
+}
+.toastClose:hover { color: var(--color-ink); }
+
+.bell {
+  position: fixed;
+  bottom: 22px;
+  right: 22px;
+  z-index: 80;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid rgba(44, 44, 40, 0.12);
+  background: var(--card-bg);
+  color: var(--color-ink);
+  box-shadow: 0 6px 20px rgba(44, 44, 40, 0.14);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform var(--motion-fast) var(--ease-smooth);
+}
+.bell:hover { transform: translateY(-2px); }
+
+.badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--color-alert);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.muteHint {
+  position: fixed;
+  bottom: 76px;
+  right: 22px;
+  z-index: 80;
+  font-size: 11px;
+  font-family: var(--font-mono), monospace;
+  color: var(--color-muted-strong);
+  background: var(--card-bg);
+  border: 1px solid rgba(44, 44, 40, 0.1);
+  border-radius: 999px;
+  padding: 4px 10px;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(16px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@media (max-width: 720px) {
+  .bell { bottom: 78px; }      /* clear the mobile bottom nav */
+  .muteHint { bottom: 132px; }
+}
