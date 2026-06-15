@@ -21,7 +21,7 @@ export type FormetaServicesStatus = {
 export type RagCollectionsResult = ServiceCheck;
 
 const DEFAULT_FISCAL_API_BASE_URL = "https://fiscal.formeta.es";
-const DEFAULT_RAG_API_BASE_URL = "https://frag.beatsupplier.pro";
+const DEFAULT_RAG_API_BASE_URL = "https://frag.formeta.es";
 
 function serviceHeaders(): HeadersInit {
   const headers: Record<string, string> = {

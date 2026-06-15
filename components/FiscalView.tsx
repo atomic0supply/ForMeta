@@ -1970,7 +1970,7 @@ function BackendServicesView({
         />
         <ServiceCard
           title="RAG API"
-          subtitle="https://frag.beatsupplier.pro"
+          subtitle="https://frag.formeta.es"
           checks={[
             ["Health", status?.rag.health],
             ["Collections", status?.rag.collections],
