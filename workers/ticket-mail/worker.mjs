@@ -4,7 +4,7 @@ import http from "node:http";
 import admin from "firebase-admin";
 import { simpleParser } from "mailparser";
 import mammoth from "mammoth";
-import pdfParse from "pdf-parse";
+import { PDFParse } from "pdf-parse";
 
 import { listUnread, makeMessageId, markRead, sendMail } from "./gmailClient.mjs";
 
@@ -236,8 +236,13 @@ async function extractAttachmentText(attachment) {
   try {
     if (contentType.startsWith("text/")) return buffer.toString("utf8").slice(0, 12000);
     if (contentType === "application/pdf") {
-      const parsed = await pdfParse(buffer);
-      return String(parsed.text || "").slice(0, 12000);
+      const parser = new PDFParse({ data: buffer });
+      try {
+        const res = await parser.getText();
+        return String(res?.text || "").slice(0, 12000);
+      } finally {
+        await parser.destroy?.();
+      }
     }
     if (
       contentType === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
