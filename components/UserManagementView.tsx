@@ -37,12 +37,13 @@ import styles from "@/styles/intranet-team.module.css";
 import tabStyles from "@/styles/intranet-servicios.module.css";
 import shaderStyles from "@/styles/intranet-shader.module.css";
 
-type TeamTab = "usuarios" | "roles" | "tickets" | "estado" | "preferencias";
+type TeamTab = "usuarios" | "roles" | "tickets" | "notificaciones" | "estado" | "preferencias";
 
 const ADMIN_TABS: { key: TeamTab; label: string }[] = [
   { key: "usuarios", label: "Usuarios" },
   { key: "roles", label: "Roles" },
   { key: "tickets", label: "Tickets" },
+  { key: "notificaciones", label: "Notificaciones" },
   { key: "estado", label: "Estado" },
   { key: "preferencias", label: "Preferencias" },
 ];
@@ -477,26 +478,6 @@ export function UserManagementView() {
                 />
               </label>
               <label>
-                Remitente notificaciones (alias)
-                <input
-                  value={ticketSettingsDraft.clientFromEmail}
-                  onChange={(e) =>
-                    setTicketSettingsDraft((prev) => ({ ...prev, clientFromEmail: e.target.value }))
-                  }
-                  placeholder="info@formeta.es"
-                />
-              </label>
-              <label>
-                Nombre remitente notificaciones
-                <input
-                  value={ticketSettingsDraft.clientFromName}
-                  onChange={(e) =>
-                    setTicketSettingsDraft((prev) => ({ ...prev, clientFromName: e.target.value }))
-                  }
-                  placeholder="Formeta"
-                />
-              </label>
-              <label>
                 Poll segundos
                 <input
                   type="number"
@@ -623,6 +604,74 @@ export function UserManagementView() {
               disabled={!currentUser || savingTicketSettings}
             >
               {savingTicketSettings ? "Guardando…" : "Guardar ticketing"}
+            </button>
+          </div>
+          {ticketSettingsMessage && (
+            <p className={styles.saveMessage}>{ticketSettingsMessage}</p>
+          )}
+        </form>
+      </section>
+      )}
+
+      {isAdmin && tab === "notificaciones" && (
+      <section className={styles.settingsCard}>
+        <div className={styles.settingsHeader}>
+          <div>
+            <p className={styles.sectionKicker}>Clientes</p>
+            <h2 className={styles.sectionTitle}>Notificaciones al cliente</h2>
+          </div>
+          <span className={styles.settingsStatus}>
+            {ticketSettingsDraft.clientFromEmail || "Sin remitente"}
+          </span>
+        </div>
+
+        <p className={styles.settingsCopy}>
+          Remitente de las <strong>propuestas</strong> y <strong>comunicaciones</strong> enviadas
+          desde la intranet. Debe ser un alias «Enviar como» verificado del buzón de Workspace
+          (p. ej. <code>info@formeta.es</code>). Es independiente del remitente de tickets.
+        </p>
+
+        <form onSubmit={(e) => void handleSaveTicketSettings(e)} className={styles.settingsForm}>
+          <fieldset className={styles.settingsFieldset} disabled={!currentUser || savingTicketSettings}>
+            <div className={styles.ticketConfigGrid}>
+              <label>
+                Remitente notificaciones (alias)
+                <input
+                  value={ticketSettingsDraft.clientFromEmail}
+                  onChange={(e) =>
+                    setTicketSettingsDraft((prev) => ({ ...prev, clientFromEmail: e.target.value }))
+                  }
+                  placeholder="info@formeta.es"
+                />
+              </label>
+              <label>
+                Nombre remitente
+                <input
+                  value={ticketSettingsDraft.clientFromName}
+                  onChange={(e) =>
+                    setTicketSettingsDraft((prev) => ({ ...prev, clientFromName: e.target.value }))
+                  }
+                  placeholder="Formeta"
+                />
+              </label>
+            </div>
+          </fieldset>
+
+          <div className={styles.settingsActions}>
+            <button
+              type="button"
+              onClick={() => setTicketSettingsDraft(ticketSettings)}
+              className={styles.secondaryBtn}
+              disabled={!currentUser || savingTicketSettings}
+            >
+              Restaurar
+            </button>
+            <button
+              type="submit"
+              className={styles.primaryBtn}
+              disabled={!currentUser || savingTicketSettings}
+            >
+              {savingTicketSettings ? "Guardando…" : "Guardar notificaciones"}
             </button>
           </div>
           {ticketSettingsMessage && (

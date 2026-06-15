@@ -48,7 +48,7 @@ const navGroups: { label: string; items: NavItem[] }[] = [
     label: "Principal",
     items: [
       { href: "/intranet",           label: "Dashboard", exact: true,  icon: LayoutGrid,  module: "dashboard" },
-      { href: "/intranet/flujo",     label: "Flujo",     exact: false, icon: Workflow,    module: "flujo"     },
+      { href: "/intranet/equipo/flujo", label: "Flujo",  exact: false, icon: Workflow,    module: "flujo"     },
       { href: "/intranet/proyectos", label: "Proyectos", exact: false, icon: Folder,      module: "proyectos" },
       { href: "/intranet/tickets",   label: "Tickets",   exact: false, icon: Inbox,       module: "tickets"   },
       { href: "/intranet/clientes",  label: "Clientes",  exact: false, icon: Users,       module: "clientes"  },
@@ -86,7 +86,7 @@ const bottomPrimary: NavItem[] = [
 
 // "Más" sheet items (the rest)
 const moreItems: NavItem[] = [
-  { href: "/intranet/flujo",     label: "Flujo",     exact: false, icon: Workflow,    module: "flujo"     },
+  { href: "/intranet/equipo/flujo", label: "Flujo",  exact: false, icon: Workflow,    module: "flujo"     },
   { href: "/intranet/clientes",  label: "Clientes",  exact: false, icon: Users,       module: "clientes"  },
   { href: "/intranet/propuestas",label: "Propuestas",exact: false, icon: FileText,    module: "propuestas"},
   { href: "/intranet/comunicaciones", label: "Comunicaciones", exact: false, icon: Send, module: "comunicaciones" },

@@ -27,7 +27,7 @@ export type ModuleDef = {
 // Order roughly follows the sidebar grouping.
 export const MODULES: ModuleDef[] = [
   { key: "dashboard", label: "Dashboard", href: "/intranet" },
-  { key: "flujo", label: "Flujo", href: "/intranet/flujo" },
+  { key: "flujo", label: "Flujo", href: "/intranet/equipo/flujo" },
   { key: "proyectos", label: "Proyectos", href: "/intranet/proyectos" },
   { key: "tickets", label: "Tickets", href: "/intranet/tickets" },
   { key: "clientes", label: "Clientes", href: "/intranet/clientes" },
