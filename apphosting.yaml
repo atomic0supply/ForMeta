@@ -1,0 +1,32 @@
+# Firebase App Hosting configuration
+# https://firebase.google.com/docs/app-hosting/configure
+
+runConfig:
+  minInstances: 0
+
+env:
+  # ForMeta backend services (public URLs, no son secretos)
+  - variable: FISCAL_API_BASE_URL
+    value: https://fiscal.formeta.es
+    availability:
+      - RUNTIME
+
+  - variable: RAG_API_BASE_URL
+    value: https://frag.formeta.es
+    availability:
+      - RUNTIME
+
+  # Cloudflare Access service token (opcional):
+  # Solo necesario si se reactiva Cloudflare Access / Under Attack Mode
+  # en fiscal.formeta.es o frag.formeta.es. Para activarlo, crea los
+  # secretos en Secret Manager y descomenta:
+  #   firebase apphosting:secrets:set CF_ACCESS_CLIENT_ID --project fmeta-f9aed
+  #   firebase apphosting:secrets:set CF_ACCESS_CLIENT_SECRET --project fmeta-f9aed
+  # - variable: CF_ACCESS_CLIENT_ID
+  #   secret: CF_ACCESS_CLIENT_ID
+  #   availability:
+  #     - RUNTIME
+  # - variable: CF_ACCESS_CLIENT_SECRET
+  #   secret: CF_ACCESS_CLIENT_SECRET
+  #   availability:
+  #     - RUNTIME
