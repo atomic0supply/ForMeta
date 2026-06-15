@@ -22,21 +22,35 @@ param(
   [Parameter(Mandatory = $true)][string]$GmailKeyPath
 )
 
-$ErrorActionPreference = "Stop"
+# Los warnings de gcloud van a stderr; evitamos que aborten el script.
+$ErrorActionPreference = "Continue"
+if (Test-Path variable:PSNativeCommandUseErrorActionPreference) {
+  $PSNativeCommandUseErrorActionPreference = $false
+}
+
+function Invoke-GcloudStep {
+  param([string]$Label, [scriptblock]$Block)
+  Write-Host "==> $Label" -ForegroundColor Cyan
+  & $Block
+  if ($LASTEXITCODE -ne 0) {
+    throw "Fallo en: $Label (exit $LASTEXITCODE)"
+  }
+}
 
 if (-not (Test-Path $GmailKeyPath)) { throw "No se encuentra la clave Gmail: $GmailKeyPath" }
 
-Write-Host "==> Proyecto $Project / región $Region" -ForegroundColor Cyan
+Write-Host "==> Proyecto $Project / region $Region" -ForegroundColor Cyan
 gcloud config set project $Project | Out-Null
 
-Write-Host "==> Habilitando APIs necesarias" -ForegroundColor Cyan
-gcloud services enable run.googleapis.com cloudbuild.googleapis.com `
-  secretmanager.googleapis.com artifactregistry.googleapis.com containerregistry.googleapis.com
+Invoke-GcloudStep "Habilitando APIs necesarias" {
+  gcloud services enable run.googleapis.com cloudbuild.googleapis.com `
+    secretmanager.googleapis.com artifactregistry.googleapis.com containerregistry.googleapis.com
+}
 
 # --- Secreto con la clave del service account de Gmail ---
 Write-Host "==> Creando/actualizando secreto GMAIL_SERVICE_ACCOUNT_JSON" -ForegroundColor Cyan
-$exists = (gcloud secrets list --filter="name:GMAIL_SERVICE_ACCOUNT_JSON" --format="value(name)" 2>$null)
-if (-not $exists) {
+gcloud secrets describe GMAIL_SERVICE_ACCOUNT_JSON *> $null
+if ($LASTEXITCODE -ne 0) {
   gcloud secrets create GMAIL_SERVICE_ACCOUNT_JSON --replication-policy=automatic | Out-Null
 }
 gcloud secrets versions add GMAIL_SERVICE_ACCOUNT_JSON --data-file="$GmailKeyPath" | Out-Null
@@ -44,9 +58,9 @@ gcloud secrets versions add GMAIL_SERVICE_ACCOUNT_JSON --data-file="$GmailKeyPat
 # --- Service account de runtime del worker ---
 $SaName  = "ticket-worker"
 $SaEmail = "$SaName@$Project.iam.gserviceaccount.com"
-$saExists = (gcloud iam service-accounts list --filter="email:$SaEmail" --format="value(email)" 2>$null)
-if (-not $saExists) {
-  Write-Host "==> Creando service account $SaEmail" -ForegroundColor Cyan
+Write-Host "==> Service account de runtime ($SaEmail)" -ForegroundColor Cyan
+gcloud iam service-accounts describe $SaEmail *> $null
+if ($LASTEXITCODE -ne 0) {
   gcloud iam service-accounts create $SaName --display-name="Ticket worker" | Out-Null
 }
 
@@ -56,22 +70,24 @@ foreach ($role in @("roles/datastore.user","roles/storage.objectAdmin","roles/se
 }
 
 # --- Build del contenedor ---
-Write-Host "==> Construyendo imagen con Cloud Build" -ForegroundColor Cyan
-gcloud builds submit --config workers/ticket-mail/cloudbuild.yaml .
+Invoke-GcloudStep "Construyendo imagen con Cloud Build" {
+  gcloud builds submit --config workers/ticket-mail/cloudbuild.yaml .
+}
 
 # --- Deploy en Cloud Run (worker always-on: min 1, CPU siempre asignada) ---
-Write-Host "==> Desplegando en Cloud Run" -ForegroundColor Cyan
-gcloud run deploy $Service `
-  --image "gcr.io/$Project/ticket-worker:latest" `
-  --region $Region `
-  --service-account $SaEmail `
-  --no-allow-unauthenticated `
-  --min-instances 1 `
-  --max-instances 1 `
-  --no-cpu-throttling `
-  --set-env-vars "GMAIL_USER=$GmailUser,FIREBASE_STORAGE_BUCKET=$Bucket,SUPPORT_EMAIL=$GmailUser" `
-  --set-secrets "GMAIL_SERVICE_ACCOUNT_JSON=GMAIL_SERVICE_ACCOUNT_JSON:latest"
+Invoke-GcloudStep "Desplegando en Cloud Run" {
+  gcloud run deploy $Service `
+    --image "gcr.io/$Project/ticket-worker:latest" `
+    --region $Region `
+    --service-account $SaEmail `
+    --no-allow-unauthenticated `
+    --min-instances 1 `
+    --max-instances 1 `
+    --no-cpu-throttling `
+    --set-env-vars "GMAIL_USER=$GmailUser,FIREBASE_STORAGE_BUCKET=$Bucket,SUPPORT_EMAIL=$GmailUser" `
+    --set-secrets "GMAIL_SERVICE_ACCOUNT_JSON=GMAIL_SERVICE_ACCOUNT_JSON:latest"
+}
 
-Write-Host "==> Listo. Healthcheck:" -ForegroundColor Green
+Write-Host "==> Listo. URL del servicio:" -ForegroundColor Green
 gcloud run services describe $Service --region $Region --format="value(status.url)"
-Write-Host "   (añade /health a la URL para ver el estado del worker)"
+Write-Host "   (anade /health a la URL para ver el estado del worker)"

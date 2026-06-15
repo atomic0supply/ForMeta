@@ -1,6 +1,6 @@
 <#
   Concede a un usuario permisos de PROPIETARIO (Owner) del proyecto GCP/Firebase,
-  para que pueda gestionar toda la app (Cloud Run, Firestore, Hosting, IAM…).
+  para que pueda gestionar toda la app (Cloud Run, Firestore, Hosting, IAM...).
 
   Requisitos: gcloud instalado y autenticado como un Owner actual del proyecto.
 
@@ -13,7 +13,10 @@ param(
   [Parameter(Mandatory = $true)][string]$User
 )
 
-$ErrorActionPreference = "Stop"
+$ErrorActionPreference = "Continue"
+if (Test-Path variable:PSNativeCommandUseErrorActionPreference) {
+  $PSNativeCommandUseErrorActionPreference = $false
+}
 
 Write-Host "==> Concediendo roles/owner a $User en $Project" -ForegroundColor Cyan
 gcloud projects add-iam-policy-binding $Project `
@@ -21,12 +24,12 @@ gcloud projects add-iam-policy-binding $Project `
   --role="roles/owner" `
   --condition=None
 
-Write-Host "==> Hecho. Permisos actuales de $User:" -ForegroundColor Green
+Write-Host "==> Hecho. Permisos actuales de ${User}:" -ForegroundColor Green
 gcloud projects get-iam-policy $Project `
   --flatten="bindings[].members" `
   --filter="bindings.members:user:$User" `
   --format="value(bindings.role)"
 
-# Nota: roles/owner es el máximo nivel. Si prefieres mínimo privilegio para
+# Nota: roles/owner es el maximo nivel. Si prefieres minimo privilegio para
 # gestionar la app sin control total de IAM, usa en su lugar:
 #   roles/editor  +  roles/firebase.admin  +  roles/run.admin
