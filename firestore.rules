@@ -86,6 +86,23 @@ service cloud.firestore {
       allow delete: if isAdmin();
     }
 
+    // Propuestas / presupuestos al cliente
+    match /proposals/{proposalId} {
+      allow read, create, update: if isAuth();
+      allow delete: if isAdmin();
+    }
+
+    // Cola de notificaciones a clientes (procesada por el worker)
+    match /clientMailOutbox/{outboxId} {
+      allow read, create, update: if isAuth();
+      allow delete: if isAdmin();
+    }
+
+    match /clientMailProcessingErrors/{errorId} {
+      allow read, create, update: if isAuth();
+      allow delete: if isAdmin();
+    }
+
     match /ticketSettings/{settingsId} {
       allow read: if isAuth();
       allow create, update: if isAuth();

@@ -1,0 +1,94 @@
+/* Flujo de trabajo — pipeline animado con la marca Formeta. */
+
+.page { max-width: 1200px; }
+
+.pageHeader {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  gap: 24px; margin-bottom: 28px; flex-wrap: wrap;
+}
+.kicker {
+  margin: 0 0 8px;
+  font-family: var(--font-mono), monospace;
+  font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--color-terra); font-weight: 500;
+}
+.title {
+  margin: 0;
+  font-family: var(--font-display), serif;
+  font-size: clamp(2rem, 3.5vw, 3.2rem); line-height: 1.02;
+}
+.lede {
+  margin: 0; max-width: 360px;
+  font-size: 0.9rem; line-height: 1.6; color: var(--color-muted-strong);
+}
+
+/* ─── Lienzo del grafo ────────────────────────────────────────────── */
+
+.canvas {
+  border: 1px solid rgba(44, 44, 40, 0.06);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(circle at 1.5px 1.5px, rgba(44, 44, 40, 0.06) 1px, transparent 0) 0 0 / 22px 22px,
+    var(--card-bg);
+  box-shadow: var(--shadow);
+  padding: 20px;
+  overflow: hidden;
+}
+
+.graph { width: 100%; height: auto; display: block; }
+
+/* ─── Nodos ───────────────────────────────────────────────────────── */
+
+.node {
+  fill: var(--color-white);
+  stroke: rgba(44, 44, 40, 0.14);
+  stroke-width: 1;
+}
+
+.nodeIndex {
+  fill: var(--color-terra);
+  font-family: var(--font-mono), monospace;
+  font-size: 10px; letter-spacing: 0.08em;
+}
+.nodeLabel {
+  fill: var(--color-ink);
+  font-family: var(--font-display), serif;
+  font-size: 19px;
+}
+.nodeValue {
+  fill: var(--color-ink);
+  font-family: var(--font-display), serif;
+  font-size: 34px;
+  text-anchor: end;
+}
+.nodeSub {
+  fill: var(--color-muted-strong);
+  font-family: var(--font-mono), monospace;
+  font-size: 10px; letter-spacing: 0.04em;
+}
+
+/* ─── Aristas + pulsos ────────────────────────────────────────────── */
+
+.edge {
+  fill: none;
+  stroke: rgba(184, 137, 106, 0.55);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 5;
+}
+.pulse { fill: var(--color-terra); }
+
+/* ─── Leyenda ─────────────────────────────────────────────────────── */
+
+.legend {
+  display: flex; flex-wrap: wrap; gap: 18px;
+  margin-top: 18px;
+}
+.legendItem {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.72rem; letter-spacing: 0.04em;
+  color: var(--color-muted-strong);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pulse { display: none; }
+}

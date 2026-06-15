@@ -21,6 +21,9 @@ const DEFAULT_SETTINGS = {
   gmailUser: process.env.GMAIL_USER || process.env.SUPPORT_EMAIL || "formeta@formeta.es",
   // Solo se crean tickets de correos dirigidos a este alias.
   supportAlias: process.env.SUPPORT_ALIAS || "support@formeta.es",
+  // Remitente de las notificaciones a clientes (alias send-as de gmailUser).
+  clientFromEmail: process.env.CLIENT_FROM_EMAIL || "info@formeta.es",
+  clientFromName: process.env.CLIENT_FROM_NAME || "Formeta",
   pollSeconds: Number(process.env.TICKET_WORKER_POLL_SECONDS || 60),
   maxAttachmentMb: Number(process.env.TICKET_MAX_ATTACHMENT_MB || 20),
   reopenWindowDays: Number(process.env.TICKET_REOPEN_WINDOW_DAYS || 14),
@@ -578,6 +581,56 @@ async function processOutbox() {
   }
 }
 
+// Procesa la cola de notificaciones a clientes (clientMailOutbox). Aditivo y
+// aislado del flujo de tickets: son correos independientes (hilo nuevo) enviados
+// desde el alias de cliente (info@formeta.es), con el HTML ya renderizado.
+async function processClientOutbox() {
+  const snap = await db
+    .collection("clientMailOutbox")
+    .where("status", "==", "approved")
+    .orderBy("createdAt", "asc")
+    .limit(10)
+    .get();
+
+  for (const doc of snap.docs) {
+    const item = doc.data();
+    try {
+      await doc.ref.update({ status: "sending", updatedAt: nowTimestamp() });
+
+      const to = (item.to || []).map((contact) => contact.email).filter(Boolean).join(", ");
+      const cc = (item.cc || []).map((contact) => contact.email).filter(Boolean).join(", ");
+      if (!to) throw new Error("Sin destinatarios");
+
+      const fromEmail = runtimeSettings.clientFromEmail || DEFAULT_SETTINGS.clientFromEmail;
+      const fromName = runtimeSettings.clientFromName || DEFAULT_SETTINGS.clientFromName;
+
+      await sendMail(gmailSubject(), {
+        from: `"${fromName}" <${fromEmail}>`,
+        to,
+        cc: cc || undefined,
+        subjectLine: item.subject,
+        text: item.text || "",
+        html: item.html || "",
+        messageId: makeMessageId(supportDomain()),
+      });
+
+      await doc.ref.update({ status: "sent", sentAt: nowTimestamp(), updatedAt: nowTimestamp() });
+    } catch (error) {
+      await doc.ref.update({
+        status: "failed",
+        error: error.message,
+        updatedAt: nowTimestamp(),
+      });
+      await db.collection("clientMailProcessingErrors").add({
+        stage: "clientOutbox",
+        outboxId: doc.id,
+        error: error.message,
+        createdAt: nowTimestamp(),
+      });
+    }
+  }
+}
+
 let running = false;
 let lastTickAt = null;
 let lastError = null;
@@ -589,6 +642,7 @@ async function tick() {
     await loadSettings();
     await pollInbox();
     await processOutbox();
+    await processClientOutbox();
     lastTickAt = new Date().toISOString();
     lastError = null;
   } catch (error) {

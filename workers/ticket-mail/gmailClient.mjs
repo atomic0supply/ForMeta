@@ -98,12 +98,13 @@ export async function markRead(subject, messageId) {
  * Envía un correo construyendo el MIME (con cabeceras de threading) y usando
  * la Gmail API. Devuelve { id, threadId, messageId }.
  */
-export async function sendMail(subject, { from, to, subjectLine, text, html, inReplyTo, references, threadId, messageId }) {
+export async function sendMail(subject, { from, to, cc, subjectLine, text, html, inReplyTo, references, threadId, messageId }) {
   const gmail = getGmailClient(subject);
 
   const composer = new MailComposer({
     from,
     to,
+    cc: cc || undefined,
     subject: subjectLine,
     text: text || undefined,
     html: html || undefined,

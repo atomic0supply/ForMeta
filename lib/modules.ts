@@ -4,9 +4,12 @@
 
 export type ModuleKey =
   | "dashboard"
+  | "flujo"
   | "proyectos"
   | "tickets"
   | "clientes"
+  | "propuestas"
+  | "comunicaciones"
   | "fiscal"
   | "tiempo"
   | "ideas"
@@ -24,9 +27,12 @@ export type ModuleDef = {
 // Order roughly follows the sidebar grouping.
 export const MODULES: ModuleDef[] = [
   { key: "dashboard", label: "Dashboard", href: "/intranet" },
+  { key: "flujo", label: "Flujo", href: "/intranet/flujo" },
   { key: "proyectos", label: "Proyectos", href: "/intranet/proyectos" },
   { key: "tickets", label: "Tickets", href: "/intranet/tickets" },
   { key: "clientes", label: "Clientes", href: "/intranet/clientes" },
+  { key: "propuestas", label: "Propuestas", href: "/intranet/propuestas" },
+  { key: "comunicaciones", label: "Comunicaciones", href: "/intranet/comunicaciones" },
   { key: "fiscal", label: "Fiscal", href: "/intranet/fiscal" },
   { key: "tiempo", label: "Tiempo", href: "/intranet/tiempo" },
   { key: "ideas", label: "Ideas", href: "/intranet/ideas" },

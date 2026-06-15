@@ -6,6 +6,7 @@ import { signOut } from "firebase/auth";
 import { useEffect, useState } from "react";
 import {
   Clock,
+  FileText,
   Folder,
   Globe,
   Inbox,
@@ -18,8 +19,10 @@ import {
   ReceiptText,
   Save,
   Search,
+  Send,
   Shield,
   Users,
+  Workflow,
   X,
 } from "lucide-react";
 
@@ -45,15 +48,18 @@ const navGroups: { label: string; items: NavItem[] }[] = [
     label: "Principal",
     items: [
       { href: "/intranet",           label: "Dashboard", exact: true,  icon: LayoutGrid,  module: "dashboard" },
+      { href: "/intranet/flujo",     label: "Flujo",     exact: false, icon: Workflow,    module: "flujo"     },
       { href: "/intranet/proyectos", label: "Proyectos", exact: false, icon: Folder,      module: "proyectos" },
       { href: "/intranet/tickets",   label: "Tickets",   exact: false, icon: Inbox,       module: "tickets"   },
       { href: "/intranet/clientes",  label: "Clientes",  exact: false, icon: Users,       module: "clientes"  },
+      { href: "/intranet/propuestas",label: "Propuestas",exact: false, icon: FileText,    module: "propuestas"},
       { href: "/intranet/fiscal",    label: "Fiscal",    exact: false, icon: ReceiptText, module: "fiscal"    },
     ],
   },
   {
     label: "Operativa",
     items: [
+      { href: "/intranet/comunicaciones", label: "Comunicaciones", exact: false, icon: Send, module: "comunicaciones" },
       { href: "/intranet/tiempo",    label: "Tiempo",    exact: false, icon: Clock,     module: "tiempo"    },
       { href: "/intranet/ideas",     label: "Ideas",     exact: false, icon: Lightbulb, module: "ideas"     },
       { href: "/intranet/links",     label: "Links",     exact: false, icon: Link2,     module: "links"     },
@@ -80,7 +86,10 @@ const bottomPrimary: NavItem[] = [
 
 // "Más" sheet items (the rest)
 const moreItems: NavItem[] = [
+  { href: "/intranet/flujo",     label: "Flujo",     exact: false, icon: Workflow,    module: "flujo"     },
   { href: "/intranet/clientes",  label: "Clientes",  exact: false, icon: Users,       module: "clientes"  },
+  { href: "/intranet/propuestas",label: "Propuestas",exact: false, icon: FileText,    module: "propuestas"},
+  { href: "/intranet/comunicaciones", label: "Comunicaciones", exact: false, icon: Send, module: "comunicaciones" },
   { href: "/intranet/fiscal",    label: "Fiscal",    exact: false, icon: ReceiptText, module: "fiscal"    },
   { href: "/intranet/links",     label: "Links",     exact: false, icon: Link2,       module: "links"     },
   { href: "/intranet/servicios", label: "Servicios", exact: false, icon: Globe,       module: "servicios" },
