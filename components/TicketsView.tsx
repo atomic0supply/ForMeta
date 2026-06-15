@@ -19,7 +19,7 @@ import {
   UserRound,
 } from "lucide-react";
 import { Timestamp } from "firebase/firestore";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import {
   subscribeToAllUsers,
@@ -497,6 +497,34 @@ export function TicketsView() {
 
   const dueState = selected ? ticketDueState(selected) : "ok";
 
+  // Keep latest runAi for the keyboard shortcut without re-binding the listener.
+  const runAiRef = useRef<() => void>(() => {});
+  runAiRef.current = () => void runAi();
+
+  // Keyboard shortcuts: j/k navega la lista, a = analizar IA.
+  useEffect(() => {
+    function onKey(event: KeyboardEvent) {
+      const el = event.target as HTMLElement | null;
+      const tag = el?.tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || el?.isContentEditable) return;
+      if (event.metaKey || event.ctrlKey || event.altKey) return;
+      if (filteredTickets.length === 0) return;
+      const idx = filteredTickets.findIndex((t) => t.id === selectedId);
+      if (event.key === "j") {
+        event.preventDefault();
+        setSelectedId((filteredTickets[Math.min(filteredTickets.length - 1, idx + 1)] ?? filteredTickets[0]).id);
+      } else if (event.key === "k") {
+        event.preventDefault();
+        setSelectedId((filteredTickets[Math.max(0, idx - 1)] ?? filteredTickets[0]).id);
+      } else if (event.key === "a") {
+        event.preventDefault();
+        runAiRef.current();
+      }
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [filteredTickets, selectedId]);
+
   return (
     <main className={styles.page}>
       <aside className={styles.sidebar}>
@@ -617,6 +645,21 @@ export function TicketsView() {
                 {aiLoading ? "Analizando" : "Analizar IA"}
               </button>
             </header>
+
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 14 }}>
+              <button type="button" className={styles.secondaryButton} onClick={() => void handleStatusChange("esperando_cliente")} disabled={selected.status === "esperando_cliente"}>
+                <Mail width={13} height={13} /> Esperando cliente
+              </button>
+              <button type="button" className={styles.secondaryButton} onClick={() => void handleStatusChange("resuelto")} disabled={selected.status === "resuelto"}>
+                <CheckCircle2 width={13} height={13} /> Resolver
+              </button>
+              <button type="button" className={styles.secondaryButton} onClick={() => void handleStatusChange("cerrado")} disabled={selected.status === "cerrado"}>
+                <Archive width={13} height={13} /> Cerrar
+              </button>
+              <button type="button" className={styles.secondaryButton} onClick={() => void handleStatusChange("spam")} disabled={selected.status === "spam"}>
+                <AlertTriangle width={13} height={13} /> Spam
+              </button>
+            </div>
 
             <div className={styles.summaryBand}>
               <div>

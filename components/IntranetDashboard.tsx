@@ -16,8 +16,12 @@ import {
 import { listIdeas, type Idea } from "@/lib/ideas";
 import { subscribeToProjects, type Project } from "@/lib/projects";
 import {
+  formatTicketDate,
+  isTicketClosed,
+  isTicketUrgent,
   subscribeToTickets,
   ticketDueState,
+  ticketStatusLabel,
   type Ticket,
 } from "@/lib/tickets";
 import { subscribeToAllTimeEntries, type TimeEntry } from "@/lib/timeEntries";
@@ -92,6 +96,20 @@ export function IntranetDashboard() {
 
   const overdueTickets = useMemo(
     () => tickets.filter((t) => ticketDueState(t) === "overdue").length,
+    [tickets],
+  );
+
+  const urgentTickets = useMemo(() => tickets.filter(isTicketUrgent).length, [tickets]);
+  const waitingTickets = useMemo(
+    () => tickets.filter((t) => t.status === "esperando_cliente").length,
+    [tickets],
+  );
+  const recentOpenTickets = useMemo(
+    () =>
+      tickets
+        .filter((t) => !isTicketClosed(t))
+        .sort((a, b) => (b.lastInboundAt?.toMillis?.() ?? 0) - (a.lastInboundAt?.toMillis?.() ?? 0))
+        .slice(0, 5),
     [tickets],
   );
 
@@ -302,6 +320,39 @@ export function IntranetDashboard() {
             )}
           </div>
 
+          {/* Widget tickets */}
+          <div className={styles.widget}>
+            <div className={styles.widgetHeader}>
+              <p className={styles.widgetTitle}>Tickets abiertos</p>
+              <span className={styles.widgetCount}>{openTickets}</span>
+            </div>
+            <div style={{ display: "flex", gap: 14, flexWrap: "wrap", margin: "2px 0 10px", fontSize: "0.74rem", color: "var(--color-muted-strong)" }}>
+              {overdueTickets > 0 && <span style={{ color: "var(--color-alert)", fontWeight: 600 }}>{overdueTickets} SLA vencido</span>}
+              {urgentTickets > 0 && <span>{urgentTickets} urgente{urgentTickets !== 1 ? "s" : ""}</span>}
+              {waitingTickets > 0 && <span>{waitingTickets} esperando</span>}
+            </div>
+            <div className={styles.domainAlertList}>
+              {recentOpenTickets.length > 0 ? (
+                recentOpenTickets.map((t) => {
+                  const due = ticketDueState(t);
+                  const st = due === "overdue" ? "expired" : due === "risk" ? "warning" : "ok";
+                  return (
+                    <Link key={t.id} href="/intranet/tickets" className={styles.domainAlertRow}>
+                      <span className={styles.domainAlertDot} data-status={st} />
+                      <span className={styles.domainAlertName}>{t.subject || t.number}</span>
+                      <span className={styles.domainAlertExpiry}>{ticketStatusLabel(t.status)}</span>
+                    </Link>
+                  );
+                })
+              ) : (
+                <p className={styles.projectListEmpty}>Sin tickets abiertos.</p>
+              )}
+            </div>
+            <Link href="/intranet/tickets" className={styles.widgetMore}>
+              Ir a tickets →
+            </Link>
+          </div>
+
           {/* Widget dominios próximos a vencer */}
           {expiringDomains.length > 0 && (
             <div className={styles.widget}>
@@ -314,7 +365,7 @@ export function IntranetDashboard() {
                   return (
                     <Link
                       key={d.id}
-                      href="/intranet/dominios"
+                      href="/intranet/servicios"
                       className={styles.domainAlertRow}
                     >
                       <span className={styles.domainAlertDot} data-status={st} />
@@ -326,7 +377,7 @@ export function IntranetDashboard() {
                   );
                 })}
                 {expiringDomains.length > 5 && (
-                  <Link href="/intranet/dominios" className={styles.domainAlertMore}>
+                  <Link href="/intranet/servicios" className={styles.domainAlertMore}>
                     +{expiringDomains.length - 5} más · Ver todos →
                   </Link>
                 )}
