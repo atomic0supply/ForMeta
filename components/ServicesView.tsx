@@ -6,15 +6,17 @@ import { DomainsView } from "@/components/DomainsView";
 import { ServicesTab } from "@/components/ServicesTab";
 import { LicensesTab } from "@/components/LicensesTab";
 import { AllApisTab } from "@/components/AllApisTab";
+import { MailboxesTab } from "@/components/MailboxesTab";
 import styles from "@/styles/intranet-servicios.module.css";
 
-type Tab = "dominios" | "servicios" | "licencias" | "api";
+type Tab = "dominios" | "servicios" | "licencias" | "api" | "correo";
 
 const TABS: { key: Tab; label: string }[] = [
   { key: "dominios", label: "Dominios" },
   { key: "servicios", label: "Servicios" },
   { key: "licencias", label: "Licencias" },
   { key: "api", label: "API" },
+  { key: "correo", label: "Correo" },
 ];
 
 export function ServicesView() {
@@ -46,6 +48,7 @@ export function ServicesView() {
       {activeTab === "servicios" && <ServicesTab />}
       {activeTab === "licencias" && <LicensesTab />}
       {activeTab === "api" && <AllApisTab />}
+      {activeTab === "correo" && <MailboxesTab />}
     </div>
   );
 }

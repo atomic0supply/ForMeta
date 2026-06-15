@@ -17,10 +17,15 @@ let cachedClient = null;
 let cachedSubject = null;
 
 function serviceAccount() {
-  const raw = process.env.FIREBASE_SERVICE_ACCOUNT_JSON?.trim();
+  // La cuenta de servicio de Gmail puede ser distinta a la de Firebase
+  // (la delegation en Workspace va por su client_id). Preferimos
+  // GMAIL_SERVICE_ACCOUNT_JSON y caemos a FIREBASE_SERVICE_ACCOUNT_JSON.
+  const raw =
+    process.env.GMAIL_SERVICE_ACCOUNT_JSON?.trim() ||
+    process.env.FIREBASE_SERVICE_ACCOUNT_JSON?.trim();
   if (!raw) {
     throw new Error(
-      "FIREBASE_SERVICE_ACCOUNT_JSON es obligatorio para Gmail (domain-wide delegation)",
+      "GMAIL_SERVICE_ACCOUNT_JSON (o FIREBASE_SERVICE_ACCOUNT_JSON) es obligatorio para Gmail (domain-wide delegation)",
     );
   }
   return JSON.parse(raw);

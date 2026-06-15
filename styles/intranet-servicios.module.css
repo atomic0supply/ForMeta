@@ -91,6 +91,41 @@
 
 .btnNew:hover { background: var(--color-terra); border-color: var(--color-terra); }
 
+/* ─── Info card ──────────────────────────────────────────────────────────── */
+
+.infoCard {
+  border: 1px solid rgba(122, 154, 170, 0.25);
+  background: rgba(122, 154, 170, 0.08);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  margin-bottom: 18px;
+}
+
+.infoTitle {
+  margin: 0 0 6px;
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-sea);
+  font-weight: 600;
+}
+
+.infoText {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--color-ink);
+}
+
+.infoText code {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.78rem;
+  background: rgba(44, 44, 40, 0.06);
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
 /* ─── Empty ──────────────────────────────────────────────────────────────── */
 
 .empty {

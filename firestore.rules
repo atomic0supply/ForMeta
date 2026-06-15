@@ -130,6 +130,11 @@ service cloud.firestore {
       allow read, write: if isAuth();
     }
 
+    // Correo: alias / buzones de Workspace
+    match /mailboxes/{mailboxId} {
+      allow read, write: if isAuth();
+    }
+
     // Log de actividad — inmutable salvo lectura
     match /activityLog/{eventId} {
       allow read: if isAuth();
