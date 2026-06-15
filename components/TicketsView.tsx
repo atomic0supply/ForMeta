@@ -172,6 +172,56 @@ function messageTitle(message: TicketMessage): string {
   return message.from.name || message.from.email || "Cliente";
 }
 
+type BadgeTone = "blue" | "amber" | "green" | "gray" | "red" | "neutral";
+
+const STATUS_TONE: Record<TicketStatus, BadgeTone> = {
+  nuevo: "blue",
+  triage: "neutral",
+  esperando_cliente: "amber",
+  planificado: "neutral",
+  en_progreso: "blue",
+  esperando_release: "amber",
+  resuelto: "green",
+  cerrado: "gray",
+  spam: "red",
+};
+
+function priorityTone(priority: TicketPriority): BadgeTone {
+  if (priority === "urgent") return "red";
+  if (priority === "high") return "amber";
+  return "neutral";
+}
+
+function slaInfo(due: "ok" | "risk" | "overdue"): { tone: BadgeTone; label: string } {
+  if (due === "overdue") return { tone: "red", label: "SLA vencido" };
+  if (due === "risk") return { tone: "amber", label: "SLA en riesgo" };
+  return { tone: "green", label: "SLA OK" };
+}
+
+function messageKind(message: TicketMessage): "inbound" | "outbound" | "internal" {
+  if (message.internal) return "internal";
+  return message.direction === "outbound" ? "outbound" : "inbound";
+}
+
+const MSG_KIND_LABEL: Record<"inbound" | "outbound" | "internal", string> = {
+  inbound: "Cliente",
+  outbound: "Enviado",
+  internal: "Interno",
+};
+
+function relativeTime(ts: { toMillis?: () => number } | null | undefined): string {
+  const ms = ts?.toMillis?.() ?? 0;
+  if (!ms) return "";
+  const diff = Date.now() - ms;
+  const m = Math.round(diff / 60000);
+  if (m < 1) return "ahora";
+  if (m < 60) return `hace ${m} min`;
+  const h = Math.round(m / 60);
+  if (h < 24) return `hace ${h} h`;
+  const d = Math.round(h / 24);
+  return `hace ${d} d`;
+}
+
 function makeTaskInput(
   draft: TicketAiSuggestion["proposedTasks"][number],
   ticket: Ticket,
@@ -204,7 +254,7 @@ export function TicketsView() {
   const [selectedId, setSelectedId] = useState<string>("");
   const [search, setSearch] = useState("");
   const [reply, setReply] = useState("");
-  const [note, setNote] = useState("");
+  const [composerMode, setComposerMode] = useState<"cliente" | "interna">("cliente");
   const [triageDraft, setTriageDraft] = useState<TicketTriageChecklist>(emptyTriage);
   const [aiLoading, setAiLoading] = useState(false);
   const [aiError, setAiError] = useState("");
@@ -436,21 +486,19 @@ export function TicketsView() {
     }
   }
 
-  async function sendReply() {
+  async function handleComposerSend() {
     if (!selected || !reply.trim() || !currentUser) return;
     setSaving(true);
     try {
-      await createTicketReplyOutbox(selected, reply, currentUserPerson(currentUser));
+      if (composerMode === "cliente") {
+        await createTicketReplyOutbox(selected, reply, currentUserPerson(currentUser));
+      } else {
+        await addInternalTicketNote(selected.id, reply, currentUserPerson(currentUser));
+      }
       setReply("");
     } finally {
       setSaving(false);
     }
-  }
-
-  async function addNote() {
-    if (!selected || !note.trim() || !currentUser) return;
-    await addInternalTicketNote(selected.id, note, currentUserPerson(currentUser));
-    setNote("");
   }
 
   async function createSuggestedTask(index: number) {
@@ -597,15 +645,27 @@ export function TicketsView() {
               onClick={() => setSelectedId(ticket.id)}
               data-due={ticketDueState(ticket)}
             >
-              <span className={styles.ticketNumber}>{ticket.number}</span>
-              <span className={styles.ticketSubject}>{ticket.subject}</span>
-              <span className={styles.ticketMeta}>
-                {ticket.clientName || ticket.requester.email || "Sin cliente"}
-              </span>
-              <span className={styles.ticketFooter}>
-                <span>{ticketStatusLabel(ticket.status)}</span>
-                <span>{formatTicketDate(ticket.updatedAt)}</span>
-              </span>
+              <div className={styles.cardTop}>
+                <span className={styles.ticketNumber}>{ticket.number}</span>
+                <span className={styles.badge} data-tone={STATUS_TONE[ticket.status]}>
+                  {ticketStatusLabel(ticket.status)}
+                </span>
+              </div>
+              <span className={styles.ticketSubject}>{ticket.subject || "(sin asunto)"}</span>
+              <div className={styles.cardLine}>
+                <span className={styles.cardClient}>
+                  {ticket.clientName || ticket.requester.name || ticket.requester.email || "Sin cliente"}
+                </span>
+                {(ticket.priority === "urgent" || ticket.priority === "high") && (
+                  <>
+                    <span className={styles.cardSep}>·</span>
+                    <span className={styles.badge} data-tone={priorityTone(ticket.priority)}>
+                      {ticketPriorityLabel(ticket.priority)}
+                    </span>
+                  </>
+                )}
+                <span className={styles.relTime}>{relativeTime(ticket.lastMessageAt ?? ticket.updatedAt)}</span>
+              </div>
             </button>
           ))}
           {filteredTickets.length === 0 && (
@@ -623,14 +683,20 @@ export function TicketsView() {
         ) : (
           <>
             <header className={styles.detailHeader}>
-              <div>
-                <div className={styles.detailMeta}>
-                  <span>{selected.number}</span>
-                  <span data-due={dueState} className={styles.dueBadge}>
-                    {dueState === "overdue" ? "SLA vencido" : dueState === "risk" ? "SLA en riesgo" : "SLA OK"}
+              <div style={{ minWidth: 0 }}>
+                <div className={styles.badgeRow}>
+                  <span className={styles.ticketNumber}>{selected.number}</span>
+                  {(() => { const s = slaInfo(dueState); return (
+                    <span className={styles.badge} data-tone={s.tone}>{s.label}</span>
+                  ); })()}
+                  <span className={styles.badge} data-tone={STATUS_TONE[selected.status]}>
+                    {ticketStatusLabel(selected.status)}
+                  </span>
+                  <span className={styles.badge} data-tone={priorityTone(selected.priority)}>
+                    {ticketPriorityLabel(selected.priority)}
                   </span>
                   {selected.confidential && (
-                    <span className={styles.confidential}><Lock width={12} height={12} /> Confidencial</span>
+                    <span className={styles.confidential}><Lock width={11} height={11} /> Confidencial</span>
                   )}
                 </div>
                 <h2>{selected.subject}</h2>
@@ -638,27 +704,32 @@ export function TicketsView() {
                   {selected.requester.name || selected.requester.email}
                   {selected.clientName ? ` · ${selected.clientName}` : ""}
                   {selected.projectName ? ` · ${selected.projectName}` : ""}
+                  {` · ${ticketIntentLabel(selected.intent)}`}
                 </p>
               </div>
-              <button type="button" className={styles.primaryButton} onClick={() => void runAi()} disabled={aiLoading}>
-                <Sparkles width={14} height={14} />
-                {aiLoading ? "Analizando" : "Analizar IA"}
-              </button>
             </header>
 
-            <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 14 }}>
-              <button type="button" className={styles.secondaryButton} onClick={() => void handleStatusChange("esperando_cliente")} disabled={selected.status === "esperando_cliente"}>
-                <Mail width={13} height={13} /> Esperando cliente
-              </button>
-              <button type="button" className={styles.secondaryButton} onClick={() => void handleStatusChange("resuelto")} disabled={selected.status === "resuelto"}>
-                <CheckCircle2 width={13} height={13} /> Resolver
-              </button>
-              <button type="button" className={styles.secondaryButton} onClick={() => void handleStatusChange("cerrado")} disabled={selected.status === "cerrado"}>
-                <Archive width={13} height={13} /> Cerrar
-              </button>
-              <button type="button" className={styles.secondaryButton} onClick={() => void handleStatusChange("spam")} disabled={selected.status === "spam"}>
-                <AlertTriangle width={13} height={13} /> Spam
-              </button>
+            <div className={styles.quickActions}>
+              {selected.status === "cerrado" || selected.status === "spam" ? (
+                <button type="button" className={styles.primaryButton} onClick={() => void handleStatusChange("triage")}>
+                  <Inbox width={13} height={13} /> Reabrir ticket
+                </button>
+              ) : (
+                <>
+                  <button type="button" className={styles.primaryButton} onClick={() => void handleStatusChange("resuelto")} disabled={selected.status === "resuelto"}>
+                    <CheckCircle2 width={13} height={13} /> Resolver
+                  </button>
+                  <button type="button" className={styles.secondaryButton} onClick={() => void handleStatusChange("esperando_cliente")} disabled={selected.status === "esperando_cliente"}>
+                    <Mail width={13} height={13} /> Esperando cliente
+                  </button>
+                  <button type="button" className={styles.tertiaryButton} onClick={() => void handleStatusChange("cerrado")}>
+                    <Archive width={13} height={13} /> Cerrar
+                  </button>
+                  <button type="button" className={styles.dangerButton} onClick={() => void handleStatusChange("spam")}>
+                    <AlertTriangle width={13} height={13} /> Spam
+                  </button>
+                </>
+              )}
             </div>
 
             <div className={styles.summaryBand}>
@@ -677,32 +748,110 @@ export function TicketsView() {
             </div>
 
             <div className={styles.thread}>
-              {messages.map((message) => (
-                <article
-                  key={message.id}
-                  className={`${styles.message} ${message.internal ? styles.messageInternal : ""}`}
-                >
-                  <div className={styles.messageHeader}>
-                    <strong>{messageTitle(message)}</strong>
-                    <span>{formatTicketDate(message.createdAt)}</span>
-                  </div>
-                  <p className={styles.messageSubject}>{message.subject}</p>
-                  <p className={styles.messageBody}>{message.text || "Sin cuerpo de texto."}</p>
-                  {message.attachments.length > 0 && (
-                    <div className={styles.attachments}>
-                      {message.attachments.map((attachment) => (
-                        <a key={attachment.id} href={attachment.downloadUrl} target="_blank" rel="noreferrer">
-                          <FileText width={13} height={13} />
-                          {attachment.filename}
-                        </a>
-                      ))}
+              {messages.map((message) => {
+                const kind = messageKind(message);
+                return (
+                  <article key={message.id} data-kind={kind} className={styles.message}>
+                    <div className={styles.messageHeader}>
+                      <span className={styles.messageHeaderLeft}>
+                        <span className={styles.msgTag} data-kind={kind}>{MSG_KIND_LABEL[kind]}</span>
+                        <strong>{messageTitle(message)}</strong>
+                      </span>
+                      <span>{formatTicketDate(message.createdAt)}</span>
                     </div>
-                  )}
-                </article>
-              ))}
+                    {message.subject && <p className={styles.messageSubject}>{message.subject}</p>}
+                    <p className={styles.messageBody}>{message.text || "Sin cuerpo de texto."}</p>
+                    {message.attachments.length > 0 && (
+                      <div className={styles.attachments}>
+                        {message.attachments.map((attachment) => (
+                          <a key={attachment.id} href={attachment.downloadUrl} target="_blank" rel="noreferrer">
+                            <FileText width={13} height={13} />
+                            {attachment.filename}
+                          </a>
+                        ))}
+                      </div>
+                    )}
+                  </article>
+                );
+              })}
               {messages.length === 0 && (
                 <p className={styles.empty}>Este ticket aún no tiene mensajes cargados.</p>
               )}
+            </div>
+
+            {/* Composer fijo */}
+            <div className={styles.composer}>
+              <div className={styles.composerModes}>
+                <button
+                  type="button"
+                  className={`${styles.modeBtn} ${composerMode === "cliente" ? styles.modeBtnActive : ""}`}
+                  data-mode="cliente"
+                  onClick={() => setComposerMode("cliente")}
+                >
+                  Responder cliente
+                </button>
+                <button
+                  type="button"
+                  className={`${styles.modeBtn} ${composerMode === "interna" ? styles.modeBtnActive : ""}`}
+                  data-mode="interna"
+                  onClick={() => setComposerMode("interna")}
+                >
+                  Nota interna
+                </button>
+              </div>
+              <textarea
+                value={reply}
+                onChange={(event) => setReply(event.target.value)}
+                rows={3}
+                placeholder={composerMode === "cliente" ? "Escribe la respuesta al cliente…" : "Nota interna (no visible para el cliente)…"}
+              />
+              <div className={styles.composerBar}>
+                {composerMode === "cliente" && (
+                  <select
+                    className={styles.composerSelect}
+                    value=""
+                    onChange={(event) => {
+                      const key = event.target.value as TicketTemplateKey;
+                      if (!key) return;
+                      const source = settings.templates[key] ?? "";
+                      setReply(
+                        source.replace(/\{\{(\w+)\}\}/g, (_, k) => {
+                          if (k === "name") return selected.requester.name || "";
+                          if (k === "ticketNumber") return selected.number || "";
+                          return `{{${k}}}`;
+                        }),
+                      );
+                    }}
+                  >
+                    <option value="">Plantilla…</option>
+                    {TEMPLATE_KEYS.map((key) => (
+                      <option key={key} value={key}>{TEMPLATE_LABELS[key]}</option>
+                    ))}
+                  </select>
+                )}
+                {composerMode === "cliente" && selected.ai?.replyDraft && (
+                  <button type="button" className={styles.tertiaryButton} onClick={() => setReply(selected.ai!.replyDraft)}>
+                    <Sparkles width={13} height={13} /> IA redactar
+                  </button>
+                )}
+                <span className={styles.spacer} />
+                {outbox.length > 0 && (
+                  <span className={styles.outboxList}>
+                    {outbox.slice(0, 2).map((item) => (
+                      <span key={item.id}>{item.status} · {formatTicketDate(item.createdAt)}</span>
+                    ))}
+                  </span>
+                )}
+                <button
+                  type="button"
+                  className={composerMode === "cliente" ? styles.primaryButton : styles.secondaryButton}
+                  disabled={saving || !reply.trim()}
+                  onClick={() => void handleComposerSend()}
+                >
+                  {composerMode === "cliente" ? <Send width={13} height={13} /> : <Tag width={13} height={13} />}
+                  {composerMode === "cliente" ? "Enviar respuesta" : "Guardar nota"}
+                </button>
+              </div>
             </div>
           </>
         )}
@@ -807,7 +956,13 @@ export function TicketsView() {
           </section>
 
           <section className={styles.panel}>
-            <h3>IA</h3>
+            <div className={styles.panelHeader}>
+              <h3>IA</h3>
+              <button type="button" className={styles.secondaryButton} onClick={() => void runAi()} disabled={aiLoading}>
+                <Sparkles width={13} height={13} />
+                {aiLoading ? "Analizando…" : selected.ai ? "Re-analizar" : "Analizar"}
+              </button>
+            </div>
             {selected.ai ? (
               <>
                 <p className={styles.aiReason}>{selected.ai.severityReason}</p>
@@ -855,49 +1010,6 @@ export function TicketsView() {
             )}
           </section>
 
-          <section className={styles.panel}>
-            <h3>Respuesta</h3>
-            <select
-              value=""
-              onChange={(event) => {
-                const key = event.target.value as TicketTemplateKey;
-                if (!key) return;
-                const source = settings.templates[key] ?? "";
-                const filled = source.replace(/\{\{(\w+)\}\}/g, (_, k) => {
-                  if (k === "name") return selected.requester.name || "";
-                  if (k === "ticketNumber") return selected.number || "";
-                  return `{{${k}}}`;
-                });
-                setReply(filled);
-              }}
-            >
-              <option value="">Insertar plantilla…</option>
-              {TEMPLATE_KEYS.map((key) => (
-                <option key={key} value={key}>{TEMPLATE_LABELS[key]}</option>
-              ))}
-            </select>
-            <textarea value={reply} onChange={(event) => setReply(event.target.value)} rows={7} />
-            <button type="button" className={styles.primaryButton} disabled={saving || !reply.trim()} onClick={() => void sendReply()}>
-              <Send width={13} height={13} />
-              Aprobar envío
-            </button>
-            {outbox.length > 0 && (
-              <div className={styles.outboxList}>
-                {outbox.map((item) => (
-                  <span key={item.id}>{item.status} · {formatTicketDate(item.createdAt)}</span>
-                ))}
-              </div>
-            )}
-          </section>
-
-          <section className={styles.panel}>
-            <h3>Nota interna</h3>
-            <textarea value={note} onChange={(event) => setNote(event.target.value)} rows={4} />
-            <button type="button" className={styles.secondaryButton} disabled={!note.trim()} onClick={() => void addNote()}>
-              <Tag width={13} height={13} />
-              Añadir nota
-            </button>
-          </section>
         </aside>
       )}
 
