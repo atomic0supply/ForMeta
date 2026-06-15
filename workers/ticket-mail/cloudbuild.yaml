@@ -1,0 +1,17 @@
+# Build del worker de tickets. El contexto es la raíz del repo (el Dockerfile
+# copia package.json/package-lock.json de la raíz), por eso se usa -f.
+steps:
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      - "build"
+      - "-f"
+      - "workers/ticket-mail/Dockerfile"
+      - "-t"
+      - "gcr.io/$PROJECT_ID/ticket-worker:latest"
+      - "."
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["push", "gcr.io/$PROJECT_ID/ticket-worker:latest"]
+images:
+  - "gcr.io/$PROJECT_ID/ticket-worker:latest"
+options:
+  logging: CLOUD_LOGGING_ONLY
