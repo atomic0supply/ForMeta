@@ -98,7 +98,9 @@ export function subscribeToAllExternalApis(
   resolveProjectName: (projectId: string) => string | null = () => null,
 ): Unsubscribe {
   if (!db) return () => {};
-  const q = query(collectionGroup(db, "externalApis"), orderBy("createdAt", "asc"));
+  // Sin orderBy: una query collectionGroup con orden requeriría un índice
+  // COLLECTION_GROUP dedicado. El orden se hace en cliente (AllApisTab).
+  const q = query(collectionGroup(db, "externalApis"));
   return onSnapshot(q, (snap) => {
     const apis = snap.docs.map((d) => {
       const projectId = d.ref.parent.parent?.id ?? "";
