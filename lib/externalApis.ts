@@ -1,6 +1,7 @@
 import {
   addDoc,
   collection,
+  collectionGroup,
   deleteDoc,
   doc,
   onSnapshot,
@@ -25,10 +26,17 @@ export type ExternalApi = {
   docUrl: string;
   environment: ApiEnvironment;
   notes: string;
+  expiresAt?: string; // "YYYY-MM-DD" — caducidad de la API/clave
   createdAt: Timestamp | null;
 };
 
 export type ExternalApiInput = Omit<ExternalApi, "id" | "createdAt">;
+
+// API enriquecida con el proyecto al que pertenece (vista global de Servicios).
+export type ExternalApiWithProject = ExternalApi & {
+  projectId: string;
+  projectName: string | null;
+};
 
 export function subscribeToExternalApis(
   projectId: string,
@@ -78,4 +86,29 @@ export async function deleteExternalApi(
 ): Promise<void> {
   if (!db) throw new Error("Firebase no disponible");
   await deleteDoc(doc(db, "projects", projectId, "externalApis", apiId));
+}
+
+/**
+ * Suscripción a TODAS las APIs de todos los proyectos (collectionGroup).
+ * Resuelve el id del proyecto desde la ruta del documento; el nombre del
+ * proyecto se resuelve con el mapa que pase el llamante.
+ */
+export function subscribeToAllExternalApis(
+  callback: (apis: ExternalApiWithProject[]) => void,
+  resolveProjectName: (projectId: string) => string | null = () => null,
+): Unsubscribe {
+  if (!db) return () => {};
+  const q = query(collectionGroup(db, "externalApis"), orderBy("createdAt", "asc"));
+  return onSnapshot(q, (snap) => {
+    const apis = snap.docs.map((d) => {
+      const projectId = d.ref.parent.parent?.id ?? "";
+      return {
+        id: d.id,
+        ...(d.data() as Omit<ExternalApi, "id">),
+        projectId,
+        projectName: resolveProjectName(projectId),
+      };
+    });
+    callback(apis);
+  });
 }

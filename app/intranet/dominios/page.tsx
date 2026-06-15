@@ -1,9 +1,6 @@
-import { DomainsView } from "@/components/DomainsView";
+import { redirect } from "next/navigation";
 
-export const metadata = {
-  title: "Dominios — Roqueta",
-};
-
+// "Dominios" se ha integrado dentro del módulo "Servicios" como una pestaña.
 export default function DomainsPage() {
-  return <DomainsView />;
+  redirect("/intranet/servicios");
 }

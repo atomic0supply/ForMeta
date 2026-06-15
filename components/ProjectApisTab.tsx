@@ -12,6 +12,7 @@ import {
   type ExternalApiInput,
   updateExternalApi,
 } from "@/lib/externalApis";
+import { expiryLabel } from "@/lib/expiry";
 import styles from "@/styles/intranet-apis.module.css";
 
 type Props = { projectId: string };
@@ -30,6 +31,7 @@ const emptyForm: ExternalApiInput = {
   docUrl: "",
   environment: "prod",
   notes: "",
+  expiresAt: "",
 };
 
 export function ProjectApisTab({ projectId }: Props) {
@@ -71,6 +73,7 @@ export function ProjectApisTab({ projectId }: Props) {
       docUrl: api.docUrl ?? "",
       environment: api.environment ?? "prod",
       notes: api.notes ?? "",
+      expiresAt: api.expiresAt ?? "",
     });
     setShowKeyInForm(false);
     setConfirmDelete(false);
@@ -243,6 +246,13 @@ export function ProjectApisTab({ projectId }: Props) {
                     </div>
                   )}
 
+                  {api.expiresAt && (
+                    <div className={styles.cardRow}>
+                      <span className={styles.cardRowLabel}>Caduca</span>
+                      <span className={styles.cardRowValue}>{expiryLabel(api.expiresAt)}</span>
+                    </div>
+                  )}
+
                   {api.notes && (
                     <div className={styles.cardRow}>
                       <span className={styles.cardRowLabel}>Notas</span>
@@ -375,20 +385,35 @@ export function ProjectApisTab({ projectId }: Props) {
             </div>
           </div>
 
-          <div className={styles.field}>
-            <label htmlFor="apiDoc" className={styles.label}>
-              URL Documentación
-            </label>
-            <input
-              id="apiDoc"
-              name="docUrl"
-              type="text"
-              value={form.docUrl}
-              onChange={handleField}
-              className={styles.input}
-              autoComplete="off"
-              placeholder="https://stripe.com/docs"
-            />
+          <div className={styles.fieldRow}>
+            <div className={styles.field}>
+              <label htmlFor="apiDoc" className={styles.label}>
+                URL Documentación
+              </label>
+              <input
+                id="apiDoc"
+                name="docUrl"
+                type="text"
+                value={form.docUrl}
+                onChange={handleField}
+                className={styles.input}
+                autoComplete="off"
+                placeholder="https://stripe.com/docs"
+              />
+            </div>
+            <div className={styles.field}>
+              <label htmlFor="apiExpires" className={styles.label}>
+                Caducidad
+              </label>
+              <input
+                id="apiExpires"
+                name="expiresAt"
+                type="date"
+                value={form.expiresAt ?? ""}
+                onChange={handleField}
+                className={styles.input}
+              />
+            </div>
           </div>
 
           <div className={styles.field}>

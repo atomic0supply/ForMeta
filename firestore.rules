@@ -110,8 +110,23 @@ service cloud.firestore {
       allow read: if isAuth();
     }
 
+    // Vista global de APIs: collectionGroup("externalApis") requiere wildcard de ruta
+    match /{path=**}/externalApis/{apiId} {
+      allow read: if isAuth();
+    }
+
     // Dominios
     match /domains/{domainId} {
+      allow read, write: if isAuth();
+    }
+
+    // Servicios (infraestructura contratada)
+    match /services/{serviceId} {
+      allow read, write: if isAuth();
+    }
+
+    // Licencias de software
+    match /licenses/{licenseId} {
       allow read, write: if isAuth();
     }
 
