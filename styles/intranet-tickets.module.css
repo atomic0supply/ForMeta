@@ -117,11 +117,8 @@
   min-height: 32px;
   padding: 7px 13px;
   border-radius: 8px;
-  font-family: var(--font-mono), monospace;
-  font-size: 0.62rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  font-size: 0.84rem;
+  font-weight: 500;
 }
 
 .primaryButton { background: var(--color-ink); border-color: var(--color-ink); color: var(--color-sand); }
@@ -200,10 +197,7 @@
 
 .stats span {
   color: var(--color-muted-strong);
-  font-family: var(--font-mono), monospace;
-  font-size: 0.5rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-size: 0.72rem;
 }
 
 .searchBox {
@@ -358,7 +352,6 @@
 }
 
 .summaryBand span,
-.panel h3,
 .groupLabel {
   color: var(--color-terra);
   font-family: var(--font-mono), monospace;
@@ -366,6 +359,16 @@
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
+}
+
+.panel h3 {
+  margin: 0;
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 400;
+  font-size: 1.05rem;
+  color: var(--color-ink);
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 .summaryBand p { margin: 4px 0 0; line-height: 1.5; font-size: 0.84rem; }
@@ -410,8 +413,7 @@
   justify-content: space-between;
   gap: 12px;
   color: var(--color-muted-strong);
-  font-size: 0.72rem;
-  font-family: var(--font-mono), monospace;
+  font-size: 0.78rem;
 }
 
 .messageHeader strong { color: var(--color-ink); font-weight: 600; font-family: inherit; }
@@ -533,16 +535,11 @@
   user-select: none;
 }
 
-.panel h3 { margin: 0; }
-
 .panel label {
   display: grid;
   gap: 4px;
   color: var(--color-muted-strong);
-  font-family: var(--font-mono), monospace;
-  font-size: 0.56rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  font-size: 0.78rem;
 }
 
 .panel input,

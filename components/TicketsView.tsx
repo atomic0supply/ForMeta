@@ -149,6 +149,22 @@ const emptyTriage: TicketTriageChecklist = {
   actualResult: "",
 };
 
+const TRIAGE_LABELS: Record<keyof TicketTriageChecklist, string> = {
+  environment: "Entorno",
+  affectedUrl: "URL afectada",
+  affectedUser: "Usuario afectado",
+  browserDevice: "Navegador / Dispositivo",
+  stepsToReproduce: "Pasos para reproducir",
+  expectedResult: "Resultado esperado",
+  actualResult: "Resultado actual",
+};
+
+const TRIAGE_MULTILINE: ReadonlyArray<keyof TicketTriageChecklist> = [
+  "stepsToReproduce",
+  "expectedResult",
+  "actualResult",
+];
+
 function userToTicketPerson(user: UserProfile | null | undefined): TicketPerson | null {
   if (!user) return null;
   return {
@@ -938,19 +954,27 @@ export function TicketsView() {
 
           <section className={styles.panel}>
             <h3>Checklist triage</h3>
-            {Object.keys(emptyTriage).map((key) => (
+            {(Object.keys(emptyTriage) as Array<keyof TicketTriageChecklist>).map((key) => (
               <label key={key}>
-                {key}
-                <input
-                  value={triageDraft[key as keyof TicketTriageChecklist]}
-                  onChange={(event) =>
-                    setTriageDraft((prev) => ({
-                      ...prev,
-                      [key]: event.target.value,
-                    }))
-                  }
-                  onBlur={() => void saveTriage()}
-                />
+                {TRIAGE_LABELS[key]}
+                {TRIAGE_MULTILINE.includes(key) ? (
+                  <textarea
+                    rows={3}
+                    value={triageDraft[key]}
+                    onChange={(event) =>
+                      setTriageDraft((prev) => ({ ...prev, [key]: event.target.value }))
+                    }
+                    onBlur={() => void saveTriage()}
+                  />
+                ) : (
+                  <input
+                    value={triageDraft[key]}
+                    onChange={(event) =>
+                      setTriageDraft((prev) => ({ ...prev, [key]: event.target.value }))
+                    }
+                    onBlur={() => void saveTriage()}
+                  />
+                )}
               </label>
             ))}
           </section>
