@@ -383,8 +383,9 @@ export function UserManagementView() {
         </div>
 
         <p className={styles.settingsCopy}>
-          Configura el buzón de soporte, Proton Bridge, SLA y plantillas de respuesta.
-          La contraseña real del Bridge no se guarda aquí: usa el secret indicado en el worker.
+          Configura el buzón de soporte (Gmail Workspace), SLA y plantillas de respuesta.
+          El worker accede al buzón mediante la cuenta de servicio (domain-wide delegation),
+          no se guardan contraseñas aquí.
         </p>
 
         <form onSubmit={(e) => void handleSaveTicketSettings(e)} className={styles.settingsForm}>
@@ -418,62 +419,13 @@ export function UserManagementView() {
                 />
               </label>
               <label>
-                Usuario Bridge
+                Buzón Gmail (Workspace)
                 <input
-                  value={ticketSettingsDraft.bridgeUsername}
+                  value={ticketSettingsDraft.gmailUser}
                   onChange={(e) =>
-                    setTicketSettingsDraft((prev) => ({ ...prev, bridgeUsername: e.target.value }))
+                    setTicketSettingsDraft((prev) => ({ ...prev, gmailUser: e.target.value }))
                   }
-                />
-              </label>
-              <label>
-                IMAP host
-                <input
-                  value={ticketSettingsDraft.imapHost}
-                  onChange={(e) =>
-                    setTicketSettingsDraft((prev) => ({ ...prev, imapHost: e.target.value }))
-                  }
-                />
-              </label>
-              <label>
-                IMAP port
-                <input
-                  type="number"
-                  value={ticketSettingsDraft.imapPort}
-                  onChange={(e) =>
-                    setTicketSettingsDraft((prev) => ({ ...prev, imapPort: Number(e.target.value) }))
-                  }
-                />
-              </label>
-              <label>
-                SMTP host
-                <input
-                  value={ticketSettingsDraft.smtpHost}
-                  onChange={(e) =>
-                    setTicketSettingsDraft((prev) => ({ ...prev, smtpHost: e.target.value }))
-                  }
-                />
-              </label>
-              <label>
-                SMTP port
-                <input
-                  type="number"
-                  value={ticketSettingsDraft.smtpPort}
-                  onChange={(e) =>
-                    setTicketSettingsDraft((prev) => ({ ...prev, smtpPort: Number(e.target.value) }))
-                  }
-                />
-              </label>
-              <label>
-                Secret contraseña
-                <input
-                  value={ticketSettingsDraft.bridgePasswordSecretName}
-                  onChange={(e) =>
-                    setTicketSettingsDraft((prev) => ({
-                      ...prev,
-                      bridgePasswordSecretName: e.target.value,
-                    }))
-                  }
+                  placeholder="soporte@formeta.es"
                 />
               </label>
               <label>

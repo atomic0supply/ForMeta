@@ -1,33 +1,37 @@
 # Formeta Ticket Mail Worker
 
-Worker para Cloud Run que conecta Proton Mail Bridge con Firestore:
+Worker para Cloud Run que conecta **Gmail Workspace** con Firestore mediante la
+**Gmail API** (sin contraseñas, sin IMAP/SMTP):
 
-- Lee correos no vistos por IMAP desde `SUPPORT_EMAIL`.
-- Crea tickets o añade mensajes al hilo existente por numero de ticket y headers.
-- Sube adjuntos a Firebase Storage.
+- Lee correos no leídos del buzón de soporte con la Gmail API.
+- Crea tickets o añade mensajes al hilo existente por número de ticket y headers.
+- Sube adjuntos a Firebase Storage y genera URL de descarga firmada.
 - Extrae texto de TXT, PDF y DOCX para la IA.
-- Envia acuse automatico al crear ticket.
-- Procesa `ticketMailOutbox` y envia respuestas aprobadas por SMTP.
+- Envía acuse automático al crear ticket (con cabeceras de threading + `threadId`).
+- Procesa `ticketMailOutbox` y envía respuestas aprobadas, manteniendo el hilo.
 
-## Despliegue
+## Autenticación (domain-wide delegation)
 
-El contenedor espera que Proton Mail Bridge este disponible dentro del mismo entorno o como sidecar accesible por `PROTON_BRIDGE_IMAP_HOST` y `PROTON_BRIDGE_SMTP_HOST`.
+El worker usa la cuenta de servicio de `FIREBASE_SERVICE_ACCOUNT_JSON` para
+**impersonar** el buzón `GMAIL_USER`. Pasos en Google:
 
-Variables principales:
+1. Habilitar la **Gmail API** en el proyecto GCP (`fmeta-f9aed`).
+2. En Google Admin → *Security → API Controls → Domain-wide delegation*,
+   autorizar el **Client ID** de la cuenta de servicio con los scopes:
+   - `https://www.googleapis.com/auth/gmail.modify`
+   - `https://www.googleapis.com/auth/gmail.send`
 
-- `SUPPORT_EMAIL`
-- `SUPPORT_FROM_NAME`
-- `PROTON_BRIDGE_IMAP_HOST`
-- `PROTON_BRIDGE_IMAP_PORT`
-- `PROTON_BRIDGE_SMTP_HOST`
-- `PROTON_BRIDGE_SMTP_PORT`
-- `PROTON_BRIDGE_USERNAME`
-- `PROTON_BRIDGE_PASSWORD`
-- `FIREBASE_SERVICE_ACCOUNT_JSON` o Application Default Credentials
-- `FIREBASE_STORAGE_BUCKET`
+## Variables principales
+
+- `SUPPORT_EMAIL` — dirección que aparece como remitente (From).
+- `SUPPORT_FROM_NAME` — nombre del remitente.
+- `GMAIL_USER` — buzón de Workspace a impersonar (normalmente = `SUPPORT_EMAIL`).
+- `FIREBASE_SERVICE_ACCOUNT_JSON` — clave de la cuenta de servicio (con delegation).
+- `FIREBASE_STORAGE_BUCKET` — bucket para adjuntos.
+- `TICKET_WORKER_POLL_SECONDS`, `TICKET_MAX_ATTACHMENT_MB`, `TICKET_REOPEN_WINDOW_DAYS`.
 
 Healthcheck:
 
 ```txt
-GET /health
+GET /health  →  { ok, running, provider, mailbox, lastTickAt, lastError }
 ```

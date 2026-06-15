@@ -22,16 +22,14 @@ export type TicketSlaSetting = {
   resolutionHours: number;
 };
 
+export type TicketMailProvider = "gmail";
+
 export type TicketMailSettings = {
   supportEmail: string;
   fromName: string;
   publicBaseUrl: string;
-  imapHost: string;
-  imapPort: number;
-  smtpHost: string;
-  smtpPort: number;
-  bridgeUsername: string;
-  bridgePasswordSecretName: string;
+  provider: TicketMailProvider;
+  gmailUser: string; // buzón Workspace que la cuenta de servicio impersona
   pollSeconds: number;
   maxAttachmentMb: number;
   reopenWindowDays: number;
@@ -44,12 +42,8 @@ export const DEFAULT_TICKET_SETTINGS: TicketMailSettings = {
   supportEmail: "help@formeta.es",
   fromName: "Formeta Soporte",
   publicBaseUrl: "https://formeta.es/intranet/tickets",
-  imapHost: "127.0.0.1",
-  imapPort: 1143,
-  smtpHost: "127.0.0.1",
-  smtpPort: 1025,
-  bridgeUsername: "",
-  bridgePasswordSecretName: "PROTON_BRIDGE_PASSWORD",
+  provider: "gmail",
+  gmailUser: "help@formeta.es",
   pollSeconds: 60,
   maxAttachmentMb: 20,
   reopenWindowDays: 14,

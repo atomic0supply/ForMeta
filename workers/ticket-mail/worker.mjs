@@ -2,11 +2,11 @@ import crypto from "node:crypto";
 import http from "node:http";
 
 import admin from "firebase-admin";
-import { ImapFlow } from "imapflow";
 import { simpleParser } from "mailparser";
 import mammoth from "mammoth";
-import nodemailer from "nodemailer";
 import pdfParse from "pdf-parse";
+
+import { listUnread, makeMessageId, markRead, sendMail } from "./gmailClient.mjs";
 
 const STORAGE_BUCKET =
   process.env.FIREBASE_STORAGE_BUCKET ||
@@ -16,11 +16,9 @@ const STORAGE_BUCKET =
 const DEFAULT_SETTINGS = {
   supportEmail: process.env.SUPPORT_EMAIL || "help@formeta.es",
   fromName: process.env.SUPPORT_FROM_NAME || "Formeta Soporte",
-  imapHost: process.env.PROTON_BRIDGE_IMAP_HOST || "127.0.0.1",
-  imapPort: Number(process.env.PROTON_BRIDGE_IMAP_PORT || 1143),
-  smtpHost: process.env.PROTON_BRIDGE_SMTP_HOST || "127.0.0.1",
-  smtpPort: Number(process.env.PROTON_BRIDGE_SMTP_PORT || 1025),
-  bridgeUsername: process.env.PROTON_BRIDGE_USERNAME || "",
+  provider: "gmail",
+  // Buzón de Workspace que la cuenta de servicio impersona (domain-wide delegation).
+  gmailUser: process.env.GMAIL_USER || process.env.SUPPORT_EMAIL || "help@formeta.es",
   pollSeconds: Number(process.env.TICKET_WORKER_POLL_SECONDS || 60),
   maxAttachmentMb: Number(process.env.TICKET_MAX_ATTACHMENT_MB || 20),
   reopenWindowDays: Number(process.env.TICKET_REOPEN_WINDOW_DAYS || 14),
@@ -89,6 +87,14 @@ function template(name, values) {
 
 function nowTimestamp() {
   return admin.firestore.Timestamp.now();
+}
+
+function gmailSubject() {
+  return runtimeSettings.gmailUser || runtimeSettings.supportEmail;
+}
+
+function supportDomain() {
+  return String(runtimeSettings.supportEmail || "formeta.es").split("@")[1] || "formeta.es";
 }
 
 function normalizeMessageId(value) {
@@ -249,12 +255,26 @@ async function uploadAttachments(ticketId, messageDocId, attachments) {
     });
 
     const textPreview = await extractAttachmentText(attachment);
+
+    // URL de descarga firmada (lectura) para que la UI pueda abrir el adjunto.
+    let downloadUrl = "";
+    try {
+      const [url] = await file.getSignedUrl({
+        action: "read",
+        expires: Date.now() + 365 * 24 * 60 * 60 * 1000, // 1 año
+      });
+      downloadUrl = url;
+    } catch (error) {
+      console.warn(`No se pudo firmar URL de adjunto: ${error.message}`);
+    }
+
     result.push({
       id,
       filename: attachment.filename || "attachment",
       contentType: attachment.contentType || "application/octet-stream",
       size,
       storagePath,
+      downloadUrl,
       aiReadable: Boolean(textPreview),
       textPreview,
     });
@@ -262,11 +282,12 @@ async function uploadAttachments(ticketId, messageDocId, attachments) {
   return result;
 }
 
-async function createTicket(parsed, requester) {
+async function createTicket(parsed, requester, gmailThreadId = "") {
   const client = await findClientByEmail(requester.email);
   const number = await nextTicketNumber();
   const ref = await db.collection("tickets").add({
     number,
+    gmailThreadId,
     subject: parsed.subject || "(sin asunto)",
     status: "nuevo",
     priority: "medium",
@@ -327,7 +348,7 @@ async function maybeReopenTicket(ticketRef) {
   }
 }
 
-async function appendInboundMessage(ticketId, parsed, requester, messageId) {
+async function appendInboundMessage(ticketId, parsed, requester, messageId, gmailThreadId = "") {
   const ticketRef = db.collection("tickets").doc(ticketId);
   await maybeReopenTicket(ticketRef);
 
@@ -353,40 +374,34 @@ async function appendInboundMessage(ticketId, parsed, requester, messageId) {
     createdAt: nowTimestamp(),
   });
 
-  await ticketRef.update({
+  const ticketUpdate = {
     inboundMessageCount: admin.firestore.FieldValue.increment(1),
     lastInboundAt: nowTimestamp(),
     lastMessageAt: nowTimestamp(),
     updatedAt: nowTimestamp(),
-  });
+  };
+  if (gmailThreadId) ticketUpdate.gmailThreadId = gmailThreadId;
+  await ticketRef.update(ticketUpdate);
 }
 
-function createMailer() {
-  return nodemailer.createTransport({
-    host: runtimeSettings.smtpHost,
-    port: Number(runtimeSettings.smtpPort),
-    secure: false,
-    auth: {
-      user: runtimeSettings.bridgeUsername || process.env.PROTON_BRIDGE_USERNAME,
-      pass: process.env.PROTON_BRIDGE_PASSWORD,
-    },
-  });
-}
-
-async function sendAcknowledgement(ticketNumber, parsed, requester) {
-  const mailer = createMailer();
-  await mailer.sendMail({
+async function sendAcknowledgement(ticketNumber, parsed, requester, gmailThreadId) {
+  const incomingId = parsed.messageId ? String(parsed.messageId).trim() : "";
+  await sendMail(gmailSubject(), {
     from: `"${runtimeSettings.fromName}" <${runtimeSettings.supportEmail}>`,
     to: requester.email,
-    subject: `Re: [${ticketNumber}] ${parsed.subject || "Ticket recibido"}`,
+    subjectLine: `Re: [${ticketNumber}] ${parsed.subject || "Ticket recibido"}`,
     text: template("acknowledgement", {
       name: requester.name || "",
       ticketNumber,
     }),
+    inReplyTo: incomingId,
+    references: incomingId ? [incomingId] : [],
+    threadId: gmailThreadId || undefined,
+    messageId: makeMessageId(supportDomain()),
   });
 }
 
-async function processParsedEmail(parsed) {
+async function processParsedEmail(parsed, gmailThreadId = "") {
   const requester = cleanEmailAddress(parsed.from?.value?.[0]);
   if (!requester.email) return;
   const messageId = normalizeMessageId(parsed.messageId);
@@ -398,56 +413,59 @@ async function processParsedEmail(parsed) {
   let isNew = false;
 
   if (!ticketId) {
-    const created = await createTicket(parsed, requester);
+    const created = await createTicket(parsed, requester, gmailThreadId);
     ticketId = created.ticketId;
     ticketNumber = created.ticketNumber;
     isNew = true;
   }
 
-  await appendInboundMessage(ticketId, parsed, requester, messageId);
+  await appendInboundMessage(ticketId, parsed, requester, messageId, gmailThreadId);
   if (isNew) {
-    await sendAcknowledgement(ticketNumber, parsed, requester);
+    await sendAcknowledgement(ticketNumber, parsed, requester, gmailThreadId);
   }
 }
 
 async function pollInbox() {
-  const client = new ImapFlow({
-    host: runtimeSettings.imapHost,
-    port: Number(runtimeSettings.imapPort),
-    secure: false,
-    auth: {
-      user: runtimeSettings.bridgeUsername || process.env.PROTON_BRIDGE_USERNAME,
-      pass: process.env.PROTON_BRIDGE_PASSWORD,
-    },
-    logger: false,
-  });
-
-  await client.connect();
-  const lock = await client.getMailboxLock("INBOX");
-  try {
-    const unseen = await client.search({ seen: false });
-    for await (const msg of client.fetch(unseen, { source: true }, { uid: true })) {
-      try {
-        const parsed = await simpleParser(msg.source);
-        await processParsedEmail(parsed);
-        await client.messageFlagsAdd(msg.uid, ["\\Seen"], { uid: true });
-      } catch (error) {
-        await db.collection("ticketProcessingErrors").add({
-          stage: "inbound",
-          uid: msg.uid,
-          error: error.message,
-          createdAt: nowTimestamp(),
-        });
-      }
+  const messages = await listUnread(gmailSubject(), 25);
+  for (const msg of messages) {
+    try {
+      const parsed = await simpleParser(msg.raw);
+      await processParsedEmail(parsed, msg.threadId || "");
+      await markRead(gmailSubject(), msg.id);
+    } catch (error) {
+      await db.collection("ticketProcessingErrors").add({
+        stage: "inbound",
+        gmailId: msg.id,
+        error: error.message,
+        createdAt: nowTimestamp(),
+      });
     }
-  } finally {
-    lock.release();
-    await client.logout();
   }
 }
 
+/** Recupera datos de threading del ticket: gmailThreadId + último Message-ID entrante. */
+async function getThreadContext(ticketRef) {
+  const ticketSnap = await ticketRef.get();
+  const ticketData = ticketSnap.exists ? ticketSnap.data() : {};
+  const gmailThreadId = ticketData.gmailThreadId || "";
+  const firstResponded = ticketData?.sla?.firstRespondedAt || null;
+
+  let lastInboundMessageId = "";
+  const lastInbound = await ticketRef
+    .collection("messages")
+    .where("direction", "==", "inbound")
+    .orderBy("createdAt", "desc")
+    .limit(1)
+    .get();
+  if (!lastInbound.empty) {
+    const raw = lastInbound.docs[0].data().messageId || "";
+    lastInboundMessageId = raw ? `<${String(raw).replace(/^<|>$/g, "")}>` : "";
+  }
+
+  return { gmailThreadId, lastInboundMessageId, firstResponded };
+}
+
 async function processOutbox() {
-  const mailer = createMailer();
   const snap = await db
     .collection("ticketMailOutbox")
     .where("status", "==", "approved")
@@ -459,14 +477,23 @@ async function processOutbox() {
     const item = doc.data();
     try {
       await doc.ref.update({ status: "sending", updatedAt: nowTimestamp() });
-      await mailer.sendMail({
-        from: `"${runtimeSettings.fromName}" <${runtimeSettings.supportEmail}>`,
-        to: item.to.map((contact) => contact.email).join(", "),
-        subject: item.subject,
-        text: item.body,
-      });
 
       const ticketRef = db.collection("tickets").doc(item.ticketId);
+      const { gmailThreadId, lastInboundMessageId, firstResponded } =
+        await getThreadContext(ticketRef);
+      const outboundMessageId = makeMessageId(supportDomain());
+
+      await sendMail(gmailSubject(), {
+        from: `"${runtimeSettings.fromName}" <${runtimeSettings.supportEmail}>`,
+        to: item.to.map((contact) => contact.email).join(", "),
+        subjectLine: item.subject,
+        text: item.body,
+        inReplyTo: lastInboundMessageId,
+        references: lastInboundMessageId ? [lastInboundMessageId] : [],
+        threadId: gmailThreadId || undefined,
+        messageId: outboundMessageId,
+      });
+
       await ticketRef.collection("messages").add({
         direction: "outbound",
         from: { name: runtimeSettings.fromName, email: runtimeSettings.supportEmail },
@@ -474,22 +501,26 @@ async function processOutbox() {
         subject: item.subject,
         text: item.body,
         html: "",
-        messageId: "",
-        inReplyTo: "",
-        references: [],
+        messageId: normalizeMessageId(outboundMessageId),
+        inReplyTo: normalizeMessageId(lastInboundMessageId),
+        references: lastInboundMessageId ? [normalizeMessageId(lastInboundMessageId)] : [],
         attachments: [],
         internal: false,
         author: item.approvedBy || null,
         createdAt: nowTimestamp(),
       });
 
-      await ticketRef.update({
+      const ticketUpdate = {
         outboundMessageCount: admin.firestore.FieldValue.increment(1),
         lastOutboundAt: nowTimestamp(),
         lastMessageAt: nowTimestamp(),
         updatedAt: nowTimestamp(),
-        "sla.firstRespondedAt": item.firstRespondedAt || nowTimestamp(),
-      });
+      };
+      // Solo fijar la primera respuesta SLA si aún no se había registrado.
+      if (!firstResponded) {
+        ticketUpdate["sla.firstRespondedAt"] = item.firstRespondedAt || nowTimestamp();
+      }
+      await ticketRef.update(ticketUpdate);
       await doc.ref.update({ status: "sent", sentAt: nowTimestamp(), updatedAt: nowTimestamp() });
     } catch (error) {
       await doc.ref.update({
@@ -508,6 +539,8 @@ async function processOutbox() {
 }
 
 let running = false;
+let lastTickAt = null;
+let lastError = null;
 
 async function tick() {
   if (running) return;
@@ -516,7 +549,10 @@ async function tick() {
     await loadSettings();
     await pollInbox();
     await processOutbox();
+    lastTickAt = new Date().toISOString();
+    lastError = null;
   } catch (error) {
+    lastError = error.message;
     await db.collection("ticketProcessingErrors").add({
       stage: "worker",
       error: error.message,
@@ -530,7 +566,14 @@ async function tick() {
 const server = http.createServer((request, response) => {
   if (request.url === "/health") {
     response.writeHead(200, { "Content-Type": "application/json" });
-    response.end(JSON.stringify({ ok: true, running }));
+    response.end(JSON.stringify({
+      ok: true,
+      running,
+      provider: runtimeSettings.provider || "gmail",
+      mailbox: gmailSubject(),
+      lastTickAt,
+      lastError,
+    }));
     return;
   }
   response.writeHead(200, { "Content-Type": "text/plain" });

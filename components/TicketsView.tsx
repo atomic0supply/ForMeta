@@ -797,6 +797,25 @@ export function TicketsView() {
 
           <section className={styles.panel}>
             <h3>Respuesta</h3>
+            <select
+              value=""
+              onChange={(event) => {
+                const key = event.target.value as TicketTemplateKey;
+                if (!key) return;
+                const source = settings.templates[key] ?? "";
+                const filled = source.replace(/\{\{(\w+)\}\}/g, (_, k) => {
+                  if (k === "name") return selected.requester.name || "";
+                  if (k === "ticketNumber") return selected.number || "";
+                  return `{{${k}}}`;
+                });
+                setReply(filled);
+              }}
+            >
+              <option value="">Insertar plantilla…</option>
+              {TEMPLATE_KEYS.map((key) => (
+                <option key={key} value={key}>{TEMPLATE_LABELS[key]}</option>
+              ))}
+            </select>
             <textarea value={reply} onChange={(event) => setReply(event.target.value)} rows={7} />
             <button type="button" className={styles.primaryButton} disabled={saving || !reply.trim()} onClick={() => void sendReply()}>
               <Send width={13} height={13} />
@@ -905,47 +924,11 @@ export function TicketsView() {
                 />
               </label>
               <label>
-                Usuario Bridge
+                Buzón Gmail (Workspace)
                 <input
-                  value={settingsDraft.bridgeUsername}
-                  onChange={(event) => setSettingsDraft((prev) => ({ ...prev, bridgeUsername: event.target.value }))}
-                />
-              </label>
-              <label>
-                IMAP host
-                <input
-                  value={settingsDraft.imapHost}
-                  onChange={(event) => setSettingsDraft((prev) => ({ ...prev, imapHost: event.target.value }))}
-                />
-              </label>
-              <label>
-                IMAP port
-                <input
-                  type="number"
-                  value={settingsDraft.imapPort}
-                  onChange={(event) => setSettingsDraft((prev) => ({ ...prev, imapPort: Number(event.target.value) }))}
-                />
-              </label>
-              <label>
-                SMTP host
-                <input
-                  value={settingsDraft.smtpHost}
-                  onChange={(event) => setSettingsDraft((prev) => ({ ...prev, smtpHost: event.target.value }))}
-                />
-              </label>
-              <label>
-                SMTP port
-                <input
-                  type="number"
-                  value={settingsDraft.smtpPort}
-                  onChange={(event) => setSettingsDraft((prev) => ({ ...prev, smtpPort: Number(event.target.value) }))}
-                />
-              </label>
-              <label>
-                Secret contraseña
-                <input
-                  value={settingsDraft.bridgePasswordSecretName}
-                  onChange={(event) => setSettingsDraft((prev) => ({ ...prev, bridgePasswordSecretName: event.target.value }))}
+                  value={settingsDraft.gmailUser}
+                  onChange={(event) => setSettingsDraft((prev) => ({ ...prev, gmailUser: event.target.value }))}
+                  placeholder="soporte@formeta.es"
                 />
               </label>
               <label>
