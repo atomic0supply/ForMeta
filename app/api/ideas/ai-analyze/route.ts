@@ -168,6 +168,7 @@ INSTRUCCIONES DE FORMATO — OBLIGATORIAS:
    ## Modelo de Negocio
    ## Hoja de Ruta
    ## Riesgos y Mitigacion
+   ## Stack Tecnologico Recomendado
 
 2. REGLAS DE ESTILO:
    - ELEVATOR PITCH: maximo 3 lineas. Define QUE hace, PARA QUIEN y cual es el BENEFICIO PRINCIPAL.
@@ -181,6 +182,7 @@ INSTRUCCIONES DE FORMATO — OBLIGATORIAS:
    - MODELO DE NEGOCIO: tabla con columnas Fuente de ingreso | Tipo | Estimacion. Incluye al menos 2 fuentes.
    - HOJA DE RUTA: tabla con columnas Fase | Duracion | Hito principal. Minimo 3 fases, maximo 5.
    - RIESGOS: lista con formato "- **Riesgo**: descripcion → **Mitigacion**: accion concreta."
+   - STACK TECNOLOGICO: tabla con columnas Capa | Tecnologia Recomendada | Justificacion. Incluye SIEMPRE estas capas (en este orden): Framework Frontend, Framework Backend, Base de Datos, UI Framework, Tipografia, CDN / Hosting. Incluye la capa "Graficos JS" SOLO si la idea requiere visualizar datos, metricas o dashboards — si no aplica, omitela. Se muy especifico: usa nombres exactos y versiones actuales (ej: "Next.js 15", "Tailwind CSS v4 + shadcn/ui", "Recharts 2", "Vercel Edge Network", "Inter (cuerpo) · Geist Mono (codigo)"). La columna Justificacion debe ser 1 frase corta con el motivo tecnico o de negocio.
 
 3. TONO Y DATOS:
    - Directo y accionable. Prohibido: "se pretende lograr", "podria intentar", "en un futuro".
