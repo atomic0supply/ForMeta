@@ -36,16 +36,11 @@ env:
     value: "2"
     availability:
       - RUNTIME
-  # PENDIENTE: crear el secreto y DESPUÉS descomentar este bloque (si se referencia
-  # un secreto que no existe, el rollout de App Hosting falla). El SA debe ser
-  # miembro de la Unidad compartida. Comandos:
-  #   Get-Content "C:\Users\tecnic.si\Downloads\gen-lang-client-0631419177-0773ceead21c.json" -Raw | `
-  #     firebase apphosting:secrets:set GOOGLE_DRIVE_SERVICE_ACCOUNT_JSON --project fmeta-f9aed --data-file -
-  #   firebase apphosting:secrets:grantaccess GOOGLE_DRIVE_SERVICE_ACCOUNT_JSON --backend fbacken --project fmeta-f9aed
-  # - variable: GOOGLE_DRIVE_SERVICE_ACCOUNT_JSON
-  #   secret: GOOGLE_DRIVE_SERVICE_ACCOUNT_JSON
-  #   availability:
-  #     - RUNTIME
+  # Clave del SA miembro de la Unidad compartida (secreto en Secret Manager).
+  - variable: GOOGLE_DRIVE_SERVICE_ACCOUNT_JSON
+    secret: GOOGLE_DRIVE_SERVICE_ACCOUNT_JSON
+    availability:
+      - RUNTIME
 
   # Cloudflare Access service token (opcional):
   # Solo necesario si se reactiva Cloudflare Access / Under Attack Mode
