@@ -82,6 +82,39 @@ export async function createProjectFolder(
   return (await res.json()).item;
 }
 
+export async function renameProjectFile(
+  projectId: string,
+  fileId: string,
+  name: string,
+): Promise<DriveItem> {
+  const res = await fetch(`/api/projects/${projectId}/files/${fileId}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${await token()}`,
+    },
+    body: JSON.stringify({ name }),
+  });
+  if (!res.ok) throw new Error(await readError(res));
+  return (await res.json()).item;
+}
+
+export type DriveSearchResult = DriveItem & { path: string };
+
+export async function searchProjectFiles(
+  projectId: string,
+  q: string,
+): Promise<DriveSearchResult[]> {
+  const url = new URL(`/api/projects/${projectId}/files/search`, window.location.origin);
+  url.searchParams.set("q", q);
+  const res = await fetch(url.toString(), {
+    headers: { Authorization: `Bearer ${await token()}` },
+    cache: "no-store",
+  });
+  if (!res.ok) throw new Error(await readError(res));
+  return (await res.json()).results;
+}
+
 export async function deleteProjectFile(projectId: string, fileId: string): Promise<void> {
   const res = await fetch(`/api/projects/${projectId}/files/${fileId}`, {
     method: "DELETE",

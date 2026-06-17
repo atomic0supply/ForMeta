@@ -140,6 +140,50 @@ export async function deleteItem(fileId: string): Promise<void> {
   await drive.files.delete({ fileId, supportsAllDrives: true });
 }
 
+export async function renameItem(fileId: string, name: string): Promise<DriveItem> {
+  const drive = getDrive();
+  const res = await drive.files.update({
+    fileId,
+    requestBody: { name },
+    fields: "id, name, mimeType, size, modifiedTime",
+    supportsAllDrives: true,
+  });
+  return toItem(res.data);
+}
+
+export type DriveSearchResult = DriveItem & { path: string };
+
+/**
+ * Busca por nombre (substring, sin distinguir mayúsculas) dentro del árbol del
+ * proyecto. Recorre las carpetas del proyecto (suelen ser pocas), así el ámbito
+ * queda acotado de forma exacta a `rootId`.
+ */
+export async function searchProjectFiles(
+  rootId: string,
+  query: string,
+  max = 200,
+): Promise<DriveSearchResult[]> {
+  const q = query.trim().toLowerCase();
+  if (!q) return [];
+  const results: DriveSearchResult[] = [];
+  const queue: { id: string; path: string }[] = [{ id: rootId, path: "Archivos" }];
+  let visited = 0;
+  while (queue.length && results.length < max && visited < 3000) {
+    const { id, path } = queue.shift() as { id: string; path: string };
+    visited += 1;
+    const children = await listChildren(id);
+    for (const child of children) {
+      if (child.name.toLowerCase().includes(q)) {
+        results.push({ ...child, path });
+      }
+      if (child.isFolder) {
+        queue.push({ id: child.id, path: `${path} / ${child.name}` });
+      }
+    }
+  }
+  return results;
+}
+
 export async function downloadFile(
   fileId: string,
 ): Promise<{ meta: drive_v3.Schema$File; stream: Readable }> {
