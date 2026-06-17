@@ -17,6 +17,18 @@ const DOT: Record<Health, string> = {
   loading: "#9a9890",
 };
 
+function formatBytes(bytes: number): string {
+  if (!bytes || bytes < 0) return "0 B";
+  const units = ["B", "KB", "MB", "GB", "TB"];
+  let value = bytes;
+  let i = 0;
+  while (value >= 1024 && i < units.length - 1) {
+    value /= 1024;
+    i += 1;
+  }
+  return `${value.toFixed(value >= 10 || i === 0 ? 0 : 1)} ${units[i]}`;
+}
+
 function StatusRow({ label, state, detail }: { label: string; state: Health; detail: string }) {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 0", borderBottom: "1px solid rgba(44,44,40,0.06)" }}>
@@ -44,6 +56,11 @@ export function ServiceStatusTab() {
   const [settings, setSettings] = useState<TicketMailSettings | null>(null);
   const [mailState, setMailState] = useState<Health>("loading");
   const [mailDetail, setMailDetail] = useState("Comprobando…");
+
+  // Google Drive (archivos de proyectos)
+  const [driveState, setDriveState] = useState<Health>("loading");
+  const [driveDetail, setDriveDetail] = useState("Comprobando…");
+  const [driveSub, setDriveSub] = useState("");
 
   useEffect(() => subscribeToTicketSettings(setSettings), []);
 
@@ -99,6 +116,35 @@ export function ServiceStatusTab() {
       setMailDetail("No se pudo leer el estado del worker");
     }
 
+    // ── Google Drive: conexión con la Unidad compartida + uso ──
+    setDriveState("loading");
+    try {
+      const tok = await auth?.currentUser?.getIdToken();
+      const res = await fetch("/api/drive/status", {
+        headers: tok ? { Authorization: `Bearer ${tok}` } : {},
+        cache: "no-store",
+      });
+      const data = await res.json();
+      if (!res.ok || data.error || !data.ok) {
+        setDriveState("error");
+        setDriveDetail(data.error || "No se pudo conectar con Drive");
+        setDriveSub("");
+      } else {
+        setDriveState("ok");
+        setDriveDetail(`Conectado · ${data.sharedDriveName || "Unidad compartida"}`);
+        const used = formatBytes(data.filesUsedBytes || 0);
+        const available =
+          data.quota && data.quota.limit
+            ? `disponible ${formatBytes(data.quota.limit - data.quota.usage)} de ${formatBytes(data.quota.limit)}`
+            : `plan ${data.planLimitTb || 2} TB`;
+        setDriveSub(`Usado por proyectos: ${used} · ${data.fileCount || 0} archivos · ${available}`);
+      }
+    } catch {
+      setDriveState("error");
+      setDriveDetail("No se pudo consultar Drive");
+      setDriveSub("");
+    }
+
     setCheckedAt(new Date().toLocaleString("es-ES"));
     setRefreshing(false);
   }, []);
@@ -134,6 +180,12 @@ export function ServiceStatusTab() {
       {settings && (
         <div style={{ paddingLeft: 21, fontSize: "0.78rem", color: "var(--color-muted-strong)" }}>
           Proveedor: {settings.provider} · buzón: {settings.gmailUser || settings.supportEmail || "sin configurar"}
+        </div>
+      )}
+      <StatusRow label="Google Drive" state={driveState} detail={driveDetail} />
+      {driveSub && (
+        <div style={{ paddingLeft: 21, fontSize: "0.78rem", color: "var(--color-muted-strong)" }}>
+          {driveSub}
         </div>
       )}
     </section>

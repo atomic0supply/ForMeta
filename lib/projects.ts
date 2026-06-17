@@ -39,6 +39,7 @@ export type Project = {
   currency?: string;
   taskPlanningSummary?: string;
   taskPlanningUpdatedAt?: Timestamp | null;
+  driveFolderId?: string; // carpeta raíz del proyecto en la Unidad compartida de Drive
   createdAt: Timestamp | null;
 };
 

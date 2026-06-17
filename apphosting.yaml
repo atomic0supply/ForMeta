@@ -27,6 +27,25 @@ env:
   #   availability:
   #     - RUNTIME
 
+  # Google Drive (módulo de archivos por proyecto).
+  #   GOOGLE_DRIVE_ROOT_ID: ID de la Unidad compartida (Shared Drive).
+  #   GOOGLE_DRIVE_PLAN_LIMIT_TB: límite del plan para mostrar "disponible" (def. 2).
+  #   GOOGLE_DRIVE_SERVICE_ACCOUNT_JSON: clave JSON del SA miembro de la unidad
+  #     (puede ser el mismo SA que el worker). Crear el secreto antes de descomentar:
+  #     firebase apphosting:secrets:set GOOGLE_DRIVE_SERVICE_ACCOUNT_JSON --project fmeta-f9aed
+  # - variable: GOOGLE_DRIVE_ROOT_ID
+  #   value: "0AXXXXXXXXXXXXXXXXXX"
+  #   availability:
+  #     - RUNTIME
+  # - variable: GOOGLE_DRIVE_PLAN_LIMIT_TB
+  #   value: "2"
+  #   availability:
+  #     - RUNTIME
+  # - variable: GOOGLE_DRIVE_SERVICE_ACCOUNT_JSON
+  #   secret: GOOGLE_DRIVE_SERVICE_ACCOUNT_JSON
+  #   availability:
+  #     - RUNTIME
+
   # Cloudflare Access service token (opcional):
   # Solo necesario si se reactiva Cloudflare Access / Under Attack Mode
   # en fiscal.formeta.es o frag.formeta.es. Para activarlo, crea los

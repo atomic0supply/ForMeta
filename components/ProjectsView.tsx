@@ -14,6 +14,7 @@ import {
   subscribeToProjects,
   updateProject,
 } from "@/lib/projects";
+import { ensureProjectFiles } from "@/lib/projectFilesClient";
 import styles from "@/styles/intranet-projects.module.css";
 
 const STATUS_LABELS: Record<ProjectStatus, string> = {
@@ -146,7 +147,10 @@ export function ProjectsView() {
       if (editing) {
         await updateProject(editing.id, { ...form, tags });
       } else {
-        await createProject({ ...form, tags });
+        const newId = await createProject({ ...form, tags });
+        // Crea en segundo plano la estructura de carpetas en Drive (Diseño,
+        // Imágenes, Código, Administración). No bloquea el cierre del drawer.
+        void ensureProjectFiles(newId);
       }
       closeDrawer();
     } finally {

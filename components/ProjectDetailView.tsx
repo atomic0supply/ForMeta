@@ -25,13 +25,14 @@ import {
 } from "@/lib/projects";
 import { ProjectApisTab } from "@/components/ProjectApisTab";
 import { ProjectBudgetTab } from "@/components/ProjectBudgetTab";
+import { ProjectFilesTab } from "@/components/ProjectFilesTab";
 import { ProjectKanbanTab } from "@/components/ProjectKanbanTab";
 import { ProjectLinksTab } from "@/components/ProjectLinksTab";
 import { ProjectTimeTab } from "@/components/ProjectTimeTab";
 import { ProjectWikiTab } from "@/components/ProjectWikiTab";
 import styles from "@/styles/intranet-projects.module.css";
 
-type Tab = "info" | "links" | "apis" | "endpoints" | "tareas" | "tiempo" | "budget" | "wiki";
+type Tab = "info" | "links" | "apis" | "endpoints" | "tareas" | "tiempo" | "budget" | "wiki" | "files";
 
 const STATUS_LABELS: Record<ProjectStatus, string> = {
   activo: "Activo",
@@ -253,7 +254,7 @@ export function ProjectDetailView({ id }: { id: string }) {
 
       {/* Tabs */}
       <div className={styles.tabs}>
-        {(["info", "links", "apis", "endpoints", "tareas", "tiempo", "budget", "wiki"] as Tab[]).map((tab) => (
+        {(["info", "links", "apis", "endpoints", "tareas", "tiempo", "budget", "wiki", "files"] as Tab[]).map((tab) => (
           <button
             key={tab}
             type="button"
@@ -268,6 +269,7 @@ export function ProjectDetailView({ id }: { id: string }) {
             {tab === "tiempo" && "Tiempo"}
             {tab === "budget" && "Budget"}
             {tab === "wiki" && "Wiki"}
+            {tab === "files" && "Files"}
           </button>
         ))}
       </div>
@@ -454,6 +456,13 @@ export function ProjectDetailView({ id }: { id: string }) {
       {activeTab === "wiki" && (
         <div className={styles.tabContent} style={{ padding: 0 }}>
           <ProjectWikiTab projectId={project.id} />
+        </div>
+      )}
+
+      {/* Files tab */}
+      {activeTab === "files" && (
+        <div className={styles.tabContent}>
+          <ProjectFilesTab projectId={project.id} />
         </div>
       )}
 

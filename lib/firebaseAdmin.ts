@@ -76,6 +76,33 @@ export async function requireAdmin(authorizationHeader: string | null): Promise<
   return { uid };
 }
 
+/**
+ * Verify a Firebase ID token and ensure the caller is an active user (any role).
+ * Use for endpoints that any team member may call. Returns the decoded uid.
+ */
+export async function requireAuth(authorizationHeader: string | null): Promise<{ uid: string }> {
+  const token = authorizationHeader?.replace(/^Bearer\s+/i, "").trim();
+  if (!token) {
+    throw new AdminAuthError("Falta el token de autenticación", 401);
+  }
+
+  let uid: string;
+  try {
+    const decoded = await adminAuth().verifyIdToken(token);
+    uid = decoded.uid;
+  } catch {
+    throw new AdminAuthError("Token inválido o expirado", 401);
+  }
+
+  const profile = await adminDb().collection("users").doc(uid).get();
+  const data = profile.data();
+  if (!data || data.active === false) {
+    throw new AdminAuthError("Cuenta inactiva o inexistente", 403);
+  }
+
+  return { uid };
+}
+
 export class AdminAuthError extends Error {
   status: number;
   constructor(message: string, status: number) {
