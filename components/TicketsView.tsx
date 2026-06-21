@@ -30,7 +30,10 @@ import {
   type Client,
 } from "@/lib/clients";
 import { createTicketOpenedNotification } from "@/lib/clientNotifications";
-import { renderClientMail } from "@/lib/clientMailTemplates";
+import {
+  DEFAULT_SUPPORT_FOOTER_HTML,
+  renderClientMail,
+} from "@/lib/clientMailTemplates";
 import {
   subscribeToProjects,
   type Project,
@@ -604,7 +607,9 @@ export function TicketsView() {
               ticketNumber: created.number,
               ticketSubject: newTicket.subject.trim(),
             },
-            { signatureHtml: settings.signatures.client },
+            // El acuse es un correo de soporte (sale de support@formeta.es),
+            // por eso el pie apunta a support@ y no a la firma de info@.
+            { signatureHtml: DEFAULT_SUPPORT_FOOTER_HTML },
           );
           await createTicketOpenedNotification({
             to: [{ name: client.contact || client.name, email: client.email }],

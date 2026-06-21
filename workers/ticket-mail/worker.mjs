@@ -627,8 +627,16 @@ async function processClientOutbox() {
       const cc = (item.cc || []).map((contact) => contact.email).filter(Boolean).join(", ");
       if (!to) throw new Error("Sin destinatarios");
 
-      const fromEmail = runtimeSettings.clientFromEmail || DEFAULT_SETTINGS.clientFromEmail;
-      const fromName = runtimeSettings.clientFromName || DEFAULT_SETTINGS.clientFromName;
+      // El acuse de apertura de ticket es un correo de SOPORTE: sale de
+      // support@formeta.es (único buzón de tickets), no del alias de cliente.
+      // El resto de notificaciones siguen saliendo de info@formeta.es.
+      const isTicketAck = item.kind === "ticket_opened";
+      const fromEmail = isTicketAck
+        ? runtimeSettings.supportEmail || DEFAULT_SETTINGS.supportEmail
+        : runtimeSettings.clientFromEmail || DEFAULT_SETTINGS.clientFromEmail;
+      const fromName = isTicketAck
+        ? runtimeSettings.fromName || DEFAULT_SETTINGS.fromName
+        : runtimeSettings.clientFromName || DEFAULT_SETTINGS.clientFromName;
 
       await sendMail(gmailSubject(), {
         from: `"${fromName}" <${fromEmail}>`,

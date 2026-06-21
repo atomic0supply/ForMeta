@@ -76,6 +76,14 @@ export const DEFAULT_CLIENT_FOOTER_HTML =
   `<a href="mailto:${BRAND_EMAIL}" style="color:${TERRA};text-decoration:none;">${BRAND_EMAIL}</a> · ` +
   `<a href="${BRAND_SITE}" style="color:${TERRA};text-decoration:none;">formeta.es</a>`;
 
+// Pie para correos de SOPORTE (tickets). Apunta a support@formeta.es porque ese
+// es el único buzón de tickets: el acuse sale de ahí y las respuestas vuelven ahí.
+const SUPPORT_EMAIL = "support@formeta.es";
+export const DEFAULT_SUPPORT_FOOTER_HTML =
+  `<strong style="color:${INK};font-family:${FONT_HEAD};font-size:14px;">Soporte · Formeta</strong><br>` +
+  `<a href="mailto:${SUPPORT_EMAIL}" style="color:${TERRA};text-decoration:none;">${SUPPORT_EMAIL}</a> · ` +
+  `<a href="${BRAND_SITE}" style="color:${TERRA};text-decoration:none;">formeta.es</a>`;
+
 /* ── Helpers ───────────────────────────────────────────────────────── */
 
 export function escapeHtml(value: unknown): string {
