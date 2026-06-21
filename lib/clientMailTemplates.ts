@@ -9,6 +9,7 @@ export type ClientMailKind =
   | "proposal"
   | "improvement_quote"
   | "service_unavailable"
+  | "ticket_opened"
   | "general";
 
 export type MailLine = {
@@ -34,6 +35,9 @@ export type RenderMailVars = {
   fromDate?: string;
   toDate?: string;
   reason?: string;
+  // ticket_opened
+  ticketNumber?: string;
+  ticketSubject?: string;
 };
 
 export type RenderedMail = {
@@ -270,6 +274,23 @@ function serviceUnavailableBody(vars: RenderMailVars): string {
   ].join("");
 }
 
+function ticketOpenedBody(vars: RenderMailVars): string {
+  const ref = vars.ticketNumber
+    ? ` <strong style="color:${INK};">${escapeHtml(vars.ticketNumber)}</strong>`
+    : "";
+  const subjectNote = vars.ticketSubject
+    ? noteBox(`<strong>Asunto:</strong> ${escapeHtml(vars.ticketSubject)}`)
+    : "";
+  return [
+    heading(vars.title || "Hemos recibido tu solicitud"),
+    greeting(vars.clientName),
+    `<p style="margin:0 0 14px;line-height:1.6;">Hemos registrado tu solicitud y creado el ticket${ref}. Nuestro equipo ya lo está revisando y te responderemos lo antes posible.</p>`,
+    subjectNote,
+    vars.message ? paragraphs(vars.message) : "",
+    `<p style="margin:0 0 14px;line-height:1.6;">Si necesitas añadir información, responde a este mismo correo y la sumaremos al seguimiento.</p>`,
+  ].join("");
+}
+
 function generalBody(vars: RenderMailVars): string {
   return [
     heading(vars.title || "Comunicación de Formeta"),
@@ -311,6 +332,15 @@ function plainText(kind: ClientMailKind, vars: RenderMailVars, signatureText?: s
     }
     if (vars.reason) out.push("", vars.reason);
     if (vars.message) out.push("", vars.message);
+  } else if (kind === "ticket_opened") {
+    out.push(
+      vars.ticketNumber
+        ? `Hemos registrado tu solicitud y creado el ticket ${vars.ticketNumber}.`
+        : "Hemos registrado tu solicitud.",
+    );
+    if (vars.ticketSubject) out.push("", `Asunto: ${vars.ticketSubject}`);
+    if (vars.message) out.push("", vars.message);
+    out.push("", "Si necesitas añadir información, responde a este correo.");
   } else {
     if (vars.intro) out.push(vars.intro, "");
     out.push(vars.message || "");
@@ -326,6 +356,7 @@ const SUBJECT_PREFIX: Record<ClientMailKind, string> = {
   proposal: "Propuesta",
   improvement_quote: "Presupuesto de mejora",
   service_unavailable: "Aviso de servicio",
+  ticket_opened: "Hemos recibido tu solicitud",
   general: "Formeta",
 };
 
@@ -334,6 +365,9 @@ export function defaultSubject(kind: ClientMailKind, vars: RenderMailVars): stri
   if (kind === "proposal" && vars.proposalNumber) return `Propuesta ${vars.proposalNumber}`;
   if (kind === "service_unavailable" && vars.serviceName) {
     return `Aviso de servicio: ${vars.serviceName}`;
+  }
+  if (kind === "ticket_opened" && vars.ticketNumber) {
+    return `Hemos abierto tu ticket ${vars.ticketNumber}`;
   }
   return SUBJECT_PREFIX[kind];
 }
@@ -353,6 +387,9 @@ export function renderClientMail(
       break;
     case "service_unavailable":
       body = serviceUnavailableBody(vars);
+      break;
+    case "ticket_opened":
+      body = ticketOpenedBody(vars);
       break;
     default:
       body = generalBody(vars);

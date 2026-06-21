@@ -29,6 +29,8 @@ import {
   subscribeToClients,
   type Client,
 } from "@/lib/clients";
+import { createTicketOpenedNotification } from "@/lib/clientNotifications";
+import { renderClientMail } from "@/lib/clientMailTemplates";
 import {
   subscribeToProjects,
   type Project,
@@ -587,8 +589,41 @@ export function TicketsView() {
     if (!newTicket.subject.trim() || !newTicket.requester.email.trim()) return;
     setSaving(true);
     try {
-      const id = await createManualTicket(newTicket);
-      setSelectedId(id);
+      const created = await createManualTicket(newTicket);
+      setSelectedId(created.id);
+
+      // Acuse automático de apertura al cliente (a su email principal). Si falla al
+      // encolarse, no bloquea la creación del ticket.
+      const client = clients.find((item) => item.id === newTicket.clientId);
+      if (client?.email) {
+        try {
+          const rendered = renderClientMail(
+            "ticket_opened",
+            {
+              clientName: client.name,
+              ticketNumber: created.number,
+              ticketSubject: newTicket.subject.trim(),
+            },
+            { signatureHtml: settings.signatures.client },
+          );
+          await createTicketOpenedNotification({
+            to: [{ name: client.contact || client.name, email: client.email }],
+            subject: rendered.subject,
+            html: rendered.html,
+            text: rendered.text,
+            templateData: {
+              ticketId: created.id,
+              ticketNumber: created.number,
+              subject: newTicket.subject.trim(),
+            },
+            clientId: client.id,
+            ticketId: created.id,
+          });
+        } catch {
+          // El acuse es best-effort; el ticket ya está creado.
+        }
+      }
+
       setCreatingTicket(false);
       setNewTicket(emptyNewTicket);
     } finally {
@@ -1120,6 +1155,12 @@ export function TicketsView() {
                     ...prev,
                     clientId: event.target.value,
                     clientName: client?.name ?? "",
+                    requester: {
+                      // Autocompleta el correo desde el cliente (y el nombre si está vacío)
+                      // para no tener que teclearlo a mano.
+                      name: prev.requester.name || client?.contact || "",
+                      email: client?.email || prev.requester.email,
+                    },
                   }));
                 }}
               >

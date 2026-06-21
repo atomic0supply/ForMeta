@@ -21,6 +21,9 @@ export type { ClientMailKind } from "@/lib/clientMailTemplates";
 // compone (draft), previsualiza y aprueba; el worker solo envía las "approved".
 export type ClientMailStatus = "draft" | "approved" | "sending" | "sent" | "failed";
 
+// Tipos disponibles para composición MANUAL en Comunicaciones. "ticket_opened" se
+// omite a propósito: es un acuse automático, no se redacta a mano (pero sí tiene
+// etiqueta en CLIENT_MAIL_KIND_LABELS para mostrarse en la cola).
 export const CLIENT_MAIL_KINDS: ClientMailKind[] = [
   "proposal",
   "improvement_quote",
@@ -32,6 +35,7 @@ const CLIENT_MAIL_KIND_LABELS: Record<ClientMailKind, string> = {
   proposal: "Propuesta",
   improvement_quote: "Presupuesto de mejora",
   service_unavailable: "Servicio no disponible",
+  ticket_opened: "Apertura de ticket",
   general: "General",
 };
 
@@ -51,7 +55,7 @@ export type ClientMailApprover = {
 };
 
 export type ClientMailRelated = {
-  type: "proposal" | "client" | "project" | "service" | "none";
+  type: "proposal" | "client" | "project" | "service" | "ticket" | "none";
   id: string;
 };
 
@@ -116,6 +120,44 @@ export async function createClientNotification(
     relatedEntity: input.relatedEntity ?? null,
     status: "draft",
     approvedBy: null,
+    sentAt: null,
+    error: "",
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp(),
+  });
+  return ref.id;
+}
+
+// Acuse de apertura de ticket: correo transaccional que NO pasa por la cola de
+// aprobación. Se crea ya "approved" para que el worker lo envíe de inmediato.
+// Las reglas de Firestore solo permiten crear "approved" cuando kind ==
+// "ticket_opened" (ver firestore.rules). El html/text ya van renderizados.
+export type TicketOpenedNotificationInput = {
+  to: ClientMailRecipient[];
+  subject: string;
+  html: string;
+  text: string;
+  templateData: Record<string, unknown>;
+  clientId: string;
+  ticketId: string;
+};
+
+export async function createTicketOpenedNotification(
+  input: TicketOpenedNotificationInput,
+): Promise<string> {
+  if (!db) throw new Error("Firebase no disponible");
+  const ref = await addDoc(collection(db, COL), {
+    kind: "ticket_opened" as ClientMailKind,
+    to: input.to,
+    cc: [],
+    subject: input.subject,
+    templateData: input.templateData,
+    html: input.html,
+    text: input.text,
+    clientId: input.clientId,
+    relatedEntity: { type: "ticket", id: input.ticketId },
+    status: "approved",
+    approvedBy: { uid: "system", name: "Acuse automático" },
     sentAt: null,
     error: "",
     createdAt: serverTimestamp(),

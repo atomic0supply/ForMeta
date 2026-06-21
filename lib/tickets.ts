@@ -389,7 +389,9 @@ export function buildTicketSla(
   };
 }
 
-export async function createManualTicket(input: NewTicketInput): Promise<string> {
+export async function createManualTicket(
+  input: NewTicketInput,
+): Promise<{ id: string; number: string }> {
   if (!db) throw new Error("Firebase no disponible");
   const year = new Date().getFullYear();
   const localNumber = `FM-${year}-MANUAL-${Date.now().toString().slice(-5)}`;
@@ -445,7 +447,7 @@ export async function createManualTicket(input: NewTicketInput): Promise<string>
     });
   }
 
-  return ref.id;
+  return { id: ref.id, number: localNumber };
 }
 
 export function subscribeToTicketMessages(

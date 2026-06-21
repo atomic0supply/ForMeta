@@ -105,7 +105,14 @@ service cloud.firestore {
     // que un correo ya enviado no puede reabrirse ni reenviarse desde la UI.
     match /clientMailOutbox/{outboxId} {
       allow read: if isAuth();
-      allow create: if isAuth() && request.resource.data.status == "draft";
+      // Regla general: los correos a cliente se crean como borrador y un admin los
+      // aprueba. Excepción: el acuse de apertura de ticket (kind == "ticket_opened")
+      // es transaccional y se crea ya aprobado para que el worker lo envíe al instante.
+      allow create: if isAuth() && (
+        request.resource.data.status == "draft"
+        || (request.resource.data.status == "approved"
+            && request.resource.data.kind == "ticket_opened")
+      );
       allow update: if isAuth()
         && resource.data.status in ["draft", "failed"]
         && (
