@@ -19,6 +19,11 @@ import {
   type ClientMailKind,
   type MailLine,
 } from "@/lib/clientMailTemplates";
+import {
+  DEFAULT_TICKET_SETTINGS,
+  subscribeToTicketSettings,
+  type TicketMailSettings,
+} from "@/lib/ticketSettings";
 import { formatMoney } from "@/lib/fiscal";
 import { useCurrentUser } from "@/lib/useCurrentUser";
 import styles from "@/styles/intranet-comunicaciones.module.css";
@@ -97,6 +102,7 @@ export function CommunicationsView() {
   const [saving, setSaving] = useState(false);
   const [busyId, setBusyId] = useState("");
   const [notice, setNotice] = useState("");
+  const [settings, setSettings] = useState<TicketMailSettings>(DEFAULT_TICKET_SETTINGS);
   const isAdmin = currentUser?.role === "admin";
 
   useEffect(() => {
@@ -110,6 +116,8 @@ export function CommunicationsView() {
       unsubCli();
     };
   }, []);
+
+  useEffect(() => subscribeToTicketSettings(setSettings), []);
 
   function setField<K extends keyof Composer>(key: K, value: Composer[K]) {
     setForm((f) => ({ ...f, [key]: value }));
@@ -140,7 +148,13 @@ export function CommunicationsView() {
     };
   }, [clients, form, subtotal]);
 
-  const rendered = useMemo(() => renderClientMail(form.kind, renderVars), [form.kind, renderVars]);
+  const rendered = useMemo(
+    () =>
+      renderClientMail(form.kind, renderVars, {
+        signatureHtml: settings.signatures.client,
+      }),
+    [form.kind, renderVars, settings.signatures.client],
+  );
 
   function openNew() {
     setForm(emptyComposer());

@@ -37,13 +37,21 @@ import styles from "@/styles/intranet-team.module.css";
 import tabStyles from "@/styles/intranet-servicios.module.css";
 import shaderStyles from "@/styles/intranet-shader.module.css";
 
-type TeamTab = "usuarios" | "roles" | "tickets" | "notificaciones" | "estado" | "preferencias";
+type TeamTab =
+  | "usuarios"
+  | "roles"
+  | "tickets"
+  | "notificaciones"
+  | "firmas"
+  | "estado"
+  | "preferencias";
 
 const ADMIN_TABS: { key: TeamTab; label: string }[] = [
   { key: "usuarios", label: "Usuarios" },
   { key: "roles", label: "Roles" },
   { key: "tickets", label: "Tickets" },
   { key: "notificaciones", label: "Notificaciones" },
+  { key: "firmas", label: "Firmas" },
   { key: "estado", label: "Estado" },
   { key: "preferencias", label: "Preferencias" },
 ];
@@ -110,6 +118,7 @@ export function UserManagementView() {
     useState<TicketMailSettings>(DEFAULT_TICKET_SETTINGS);
   const [savingTicketSettings, setSavingTicketSettings] = useState(false);
   const [ticketSettingsMessage, setTicketSettingsMessage] = useState<string | null>(null);
+  const [signatureMailbox, setSignatureMailbox] = useState<"support" | "client">("support");
   const [wallpaper, setWallpaper] = useState<"none" | "bruma" | "flujo">(
     () => (typeof window !== "undefined"
       ? (localStorage.getItem("roqueta-wallpaper") as "none" | "bruma" | "flujo") ?? "none"
@@ -672,6 +681,102 @@ export function UserManagementView() {
               disabled={!currentUser || savingTicketSettings}
             >
               {savingTicketSettings ? "Guardando…" : "Guardar notificaciones"}
+            </button>
+          </div>
+          {ticketSettingsMessage && (
+            <p className={styles.saveMessage}>{ticketSettingsMessage}</p>
+          )}
+        </form>
+      </section>
+      )}
+
+      {isAdmin && tab === "firmas" && (
+      <section className={styles.settingsCard}>
+        <div className={styles.settingsHeader}>
+          <div>
+            <p className={styles.sectionKicker}>Correo</p>
+            <h2 className={styles.sectionTitle}>Firmas</h2>
+          </div>
+          <span className={styles.settingsStatus}>
+            {signatureMailbox === "support"
+              ? ticketSettingsDraft.supportEmail || "support@"
+              : ticketSettingsDraft.clientFromEmail || "info@"}
+          </span>
+        </div>
+
+        <p className={styles.settingsCopy}>
+          Elige el buzón y ajusta su firma. La de <strong>soporte</strong> (texto plano) se
+          precarga al final de las respuestas de tickets en el compositor. La de{" "}
+          <strong>cliente</strong> (admite HTML) es el pie de las propuestas y comunicaciones
+          enviadas desde la intranet.
+        </p>
+
+        <div className={tabStyles.tabs}>
+          <button
+            type="button"
+            onClick={() => setSignatureMailbox("support")}
+            className={`${tabStyles.tab} ${signatureMailbox === "support" ? tabStyles.tabActive : ""}`}
+          >
+            Soporte · {ticketSettingsDraft.supportEmail || "support@formeta.es"}
+          </button>
+          <button
+            type="button"
+            onClick={() => setSignatureMailbox("client")}
+            className={`${tabStyles.tab} ${signatureMailbox === "client" ? tabStyles.tabActive : ""}`}
+          >
+            Cliente · {ticketSettingsDraft.clientFromEmail || "info@formeta.es"}
+          </button>
+        </div>
+
+        <form onSubmit={(e) => void handleSaveTicketSettings(e)} className={styles.settingsForm}>
+          <fieldset className={styles.settingsFieldset} disabled={!currentUser || savingTicketSettings}>
+            <label className={styles.signatureEditor}>
+              {signatureMailbox === "support"
+                ? "Firma de soporte (texto plano)"
+                : "Firma de cliente (HTML)"}
+              <textarea
+                rows={signatureMailbox === "support" ? 5 : 8}
+                value={ticketSettingsDraft.signatures[signatureMailbox]}
+                onChange={(e) =>
+                  setTicketSettingsDraft((prev) => ({
+                    ...prev,
+                    signatures: { ...prev.signatures, [signatureMailbox]: e.target.value },
+                  }))
+                }
+                spellCheck={false}
+              />
+            </label>
+
+            <div className={styles.ticketSettingsBlock}>
+              <p className={styles.fieldLabel}>Previsualización</p>
+              {signatureMailbox === "support" ? (
+                <pre className={styles.signaturePreviewSupport}>
+                  {`-- \n${ticketSettingsDraft.signatures.support || ""}`}
+                </pre>
+              ) : (
+                <div
+                  className={styles.signaturePreviewClient}
+                  dangerouslySetInnerHTML={{ __html: ticketSettingsDraft.signatures.client || "" }}
+                />
+              )}
+            </div>
+          </fieldset>
+
+          <div className={styles.settingsActions}>
+            <button
+              type="button"
+              onClick={() => setTicketSettingsDraft(ticketSettings)}
+              className={styles.secondaryBtn}
+              disabled={!currentUser || savingTicketSettings}
+            >
+              Restaurar
+            </button>
+            <button
+              type="submit"
+              className={styles.primaryBtn}
+              disabled={!currentUser || savingTicketSettings}
+            >
+              {savingTicketSettings ? "Guardando…" : "Guardar firmas"}
             </button>
           </div>
           {ticketSettingsMessage && (

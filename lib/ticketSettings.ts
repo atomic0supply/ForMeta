@@ -24,6 +24,14 @@ export type TicketSlaSetting = {
 
 export type TicketMailProvider = "gmail";
 
+// Firmas configurables por buzón.
+//  - support: texto plano, se precarga al final de las respuestas de tickets.
+//  - client: HTML (contenido interior del pie) de las notificaciones a clientes.
+export type MailSignatures = {
+  support: string;
+  client: string;
+};
+
 export type TicketMailSettings = {
   supportEmail: string;
   fromName: string;
@@ -38,8 +46,22 @@ export type TicketMailSettings = {
   reopenWindowDays: number;
   sla: Record<TicketSeverity, TicketSlaSetting>;
   templates: Record<TicketTemplateKey, string>;
+  signatures: MailSignatures;
   updatedAt?: unknown;
 };
+
+// Firma por defecto de support@ (texto plano). El delimitador estándar «-- » lo
+// añade el compositor; aquí solo va el contenido del bloque.
+export const DEFAULT_SUPPORT_SIGNATURE =
+  "Equipo de Soporte · Formeta\nsupport@formeta.es · formeta.es";
+
+// Firma/pie por defecto de info@ (HTML del contenido interior del pie). Reproduce
+// el markup que estaba fijo en clientMailTemplates.ts para que el render sea
+// idéntico hasta que se edite. Espejo deliberado de DEFAULT_CLIENT_FOOTER_HTML.
+export const DEFAULT_CLIENT_SIGNATURE =
+  '<strong style="color:#2c2c28;font-family:Georgia,\'Times New Roman\',serif;font-size:14px;">Formeta</strong><br>' +
+  '<a href="mailto:info@formeta.es" style="color:#b8896a;text-decoration:none;">info@formeta.es</a> · ' +
+  '<a href="https://formeta.es" style="color:#b8896a;text-decoration:none;">formeta.es</a>';
 
 export const DEFAULT_TICKET_SETTINGS: TicketMailSettings = {
   supportEmail: "support@formeta.es",
@@ -73,6 +95,10 @@ export const DEFAULT_TICKET_SETTINGS: TicketMailSettings = {
     reopen:
       "Hola {{name}},\n\nHemos reabierto el ticket {{ticketNumber}} y lo revisamos de nuevo.\n\nGracias,\nFormeta",
   },
+  signatures: {
+    support: DEFAULT_SUPPORT_SIGNATURE,
+    client: DEFAULT_CLIENT_SIGNATURE,
+  },
 };
 
 function mergeSettings(raw: Partial<TicketMailSettings> | undefined): TicketMailSettings {
@@ -86,6 +112,10 @@ function mergeSettings(raw: Partial<TicketMailSettings> | undefined): TicketMail
     templates: {
       ...DEFAULT_TICKET_SETTINGS.templates,
       ...(raw?.templates ?? {}),
+    },
+    signatures: {
+      ...DEFAULT_TICKET_SETTINGS.signatures,
+      ...(raw?.signatures ?? {}),
     },
   };
 }

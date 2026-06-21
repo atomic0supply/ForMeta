@@ -42,6 +42,12 @@ export type RenderedMail = {
   text: string;
 };
 
+export type RenderMailOptions = {
+  // HTML del contenido interior del pie (firma configurable de info@). Si se omite
+  // se usa DEFAULT_CLIENT_FOOTER_HTML (el pie de marca histórico).
+  signatureHtml?: string;
+};
+
 // Marca Formeta (hex literales — los clientes de correo no entienden CSS vars).
 const INK = "#2c2c28";
 const TERRA = "#b8896a";
@@ -57,6 +63,14 @@ const BRAND_EMAIL = "info@formeta.es";
 
 const FONT_HEAD = "Georgia, 'Times New Roman', serif";
 const FONT_BODY = "Arial, Helvetica, sans-serif";
+
+// Contenido interior del pie por defecto (firma de info@). Espejo de
+// DEFAULT_CLIENT_SIGNATURE en lib/ticketSettings.ts — se mantiene aquí para que
+// este módulo puro no dependa de firebase. Si cambias uno, cambia el otro.
+export const DEFAULT_CLIENT_FOOTER_HTML =
+  `<strong style="color:${INK};font-family:${FONT_HEAD};font-size:14px;">Formeta</strong><br>` +
+  `<a href="mailto:${BRAND_EMAIL}" style="color:${TERRA};text-decoration:none;">${BRAND_EMAIL}</a> · ` +
+  `<a href="${BRAND_SITE}" style="color:${TERRA};text-decoration:none;">formeta.es</a>`;
 
 /* ── Helpers ───────────────────────────────────────────────────────── */
 
@@ -92,9 +106,28 @@ function paragraphs(text: string): string {
     .join("");
 }
 
+// Deriva texto plano desde el HTML de la firma (para el fallback de texto del email).
+export function htmlToPlain(html: string): string {
+  return String(html ?? "")
+    .replace(/<br\s*\/?>/gi, "\n")
+    .replace(/<\/(p|div|tr|h[1-6])>/gi, "\n")
+    .replace(/<[^>]+>/g, "")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&amp;/gi, "&")
+    .replace(/&lt;/gi, "<")
+    .replace(/&gt;/gi, ">")
+    .replace(/&quot;/gi, '"')
+    .replace(/&#39;/gi, "'")
+    .split("\n")
+    .map((line) => line.trim())
+    .filter((line, i, arr) => line.length > 0 || (i > 0 && arr[i - 1].length > 0))
+    .join("\n")
+    .trim();
+}
+
 /* ── Layout wrapper ────────────────────────────────────────────────── */
 
-function layout(bodyHtml: string): string {
+function layout(bodyHtml: string, footerHtml: string = DEFAULT_CLIENT_FOOTER_HTML): string {
   return `<!DOCTYPE html>
 <html lang="es">
 <head>
@@ -118,9 +151,7 @@ function layout(bodyHtml: string): string {
         </tr>
         <tr>
           <td style="padding:20px 36px 28px;border-top:1px solid ${BORDER};color:${MUTED};font-family:${FONT_BODY};font-size:12px;line-height:1.6;">
-            <strong style="color:${INK};font-family:${FONT_HEAD};font-size:14px;">Formeta</strong><br>
-            <a href="mailto:${BRAND_EMAIL}" style="color:${TERRA};text-decoration:none;">${BRAND_EMAIL}</a> ·
-            <a href="${BRAND_SITE}" style="color:${TERRA};text-decoration:none;">formeta.es</a>
+            ${footerHtml}
           </td>
         </tr>
       </table>
@@ -250,7 +281,7 @@ function generalBody(vars: RenderMailVars): string {
 
 /* ── Texto plano (fallback) ────────────────────────────────────────── */
 
-function plainText(kind: ClientMailKind, vars: RenderMailVars): string {
+function plainText(kind: ClientMailKind, vars: RenderMailVars, signatureText?: string): string {
   const out: string[] = [];
   const hello = vars.clientName ? `Hola, ${vars.clientName}:` : "Hola:";
   out.push(hello, "");
@@ -284,7 +315,8 @@ function plainText(kind: ClientMailKind, vars: RenderMailVars): string {
     if (vars.intro) out.push(vars.intro, "");
     out.push(vars.message || "");
   }
-  out.push("", "—", "Formeta", `${BRAND_EMAIL} · formeta.es`);
+  const footer = signatureText?.trim() || htmlToPlain(DEFAULT_CLIENT_FOOTER_HTML);
+  out.push("", "—", ...footer.split("\n"));
   return out.join("\n");
 }
 
@@ -306,7 +338,11 @@ export function defaultSubject(kind: ClientMailKind, vars: RenderMailVars): stri
   return SUBJECT_PREFIX[kind];
 }
 
-export function renderClientMail(kind: ClientMailKind, vars: RenderMailVars): RenderedMail {
+export function renderClientMail(
+  kind: ClientMailKind,
+  vars: RenderMailVars,
+  options: RenderMailOptions = {},
+): RenderedMail {
   let body: string;
   switch (kind) {
     case "proposal":
@@ -322,9 +358,11 @@ export function renderClientMail(kind: ClientMailKind, vars: RenderMailVars): Re
       body = generalBody(vars);
       break;
   }
+  const footerHtml = options.signatureHtml?.trim() || DEFAULT_CLIENT_FOOTER_HTML;
+  const signatureText = htmlToPlain(footerHtml);
   return {
     subject: defaultSubject(kind, vars),
-    html: layout(body),
-    text: plainText(kind, vars),
+    html: layout(body, footerHtml),
+    text: plainText(kind, vars, signatureText),
   };
 }

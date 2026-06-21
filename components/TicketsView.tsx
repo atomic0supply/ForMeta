@@ -256,6 +256,23 @@ function makeTaskInput(
   };
 }
 
+// Firma de soporte en el compositor. Delimitador estándar «-- » (RFC 3676) para
+// poder quitar/reanexar la firma de forma idempotente al cambiar de plantilla o modo.
+const SIG_DELIM = "\n\n-- \n";
+
+function stripSignature(body: string): string {
+  const idx = body.lastIndexOf("\n-- \n");
+  if (idx < 0) return body;
+  return body.slice(0, idx).replace(/\s+$/, "");
+}
+
+function withSignature(body: string, signature: string): string {
+  const base = stripSignature(body);
+  const sig = signature.trim();
+  if (!sig) return base;
+  return `${base}${SIG_DELIM}${sig}`;
+}
+
 export function TicketsView() {
   const currentUser = useCurrentUser();
   const [tickets, setTickets] = useState<Ticket[]>([]);
@@ -282,6 +299,17 @@ export function TicketsView() {
   const [settingsSaving, setSettingsSaving] = useState(false);
   const [settingsMessage, setSettingsMessage] = useState("");
   const isAdmin = currentUser?.role === "admin";
+
+  // Refs para leer el modo/firma actuales dentro del efecto de selección sin
+  // añadirlos a sus deps (evita re-resetear el borrador al cambiar de modo).
+  const composerModeRef = useRef(composerMode);
+  const supportSignatureRef = useRef(settings.signatures.support);
+  useEffect(() => {
+    composerModeRef.current = composerMode;
+  }, [composerMode]);
+  useEffect(() => {
+    supportSignatureRef.current = settings.signatures.support;
+  }, [settings.signatures.support]);
 
   useEffect(() => subscribeToTickets(setTickets), []);
   useEffect(() => subscribeToClients(setClients), []);
@@ -315,7 +343,12 @@ export function TicketsView() {
   useEffect(() => {
     if (!selected) return;
     setTriageDraft(selected.triage);
-    setReply(selected.ai?.replyDraft ?? "");
+    const draft = selected.ai?.replyDraft ?? "";
+    setReply(
+      composerModeRef.current === "cliente"
+        ? withSignature(draft, supportSignatureRef.current)
+        : draft,
+    );
   }, [selected]);
 
   useEffect(() => {
@@ -496,7 +529,11 @@ export function TicketsView() {
         severity: ai.severity,
         duplicateOfTicketNumber: ai.duplicateTicketNumber,
       });
-      setReply(ai.replyDraft);
+      setReply(
+        composerMode === "cliente"
+          ? withSignature(ai.replyDraft, settings.signatures.support)
+          : ai.replyDraft,
+      );
     } finally {
       setAiLoading(false);
     }
@@ -802,7 +839,10 @@ export function TicketsView() {
                   type="button"
                   className={`${styles.modeBtn} ${composerMode === "cliente" ? styles.modeBtnActive : ""}`}
                   data-mode="cliente"
-                  onClick={() => setComposerMode("cliente")}
+                  onClick={() => {
+                    setComposerMode("cliente");
+                    setReply((current) => withSignature(current, settings.signatures.support));
+                  }}
                 >
                   Responder cliente
                 </button>
@@ -810,7 +850,10 @@ export function TicketsView() {
                   type="button"
                   className={`${styles.modeBtn} ${composerMode === "interna" ? styles.modeBtnActive : ""}`}
                   data-mode="interna"
-                  onClick={() => setComposerMode("interna")}
+                  onClick={() => {
+                    setComposerMode("interna");
+                    setReply((current) => stripSignature(current));
+                  }}
                 >
                   Nota interna
                 </button>
@@ -830,13 +873,12 @@ export function TicketsView() {
                       const key = event.target.value as TicketTemplateKey;
                       if (!key) return;
                       const source = settings.templates[key] ?? "";
-                      setReply(
-                        source.replace(/\{\{(\w+)\}\}/g, (_, k) => {
-                          if (k === "name") return selected.requester.name || "";
-                          if (k === "ticketNumber") return selected.number || "";
-                          return `{{${k}}}`;
-                        }),
-                      );
+                      const filled = source.replace(/\{\{(\w+)\}\}/g, (_, k) => {
+                        if (k === "name") return selected.requester.name || "";
+                        if (k === "ticketNumber") return selected.number || "";
+                        return `{{${k}}}`;
+                      });
+                      setReply(withSignature(filled, settings.signatures.support));
                     }}
                   >
                     <option value="">Plantilla…</option>
@@ -846,7 +888,13 @@ export function TicketsView() {
                   </select>
                 )}
                 {composerMode === "cliente" && selected.ai?.replyDraft && (
-                  <button type="button" className={styles.tertiaryButton} onClick={() => setReply(selected.ai!.replyDraft)}>
+                  <button
+                    type="button"
+                    className={styles.tertiaryButton}
+                    onClick={() =>
+                      setReply(withSignature(selected.ai!.replyDraft, settings.signatures.support))
+                    }
+                  >
                     <Sparkles width={13} height={13} /> IA redactar
                   </button>
                 )}

@@ -31,6 +31,11 @@ import {
 } from "@/lib/fiscal";
 import { createClientNotification } from "@/lib/clientNotifications";
 import { renderClientMail } from "@/lib/clientMailTemplates";
+import {
+  DEFAULT_TICKET_SETTINGS,
+  subscribeToTicketSettings,
+  type TicketMailSettings,
+} from "@/lib/ticketSettings";
 import { useCurrentUser } from "@/lib/useCurrentUser";
 import styles from "@/styles/intranet-propuestas.module.css";
 
@@ -85,7 +90,10 @@ export function ProposalsView() {
   const [aiText, setAiText] = useState("");
   const [aiBusy, setAiBusy] = useState(false);
   const [aiError, setAiError] = useState("");
+  const [settings, setSettings] = useState<TicketMailSettings>(DEFAULT_TICKET_SETTINGS);
   const titleRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => subscribeToTicketSettings(setSettings), []);
 
   useEffect(() => {
     const unsubProp = subscribeToProposals((data) => {
@@ -302,16 +310,20 @@ export function ProposalsView() {
     setBusyId(p.id);
     setNotice("");
     try {
-      const rendered = renderClientMail("proposal", {
-        clientName: client.name,
-        title: p.title,
-        scope: p.scope,
-        proposalNumber: p.number,
-        lines: p.lines,
-        subtotal: p.totals.subtotal,
-        currency: p.currency,
-        validUntil: p.validUntil,
-      });
+      const rendered = renderClientMail(
+        "proposal",
+        {
+          clientName: client.name,
+          title: p.title,
+          scope: p.scope,
+          proposalNumber: p.number,
+          lines: p.lines,
+          subtotal: p.totals.subtotal,
+          currency: p.currency,
+          validUntil: p.validUntil,
+        },
+        { signatureHtml: settings.signatures.client },
+      );
       await createClientNotification({
         kind: "proposal",
         to: [{ name: client.contact || client.name, email: client.email }],

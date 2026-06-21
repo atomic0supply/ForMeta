@@ -252,6 +252,61 @@
   font-size: 0.84rem;
 }
 
+/* ── Firmas ─────────────────────────────────────────────────────────── */
+.signatureEditor {
+  display: grid;
+  gap: 6px;
+  color: var(--color-muted-strong);
+  font-family: var(--font-mono), monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.signatureEditor textarea {
+  width: 100%;
+  min-height: 132px;
+  padding: 12px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.82);
+  color: var(--color-ink);
+  font-family: var(--font-mono), monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0;
+  text-transform: none;
+  line-height: 1.55;
+  resize: vertical;
+  outline: none;
+}
+
+.signaturePreviewSupport {
+  margin: 0;
+  padding: 16px;
+  border: 1px solid var(--color-border-soft);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.6);
+  color: var(--color-ink);
+  font-family: var(--font-mono), monospace;
+  font-size: 0.78rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.signaturePreviewClient {
+  padding: 20px 24px;
+  border: 1px solid var(--color-border-soft);
+  border-top: 2px solid var(--color-terra);
+  border-radius: 10px;
+  background: #ffffff;
+  color: #7a7870;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
 .tableWrapper {
   border: 1px solid var(--color-border);
   border-radius: 12px;
