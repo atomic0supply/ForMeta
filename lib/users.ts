@@ -1,4 +1,4 @@
-import { doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
 
 import { db } from "@/lib/firebase";
 
@@ -25,19 +25,25 @@ export async function ensureUserProfile({
     return;
   }
 
-  // merge:true — never clobber role/roleId/active if the profile already exists
-  // (e.g. an admin user logging in should stay admin).
-  await setDoc(
-    doc(db, "users", uid),
-    {
+  const ref = doc(db, "users", uid);
+  const snap = await getDoc(ref);
+
+  if (!snap.exists()) {
+    // Perfil nuevo: se crea con el rol por defecto (o el indicado).
+    await setDoc(ref, {
       email,
       role,
       displayName,
       active: true,
       createdAt: serverTimestamp(),
-    },
-    { merge: true },
-  );
+    });
+    return;
+  }
+
+  // Perfil existente: solo refresca datos de identidad.
+  // Nunca tocar role/roleId/active aqui, o un admin que inicia sesion
+  // veria su rol sobrescrito al valor por defecto.
+  await setDoc(ref, { email, displayName }, { merge: true });
 }
 
 export async function updateCurrentUserSettings(
