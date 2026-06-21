@@ -8,6 +8,25 @@ import { PDFParse } from "pdf-parse";
 
 import { listUnread, makeMessageId, markRead, sendMail } from "./gmailClient.mjs";
 
+// Extrae texto plano desde HTML como fallback cuando simpleParser no devuelve texto.
+function htmlToPlain(html) {
+  return String(html ?? "")
+    .replace(/<br\s*\/?>/gi, "\n")
+    .replace(/<\/(p|div|tr|h[1-6])>/gi, "\n")
+    .replace(/<[^>]+>/g, "")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&amp;/gi, "&")
+    .replace(/&lt;/gi, "<")
+    .replace(/&gt;/gi, ">")
+    .replace(/&quot;/gi, '"')
+    .replace(/&#39;/gi, "'")
+    .split("\n")
+    .map((l) => l.trim())
+    .filter((l, i, a) => l.length > 0 || (i > 0 && a[i - 1].length > 0))
+    .join("\n")
+    .trim();
+}
+
 const STORAGE_BUCKET =
   process.env.FIREBASE_STORAGE_BUCKET ||
   process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET ||
@@ -401,7 +420,7 @@ async function appendInboundMessage(ticketId, parsed, requester, messageId, gmai
     from: requester,
     to: parsed.to?.value?.map(cleanEmailAddress) || [],
     subject: parsed.subject || "",
-    text: parsed.text || "",
+    text: parsed.text || htmlToPlain(parsed.html || ""),
     html: parsed.html || "",
     messageId,
     inReplyTo: normalizeMessageId(parsed.inReplyTo),

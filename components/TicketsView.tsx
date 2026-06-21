@@ -813,7 +813,16 @@ export function TicketsView() {
                       <span>{formatTicketDate(message.createdAt)}</span>
                     </div>
                     {message.subject && <p className={styles.messageSubject}>{message.subject}</p>}
-                    <p className={styles.messageBody}>{message.text || "Sin cuerpo de texto."}</p>
+                    {message.text ? (
+                      <p className={styles.messageBody}>{message.text}</p>
+                    ) : message.html ? (
+                      <div
+                        className={styles.messageBody}
+                        dangerouslySetInnerHTML={{ __html: message.html }}
+                      />
+                    ) : (
+                      <p className={styles.messageBody + " " + styles.messageBodyEmpty}>Sin cuerpo de texto.</p>
+                    )}
                     {message.attachments.length > 0 && (
                       <div className={styles.attachments}>
                         {message.attachments.map((attachment) => (

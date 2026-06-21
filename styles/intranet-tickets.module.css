@@ -427,6 +427,10 @@
 }
 
 .messageBody { margin: 0; white-space: pre-wrap; line-height: 1.6; font-size: 0.85rem; }
+/* Cuando se renderiza HTML del correo, no forzar pre-wrap sobre el markup. */
+.messageBody :where(p, div, table) { white-space: normal; }
+.messageBody img { max-width: 100%; height: auto; }
+.messageBodyEmpty { color: var(--color-muted, #8a8a82); font-style: italic; }
 
 .attachments { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 12px; }
 
