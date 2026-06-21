@@ -213,6 +213,12 @@ function priorityTone(priority: TicketPriority): BadgeTone {
   return "neutral";
 }
 
+function severityTone(severity: TicketSeverity): BadgeTone {
+  if (severity === "critical") return "red";
+  if (severity === "high") return "amber";
+  return "neutral";
+}
+
 function slaInfo(due: "ok" | "risk" | "overdue"): { tone: BadgeTone; label: string } {
   if (due === "overdue") return { tone: "red", label: "SLA vencido" };
   if (due === "risk") return { tone: "amber", label: "SLA en riesgo" };
@@ -788,6 +794,9 @@ export function TicketsView() {
                   <span className={styles.badge} data-tone={priorityTone(selected.priority)}>
                     {ticketPriorityLabel(selected.priority)}
                   </span>
+                  <span className={styles.badge} data-tone={severityTone(selected.severity)}>
+                    {ticketSeverityLabel(selected.severity)}
+                  </span>
                   {selected.confidential && (
                     <span className={styles.confidential}><Lock width={11} height={11} /> Confidencial</span>
                   )}
@@ -798,6 +807,9 @@ export function TicketsView() {
                   {selected.clientName ? ` · ${selected.clientName}` : ""}
                   {selected.projectName ? ` · ${selected.projectName}` : ""}
                   {` · ${ticketIntentLabel(selected.intent)}`}
+                </p>
+                <p className={styles.headerSummary}>
+                  {selected.summary || selected.ai?.summary || "Sin resumen todavía."}
                 </p>
               </div>
             </header>
@@ -823,21 +835,6 @@ export function TicketsView() {
                   </button>
                 </>
               )}
-            </div>
-
-            <div className={styles.summaryBand}>
-              <div>
-                <span>Resumen</span>
-                <p>{selected.summary || selected.ai?.summary || "Sin resumen todavía."}</p>
-              </div>
-              <div>
-                <span>Tipo</span>
-                <p>{ticketIntentLabel(selected.intent)}</p>
-              </div>
-              <div>
-                <span>Severidad</span>
-                <p>{ticketSeverityLabel(selected.severity)}</p>
-              </div>
             </div>
 
             <div className={styles.thread}>
@@ -948,13 +945,6 @@ export function TicketsView() {
                   </button>
                 )}
                 <span className={styles.spacer} />
-                {outbox.length > 0 && (
-                  <span className={styles.outboxList}>
-                    {outbox.slice(0, 2).map((item) => (
-                      <span key={item.id}>{item.status} · {formatTicketDate(item.createdAt)}</span>
-                    ))}
-                  </span>
-                )}
                 <button
                   type="button"
                   className={composerMode === "cliente" ? styles.primaryButton : styles.secondaryButton}
@@ -965,6 +955,11 @@ export function TicketsView() {
                   {composerMode === "cliente" ? "Enviar respuesta" : "Guardar nota"}
                 </button>
               </div>
+              {outbox.length > 0 && (
+                <p className={styles.outboxLine}>
+                  {outbox.slice(0, 2).map((item) => `${item.status} · ${formatTicketDate(item.createdAt)}`).join("  ·  ")}
+                </p>
+              )}
             </div>
           </>
         )}
@@ -1039,18 +1034,18 @@ export function TicketsView() {
             </button>
           </section>
 
-          <section className={styles.panel}>
-            <h3>SLA</h3>
+          <details className={styles.panel} open>
+            <summary className={styles.panelSummary}>SLA</summary>
             <div className={styles.slaGrid}>
               <span>Primera respuesta</span>
               <strong>{selected.sla.firstRespondedAt ? formatTicketDate(selected.sla.firstRespondedAt) : formatTicketDate(selected.sla.firstResponseDueAt)}</strong>
               <span>Resolución</span>
               <strong>{selected.sla.resolvedAt ? formatTicketDate(selected.sla.resolvedAt) : formatTicketDate(selected.sla.resolutionDueAt)}</strong>
             </div>
-          </section>
+          </details>
 
-          <section className={styles.panel}>
-            <h3>Checklist triage</h3>
+          <details className={styles.panel}>
+            <summary className={styles.panelSummary}>Checklist triage</summary>
             {(Object.keys(emptyTriage) as Array<keyof TicketTriageChecklist>).map((key) => (
               <label key={key}>
                 {TRIAGE_LABELS[key]}
@@ -1074,16 +1069,25 @@ export function TicketsView() {
                 )}
               </label>
             ))}
-          </section>
+          </details>
 
-          <section className={styles.panel}>
-            <div className={styles.panelHeader}>
-              <h3>IA</h3>
-              <button type="button" className={styles.secondaryButton} onClick={() => void runAi()} disabled={aiLoading}>
+          <details className={styles.panel} open={Boolean(selected.ai)}>
+            <summary className={styles.panelSummary}>
+              <span>IA</span>
+              <button
+                type="button"
+                className={styles.secondaryButton}
+                onClick={(event) => {
+                  // Evita que el clic en el botón pliegue/despliegue el <details>.
+                  event.preventDefault();
+                  void runAi();
+                }}
+                disabled={aiLoading}
+              >
                 <Sparkles width={13} height={13} />
                 {aiLoading ? "Analizando…" : selected.ai ? "Re-analizar" : "Analizar"}
               </button>
-            </div>
+            </summary>
             {selected.ai ? (
               <>
                 <p className={styles.aiReason}>{selected.ai.severityReason}</p>
@@ -1129,7 +1133,7 @@ export function TicketsView() {
             ) : (
               <p className={styles.muted}>Analiza el ticket para generar resumen, respuesta y tareas.</p>
             )}
-          </section>
+          </details>
 
         </aside>
       )}

@@ -342,16 +342,6 @@
   background: rgba(255, 255, 255, 0.3);
 }
 
-.summaryBand {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 150px 150px;
-  gap: 14px;
-  padding: 14px 22px;
-  border-bottom: 1px solid var(--color-border);
-  background: rgba(255, 255, 255, 0.4);
-}
-
-.summaryBand span,
 .groupLabel {
   color: var(--color-terra);
   font-family: var(--font-mono), monospace;
@@ -371,7 +361,13 @@
   text-transform: none;
 }
 
-.summaryBand p { margin: 4px 0 0; line-height: 1.5; font-size: 0.84rem; }
+/* Resumen del ticket: línea slim bajo el meta de la cabecera (antes era una banda). */
+.headerSummary {
+  margin: 6px 0 0;
+  color: var(--color-muted-strong);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
 
 /* ── Thread / timeline (tipos distintos) ───────────────────────────────── */
 
@@ -520,6 +516,16 @@
   text-transform: uppercase;
 }
 
+/* Estado de outbox: línea fina y atenuada bajo la barra del compositor. */
+.outboxLine {
+  margin: 6px 0 0;
+  color: var(--color-muted-strong);
+  font-family: var(--font-mono), monospace;
+  font-size: 0.56rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
 /* ── Right panel (inspector agrupado) ──────────────────────────────────── */
 
 .panel {
@@ -538,6 +544,34 @@
   cursor: pointer;
   user-select: none;
 }
+
+/* Cabecera de panel plegable (<summary>): mismo aspecto que .panel h3 + caret. */
+.panelSummary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  cursor: pointer;
+  user-select: none;
+  list-style: none;
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 400;
+  font-size: 1.05rem;
+  color: var(--color-ink);
+}
+.panelSummary::-webkit-details-marker { display: none; }
+.panelSummary::before {
+  content: "▸";
+  color: var(--color-terra);
+  font-size: 0.7rem;
+  line-height: 1;
+  transition: transform 0.12s ease;
+}
+details[open] > .panelSummary::before { transform: rotate(90deg); }
+/* El botón de IA en el summary se alinea a la derecha. */
+.panelSummary button { margin-left: auto; }
+/* Defensivo: oculta el contenido cuando el panel está plegado (por si .panel usa grid). */
+details.panel:not([open]) > *:not(summary) { display: none; }
 
 .panel label {
   display: grid;
