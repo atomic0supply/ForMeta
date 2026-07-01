@@ -691,8 +691,17 @@ async function tick() {
   }
 }
 
+// Ruta del endpoint que dispara un ciclo. Cloud Scheduler lo llama cada ~3 min
+// (POST con auth OIDC). El worker escala a cero entre llamadas: sin bucle interno.
+function isTickPath(url) {
+  const path = String(url || "").split("?")[0];
+  return path === "/tick" || path === "/run";
+}
+
 const server = http.createServer((request, response) => {
-  if (request.url === "/health") {
+  const path = String(request.url || "").split("?")[0];
+
+  if (path === "/health") {
     response.writeHead(200, { "Content-Type": "application/json" });
     response.end(JSON.stringify({
       ok: true,
@@ -704,6 +713,19 @@ const server = http.createServer((request, response) => {
     }));
     return;
   }
+
+  if (isTickPath(request.url)) {
+    // Ejecuta UN ciclo (pollInbox + processOutbox + processClientOutbox) y responde.
+    // Idempotente: el reclamo atómico approved->sending garantiza envío único aunque
+    // Cloud Scheduler reintente. Devuelve 500 si el ciclo falló para forzar reintento.
+    void tick().then(() => {
+      const failed = Boolean(lastError);
+      response.writeHead(failed ? 500 : 200, { "Content-Type": "application/json" });
+      response.end(JSON.stringify({ ok: !failed, lastTickAt, lastError }));
+    });
+    return;
+  }
+
   response.writeHead(200, { "Content-Type": "text/plain" });
   response.end("Formeta ticket worker\n");
 });
@@ -711,6 +733,3 @@ const server = http.createServer((request, response) => {
 server.listen(Number(process.env.PORT || 8080), () => {
   console.log(`Ticket worker listening on ${process.env.PORT || 8080}`);
 });
-
-void tick();
-setInterval(() => void tick(), Math.max(15, runtimeSettings.pollSeconds) * 1000);
