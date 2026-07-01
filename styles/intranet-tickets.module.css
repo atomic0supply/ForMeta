@@ -708,11 +708,35 @@ details.panel:not([open]) > *:not(summary) { display: none; }
   .composer { position: static; }
 }
 
+/* Botón "volver a la bandeja": solo visible en el flujo móvil. */
+.backToList {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 10px;
+  padding: 7px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--color-ink);
+  font-family: var(--font-mono), monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
 @media (max-width: 820px) {
   .page { display: block; padding-bottom: 80px; }
   .sidebar { border-right: 0; border-bottom: 1px solid var(--color-border); }
-  .ticketList { max-height: 320px; }
-  .summaryBand, .ops { grid-template-columns: 1fr; }
+  .ticketList { max-height: none; }
+  .ops { grid-template-columns: 1fr; }
   .stats { grid-template-columns: repeat(2, 1fr); }
   .adminGrid, .templateGrid, .slaSettingsGrid { grid-template-columns: 1fr; }
+
+  /* Flujo lista → detalle: una sola pantalla a la vez. */
+  .backToList { display: inline-flex; }
+  .hasSelection .sidebar { display: none; }
+  .page:not(.hasSelection) .detail,
+  .page:not(.hasSelection) .ops { display: none; }
 }

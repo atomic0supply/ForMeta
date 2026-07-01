@@ -693,3 +693,35 @@
     display: none;
   }
 }
+
+/* iPhone (vertical): la tabla se apila en tarjetas. */
+@media (max-width: 560px) {
+  .listHeader {
+    display: none;
+  }
+
+  .row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    align-items: stretch;
+    padding: 16px;
+  }
+
+  /* Restaura las columnas que se ocultan a 860px para que la tarjeta tenga toda la info. */
+  .row > span:nth-child(2) {
+    display: block;
+  }
+
+  .row > .tagList {
+    display: flex;
+  }
+
+  .rowMeta {
+    white-space: normal;
+    overflow: visible;
+  }
+
+  .rowActions {
+    justify-content: flex-start;
+  }
+}

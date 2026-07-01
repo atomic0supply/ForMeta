@@ -957,4 +957,31 @@
   .statValue {
     font-size: 1.5rem;
   }
+
+  /* iPhone (vertical): la tabla se apila en tarjetas. */
+  .listHeader {
+    display: none;
+  }
+
+  .row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    align-items: stretch;
+    padding: 16px;
+  }
+
+  /* Restaura sector (col 2) y email (col 5), ocultos a 860px. */
+  .row > span:nth-child(2),
+  .row > span:nth-child(5) {
+    display: block;
+  }
+
+  .rowMeta {
+    white-space: normal;
+    overflow: visible;
+  }
+
+  .rowActions {
+    justify-content: flex-start;
+  }
 }

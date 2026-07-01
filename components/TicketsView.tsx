@@ -296,6 +296,9 @@ export function TicketsView() {
   const [settingsDraft, setSettingsDraft] = useState<TicketMailSettings>(DEFAULT_TICKET_SETTINGS);
   const [queueKey, setQueueKey] = useState<QueueKey>("nuevos");
   const [selectedId, setSelectedId] = useState<string>("");
+  // En móvil (iPhone) el layout es lista → detalle: no auto-seleccionamos ticket
+  // y mostramos un botón "volver" para regresar a la bandeja.
+  const [isMobile, setIsMobile] = useState(false);
   const [search, setSearch] = useState("");
   const [reply, setReply] = useState("");
   const [composerMode, setComposerMode] = useState<"cliente" | "interna">("cliente");
@@ -346,10 +349,19 @@ export function TicketsView() {
   );
 
   useEffect(() => {
-    if (!selectedId && tickets[0]) {
+    const mq = window.matchMedia("(max-width: 820px)");
+    const update = () => setIsMobile(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+
+  useEffect(() => {
+    // En desktop abrimos el primer ticket automáticamente; en móvil empezamos en la lista.
+    if (!isMobile && !selectedId && tickets[0]) {
       setSelectedId(tickets[0].id);
     }
-  }, [selectedId, tickets]);
+  }, [isMobile, selectedId, tickets]);
 
   useEffect(() => {
     if (!selected) return;
@@ -673,7 +685,7 @@ export function TicketsView() {
   }, [filteredTickets, selectedId]);
 
   return (
-    <main className={styles.page}>
+    <main className={`${styles.page} ${selectedId ? styles.hasSelection : ""}`}>
       <aside className={styles.sidebar}>
         <div className={styles.sidebarHeader}>
           <div>
@@ -782,6 +794,9 @@ export function TicketsView() {
         ) : (
           <>
             <header className={styles.detailHeader}>
+              <button type="button" className={styles.backToList} onClick={() => setSelectedId("")}>
+                ← Bandeja
+              </button>
               <div style={{ minWidth: 0 }}>
                 <div className={styles.badgeRow}>
                   <span className={styles.ticketNumber}>{selected.number}</span>
