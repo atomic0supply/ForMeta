@@ -28,12 +28,24 @@ El worker usa la cuenta de servicio de `FIREBASE_SERVICE_ACCOUNT_JSON` para
 - `GMAIL_USER` — buzón de Workspace a impersonar (normalmente = `SUPPORT_EMAIL`).
 - `FIREBASE_SERVICE_ACCOUNT_JSON` — clave de la cuenta de servicio (con delegation).
 - `FIREBASE_STORAGE_BUCKET` — bucket para adjuntos.
-- `TICKET_WORKER_POLL_SECONDS`, `TICKET_MAX_ATTACHMENT_MB`, `TICKET_REOPEN_WINDOW_DAYS`.
+- `TICKET_MAX_ATTACHMENT_MB`, `TICKET_REOPEN_WINDOW_DAYS`.
 
-Healthcheck:
+## Modelo de ejecución (scale-to-zero + Cloud Scheduler)
+
+El worker **no** sondea en bucle. Expone un endpoint que ejecuta **un** ciclo
+(`pollInbox` + `processOutbox` + `processClientOutbox`) y termina; **Cloud
+Scheduler** lo llama cada ~3 min con auth **OIDC**. Así la instancia de Cloud Run
+escala a cero entre llamadas (`--min-instances 0`, sin `--no-cpu-throttling`) y el
+gasto cae de ~42 €/mes a ~0 (capa gratuita). La latencia de proceso de correo pasa
+de 60 s a unos minutos, aceptable para tickets/notificaciones. El envío es
+idempotente (reclamo atómico `approved→sending`), así que los reintentos del
+scheduler son seguros.
+
+Endpoints:
 
 ```txt
-GET /health  →  { ok, running, provider, mailbox, lastTickAt, lastError }
+GET  /health        →  { ok, running, provider, mailbox, lastTickAt, lastError }
+POST /tick (o /run) →  ejecuta un ciclo; 200 si OK, 500 si falló (para reintento)
 ```
 
 ## Despliegue automatizado
@@ -52,10 +64,13 @@ cd C:\Users\tecnic.si\proyectos\FMETA
 .\workers\ticket-mail\deploy.ps1 -GmailKeyPath "C:\Users\tecnic.si\Downloads\gen-lang-client-0631419177-0773ceead21c.json"
 ```
 
-El script: habilita APIs, sube la clave del service account de Gmail a Secret
-Manager (`GMAIL_SERVICE_ACCOUNT_JSON`), crea la service account de runtime con
-permisos (Firestore, Storage, firma de URLs), construye la imagen y despliega
-en Cloud Run como servicio *always-on* (`--min-instances 1 --no-cpu-throttling`).
+El script: habilita APIs (incluida Cloud Scheduler), sube la clave del service
+account de Gmail a Secret Manager (`GMAIL_SERVICE_ACCOUNT_JSON`), crea la service
+account de runtime con permisos (Firestore, Storage, firma de URLs), construye la
+imagen y despliega en Cloud Run *scale-to-zero* (`--min-instances 0 --memory
+256Mi`). Después crea/actualiza una service account `ticket-scheduler` con
+`roles/run.invoker` y un job de **Cloud Scheduler** (`ticket-worker-tick`) que
+llama a `<url>/tick` cada 3 min con OIDC. Ajusta la frecuencia con `-Schedule`.
 
 > Importante (domain-wide delegation): en Google Admin →
 > *Security → API Controls → Domain-wide delegation*, autoriza el **Client ID**

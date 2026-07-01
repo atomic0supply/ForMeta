@@ -24,6 +24,8 @@ param(
   [string]$SupportAlias    = "support@formeta.es", # solo crea tickets el correo a este alias
   [string]$ClientFromEmail = "info@formeta.es",     # propuestas / comunicaciones
   [string]$ClientFromName  = "Formeta",
+  # Frecuencia con la que Cloud Scheduler dispara /tick (cron). Cada 3 min por defecto.
+  [string]$Schedule  = "*/3 * * * *",
   [Parameter(Mandatory = $true)][string]$GmailKeyPath
 )
 
@@ -49,7 +51,8 @@ gcloud config set project $Project | Out-Null
 
 Invoke-GcloudStep "Habilitando APIs necesarias" {
   gcloud services enable run.googleapis.com cloudbuild.googleapis.com `
-    secretmanager.googleapis.com artifactregistry.googleapis.com containerregistry.googleapis.com
+    secretmanager.googleapis.com artifactregistry.googleapis.com containerregistry.googleapis.com `
+    cloudscheduler.googleapis.com
 }
 
 # --- Secreto con la clave del service account de Gmail ---
@@ -79,20 +82,71 @@ Invoke-GcloudStep "Construyendo imagen con Cloud Build" {
   gcloud builds submit --config workers/ticket-mail/cloudbuild.yaml .
 }
 
-# --- Deploy en Cloud Run (worker always-on: min 1, CPU siempre asignada) ---
+# --- Deploy en Cloud Run (scale-to-zero: min 0, CPU solo durante la peticion) ---
+# El worker ya no sondea en bucle; Cloud Scheduler llama a /tick cada pocos minutos,
+# asi que la instancia se apaga entre llamadas y el gasto cae ~a cero (capa gratuita).
 Invoke-GcloudStep "Desplegando en Cloud Run" {
   gcloud run deploy $Service `
     --image "gcr.io/$Project/ticket-worker:latest" `
     --region $Region `
     --service-account $SaEmail `
     --no-allow-unauthenticated `
-    --min-instances 1 `
+    --min-instances 0 `
     --max-instances 1 `
-    --no-cpu-throttling `
+    --memory 256Mi `
     --set-env-vars "GMAIL_USER=$GmailUser,FIREBASE_STORAGE_BUCKET=$Bucket,SUPPORT_EMAIL=$SupportEmail,SUPPORT_ALIAS=$SupportAlias,CLIENT_FROM_EMAIL=$ClientFromEmail,CLIENT_FROM_NAME=$ClientFromName" `
     --set-secrets "GMAIL_SERVICE_ACCOUNT_JSON=GMAIL_SERVICE_ACCOUNT_JSON:latest"
 }
 
-Write-Host "==> Listo. URL del servicio:" -ForegroundColor Green
-gcloud run services describe $Service --region $Region --format="value(status.url)"
-Write-Host "   (anade /health a la URL para ver el estado del worker)"
+$ServiceUrl = (gcloud run services describe $Service --region $Region --format="value(status.url)").Trim()
+if (-not $ServiceUrl) { throw "No se pudo obtener la URL del servicio $Service" }
+
+# --- Service account que Cloud Scheduler usa para invocar el worker (OIDC) ---
+$SchedulerSaName  = "ticket-scheduler"
+$SchedulerSaEmail = "$SchedulerSaName@$Project.iam.gserviceaccount.com"
+Write-Host "==> Service account del scheduler ($SchedulerSaEmail)" -ForegroundColor Cyan
+gcloud iam service-accounts describe $SchedulerSaEmail *> $null
+if ($LASTEXITCODE -ne 0) {
+  gcloud iam service-accounts create $SchedulerSaName --display-name="Ticket scheduler invoker" | Out-Null
+}
+
+# Permite a esa SA invocar el servicio (el worker sigue con --no-allow-unauthenticated).
+Invoke-GcloudStep "Concediendo run.invoker al scheduler" {
+  gcloud run services add-iam-policy-binding $Service `
+    --region $Region `
+    --member "serviceAccount:$SchedulerSaEmail" `
+    --role "roles/run.invoker"
+}
+
+# --- Job de Cloud Scheduler que llama a <url>/tick cada $Schedule con auth OIDC ---
+$JobName = "$Service-tick"
+$TickUrl = "$ServiceUrl/tick"
+Write-Host "==> Cloud Scheduler job '$JobName' -> $TickUrl ($Schedule)" -ForegroundColor Cyan
+gcloud scheduler jobs describe $JobName --location $Region *> $null
+if ($LASTEXITCODE -ne 0) {
+  Invoke-GcloudStep "Creando job de Cloud Scheduler" {
+    gcloud scheduler jobs create http $JobName `
+      --location $Region `
+      --schedule "$Schedule" `
+      --uri "$TickUrl" `
+      --http-method POST `
+      --oidc-service-account-email $SchedulerSaEmail `
+      --oidc-token-audience "$ServiceUrl" `
+      --attempt-deadline "540s"
+  }
+} else {
+  Invoke-GcloudStep "Actualizando job de Cloud Scheduler" {
+    gcloud scheduler jobs update http $JobName `
+      --location $Region `
+      --schedule "$Schedule" `
+      --uri "$TickUrl" `
+      --http-method POST `
+      --oidc-service-account-email $SchedulerSaEmail `
+      --oidc-token-audience "$ServiceUrl" `
+      --attempt-deadline "540s"
+  }
+}
+
+Write-Host "==> Listo. URL del servicio: $ServiceUrl" -ForegroundColor Green
+Write-Host "   /health  -> estado del worker"
+Write-Host "   /tick    -> ejecuta un ciclo (lo llama Cloud Scheduler cada $Schedule)"
