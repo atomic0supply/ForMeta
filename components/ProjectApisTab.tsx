@@ -41,6 +41,7 @@ export function ProjectApisTab({ projectId }: Props) {
   const [form, setForm] = useState<ExternalApiInput>(emptyForm);
   const [saving, setSaving] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
   const [revealedKeys, setRevealedKeys] = useState<Set<string>>(new Set());
   const [showKeyInForm, setShowKeyInForm] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
@@ -60,6 +61,7 @@ export function ProjectApisTab({ projectId }: Props) {
     setForm(emptyForm);
     setShowKeyInForm(false);
     setConfirmDelete(false);
+    setFormError(null);
     setDrawerOpen(true);
   }
 
@@ -77,6 +79,7 @@ export function ProjectApisTab({ projectId }: Props) {
     });
     setShowKeyInForm(false);
     setConfirmDelete(false);
+    setFormError(null);
     setDrawerOpen(true);
   }
 
@@ -85,6 +88,7 @@ export function ProjectApisTab({ projectId }: Props) {
     setEditing(null);
     setConfirmDelete(false);
     setShowKeyInForm(false);
+    setFormError(null);
   }
 
   function handleField(
@@ -99,6 +103,7 @@ export function ProjectApisTab({ projectId }: Props) {
     e.preventDefault();
     if (!form.name.trim()) return;
     setSaving(true);
+    setFormError(null);
     try {
       if (editing) {
         await updateExternalApi(projectId, editing.id, form);
@@ -106,6 +111,9 @@ export function ProjectApisTab({ projectId }: Props) {
         await createExternalApi(projectId, form);
       }
       closeDrawer();
+    } catch {
+      // No se cierra el drawer para no perder lo escrito
+      setFormError("No se han podido guardar los cambios. Inténtalo de nuevo.");
     } finally {
       setSaving(false);
     }
@@ -117,8 +125,13 @@ export function ProjectApisTab({ projectId }: Props) {
       setConfirmDelete(true);
       return;
     }
-    await deleteExternalApi(projectId, editing.id);
-    closeDrawer();
+    setFormError(null);
+    try {
+      await deleteExternalApi(projectId, editing.id);
+      closeDrawer();
+    } catch {
+      setFormError("No se ha podido eliminar la API. Inténtalo de nuevo.");
+    }
   }
 
   function toggleReveal(id: string) {
@@ -430,6 +443,12 @@ export function ProjectApisTab({ projectId }: Props) {
               placeholder="Límites de rate, endpoints usados, notas de configuración…"
             />
           </div>
+
+          {formError && (
+            <p role="alert" style={{ color: "#b3261e", fontSize: 12, margin: 0 }}>
+              {formError}
+            </p>
+          )}
 
           <div className={styles.formActions}>
             <div>

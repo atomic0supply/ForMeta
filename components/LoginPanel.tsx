@@ -11,7 +11,7 @@ import {
   firebaseEnabled,
 } from "@/lib/firebase";
 import { BrandWordmark } from "@/components/BrandWordmark";
-import { setSessionCookie } from "@/lib/session";
+import { establishSession } from "@/lib/session";
 import { ensureUserProfile } from "@/lib/users";
 import styles from "@/styles/auth.module.css";
 
@@ -31,7 +31,15 @@ export function LoginPanel({ redirect = "/intranet" }: LoginPanelProps) {
       return;
     }
 
-    setSessionCookie(auth.currentUser.uid);
+    try {
+      // Intercambia el ID token por la session cookie firmada (HttpOnly).
+      const idToken = await auth.currentUser.getIdToken();
+      await establishSession(idToken);
+    } catch {
+      setError("No se ha podido establecer la sesión. Inténtalo de nuevo.");
+      setIsPending(false);
+      return;
+    }
     void ensureUserProfile({
       uid: auth.currentUser.uid,
       email: auth.currentUser.email,

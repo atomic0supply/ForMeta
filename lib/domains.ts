@@ -59,9 +59,17 @@ export function subscribeToDomains(
 ): Unsubscribe {
   if (!db) return () => {};
   const q = query(collection(db, COL), orderBy("expiryDate", "asc"));
-  return onSnapshot(q, (snap) => {
-    callback(snap.docs.map((d) => ({ id: d.id, ...(d.data() as Omit<Domain, "id">) })));
-  });
+  return onSnapshot(
+    q,
+    (snap) => {
+      callback(snap.docs.map((d) => ({ id: d.id, ...(d.data() as Omit<Domain, "id">) })));
+    },
+    (error) => {
+      // Sin este callback un fallo de Firestore dejaría la vista en "Cargando…" para siempre.
+      console.error("subscribeToDomains:", error);
+      callback([]);
+    },
+  );
 }
 
 /** Devuelve los dominios que vencen dentro de los próximos `days` días (incluye ya vencidos). */
@@ -70,7 +78,14 @@ export function subscribeToExpiringDomains(
   days = 60,
 ): Unsubscribe {
   return subscribeToDomains((all) => {
-    callback(all.filter((d) => daysUntilExpiry(d.expiryDate) < days));
+    callback(
+      all.filter((d) => {
+        const remaining = daysUntilExpiry(d.expiryDate);
+        // NaN = fecha vacía o corrupta → se trata como "sin caducidad" y se
+        // excluye del aviso de vencimientos (explícito, no un efecto colateral).
+        return Number.isFinite(remaining) && remaining < days;
+      }),
+    );
   });
 }
 

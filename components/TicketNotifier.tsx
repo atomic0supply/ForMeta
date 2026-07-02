@@ -48,20 +48,28 @@ export function TicketNotifier() {
   const [toasts, setToasts] = useState<Toast[]>([]);
   const [unread, setUnread] = useState(0);
   const [muted, setMuted] = useState(false);
-  const watermark = useRef(0);
+  // El watermark se inicializa de forma síncrona (lazy) desde localStorage: si se
+  // leyera en un useEffect podría llegar DESPUÉS del primer snapshot y pisar el
+  // baseline o rebajar el watermark guardado.
+  const watermark = useRef(-1);
+  if (watermark.current < 0) {
+    watermark.current =
+      typeof window === "undefined" ? 0 : Number(localStorage.getItem(WATERMARK_KEY) || 0);
+  }
   const initialized = useRef(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
     setMuted(localStorage.getItem(MUTED_KEY) === "1");
-    watermark.current = Number(localStorage.getItem(WATERMARK_KEY) || 0);
   }, []);
 
   const notify = useCallback((newTickets: Ticket[]) => {
     if (newTickets.length === 0) return;
 
     const newest = newTickets[0];
-    const isNew = Math.abs(tsMs(newest.lastInboundAt) - (newest.createdAt?.toMillis?.() ?? 0)) < 8000;
+    // Primer mensaje entrante = ticket nuevo; los siguientes son respuestas.
+    // Más fiable que comparar timestamps de creación con una ventana arbitraria.
+    const isNew = newest.inboundMessageCount <= 1;
     const title =
       newTickets.length === 1
         ? isNew

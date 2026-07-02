@@ -22,6 +22,9 @@ const emptyForm = (): MailboxInput => ({
   notes: "",
 });
 
+// Validación básica de formato de email (alias y cuenta destino).
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 export function MailboxesTab() {
   const [mailboxes, setMailboxes] = useState<Mailbox[]>([]);
   const [loading, setLoading] = useState(true);
@@ -30,6 +33,7 @@ export function MailboxesTab() {
   const [form, setForm] = useState<MailboxInput>(emptyForm());
   const [saving, setSaving] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [formError, setFormError] = useState("");
   const aliasRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -52,6 +56,7 @@ export function MailboxesTab() {
     setEditing(null);
     setForm(emptyForm());
     setConfirmDelete(false);
+    setFormError("");
     setDrawerOpen(true);
   }
 
@@ -66,21 +71,35 @@ export function MailboxesTab() {
       notes: mailbox.notes,
     });
     setConfirmDelete(false);
+    setFormError("");
     setDrawerOpen(true);
   }
 
   function closeDrawer() {
     setDrawerOpen(false);
     setConfirmDelete(false);
+    setFormError("");
     setTimeout(() => { setEditing(null); setForm(emptyForm()); }, 320);
   }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!form.alias.trim()) return;
+    const alias = form.alias.trim();
+    const account = form.account.trim();
+    if (!alias) return;
+    // Valida el formato antes de guardar: ambos campos son direcciones de correo.
+    if (!EMAIL_RE.test(alias)) {
+      setFormError("El alias debe ser una dirección de correo válida (p. ej. soporte@formeta.es).");
+      return;
+    }
+    if (account && !EMAIL_RE.test(account)) {
+      setFormError("La cuenta destino debe ser una dirección de correo válida.");
+      return;
+    }
+    setFormError("");
     setSaving(true);
     try {
-      const data: MailboxInput = { ...form, alias: form.alias.trim(), account: form.account.trim() };
+      const data: MailboxInput = { ...form, alias, account };
       if (editing) await updateMailbox(editing.id, data);
       else await createMailbox(data);
       closeDrawer();
@@ -196,6 +215,11 @@ export function MailboxesTab() {
               <textarea className={styles.textarea} rows={2} value={form.notes} onChange={(e) => setField("notes", e.target.value)} />
             </div>
           </div>
+          {formError && (
+            <p role="alert" style={{ color: "#b3261e", fontSize: "12.5px", margin: "10px 0 0" }}>
+              {formError}
+            </p>
+          )}
         </form>
         <div className={styles.drawerFooter}>
           {editing && (

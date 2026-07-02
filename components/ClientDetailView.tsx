@@ -51,16 +51,22 @@ export function ClientDetailView({ id }: { id: string }) {
     return unsub;
   }, [id]);
 
+  // Clave estable de ids: evita re-suscribirse en cada snapshot de proyectos
+  // (el array cambia de identidad aunque los ids sean los mismos)
+  const projectIdsKey = useMemo(
+    () => projects.map((p) => p.id).sort().join(","),
+    [projects],
+  );
+
   // Subscribe to time entries for those projects
   useEffect(() => {
-    const ids = projects.map((p) => p.id);
-    if (ids.length === 0) {
+    if (!projectIdsKey) {
       setEntries([]);
       return;
     }
-    const unsub = subscribeToTimeEntriesByProjectIds(ids, setEntries);
+    const unsub = subscribeToTimeEntriesByProjectIds(projectIdsKey.split(","), setEntries);
     return unsub;
-  }, [projects]);
+  }, [projectIdsKey]);
 
   /* ── Stats ───────────────────────────────────────────────────────── */
   const totalSeconds = useMemo(
@@ -70,7 +76,8 @@ export function ClientDetailView({ id }: { id: string }) {
   const totalSeconds30d = useMemo(() => {
     const cutoff = Date.now() - 30 * 86400000;
     return entries
-      .filter((e) => e.startedAt.seconds * 1000 >= cutoff)
+      // Sesiones antiguas pueden no tener startedAt
+      .filter((e) => (e.startedAt?.seconds ?? 0) * 1000 >= cutoff)
       .reduce((a, e) => a + e.durationSeconds, 0);
   }, [entries]);
   const activeProjectsCount = useMemo(

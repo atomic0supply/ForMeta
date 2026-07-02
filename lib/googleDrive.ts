@@ -62,6 +62,11 @@ function getDrive(): drive_v3.Drive {
   return cachedDrive;
 }
 
+/** Escapa un valor para interpolarlo en una consulta `q` de Drive (comillas simples y barras). */
+function escapeDriveValue(value: string): string {
+  return value.replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+}
+
 function toItem(file: drive_v3.Schema$File): DriveItem {
   return {
     id: file.id ?? "",
@@ -80,7 +85,7 @@ export async function listChildren(folderId: string): Promise<DriveItem[]> {
   let pageToken: string | undefined;
   do {
     const res = await drive.files.list({
-      q: `'${folderId}' in parents and trashed = false`,
+      q: `'${escapeDriveValue(folderId)}' in parents and trashed = false`,
       fields: "nextPageToken, files(id, name, mimeType, size, modifiedTime)",
       orderBy: "folder,name",
       pageSize: 200,
@@ -248,7 +253,7 @@ export async function ensureProjectFolder(
   // 2) Buscar por appProperties.
   if (!rootId) {
     const res = await drive.files.list({
-      q: `mimeType = '${FOLDER_MIME}' and trashed = false and appProperties has { key='${PROJECT_PROP}' and value='${projectId}' }`,
+      q: `mimeType = '${FOLDER_MIME}' and trashed = false and appProperties has { key='${PROJECT_PROP}' and value='${escapeDriveValue(projectId)}' }`,
       fields: "files(id, name)",
       pageSize: 1,
       supportsAllDrives: true,

@@ -3,6 +3,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  limit,
   onSnapshot,
   orderBy,
   query,
@@ -56,6 +57,7 @@ export function subscribeToAllTimeEntries(
     collection(db, "timeEntries"),
     where("startedAt", ">=", since),
     orderBy("startedAt", "desc"),
+    limit(2000),
   );
   return onSnapshot(q, (snap) => {
     const entries = snap.docs.map((d) => ({
@@ -69,41 +71,52 @@ export function subscribeToAllTimeEntries(
 /**
  * Subscribe to all time entries for a given set of project IDs.
  * Useful for client-level aggregations (sum hours across all of a
- * client's projects). Performs an "in" query if the set is small
- * enough; otherwise falls back to a client-side filter on all entries.
+ * client's projects). Firestore "in" supports up to 30 values, so the
+ * ids are split into chunks and the snapshots are merged client-side.
  */
 export function subscribeToTimeEntriesByProjectIds(
   projectIds: string[],
   callback: (entries: TimeEntry[]) => void,
 ): Unsubscribe {
-  if (!db || projectIds.length === 0) {
+  const database = db;
+  if (!database || projectIds.length === 0) {
     callback([]);
     return () => {};
   }
-  // Firestore "in" supports up to 30 values
-  if (projectIds.length <= 30) {
+  // Troceamos en lotes de ≤30 ids (límite de Firestore para "in")
+  const chunks: string[][] = [];
+  for (let i = 0; i < projectIds.length; i += 30) {
+    chunks.push(projectIds.slice(i, i + 30));
+  }
+  const perChunk = new Map<number, TimeEntry[]>();
+  const emit = () => {
+    // Fusionar, deduplicar por id y ordenar por startedAt desc
+    const byId = new Map<string, TimeEntry>();
+    for (const entries of perChunk.values()) {
+      for (const e of entries) byId.set(e.id, e);
+    }
+    const merged = Array.from(byId.values()).sort(
+      (a, b) => b.startedAt.toMillis() - a.startedAt.toMillis(),
+    );
+    callback(merged);
+  };
+  const unsubs = chunks.map((chunk, idx) => {
     const q = query(
-      collection(db, "timeEntries"),
-      where("projectId", "in", projectIds),
+      collection(database, "timeEntries"),
+      where("projectId", "in", chunk),
       orderBy("startedAt", "desc"),
     );
     return onSnapshot(q, (snap) => {
-      const entries = snap.docs.map((d) => ({
-        id: d.id,
-        ...(d.data() as Omit<TimeEntry, "id">),
-      }));
-      callback(entries);
+      perChunk.set(
+        idx,
+        snap.docs.map((d) => ({ id: d.id, ...(d.data() as Omit<TimeEntry, "id">) })),
+      );
+      emit();
     });
-  }
-  // Fallback: subscribe to recent and filter locally
-  const q = query(collection(db, "timeEntries"), orderBy("startedAt", "desc"));
-  return onSnapshot(q, (snap) => {
-    const set = new Set(projectIds);
-    const entries = snap.docs
-      .map((d) => ({ id: d.id, ...(d.data() as Omit<TimeEntry, "id">) }))
-      .filter((e) => set.has(e.projectId));
-    callback(entries);
   });
+  return () => {
+    for (const unsub of unsubs) unsub();
+  };
 }
 
 export async function deleteTimeEntry(entryId: string): Promise<void> {

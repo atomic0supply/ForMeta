@@ -55,8 +55,12 @@ async function fetchJson(base: string, path: string): Promise<ServiceCheck> {
     const data = contentType.includes("application/json")
       ? await response.json()
       : await response.text();
+    // "ok" se basa en el estado HTTP; el payload solo puede degradarlo si el
+    // servicio declara explícitamente { ok: false }.
+    const payloadSaysDown =
+      typeof data === "object" && data !== null && "ok" in data && (data as { ok?: unknown }).ok === false;
     return {
-      ok: response.ok && typeof data === "object" && data !== null && (("ok" in data && data.ok !== false) || "result" in data),
+      ok: response.ok && !payloadSaysDown,
       status: response.status,
       url,
       data,

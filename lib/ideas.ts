@@ -5,6 +5,7 @@ import {
   deleteDoc,
   doc,
   getDocs,
+  limit,
   query,
   where,
   orderBy,
@@ -101,10 +102,12 @@ export async function deleteIdea(ideaId: string): Promise<void> {
 export async function listIdeas(userId: string): Promise<Idea[]> {
   if (!db) throw new Error("Firestore no disponible");
 
+  // Acota la lectura a las 200 ideas más recientes del usuario.
   const q = query(
     collection(db, IDEAS_COLLECTION),
     where("userId", "==", userId),
     orderBy("createdAt", "desc"),
+    limit(200),
   );
 
   const snap = await getDocs(q);

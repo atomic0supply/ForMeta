@@ -39,6 +39,7 @@ export function LicensesTab() {
   const [form, setForm] = useState<LicenseInput>(emptyForm());
   const [saving, setSaving] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [formError, setFormError] = useState("");
   const nameRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -67,6 +68,7 @@ export function LicensesTab() {
     setEditing(null);
     setForm(emptyForm());
     setConfirmDelete(false);
+    setFormError("");
     setDrawerOpen(true);
   }
 
@@ -87,12 +89,14 @@ export function LicensesTab() {
       notes: license.notes,
     });
     setConfirmDelete(false);
+    setFormError("");
     setDrawerOpen(true);
   }
 
   function closeDrawer() {
     setDrawerOpen(false);
     setConfirmDelete(false);
+    setFormError("");
     setTimeout(() => { setEditing(null); setForm(emptyForm()); }, 320);
   }
 
@@ -111,11 +115,16 @@ export function LicensesTab() {
     e.preventDefault();
     if (!form.name.trim()) return;
     setSaving(true);
+    setFormError("");
     try {
       const data: LicenseInput = { ...form, name: form.name.trim() };
       if (editing) await updateLicense(editing.id, data);
       else await createLicense(data);
       closeDrawer();
+    } catch (err) {
+      // El fallo debe verse: sin catch el error quedaba silenciado.
+      console.error("LicensesTab.handleSubmit:", err);
+      setFormError("No se pudo guardar la licencia. Inténtalo de nuevo.");
     } finally {
       setSaving(false);
     }
@@ -125,9 +134,13 @@ export function LicensesTab() {
     if (!editing) return;
     if (!confirmDelete) { setConfirmDelete(true); return; }
     setSaving(true);
+    setFormError("");
     try {
       await deleteLicense(editing.id);
       closeDrawer();
+    } catch (err) {
+      console.error("LicensesTab.handleDelete:", err);
+      setFormError("No se pudo eliminar la licencia. Inténtalo de nuevo.");
     } finally {
       setSaving(false);
     }
@@ -254,6 +267,9 @@ export function LicensesTab() {
             </div>
           </div>
         </form>
+        {formError && (
+          <p style={{ color: "var(--danger)", fontSize: "0.8rem", margin: "0 20px 8px" }}>{formError}</p>
+        )}
         <div className={styles.drawerFooter}>
           {editing && (
             <button type="button" onClick={handleDelete} className={styles.btnDelete} disabled={saving}>

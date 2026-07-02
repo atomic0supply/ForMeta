@@ -16,6 +16,9 @@ import {
   X,
 } from "lucide-react";
 
+import { doc, serverTimestamp, writeBatch } from "firebase/firestore";
+
+import { db } from "@/lib/firebase";
 import {
   type WikiPage,
   createWikiPage,
@@ -30,12 +33,30 @@ const EMOJIS = ["📄", "📝", "📌", "🔧", "🎯", "🗂️", "💡", "🔗
 
 /* ─── Markdown renderer (same robust impl as IdeasView) ─────────────────── */
 
+// Escapa HTML antes de aplicar los regex de markdown para evitar XSS
+function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+// Solo se permiten enlaces http(s) y mailto; el resto se muestra como texto plano
+function isSafeHref(url: string): boolean {
+  return /^(https?:\/\/|mailto:)/i.test(url.trim());
+}
+
 function renderMarkdown(md: string): string {
   const inline = (s: string) =>
-    s
+    escapeHtml(s)
       .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
       .replace(/\*(.+?)\*/g, "<em>$1</em>")
-      .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+      .replace(/\[(.+?)\]\((.+?)\)/g, (match, text: string, url: string) =>
+        isSafeHref(url)
+          ? `<a href="${url.trim()}" target="_blank" rel="noopener noreferrer">${text}</a>`
+          : match,
+      );
 
   const lines = md.split("\n");
   const out: string[] = [];
@@ -120,7 +141,25 @@ function WikiEditor({ page, projectId, authorName, onClose, onDeleted }: EditorP
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const saveTimer   = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  function markDirty() { setDirty(true); }
+  // Refs con los últimos valores para que el autoguardado diferido no capture
+  // un cierre obsoleto de title/emoji/dirty
+  const titleRef = useRef(title);
+  const emojiRef = useRef(emoji);
+  const dirtyRef = useRef(dirty);
+  useEffect(() => {
+    titleRef.current = title;
+    emojiRef.current = emoji;
+    dirtyRef.current = dirty;
+  });
+
+  // Limpia el temporizador de autoguardado al desmontar
+  useEffect(() => {
+    return () => {
+      if (saveTimer.current) clearTimeout(saveTimer.current);
+    };
+  }, []);
+
+  function markDirty() { setDirty(true); dirtyRef.current = true; }
 
   function handleContent(val: string) {
     setContent(val);
@@ -130,11 +169,17 @@ function WikiEditor({ page, projectId, authorName, onClose, onDeleted }: EditorP
   }
 
   async function autoSave(val: string) {
-    if (!dirty) return;
+    if (!dirtyRef.current) return;
     setSaving(true);
     try {
-      await updateWikiPage(projectId, page.id, { title, content: val, emoji }, authorName);
+      await updateWikiPage(
+        projectId,
+        page.id,
+        { title: titleRef.current, content: val, emoji: emojiRef.current },
+        authorName,
+      );
       setDirty(false);
+      dirtyRef.current = false;
     } finally {
       setSaving(false);
     }
@@ -303,10 +348,17 @@ export function ProjectWikiTab({ projectId }: { projectId: string }) {
   const [newTitle,   setNewTitle]   = useState("");
   const [newEmoji,   setNewEmoji]   = useState("📄");
 
+  // Ref para leer el valor actual dentro del callback del snapshot sin
+  // re-suscribir ni capturar un selectedId obsoleto
+  const selectedIdRef = useRef(selectedId);
+  useEffect(() => {
+    selectedIdRef.current = selectedId;
+  }, [selectedId]);
+
   useEffect(() => {
     const unsub = subscribeToWikiPages(projectId, (data) => {
       setPages(data);
-      if (data.length > 0 && !selectedId) setSelectedId(data[0].id);
+      if (data.length > 0 && !selectedIdRef.current) setSelectedId(data[0].id);
     });
     return unsub;
   }, [projectId]);
@@ -332,11 +384,16 @@ export function ProjectWikiTab({ projectId }: { projectId: string }) {
   async function movePage(page: WikiPage, dir: -1 | 1) {
     const idx  = pages.findIndex((p) => p.id === page.id);
     const swap = pages[idx + dir];
-    if (!swap) return;
-    await Promise.all([
-      updateWikiPage(projectId, page.id,  { order: swap.order  }, authorName),
-      updateWikiPage(projectId, swap.id,  { order: page.order  }, authorName),
-    ]);
+    if (!swap || !db) return;
+    // Batch atómico: dos updates en paralelo podían dejar `order` duplicado
+    const batch = writeBatch(db);
+    batch.update(doc(db, "projects", projectId, "wiki", page.id), {
+      order: swap.order, updatedBy: authorName, updatedAt: serverTimestamp(),
+    });
+    batch.update(doc(db, "projects", projectId, "wiki", swap.id), {
+      order: page.order, updatedBy: authorName, updatedAt: serverTimestamp(),
+    });
+    await batch.commit();
   }
 
   return (

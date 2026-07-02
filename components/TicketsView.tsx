@@ -34,6 +34,7 @@ import {
   DEFAULT_SUPPORT_FOOTER_HTML,
   renderClientMail,
 } from "@/lib/clientMailTemplates";
+import { auth } from "@/lib/firebase";
 import {
   subscribeToProjects,
   type Project,
@@ -305,6 +306,12 @@ export function TicketsView() {
   const [triageDraft, setTriageDraft] = useState<TicketTriageChecklist>(emptyTriage);
   const [aiLoading, setAiLoading] = useState(false);
   const [aiError, setAiError] = useState("");
+  // Errores de acciones de escritura (responder, crear ticket, crear tarea…):
+  // se muestran junto al compositor / modal en vez de tragarse en silencio.
+  const [actionError, setActionError] = useState("");
+  // Ticket al que pertenecen los mensajes cargados en `messages`. Evita analizar
+  // con IA los mensajes del ticket anterior justo después de cambiar con j/k.
+  const [messagesTicketId, setMessagesTicketId] = useState("");
   const [saving, setSaving] = useState(false);
   const [creatingTicket, setCreatingTicket] = useState(false);
   const [newTicket, setNewTicket] = useState<NewTicketInput>(emptyNewTicket);
@@ -375,12 +382,18 @@ export function TicketsView() {
   }, [selected]);
 
   useEffect(() => {
+    setActionError("");
     if (!selectedId) {
       setMessages([]);
       setOutbox([]);
+      setMessagesTicketId("");
       return;
     }
-    const unsubMessages = subscribeToTicketMessages(selectedId, setMessages);
+    setMessagesTicketId("");
+    const unsubMessages = subscribeToTicketMessages(selectedId, (items) => {
+      setMessages(items);
+      setMessagesTicketId(selectedId);
+    });
     const unsubOutbox = subscribeToTicketOutbox(selectedId, setOutbox);
     return () => {
       unsubMessages();
@@ -423,7 +436,12 @@ export function TicketsView() {
 
   async function patchSelected(data: Parameters<typeof updateTicket>[1]) {
     if (!selected) return;
-    await updateTicket(selected.id, data);
+    try {
+      await updateTicket(selected.id, data);
+      setActionError("");
+    } catch {
+      setActionError("No se ha podido guardar el cambio en el ticket. Inténtalo de nuevo.");
+    }
   }
 
   async function handleStatusChange(status: TicketStatus) {
@@ -491,14 +509,20 @@ export function TicketsView() {
   }
 
   async function runAi() {
-    if (!selected) return;
+    // No analices si ya hay un análisis en curso o si los mensajes cargados
+    // todavía pertenecen a otro ticket (p. ej. justo después de navegar con j/k).
+    if (!selected || aiLoading || messagesTicketId !== selected.id) return;
     setAiLoading(true);
     setAiError("");
     try {
       const recent = await findRecentTicketsByClient(selected.clientId);
+      const token = await auth?.currentUser?.getIdToken();
       const response = await fetch("/api/tickets/ai", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
         body: JSON.stringify({
           ticket: {
             number: selected.number,
@@ -531,20 +555,24 @@ export function TicketsView() {
               summary: ticket.summary,
               status: ticket.status,
             })),
-          // Usa la clave Gemini personal del usuario si el servidor no tiene una global.
-          apiKeyOverride: currentUser?.geminiApiKey || undefined,
         }),
       });
-      const data = await response.json();
-      if (!response.ok) {
+      // Parse defensivo: una respuesta de error puede no ser JSON (p. ej. HTML de proxy).
+      let data: Record<string, unknown> | null = null;
+      try {
+        data = (await response.json()) as Record<string, unknown>;
+      } catch {
+        data = null;
+      }
+      if (!response.ok || !data) {
         setAiError(
-          data.error ??
-            data.disabledReason ??
+          (typeof data?.error === "string" && data.error) ||
+            (typeof data?.disabledReason === "string" && data.disabledReason) ||
             "No se ha podido analizar el ticket. Configura una clave Gemini en Equipo › Preferencias.",
         );
         return;
       }
-      const ai = data as TicketAiSuggestion;
+      const ai = data as unknown as TicketAiSuggestion;
       await updateTicket(selected.id, {
         ai,
         summary: ai.summary,
@@ -557,6 +585,8 @@ export function TicketsView() {
           ? withSignature(ai.replyDraft, settings.signatures.support)
           : ai.replyDraft,
       );
+    } catch {
+      setAiError("No se ha podido analizar el ticket. Comprueba la conexión e inténtalo de nuevo.");
     } finally {
       setAiLoading(false);
     }
@@ -565,13 +595,21 @@ export function TicketsView() {
   async function handleComposerSend() {
     if (!selected || !reply.trim() || !currentUser) return;
     setSaving(true);
+    setActionError("");
     try {
       if (composerMode === "cliente") {
         await createTicketReplyOutbox(selected, reply, currentUserPerson(currentUser));
       } else {
         await addInternalTicketNote(selected.id, reply, currentUserPerson(currentUser));
       }
+      // Solo vaciamos el borrador si el envío se ha guardado correctamente.
       setReply("");
+    } catch {
+      setActionError(
+        composerMode === "cliente"
+          ? "No se ha podido encolar la respuesta al cliente. Inténtalo de nuevo."
+          : "No se ha podido guardar la nota interna. Inténtalo de nuevo.",
+      );
     } finally {
       setSaving(false);
     }
@@ -580,6 +618,7 @@ export function TicketsView() {
   async function createSuggestedTask(index: number) {
     if (!selected?.projectId || !selected.ai?.proposedTasks[index]) return;
     setTaskCreating((prev) => ({ ...prev, [index]: true }));
+    setActionError("");
     try {
       const draft = selected.ai.proposedTasks[index];
       const taskId = await createTask(
@@ -596,10 +635,14 @@ export function TicketsView() {
             title: draft.title,
             status: "todo",
             priority: draft.priority,
+            // Clave estable para detectar duplicados (mejor que comparar títulos).
+            sourceSuggestionIndex: index,
             createdAt: Timestamp.now(),
           },
         ],
       });
+    } catch {
+      setActionError("No se ha podido crear la tarea sugerida. Inténtalo de nuevo.");
     } finally {
       setTaskCreating((prev) => ({ ...prev, [index]: false }));
     }
@@ -609,6 +652,7 @@ export function TicketsView() {
     e.preventDefault();
     if (!newTicket.subject.trim() || !newTicket.requester.email.trim()) return;
     setSaving(true);
+    setActionError("");
     try {
       const created = await createManualTicket(newTicket);
       setSelectedId(created.id);
@@ -647,8 +691,11 @@ export function TicketsView() {
         }
       }
 
+      // Solo cerramos el modal y limpiamos el formulario si la creación ha ido bien.
       setCreatingTicket(false);
       setNewTicket(emptyNewTicket);
+    } catch {
+      setActionError("No se ha podido crear el ticket. Inténtalo de nuevo.");
     } finally {
       setSaving(false);
     }
@@ -657,6 +704,8 @@ export function TicketsView() {
   const dueState = selected ? ticketDueState(selected) : "ok";
 
   // Keep latest runAi for the keyboard shortcut without re-binding the listener.
+  // runAi ya ignora la llamada si hay un análisis en curso o si los mensajes del
+  // ticket seleccionado aún no han cargado (evita analizar el ticket anterior).
   const runAiRef = useRef<() => void>(() => {});
   runAiRef.current = () => void runAi();
 
@@ -868,9 +917,21 @@ export function TicketsView() {
                     {message.text ? (
                       <p className={styles.messageBody}>{message.text}</p>
                     ) : message.html ? (
-                      <div
+                      // HTML entrante (correo del cliente) en iframe con sandbox vacío:
+                      // sin scripts, sin same-origin, sin formularios. Evita XSS
+                      // almacenado sin tener que sanear el HTML a mano.
+                      <iframe
+                        sandbox=""
+                        srcDoc={message.html}
+                        title={`Mensaje ${message.subject || message.id}`}
                         className={styles.messageBody}
-                        dangerouslySetInnerHTML={{ __html: message.html }}
+                        style={{
+                          width: "100%",
+                          height: "320px",
+                          border: 0,
+                          borderRadius: "8px",
+                          background: "#fff",
+                        }}
                       />
                     ) : (
                       <p className={styles.messageBody + " " + styles.messageBodyEmpty}>Sin cuerpo de texto.</p>
@@ -895,6 +956,7 @@ export function TicketsView() {
 
             {/* Composer fijo */}
             <div className={styles.composer}>
+              {actionError && <p className={styles.error}>{actionError}</p>}
               <div className={styles.composerModes}>
                 <button
                   type="button"
@@ -1123,8 +1185,12 @@ export function TicketsView() {
                 )}
                 <div className={styles.taskDrafts}>
                   {selected.ai.proposedTasks.map((task, index) => {
-                    const alreadyCreated = selected.taskLinks.some(
-                      (link) => link.title === task.title,
+                    // Duplicados por clave estable (índice de sugerencia). Los enlaces
+                    // antiguos sin índice caen al match por título de siempre.
+                    const alreadyCreated = selected.taskLinks.some((link) =>
+                      link.sourceSuggestionIndex != null
+                        ? link.sourceSuggestionIndex === index
+                        : link.title === task.title,
                     );
                     return (
                       <div key={`${task.title}-${index}`} className={styles.taskDraft}>
@@ -1198,6 +1264,7 @@ export function TicketsView() {
               Mensaje inicial
               <textarea value={newTicket.text} onChange={(event) => setNewTicket((prev) => ({ ...prev, text: event.target.value }))} rows={5} />
             </label>
+            {actionError && <p className={styles.error}>{actionError}</p>}
             <div className={styles.modalActions}>
               <button type="button" className={styles.secondaryButton} onClick={() => setCreatingTicket(false)}>Cancelar</button>
               <button type="submit" className={styles.primaryButton} disabled={saving}>Crear ticket</button>

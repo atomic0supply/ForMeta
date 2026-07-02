@@ -31,6 +31,7 @@ type TimerContextValue = {
   resume: () => void;
   stop: () => void;
   confirmStop: (notes: string, projectId: string, projectName: string) => Promise<void>;
+  discardTimer: () => void;
   cancelStop: () => void;
 };
 
@@ -44,6 +45,7 @@ const TimerContext = createContext<TimerContextValue>({
   resume: () => {},
   stop: () => {},
   confirmStop: async () => {},
+  discardTimer: () => {},
   cancelStop: () => {},
 });
 
@@ -56,7 +58,6 @@ export function TimerProvider({ children }: { children: React.ReactNode }) {
   const [elapsed, setElapsed] = useState(0);
   const [pendingStop, setPendingStop] = useState(false);
   const pendingTimerRef = useRef<ActiveTimer | null>(null);
-  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
     try {
@@ -79,23 +80,20 @@ export function TimerProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (!activeTimer) {
-      if (intervalRef.current) clearInterval(intervalRef.current);
       setElapsed(0);
       return;
     }
     // If paused, freeze elapsed to the pause moment
     if (activeTimer.pausedAt) {
       setElapsed(Math.floor((activeTimer.pausedAt - activeTimer.startedAt) / 1000));
-      if (intervalRef.current) clearInterval(intervalRef.current);
       return;
     }
     setElapsed(Math.floor((Date.now() - activeTimer.startedAt) / 1000));
-    intervalRef.current = setInterval(() => {
+    // Intervalo local al efecto: cada ejecución limpia el suyo propio
+    const id = setInterval(() => {
       setElapsed(Math.floor((Date.now() - activeTimer.startedAt) / 1000));
     }, 1000);
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    };
+    return () => clearInterval(id);
   }, [activeTimer]);
 
   const start = useCallback((projectId = "", projectName = "Sin asignar") => {
@@ -142,11 +140,20 @@ export function TimerProvider({ children }: { children: React.ReactNode }) {
     const endedAt = snapshot.pausedAt ?? Date.now();
     const userId = auth?.currentUser?.uid;
     const userDisplayName = auth?.currentUser?.displayName ?? auth?.currentUser?.email ?? undefined;
+    // Guardar primero: si falla, el timer se mantiene y el error llega al modal
+    await saveTimeEntry(projectId, projectName, snapshot.startedAt, endedAt, notes, userId, userDisplayName);
     setPendingStop(false);
     pendingTimerRef.current = null;
     setActiveTimer(null);
     localStorage.removeItem(STORAGE_KEY);
-    await saveTimeEntry(projectId, projectName, snapshot.startedAt, endedAt, notes, userId, userDisplayName);
+  }, []);
+
+  const discardTimer = useCallback(() => {
+    // Descarta la sesión sin guardar ninguna entrada
+    pendingTimerRef.current = null;
+    setPendingStop(false);
+    setActiveTimer(null);
+    localStorage.removeItem(STORAGE_KEY);
   }, []);
 
   const cancelStop = useCallback(() => {
@@ -158,7 +165,7 @@ export function TimerProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <TimerContext.Provider
-      value={{ activeTimer, elapsed, isPaused, pendingStop, start, pause, resume, stop, confirmStop, cancelStop }}
+      value={{ activeTimer, elapsed, isPaused, pendingStop, start, pause, resume, stop, confirmStop, discardTimer, cancelStop }}
     >
       {children}
     </TimerContext.Provider>

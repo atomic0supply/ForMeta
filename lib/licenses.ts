@@ -39,9 +39,17 @@ const COL = "licenses";
 export function subscribeToLicenses(callback: (licenses: License[]) => void): Unsubscribe {
   if (!db) return () => {};
   const q = query(collection(db, COL), orderBy("expiryDate", "asc"));
-  return onSnapshot(q, (snap) => {
-    callback(snap.docs.map((d) => ({ id: d.id, ...(d.data() as Omit<License, "id">) })));
-  });
+  return onSnapshot(
+    q,
+    (snap) => {
+      callback(snap.docs.map((d) => ({ id: d.id, ...(d.data() as Omit<License, "id">) })));
+    },
+    (error) => {
+      // Sin este callback un fallo de Firestore dejaría la vista en "Cargando…" para siempre.
+      console.error("subscribeToLicenses:", error);
+      callback([]);
+    },
+  );
 }
 
 export async function createLicense(data: LicenseInput): Promise<string> {

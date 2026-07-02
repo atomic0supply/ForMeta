@@ -1,6 +1,6 @@
 "use client";
 
-import { collectionGroup, onSnapshot, query } from "firebase/firestore";
+import { collectionGroup, limit, onSnapshot, query } from "firebase/firestore";
 import { Folder, Search, Users, X } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -9,13 +9,10 @@ import { db } from "@/lib/firebase";
 import { subscribeToClients, type Client } from "@/lib/clients";
 import { subscribeToProjects, type Project } from "@/lib/projects";
 import type { Task } from "@/lib/tasks";
+import { normalize } from "@/lib/text";
 import styles from "@/styles/intranet-search.module.css";
 
 type TaskWithProject = Task & { projectId: string };
-
-function normalize(s: string) {
-  return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-}
 
 function matches(text: string, q: string) {
   return normalize(text).includes(normalize(q));
@@ -23,6 +20,7 @@ function matches(text: string, q: string) {
 
 export function SearchView() {
   const [query2, setQuery2] = useState("");
+  const [debouncedQuery, setDebouncedQuery] = useState("");
   const [clients, setClients] = useState<Client[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
   const [tasks, setTasks] = useState<TaskWithProject[]>([]);
@@ -35,11 +33,23 @@ export function SearchView() {
     return () => { unsubC(); unsubP(); };
   }, []);
 
-  // Tasks via collection group
+  // Debounce del término de búsqueda (~200ms) para no filtrar en cada tecla
   useEffect(() => {
-    if (!db) return;
-    const q = query(collectionGroup(db, "tasks"));
-    const unsub = onSnapshot(q, (snap) => {
+    const id = setTimeout(() => setDebouncedQuery(query2), 200);
+    return () => clearTimeout(id);
+  }, [query2]);
+
+  const q = debouncedQuery.trim();
+
+  // Tasks via collection group: solo cuando hay una búsqueda activa (≥2 caracteres)
+  const shouldLoadTasks = q.length >= 2;
+  useEffect(() => {
+    if (!db || !shouldLoadTasks) {
+      setTasks([]);
+      return;
+    }
+    const tasksQuery = query(collectionGroup(db, "tasks"), limit(500));
+    const unsub = onSnapshot(tasksQuery, (snap) => {
       const result: TaskWithProject[] = snap.docs.map((d) => ({
         id: d.id,
         projectId: d.ref.parent.parent?.id ?? "",
@@ -48,9 +58,7 @@ export function SearchView() {
       setTasks(result);
     });
     return unsub;
-  }, []);
-
-  const q = query2.trim();
+  }, [shouldLoadTasks]);
 
   const filteredProjects = useMemo(() => {
     if (!q) return [];

@@ -22,6 +22,7 @@ import {
 
 import { subscribeToProjects, type Project } from "@/lib/projects";
 import { subscribeToCommandPalette } from "@/lib/commandPalette";
+import { normalize } from "@/lib/text";
 import { useTimer } from "@/lib/timerContext";
 import styles from "@/styles/intranet-palette.module.css";
 
@@ -35,13 +36,6 @@ type CommandAction = {
   onSelect: () => void;
 };
 
-function normalize(s: string): string {
-  return s
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "");
-}
-
 export function CommandPalette() {
   const router = useRouter();
   const { activeTimer, start, stop } = useTimer();
@@ -51,6 +45,9 @@ export function CommandPalette() {
   const [projects, setProjects] = useState<Project[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
+  // Refs con los valores actuales para el listener de teclado (se registra una vez por apertura)
+  const filteredRef = useRef<CommandAction[]>([]);
+  const activeIndexRef = useRef(0);
 
   // Subscribe to projects so they show up in the palette
   useEffect(() => {
@@ -247,25 +244,33 @@ export function CommandPalette() {
     }
   }, [filtered.length, activeIndex]);
 
-  // Keyboard navigation inside palette
+  // Mantener los refs sincronizados con el último render
+  useEffect(() => {
+    filteredRef.current = filtered;
+  }, [filtered]);
+  useEffect(() => {
+    activeIndexRef.current = activeIndex;
+  }, [activeIndex]);
+
+  // Keyboard navigation inside palette (un solo listener por apertura; lee de refs)
   useEffect(() => {
     if (!open) return;
     function onKey(e: KeyboardEvent) {
       if (e.key === "ArrowDown") {
         e.preventDefault();
-        setActiveIndex((i) => Math.min(i + 1, filtered.length - 1));
+        setActiveIndex((i) => Math.min(i + 1, filteredRef.current.length - 1));
       } else if (e.key === "ArrowUp") {
         e.preventDefault();
         setActiveIndex((i) => Math.max(i - 1, 0));
       } else if (e.key === "Enter") {
         e.preventDefault();
-        const action = filtered[activeIndex];
+        const action = filteredRef.current[activeIndexRef.current];
         if (action) action.onSelect();
       }
     }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [open, filtered, activeIndex]);
+  }, [open]);
 
   // Scroll active item into view
   useEffect(() => {

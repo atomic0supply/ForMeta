@@ -1,7 +1,7 @@
 "use client";
 
 import { Plus, Trash2, X } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useDeferredValue, useEffect, useMemo, useState } from "react";
 
 import { subscribeToClients, type Client } from "@/lib/clients";
 import {
@@ -99,6 +99,8 @@ export function CommunicationsView() {
   const [loading, setLoading] = useState(true);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [form, setForm] = useState<Composer>(emptyComposer());
+  // Si el usuario ha editado "Para" a mano, cambiar de cliente no debe pisarlo.
+  const [toTouched, setToTouched] = useState(false);
   const [saving, setSaving] = useState(false);
   const [busyId, setBusyId] = useState("");
   const [notice, setNotice] = useState("");
@@ -156,14 +158,29 @@ export function CommunicationsView() {
     [form.kind, renderVars, settings.signatures.client],
   );
 
+  // Previsualización diferida: evita re-renderizar el iframe en cada pulsación
+  // mientras se escribe (el guardado sigue usando `rendered`, siempre al día).
+  const deferredRenderVars = useDeferredValue(renderVars);
+  const preview = useMemo(
+    () =>
+      renderClientMail(form.kind, deferredRenderVars, {
+        signatureHtml: settings.signatures.client,
+      }),
+    [form.kind, deferredRenderVars, settings.signatures.client],
+  );
+
   function openNew() {
     setForm(emptyComposer());
+    setToTouched(false);
     setDrawerOpen(true);
   }
 
   function closeDrawer() {
     setDrawerOpen(false);
-    setTimeout(() => setForm(emptyComposer()), 320);
+    setTimeout(() => {
+      setForm(emptyComposer());
+      setToTouched(false);
+    }, 320);
   }
 
   function handleClientChange(clientId: string) {
@@ -174,7 +191,9 @@ export function CommunicationsView() {
     setForm((f) => ({
       ...f,
       clientId,
-      to: Array.from(new Set(emails)).join(", "),
+      // Solo autocompletamos si el campo no se ha editado a mano: así cambiar
+      // de cliente no pisa destinatarios escritos por el usuario.
+      to: toTouched && f.to.trim() ? f.to : Array.from(new Set(emails)).join(", "),
     }));
   }
 
@@ -200,11 +219,19 @@ export function CommunicationsView() {
   }
 
   function parseRecipients(value: string) {
+    // Recupera el nombre del contacto cuando el email pertenece al cliente
+    // asociado, para no perderlo en el sobre del correo.
+    const client = clients.find((c) => c.id === form.clientId);
+    const names = new Map<string, string>();
+    if (client?.email) names.set(client.email.toLowerCase(), client.contact || client.name);
+    for (const contact of client?.contacts ?? []) {
+      if (contact.email) names.set(contact.email.toLowerCase(), contact.name);
+    }
     return value
       .split(/[,;]+/)
       .map((email) => email.trim())
       .filter(Boolean)
-      .map((email) => ({ name: "", email }));
+      .map((email) => ({ name: names.get(email.toLowerCase()) ?? "", email }));
   }
 
   async function handleCreateDraft() {
@@ -226,8 +253,11 @@ export function CommunicationsView() {
         clientId: form.clientId,
         relatedEntity: form.clientId ? { type: "client", id: form.clientId } : null,
       });
+      // Solo cerramos el cajón si el borrador se ha guardado correctamente.
       closeDrawer();
       setNotice("Borrador creado. Revísalo y apruébalo para enviarlo.");
+    } catch {
+      setNotice("No se ha podido crear el borrador. Inténtalo de nuevo.");
     } finally {
       setSaving(false);
     }
@@ -238,6 +268,8 @@ export function CommunicationsView() {
     try {
       await approveClientNotification(item.id, currentUserApprover(currentUser));
       setNotice("Aprobada. El worker la enviará en el próximo ciclo.");
+    } catch {
+      setNotice("No se ha podido aprobar la comunicación. Inténtalo de nuevo.");
     } finally {
       setBusyId("");
     }
@@ -247,6 +279,8 @@ export function CommunicationsView() {
     setBusyId(item.id);
     try {
       await deleteClientNotification(item.id);
+    } catch {
+      setNotice("No se ha podido eliminar la comunicación. Inténtalo de nuevo.");
     } finally {
       setBusyId("");
     }
@@ -374,7 +408,15 @@ export function CommunicationsView() {
             </div>
             <div className={`${styles.field} ${styles.full}`}>
               <label className={styles.fieldLabel}>Para (emails, separados por coma)</label>
-              <input className={styles.input} value={form.to} onChange={(e) => setField("to", e.target.value)} placeholder="cliente@empresa.com" />
+              <input
+                className={styles.input}
+                value={form.to}
+                onChange={(e) => {
+                  setField("to", e.target.value);
+                  setToTouched(true);
+                }}
+                placeholder="cliente@empresa.com"
+              />
             </div>
             <div className={`${styles.field} ${styles.full}`}>
               <label className={styles.fieldLabel}>Título</label>
@@ -454,7 +496,7 @@ export function CommunicationsView() {
 
           <div className={styles.previewWrap}>
             <span className={styles.fieldLabel}>Previsualización</span>
-            <iframe className={styles.preview} title="Previsualización del correo" srcDoc={rendered.html} />
+            <iframe className={styles.preview} title="Previsualización del correo" srcDoc={preview.html} />
           </div>
         </div>
         <div className={styles.drawerFooter}>

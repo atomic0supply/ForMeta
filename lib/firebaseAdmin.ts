@@ -31,10 +31,24 @@ function adminApp(): App {
     process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET ||
     undefined;
 
+  let credential;
+  if (rawServiceAccount) {
+    try {
+      credential = cert(JSON.parse(rawServiceAccount));
+    } catch (error) {
+      // Fail-fast con mensaje claro en vez de un error críptico en el primer uso.
+      throw new Error(
+        `FIREBASE_SERVICE_ACCOUNT_JSON no es un JSON válido: ${
+          error instanceof Error ? error.message : String(error)
+        }`,
+      );
+    }
+  } else {
+    credential = applicationDefault();
+  }
+
   cachedApp = initializeApp({
-    credential: rawServiceAccount
-      ? cert(JSON.parse(rawServiceAccount))
-      : applicationDefault(),
+    credential,
     storageBucket,
   });
   return cachedApp;

@@ -62,6 +62,8 @@ export function ProjectDetailView({ id }: { id: string }) {
   const [tagsInput, setTagsInput] = useState("");
   const [savingProject, setSavingProject] = useState(false);
   const [confirmDeleteProject, setConfirmDeleteProject] = useState(false);
+  const [projectFormError, setProjectFormError] = useState<string | null>(null);
+  const [pageError, setPageError] = useState<string | null>(null);
 
   // Endpoints state
   const [endpoints, setEndpoints] = useState<ApiEndpoint[]>([]);
@@ -70,9 +72,20 @@ export function ProjectDetailView({ id }: { id: string }) {
   const [endpointForm, setEndpointForm] = useState<ApiEndpointInput>(emptyEndpoint);
   const [savingEndpoint, setSavingEndpoint] = useState(false);
   const [confirmDeleteEndpoint, setConfirmDeleteEndpoint] = useState<string | null>(null);
+  const [endpointFormError, setEndpointFormError] = useState<string | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
   const endpointNameRef = useRef<HTMLInputElement>(null);
+  // Temporizadores de auto-reset de las confirmaciones de borrado (3s)
+  const confirmProjectTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const confirmEndpointTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (confirmProjectTimer.current) clearTimeout(confirmProjectTimer.current);
+      if (confirmEndpointTimer.current) clearTimeout(confirmEndpointTimer.current);
+    };
+  }, []);
 
   useEffect(() => {
     void getProject(id).then((data) => {
@@ -109,6 +122,7 @@ export function ProjectDetailView({ id }: { id: string }) {
       externalUrl: project.externalUrl ?? "",
     });
     setTagsInput(project.tags.join(", "));
+    setProjectFormError(null);
     setEditingProject(true);
   }
 
@@ -129,32 +143,51 @@ export function ProjectDetailView({ id }: { id: string }) {
     e.preventDefault();
     if (!projectForm || !project) return;
     setSavingProject(true);
+    setProjectFormError(null);
     const tags = tagsInput.split(",").map((t) => t.trim()).filter(Boolean);
     try {
       await updateProject(project.id, { ...projectForm, tags });
       setProject({ ...project, ...projectForm, tags });
       setEditingProject(false);
+    } catch {
+      // No se cierra el drawer para no perder lo escrito
+      setProjectFormError("No se han podido guardar los cambios. Inténtalo de nuevo.");
     } finally {
       setSavingProject(false);
     }
   }
 
   async function handleDeleteProject() {
-    if (!confirmDeleteProject) { setConfirmDeleteProject(true); return; }
-    await deleteProject(id);
-    router.push("/intranet/proyectos");
+    if (!confirmDeleteProject) {
+      // Auto-reset a los 3s (el onBlur competía con el segundo clic)
+      setConfirmDeleteProject(true);
+      setPageError(null);
+      if (confirmProjectTimer.current) clearTimeout(confirmProjectTimer.current);
+      confirmProjectTimer.current = setTimeout(() => setConfirmDeleteProject(false), 3000);
+      return;
+    }
+    if (confirmProjectTimer.current) clearTimeout(confirmProjectTimer.current);
+    try {
+      await deleteProject(id);
+      router.push("/intranet/proyectos");
+    } catch {
+      setConfirmDeleteProject(false);
+      setPageError("No se ha podido eliminar el proyecto. Inténtalo de nuevo.");
+    }
   }
 
   // Endpoint CRUD
   function openNewEndpoint() {
     setEditingEndpoint(null);
     setEndpointForm(emptyEndpoint);
+    setEndpointFormError(null);
     setEndpointDrawerOpen(true);
   }
 
   function openEditEndpoint(endpoint: ApiEndpoint) {
     setEditingEndpoint(endpoint);
     setEndpointForm({ name: endpoint.name, url: endpoint.url, method: endpoint.method, notes: endpoint.notes });
+    setEndpointFormError(null);
     setEndpointDrawerOpen(true);
   }
 
@@ -162,6 +195,7 @@ export function ProjectDetailView({ id }: { id: string }) {
     setEndpointDrawerOpen(false);
     setEditingEndpoint(null);
     setEndpointForm(emptyEndpoint);
+    setEndpointFormError(null);
   }
 
   function handleEndpointField(
@@ -174,6 +208,7 @@ export function ProjectDetailView({ id }: { id: string }) {
     e.preventDefault();
     if (!endpointForm.name.trim() || !endpointForm.url.trim()) return;
     setSavingEndpoint(true);
+    setEndpointFormError(null);
     try {
       if (editingEndpoint) {
         await updateEndpoint(id, editingEndpoint.id, endpointForm);
@@ -181,14 +216,29 @@ export function ProjectDetailView({ id }: { id: string }) {
         await createEndpoint(id, endpointForm);
       }
       closeEndpointDrawer();
+    } catch {
+      // No se cierra el drawer para no perder lo escrito
+      setEndpointFormError("No se ha podido guardar el endpoint. Inténtalo de nuevo.");
     } finally {
       setSavingEndpoint(false);
     }
   }
 
   async function handleDeleteEndpoint(endpointId: string) {
-    if (confirmDeleteEndpoint !== endpointId) { setConfirmDeleteEndpoint(endpointId); return; }
-    await deleteEndpoint(id, endpointId);
+    if (confirmDeleteEndpoint !== endpointId) {
+      // Auto-reset a los 3s (el onBlur competía con el segundo clic)
+      setConfirmDeleteEndpoint(endpointId);
+      setPageError(null);
+      if (confirmEndpointTimer.current) clearTimeout(confirmEndpointTimer.current);
+      confirmEndpointTimer.current = setTimeout(() => setConfirmDeleteEndpoint(null), 3000);
+      return;
+    }
+    if (confirmEndpointTimer.current) clearTimeout(confirmEndpointTimer.current);
+    try {
+      await deleteEndpoint(id, endpointId);
+    } catch {
+      setPageError("No se ha podido eliminar el endpoint. Inténtalo de nuevo.");
+    }
     setConfirmDeleteEndpoint(null);
   }
 
@@ -225,12 +275,17 @@ export function ProjectDetailView({ id }: { id: string }) {
             type="button"
             onClick={() => void handleDeleteProject()}
             className={`${styles.btnAction} ${confirmDeleteProject ? styles.btnDanger : ""}`}
-            onBlur={() => setConfirmDeleteProject(false)}
           >
             {confirmDeleteProject ? "¿Eliminar?" : "Eliminar"}
           </button>
         </div>
       </div>
+
+      {pageError && (
+        <p role="alert" style={{ color: "#b3261e", fontSize: 12, margin: "8px 0 0" }}>
+          {pageError}
+        </p>
+      )}
 
       {/* Header */}
       <div className={styles.detailHeader}>
@@ -364,7 +419,6 @@ export function ProjectDetailView({ id }: { id: string }) {
                       type="button"
                       onClick={() => void handleDeleteEndpoint(ep.id)}
                       className={`${styles.btnAction} ${confirmDeleteEndpoint === ep.id ? styles.btnDanger : ""}`}
-                      onBlur={() => setConfirmDeleteEndpoint(null)}
                     >
                       {confirmDeleteEndpoint === ep.id ? "¿Seguro?" : "Eliminar"}
                     </button>
@@ -406,6 +460,11 @@ export function ProjectDetailView({ id }: { id: string }) {
                 <label htmlFor="epNotes" className={styles.label}>Notas</label>
                 <textarea id="epNotes" name="notes" value={endpointForm.notes} onChange={handleEndpointField} className={`${styles.input} ${styles.textarea}`} rows={3} />
               </div>
+              {endpointFormError && (
+                <p role="alert" style={{ color: "#b3261e", fontSize: 12, margin: 0 }}>
+                  {endpointFormError}
+                </p>
+              )}
               <div className={styles.formActions}>
                 <button type="button" onClick={closeEndpointDrawer} className={styles.btnCancel}>Cancelar</button>
                 <button type="submit" disabled={savingEndpoint || !endpointForm.name.trim() || !endpointForm.url.trim()} className={styles.btnSave}>
@@ -531,6 +590,11 @@ export function ProjectDetailView({ id }: { id: string }) {
                 <label htmlFor="plocal" className={styles.label}>Carpeta local</label>
                 <input id="plocal" name="localPath" type="text" value={projectForm.localPath ?? ""} onChange={handleProjectField} className={styles.input} placeholder="/Users/tu/dev/proyecto" autoComplete="off" />
               </div>
+              {projectFormError && (
+                <p role="alert" style={{ color: "#b3261e", fontSize: 12, margin: 0 }}>
+                  {projectFormError}
+                </p>
+              )}
               <div className={styles.formActions}>
                 <button type="button" onClick={() => setEditingProject(false)} className={styles.btnCancel}>Cancelar</button>
                 <button type="submit" disabled={savingProject} className={styles.btnSave}>

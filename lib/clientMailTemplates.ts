@@ -275,9 +275,8 @@ function serviceUnavailableBody(vars: RenderMailVars): string {
     )}</strong> no estará disponible temporalmente.</p>`,
     window,
     vars.reason ? noteBox(paragraphs(vars.reason)) : "",
-    vars.message
-      ? `<p style="margin:0 0 14px;line-height:1.6;">${paragraphs(vars.message)}</p>`
-      : "",
+    // paragraphs() ya devuelve bloques <p>; no hay que envolverlos en otro <p>.
+    vars.message ? paragraphs(vars.message) : "",
     `<p style="margin:0 0 14px;line-height:1.6;">Disculpa las molestias. Te avisaremos en cuanto quede restablecido.</p>`,
   ].join("");
 }

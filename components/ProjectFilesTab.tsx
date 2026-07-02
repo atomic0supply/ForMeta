@@ -93,25 +93,20 @@ export function ProjectFilesTab({ projectId }: { projectId: string }) {
     [projectId],
   );
 
+  // Carga inicial: reutiliza load() para que el estado de error/carga sea el
+  // mismo que en el resto de navegaciones. Si falla, path queda vacío y las
+  // acciones de subida/carpeta permanecen deshabilitadas.
   useEffect(() => {
     let active = true;
-    (async () => {
-      const listing = await listProjectFiles(projectId).catch((e) => {
-        if (active) setError(e instanceof Error ? e.message : "Error");
-        return null;
-      });
-      if (!active) return;
-      setLoading(false);
-      if (listing) {
-        setRootId(listing.rootId);
-        setItems(listing.items);
-        setPath([{ id: listing.rootId, name: "Archivos" }]);
-      }
+    void (async () => {
+      const listing = await load();
+      if (!active || !listing) return;
+      setPath([{ id: listing.rootId, name: "Archivos" }]);
     })();
     return () => {
       active = false;
     };
-  }, [projectId]);
+  }, [load]);
 
   async function openFolder(item: DriveItem) {
     setPath((p) => [...p, { id: item.id, name: item.name }]);
@@ -158,7 +153,8 @@ export function ProjectFilesTab({ projectId }: { projectId: string }) {
 
   async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const files = Array.from(e.target.files ?? []);
-    if (!files.length) return;
+    // Sin carpeta actual (carga inicial fallida) no se sube a un destino erróneo
+    if (!files.length || !currentFolderId) return;
     setBusy(true);
     setError("");
     try {
@@ -173,7 +169,7 @@ export function ProjectFilesTab({ projectId }: { projectId: string }) {
   }
 
   async function handleCreateFolder() {
-    if (!folderName.trim()) return;
+    if (!folderName.trim() || !currentFolderId) return;
     setBusy(true);
     setError("");
     try {
@@ -285,7 +281,7 @@ export function ProjectFilesTab({ projectId }: { projectId: string }) {
             type="button"
             className={styles.btnGhost}
             onClick={() => setNewFolder((v) => !v)}
-            disabled={busy || !rootId || showingSearch}
+            disabled={busy || !rootId || !currentFolderId || showingSearch}
           >
             <FolderPlus size={14} /> Nueva carpeta
           </button>
@@ -293,7 +289,7 @@ export function ProjectFilesTab({ projectId }: { projectId: string }) {
             type="button"
             className={styles.btnPrimary}
             onClick={() => fileInputRef.current?.click()}
-            disabled={busy || !rootId || showingSearch}
+            disabled={busy || !rootId || !currentFolderId || showingSearch}
           >
             <Upload size={14} /> Subir archivo
           </button>

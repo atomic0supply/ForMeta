@@ -3,9 +3,23 @@
 
 export type ExpiryStatus = "expired" | "critical" | "warning" | "ok" | "none";
 
+/**
+ * Días hasta la caducidad (negativo si ya venció).
+ * Devuelve NaN si la fecha está vacía o es inválida — los llamantes deben
+ * tratar NaN como "sin caducidad" (ver expiryStatus/expiryLabel y domains.ts).
+ * Se parsea YYYY-MM-DD como fecha LOCAL: `new Date("YYYY-MM-DD")` interpretaría
+ * UTC y el posterior setHours local podría desplazar un día cerca de medianoche.
+ */
 export function daysUntilExpiry(expiryDate: string): number {
-  const exp = new Date(expiryDate);
-  exp.setHours(23, 59, 59, 999);
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(expiryDate?.trim() ?? "");
+  if (!match) return NaN;
+  const exp = new Date(
+    Number(match[1]),
+    Number(match[2]) - 1,
+    Number(match[3]),
+    23, 59, 59, 999,
+  );
+  if (Number.isNaN(exp.getTime())) return NaN;
   const now = new Date();
   return Math.ceil((exp.getTime() - now.getTime()) / 86400000);
 }

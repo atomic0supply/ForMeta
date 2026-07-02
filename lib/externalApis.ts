@@ -4,6 +4,7 @@ import {
   collectionGroup,
   deleteDoc,
   doc,
+  limit,
   onSnapshot,
   orderBy,
   query,
@@ -47,13 +48,21 @@ export function subscribeToExternalApis(
     collection(db, "projects", projectId, "externalApis"),
     orderBy("createdAt", "asc"),
   );
-  return onSnapshot(q, (snap) => {
-    const apis = snap.docs.map((d) => ({
-      id: d.id,
-      ...(d.data() as Omit<ExternalApi, "id">),
-    }));
-    callback(apis);
-  });
+  return onSnapshot(
+    q,
+    (snap) => {
+      const apis = snap.docs.map((d) => ({
+        id: d.id,
+        ...(d.data() as Omit<ExternalApi, "id">),
+      }));
+      callback(apis);
+    },
+    (error) => {
+      // Sin este callback un fallo de Firestore dejaría la vista en "Cargando…" para siempre.
+      console.error("subscribeToExternalApis:", error);
+      callback([]);
+    },
+  );
 }
 
 export async function createExternalApi(
@@ -100,17 +109,29 @@ export function subscribeToAllExternalApis(
   if (!db) return () => {};
   // Sin orderBy: una query collectionGroup con orden requeriría un índice
   // COLLECTION_GROUP dedicado. El orden se hace en cliente (AllApisTab).
-  const q = query(collectionGroup(db, "externalApis"));
-  return onSnapshot(q, (snap) => {
-    const apis = snap.docs.map((d) => {
-      const projectId = d.ref.parent.parent?.id ?? "";
-      return {
-        id: d.id,
-        ...(d.data() as Omit<ExternalApi, "id">),
-        projectId,
-        projectName: resolveProjectName(projectId),
-      };
-    });
-    callback(apis);
-  });
+  // limit(500): la vista global no debe descargar un número ilimitado de docs.
+  // NOTA: los documentos incluyen el campo secreto `apiKey` (Firestore no
+  // permite proyectar campos en cliente); separarlo requeriría una migración
+  // de datos. Mientras tanto, la vista global (AllApisTab) no debe mostrarlo.
+  const q = query(collectionGroup(db, "externalApis"), limit(500));
+  return onSnapshot(
+    q,
+    (snap) => {
+      const apis = snap.docs.map((d) => {
+        const projectId = d.ref.parent.parent?.id ?? "";
+        return {
+          id: d.id,
+          ...(d.data() as Omit<ExternalApi, "id">),
+          projectId,
+          projectName: resolveProjectName(projectId),
+        };
+      });
+      callback(apis);
+    },
+    (error) => {
+      // Sin este callback un fallo de Firestore dejaría la vista en "Cargando…" para siempre.
+      console.error("subscribeToAllExternalApis:", error);
+      callback([]);
+    },
+  );
 }

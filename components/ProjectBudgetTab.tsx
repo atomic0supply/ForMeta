@@ -46,6 +46,15 @@ export function ProjectBudgetTab({ project, onProjectUpdate }: Props) {
     return () => { unsubEntries(); unsubClients(); };
   }, [project.id]);
 
+  // Resincroniza los inputs cuando cambia el proyecto desde fuera
+  // (solo con el formulario cerrado, para no pisar lo que se está escribiendo)
+  useEffect(() => {
+    if (editingRate) return;
+    setRateInput(String(project.hourlyRate ?? 0));
+    setBudgetInput(String(project.budgetHours ?? ""));
+    setCurrencyInput(project.currency ?? "EUR");
+  }, [project.hourlyRate, project.budgetHours, project.currency, editingRate]);
+
   const entries = useMemo(() => {
     const ms = FILTER_MS[filter];
     if (!ms) return allEntries;

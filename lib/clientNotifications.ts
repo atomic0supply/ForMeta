@@ -3,6 +3,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  limit,
   onSnapshot,
   orderBy,
   query,
@@ -96,7 +97,9 @@ export function subscribeToClientMailOutbox(
   callback: (items: ClientMailOutbox[]) => void,
 ): Unsubscribe {
   if (!db) return () => {};
-  const q = query(collection(db, COL), orderBy("createdAt", "desc"));
+  // Limitamos a las 200 comunicaciones más recientes para no leer la colección
+  // completa a medida que crece el histórico de envíos.
+  const q = query(collection(db, COL), orderBy("createdAt", "desc"), limit(200));
   return onSnapshot(q, (snap) => {
     callback(
       snap.docs.map((d) => ({ id: d.id, ...(d.data() as Omit<ClientMailOutbox, "id">) })),

@@ -65,7 +65,12 @@ export function ProjectsView() {
   const [tagsInput, setTagsInput] = useState("");
   const [saving, setSaving] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
+  const [formError, setFormError] = useState<string | null>(null);
+  const [listError, setListError] = useState<string | null>(null);
+  // Cliente pendiente de resolver (deep link) hasta que cargue la lista de clientes
+  const [pendingClientId, setPendingClientId] = useState<string | null>(null);
   const nameRef = useRef<HTMLInputElement>(null);
+  const confirmDeleteTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const unsubProjects = subscribeToProjects((data) => {
@@ -83,10 +88,43 @@ export function ProjectsView() {
     if (drawerOpen) setTimeout(() => nameRef.current?.focus(), 120);
   }, [drawerOpen]);
 
+  // Deep link desde la ficha de cliente: /intranet/proyectos?nuevo=1&clientId=...
+  // Se lee window.location.search en el montaje para evitar useSearchParams + Suspense
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("nuevo") !== "1") return;
+    const clientId = params.get("clientId") ?? "";
+    setEditing(null);
+    setForm({ ...emptyForm, clientId });
+    setTagsInput("");
+    setDrawerOpen(true);
+    if (clientId) setPendingClientId(clientId);
+  }, []);
+
+  // Completa clientName cuando la lista de clientes termina de cargar
+  useEffect(() => {
+    if (!pendingClientId || clients.length === 0) return;
+    const selected = clients.find((c) => c.id === pendingClientId);
+    if (selected) {
+      setForm((prev) =>
+        prev.clientId === pendingClientId ? { ...prev, clientName: selected.name } : prev,
+      );
+    }
+    setPendingClientId(null);
+  }, [clients, pendingClientId]);
+
+  // Limpia el temporizador de confirmación de borrado al desmontar
+  useEffect(() => {
+    return () => {
+      if (confirmDeleteTimer.current) clearTimeout(confirmDeleteTimer.current);
+    };
+  }, []);
+
   function openNew() {
     setEditing(null);
     setForm(emptyForm);
     setTagsInput("");
+    setFormError(null);
     setDrawerOpen(true);
   }
 
@@ -108,6 +146,7 @@ export function ProjectsView() {
       externalUrl: project.externalUrl ?? "",
     });
     setTagsInput(project.tags.join(", "));
+    setFormError(null);
     setDrawerOpen(true);
   }
 
@@ -116,6 +155,7 @@ export function ProjectsView() {
     setEditing(null);
     setForm(emptyForm);
     setTagsInput("");
+    setFormError(null);
   }
 
   function handleField(
@@ -139,6 +179,7 @@ export function ProjectsView() {
     e.preventDefault();
     if (!form.name.trim()) return;
     setSaving(true);
+    setFormError(null);
     const tags = tagsInput
       .split(",")
       .map((t) => t.trim())
@@ -153,6 +194,9 @@ export function ProjectsView() {
         void ensureProjectFiles(newId);
       }
       closeDrawer();
+    } catch {
+      // No se cierra el drawer para no perder lo escrito
+      setFormError("No se han podido guardar los cambios. Inténtalo de nuevo.");
     } finally {
       setSaving(false);
     }
@@ -160,10 +204,19 @@ export function ProjectsView() {
 
   async function handleDelete(id: string) {
     if (confirmDelete !== id) {
+      // Auto-reset a los 3s (el onBlur competía con el segundo clic)
       setConfirmDelete(id);
+      setListError(null);
+      if (confirmDeleteTimer.current) clearTimeout(confirmDeleteTimer.current);
+      confirmDeleteTimer.current = setTimeout(() => setConfirmDelete(null), 3000);
       return;
     }
-    await deleteProject(id);
+    if (confirmDeleteTimer.current) clearTimeout(confirmDeleteTimer.current);
+    try {
+      await deleteProject(id);
+    } catch {
+      setListError("No se ha podido eliminar el proyecto. Inténtalo de nuevo.");
+    }
     setConfirmDelete(null);
   }
 
@@ -179,6 +232,12 @@ export function ProjectsView() {
           Nuevo proyecto
         </button>
       </div>
+
+      {listError && (
+        <p role="alert" style={{ color: "#b3261e", fontSize: 12, margin: "0 0 8px" }}>
+          {listError}
+        </p>
+      )}
 
       {loading && <p className={styles.empty}>Cargando proyectos…</p>}
 
@@ -268,7 +327,6 @@ export function ProjectsView() {
                   type="button"
                   onClick={() => void handleDelete(project.id)}
                   className={`${styles.btnAction} ${confirmDelete === project.id ? styles.btnDanger : ""}`}
-                  onBlur={() => setConfirmDelete(null)}
                 >
                   {confirmDelete === project.id ? "¿Seguro?" : "Eliminar"}
                 </button>
@@ -399,6 +457,12 @@ export function ProjectsView() {
               rows={4}
             />
           </div>
+
+          {formError && (
+            <p role="alert" style={{ color: "#b3261e", fontSize: 12, margin: 0 }}>
+              {formError}
+            </p>
+          )}
 
           <div className={styles.formActions}>
             <button

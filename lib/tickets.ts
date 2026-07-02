@@ -148,6 +148,9 @@ export type TicketTaskLink = {
   title: string;
   status: TaskStatus;
   priority: TaskPriority;
+  // Índice de la sugerencia IA que originó la tarea. Permite detectar
+  // duplicados por clave estable en vez de comparar títulos.
+  sourceSuggestionIndex?: number;
   createdAt: Timestamp | null;
 };
 
@@ -360,7 +363,13 @@ export function subscribeToTickets(
   callback: (tickets: Ticket[]) => void,
 ): Unsubscribe {
   if (!db) return () => {};
-  const q = query(collection(db, "tickets"), orderBy("updatedAt", "desc"));
+  // Limitamos la suscripción a los 200 tickets más recientes para no leer la
+  // colección completa (coste de lecturas y memoria) en bandejas grandes.
+  const q = query(
+    collection(db, "tickets"),
+    orderBy("updatedAt", "desc"),
+    limit(200),
+  );
   return onSnapshot(q, (snap) => {
     callback(
       snap.docs.map((item) =>

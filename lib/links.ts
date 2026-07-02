@@ -30,13 +30,21 @@ export function subscribeToLinks(
 ): Unsubscribe {
   if (!db) return () => {};
   const q = query(collection(db, "links"), orderBy("createdAt", "asc"));
-  return onSnapshot(q, (snap) => {
-    const links = snap.docs.map((d) => ({
-      id: d.id,
-      ...(d.data() as Omit<Link, "id">),
-    }));
-    callback(links);
-  });
+  return onSnapshot(
+    q,
+    (snap) => {
+      const links = snap.docs.map((d) => ({
+        id: d.id,
+        ...(d.data() as Omit<Link, "id">),
+      }));
+      callback(links);
+    },
+    (error) => {
+      // Sin este callback un fallo de Firestore dejaría la vista en "Cargando…" para siempre.
+      console.error("subscribeToLinks:", error);
+      callback([]);
+    },
+  );
 }
 
 export async function createLink(data: LinkInput): Promise<string> {

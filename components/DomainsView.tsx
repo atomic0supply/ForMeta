@@ -46,6 +46,7 @@ export function DomainsView() {
   const [form, setForm]                   = useState<DomainInput>(emptyForm());
   const [saving, setSaving]               = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [formError, setFormError]         = useState("");
 
   const nameRef = useRef<HTMLInputElement>(null);
 
@@ -75,6 +76,7 @@ export function DomainsView() {
     setEditing(null);
     setForm(emptyForm());
     setConfirmDelete(false);
+    setFormError("");
     setDrawerOpen(true);
   }
 
@@ -96,12 +98,14 @@ export function DomainsView() {
       notes:            domain.notes,
     });
     setConfirmDelete(false);
+    setFormError("");
     setDrawerOpen(true);
   }
 
   function closeDrawer() {
     setDrawerOpen(false);
     setConfirmDelete(false);
+    setFormError("");
     setTimeout(() => { setEditing(null); setForm(emptyForm()); }, 320);
   }
 
@@ -146,6 +150,7 @@ export function DomainsView() {
     e.preventDefault();
     if (!form.name.trim() || !form.expiryDate) return;
     setSaving(true);
+    setFormError("");
     try {
       const data: DomainInput = {
         ...form,
@@ -158,6 +163,10 @@ export function DomainsView() {
         await createDomain(data);
       }
       closeDrawer();
+    } catch (err) {
+      // El fallo debe verse: sin catch el error quedaba silenciado.
+      console.error("DomainsView.handleSubmit:", err);
+      setFormError("No se pudo guardar el dominio. Inténtalo de nuevo.");
     } finally {
       setSaving(false);
     }
@@ -167,9 +176,13 @@ export function DomainsView() {
     if (!editing) return;
     if (!confirmDelete) { setConfirmDelete(true); return; }
     setSaving(true);
+    setFormError("");
     try {
       await deleteDomain(editing.id);
       closeDrawer();
+    } catch (err) {
+      console.error("DomainsView.handleDelete:", err);
+      setFormError("No se pudo eliminar el dominio. Inténtalo de nuevo.");
     } finally {
       setSaving(false);
     }
@@ -466,6 +479,9 @@ export function DomainsView() {
         </form>
 
         {/* Footer */}
+        {formError && (
+          <p style={{ color: "var(--danger)", fontSize: "0.8rem", margin: "0 20px 8px" }}>{formError}</p>
+        )}
         <div className={styles.drawerFooter}>
           {editing && (
             <button
@@ -481,8 +497,7 @@ export function DomainsView() {
             Cancelar
           </button>
           <button
-            type="submit"
-            form=""
+            type="button"
             onClick={handleSubmit}
             className={styles.btnSave}
             disabled={saving || !form.name.trim() || !form.expiryDate}

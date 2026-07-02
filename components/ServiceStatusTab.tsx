@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { collection, doc, getDoc, getDocs, limit, orderBy, query } from "firebase/firestore";
 
 import { auth, db } from "@/lib/firebase";
@@ -62,91 +62,116 @@ export function ServiceStatusTab() {
   const [driveDetail, setDriveDetail] = useState("Comprobando…");
   const [driveSub, setDriveSub] = useState("");
 
+  // Evita setState tras el desmontaje y ejecuciones solapadas de runChecks.
+  const mountedRef = useRef(true);
+  const runningRef = useRef(false);
+
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => { mountedRef.current = false; };
+  }, []);
+
   useEffect(() => subscribeToTicketSettings(setSettings), []);
 
   const runChecks = useCallback(async () => {
+    if (runningRef.current) return; // ya hay una comprobación en curso
+    runningRef.current = true;
     setRefreshing(true);
+    const alive = () => mountedRef.current;
 
-    // ── Firebase: lectura ligera de Firestore ──
-    setFbState("loading");
     try {
-      if (!db) throw new Error("SDK no inicializado");
-      await getDoc(doc(db, "ticketSettings", "system"));
-      const who = auth?.currentUser?.email ?? "sesión activa";
-      setFbState("ok");
-      setFbDetail(`Conectado · ${who}`);
-    } catch (err) {
-      setFbState("error");
-      setFbDetail(err instanceof Error ? err.message : "Sin conexión");
-    }
-
-    // ── Backend Fiscal + RAG ──
-    setBackendState("loading");
-    try {
-      const res = await fetch("/api/formeta-services/status", { cache: "no-store" });
-      const data = (await res.json()) as FormetaServicesStatus;
-      setBackend(data);
-      const oks = [data.fiscal.health.ok, data.fiscal.status.ok, data.rag.health.ok, data.rag.collections.ok];
-      const okCount = oks.filter(Boolean).length;
-      setBackendState(okCount === 4 ? "ok" : okCount === 0 ? "error" : "warn");
-      setBackendDetail(`${okCount}/4 comprobaciones OK`);
-    } catch {
-      setBackendState("error");
-      setBackendDetail("No se pudo consultar el backend");
-    }
-
-    // ── Correo: errores recientes del worker de tickets ──
-    setMailState("loading");
-    try {
-      if (!db) throw new Error("SDK no inicializado");
-      const snap = await getDocs(
-        query(collection(db, "ticketProcessingErrors"), orderBy("createdAt", "desc"), limit(5)),
-      );
-      const recent = snap.size;
-      if (recent === 0) {
-        setMailState("ok");
-        setMailDetail("Sin errores recientes en el worker");
-      } else {
-        const last = snap.docs[0].data();
-        setMailState("warn");
-        setMailDetail(`${recent} error(es) recientes · último: ${String(last.error ?? "").slice(0, 60)}`);
+      // ── Firebase: lectura ligera de Firestore ──
+      setFbState("loading");
+      try {
+        if (!db) throw new Error("SDK no inicializado");
+        await getDoc(doc(db, "ticketSettings", "system"));
+        if (!alive()) return;
+        const who = auth?.currentUser?.email ?? "sesión activa";
+        setFbState("ok");
+        setFbDetail(`Conectado · ${who}`);
+      } catch (err) {
+        if (!alive()) return;
+        setFbState("error");
+        setFbDetail(err instanceof Error ? err.message : "Sin conexión");
       }
-    } catch {
-      setMailState("error");
-      setMailDetail("No se pudo leer el estado del worker");
-    }
 
-    // ── Google Drive: conexión con la Unidad compartida + uso ──
-    setDriveState("loading");
-    try {
-      const tok = await auth?.currentUser?.getIdToken();
-      const res = await fetch("/api/drive/status", {
-        headers: tok ? { Authorization: `Bearer ${tok}` } : {},
-        cache: "no-store",
-      });
-      const data = await res.json();
-      if (!res.ok || data.error || !data.ok) {
+      // ── Backend Fiscal + RAG ──
+      setBackendState("loading");
+      try {
+        const res = await fetch("/api/formeta-services/status", { cache: "no-store" });
+        const data = (await res.json()) as FormetaServicesStatus;
+        if (!alive()) return;
+        setBackend(data);
+        const oks = [data.fiscal.health.ok, data.fiscal.status.ok, data.rag.health.ok, data.rag.collections.ok];
+        const okCount = oks.filter(Boolean).length;
+        setBackendState(okCount === 4 ? "ok" : okCount === 0 ? "error" : "warn");
+        setBackendDetail(`${okCount}/4 comprobaciones OK`);
+      } catch {
+        if (!alive()) return;
+        setBackendState("error");
+        setBackendDetail("No se pudo consultar el backend");
+      }
+
+      // ── Correo: errores recientes del worker de tickets ──
+      setMailState("loading");
+      try {
+        if (!db) throw new Error("SDK no inicializado");
+        const snap = await getDocs(
+          query(collection(db, "ticketProcessingErrors"), orderBy("createdAt", "desc"), limit(5)),
+        );
+        if (!alive()) return;
+        const recent = snap.size;
+        if (recent === 0) {
+          setMailState("ok");
+          setMailDetail("Sin errores recientes en el worker");
+        } else {
+          const last = snap.docs[0].data();
+          setMailState("warn");
+          setMailDetail(`${recent} error(es) recientes · último: ${String(last.error ?? "").slice(0, 60)}`);
+        }
+      } catch {
+        if (!alive()) return;
+        setMailState("error");
+        setMailDetail("No se pudo leer el estado del worker");
+      }
+
+      // ── Google Drive: conexión con la Unidad compartida + uso ──
+      setDriveState("loading");
+      try {
+        const tok = await auth?.currentUser?.getIdToken();
+        const res = await fetch("/api/drive/status", {
+          headers: tok ? { Authorization: `Bearer ${tok}` } : {},
+          cache: "no-store",
+        });
+        const data = await res.json();
+        if (!alive()) return;
+        if (!res.ok || data.error || !data.ok) {
+          setDriveState("error");
+          setDriveDetail(data.error || "No se pudo conectar con Drive");
+          setDriveSub("");
+        } else {
+          setDriveState("ok");
+          setDriveDetail(`Conectado · ${data.sharedDriveName || "Unidad compartida"}`);
+          const used = formatBytes(data.filesUsedBytes || 0);
+          const available =
+            data.quota && data.quota.limit
+              ? `disponible ${formatBytes(data.quota.limit - data.quota.usage)} de ${formatBytes(data.quota.limit)}`
+              : `plan ${data.planLimitTb || 2} TB`;
+          setDriveSub(`Usado por proyectos: ${used} · ${data.fileCount || 0} archivos · ${available}`);
+        }
+      } catch {
+        if (!alive()) return;
         setDriveState("error");
-        setDriveDetail(data.error || "No se pudo conectar con Drive");
+        setDriveDetail("No se pudo consultar Drive");
         setDriveSub("");
-      } else {
-        setDriveState("ok");
-        setDriveDetail(`Conectado · ${data.sharedDriveName || "Unidad compartida"}`);
-        const used = formatBytes(data.filesUsedBytes || 0);
-        const available =
-          data.quota && data.quota.limit
-            ? `disponible ${formatBytes(data.quota.limit - data.quota.usage)} de ${formatBytes(data.quota.limit)}`
-            : `plan ${data.planLimitTb || 2} TB`;
-        setDriveSub(`Usado por proyectos: ${used} · ${data.fileCount || 0} archivos · ${available}`);
       }
-    } catch {
-      setDriveState("error");
-      setDriveDetail("No se pudo consultar Drive");
-      setDriveSub("");
-    }
 
-    setCheckedAt(new Date().toLocaleString("es-ES"));
-    setRefreshing(false);
+      if (!alive()) return;
+      setCheckedAt(new Date().toLocaleString("es-ES"));
+    } finally {
+      runningRef.current = false;
+      if (mountedRef.current) setRefreshing(false);
+    }
   }, []);
 
   useEffect(() => { void runChecks(); }, [runChecks]);

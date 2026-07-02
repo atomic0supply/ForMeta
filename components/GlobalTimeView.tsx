@@ -43,11 +43,19 @@ export function GlobalTimeView() {
   const [allEntries, setAllEntries] = useState<TimeEntry[]>([]);
   const [filter, setFilter] = useState<Filter>("month");
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
 
   useEffect(() => {
     const unsub = subscribeToAllTimeEntries(setAllEntries, 90);
     return unsub;
   }, []);
+
+  // La confirmación de borrado caduca sola a los 3s si no se confirma
+  useEffect(() => {
+    if (!confirmDelete) return;
+    const id = setTimeout(() => setConfirmDelete(null), 3000);
+    return () => clearTimeout(id);
+  }, [confirmDelete]);
 
   const entries = useMemo(() => {
     const cutoff = Date.now() - FILTER_DAYS[filter] * DAY_MS;
@@ -213,6 +221,11 @@ export function GlobalTimeView() {
       {entries.length > 0 && (
         <div className={styles.section}>
           <p className={styles.sectionTitle}>Historial</p>
+          {deleteError && (
+            <p role="alert" style={{ color: "#b3261e", fontSize: "0.8rem", margin: "0 0 0.6rem" }}>
+              {deleteError}
+            </p>
+          )}
           <div className={styles.historyBlock}>
             {Array.from(grouped.entries()).map(([key, dayEntries]) => (
               <div key={key} className={styles.dayGroup}>
@@ -237,13 +250,15 @@ export function GlobalTimeView() {
                         className={`${styles.btnDeleteEntry} ${confirmDelete === entry.id ? styles.btnDeleteEntryConfirm : ""}`}
                         onClick={() => {
                           if (confirmDelete === entry.id) {
-                            void deleteTimeEntry(entry.id);
                             setConfirmDelete(null);
+                            deleteTimeEntry(entry.id).catch(() => {
+                              setDeleteError("No se pudo eliminar la sesión. Inténtalo de nuevo.");
+                            });
                           } else {
+                            setDeleteError(null);
                             setConfirmDelete(entry.id);
                           }
                         }}
-                        onBlur={() => setConfirmDelete(null)}
                       >
                         {confirmDelete === entry.id ? "¿Seguro?" : "×"}
                       </button>

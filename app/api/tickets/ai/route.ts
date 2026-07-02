@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 
+import { AdminAuthError, adminDb, requireAuth } from "@/lib/firebaseAdmin";
 import {
   DEFAULT_TICKET_AI_MODEL,
   MAX_TICKET_AI_CHARS,
@@ -38,7 +39,6 @@ type TicketAiRequest = {
     summary: string;
     status: string;
   }>;
-  apiKeyOverride?: string;
 };
 
 type AvailabilityResponse = {
@@ -55,18 +55,33 @@ function getApiKey(override?: string): string {
   return override?.trim() || process.env.GEMINI_API_KEY?.trim() || "";
 }
 
-function getAvailability(): AvailabilityResponse {
+// Clave Gemini personal del usuario, leída en servidor desde su perfil.
+// El cliente ya no puede inyectar claves arbitrarias en la petición.
+async function getPersonalGeminiKey(uid: string): Promise<string> {
+  const snap = await adminDb().collection("users").doc(uid).get();
+  const key = snap.data()?.geminiApiKey;
+  return typeof key === "string" ? key.trim() : "";
+}
+
+function getAvailability(personalKey?: string): AvailabilityResponse {
   const model = getModel();
-  if (!getApiKey()) {
+  if (!getApiKey(personalKey)) {
     return {
       available: false,
       model,
       disabledReason:
-        "Configura GEMINI_API_KEY en el servidor para activar la IA de tickets.",
+        "Configura GEMINI_API_KEY en el servidor o tu clave Gemini en Equipo › Preferencias para activar la IA de tickets.",
     };
   }
 
   return { available: true, model };
+}
+
+function authErrorResponse(error: unknown): NextResponse | null {
+  if (error instanceof AdminAuthError) {
+    return NextResponse.json({ error: error.message }, { status: error.status });
+  }
+  return null;
 }
 
 function isTicketAiRequest(value: unknown): value is TicketAiRequest {
@@ -77,32 +92,48 @@ function isTicketAiRequest(value: unknown): value is TicketAiRequest {
     typeof record.ticket === "object" &&
     !Array.isArray(record.ticket) &&
     Array.isArray(record.messages) &&
-    Array.isArray(record.recentTickets) &&
-    (record.apiKeyOverride === undefined ||
-      typeof record.apiKeyOverride === "string")
+    Array.isArray(record.recentTickets)
   );
+}
+
+// Máximo de mensajes incluidos en el contexto (los más recientes).
+const MAX_PROMPT_MESSAGES = 20;
+
+function buildPayload(input: TicketAiRequest, textCap: number) {
+  return {
+    ticket: input.ticket,
+    messages: input.messages.slice(-MAX_PROMPT_MESSAGES).map((message) => ({
+      direction: message.direction,
+      from: message.from,
+      subject: message.subject,
+      text: message.text.slice(0, textCap),
+      attachments: message.attachments.map((attachment) => ({
+        filename: attachment.filename,
+        contentType: attachment.contentType,
+        textPreview: attachment.textPreview?.slice(0, Math.min(3000, textCap)) ?? "",
+      })),
+    })),
+    recentTickets: input.recentTickets.slice(0, 8),
+  };
+}
+
+// Serializa el contexto sin superar MAX_TICKET_AI_CHARS. En vez de cortar el
+// JSON ya serializado (quedaría inválido a mitad de un campo), recorta el texto
+// por mensaje hasta que el conjunto quepa.
+function serializePayload(input: TicketAiRequest): string {
+  let textCap = 6000;
+  let serialized = JSON.stringify(buildPayload(input, textCap));
+  while (serialized.length > MAX_TICKET_AI_CHARS && textCap > 400) {
+    textCap = Math.floor(textCap / 2);
+    serialized = JSON.stringify(buildPayload(input, textCap));
+  }
+  return serialized;
 }
 
 function buildPrompt(input: TicketAiRequest): string {
   const today = new Intl.DateTimeFormat("en-CA", {
     timeZone: "Europe/Madrid",
   }).format(new Date());
-
-  const payload = {
-    ticket: input.ticket,
-    messages: input.messages.map((message) => ({
-      direction: message.direction,
-      from: message.from,
-      subject: message.subject,
-      text: message.text.slice(0, 6000),
-      attachments: message.attachments.map((attachment) => ({
-        filename: attachment.filename,
-        contentType: attachment.contentType,
-        textPreview: attachment.textPreview?.slice(0, 3000) ?? "",
-      })),
-    })),
-    recentTickets: input.recentTickets.slice(0, 8),
-  };
 
   return `
 Eres responsable senior de soporte y delivery para Formeta. Analiza un ticket de cliente y devuelve SOLO JSON valido.
@@ -141,15 +172,34 @@ JSON esperado:
 }
 
 Contexto:
-${JSON.stringify(payload).slice(0, MAX_TICKET_AI_CHARS)}
+${serializePayload(input)}
 `.trim();
 }
 
-export async function GET() {
-  return NextResponse.json(getAvailability(), { status: 200 });
+export async function GET(request: Request) {
+  let uid: string;
+  try {
+    ({ uid } = await requireAuth(request.headers.get("authorization")));
+  } catch (error) {
+    const denied = authErrorResponse(error);
+    if (denied) return denied;
+    throw error;
+  }
+
+  const personalKey = await getPersonalGeminiKey(uid);
+  return NextResponse.json(getAvailability(personalKey), { status: 200 });
 }
 
 export async function POST(request: Request) {
+  let uid: string;
+  try {
+    ({ uid } = await requireAuth(request.headers.get("authorization")));
+  } catch (error) {
+    const denied = authErrorResponse(error);
+    if (denied) return denied;
+    throw error;
+  }
+
   let body: unknown;
   try {
     body = await request.json();
@@ -168,10 +218,13 @@ export async function POST(request: Request) {
   }
 
   const model = getModel();
-  const apiKey = getApiKey(body.apiKeyOverride);
+  // Usa la clave Gemini personal del usuario (guardada en su perfil) si el
+  // servidor no tiene una global.
+  const personalKey = await getPersonalGeminiKey(uid);
+  const apiKey = getApiKey(personalKey);
 
   if (!apiKey) {
-    return NextResponse.json(getAvailability(), { status: 503 });
+    return NextResponse.json(getAvailability(personalKey), { status: 503 });
   }
 
   try {

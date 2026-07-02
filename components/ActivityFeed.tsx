@@ -79,13 +79,14 @@ function actionBadge(event: ActivityEvent): string {
 }
 
 const COMPACT_LIMIT = 6;
+const FEED_LIMIT = 25;
 
 export function ActivityFeed() {
   const [events, setEvents] = useState<ActivityEvent[]>([]);
   const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
-    const unsub = subscribeToRecentActivity(setEvents, 25);
+    const unsub = subscribeToRecentActivity(setEvents, FEED_LIMIT);
     return unsub;
   }, []);
 
@@ -112,6 +113,8 @@ export function ActivityFeed() {
   if (events.length === 0) return null;
 
   const hiddenCount = events.length - COMPACT_LIMIT;
+  // Si llegamos al tope de la suscripción puede haber más eventos: indicarlo con "+"
+  const hiddenLabel = events.length >= FEED_LIMIT ? `${hiddenCount}+` : `${hiddenCount}`;
   const canExpand = events.length > COMPACT_LIMIT;
 
   return (
@@ -142,7 +145,7 @@ export function ActivityFeed() {
             onClick={() => setExpanded((v) => !v)}
             className={styles.feedToggle}
           >
-            {expanded ? "Ver menos" : `Ver más · ${hiddenCount} eventos`}
+            {expanded ? "Ver menos" : `Ver más · ${hiddenLabel} eventos`}
           </button>
         )}
       </div>

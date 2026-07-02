@@ -57,6 +57,7 @@ export function ProjectLinksTab({ projectId, links, onUpdate }: Props) {
   const [editing, setEditing] = useState(false);
   const [form, setForm] = useState<LinksData>(links);
   const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
 
   const hasAnyLink = Object.values(links).some((v) => v?.trim());
 
@@ -72,16 +73,21 @@ export function ProjectLinksTab({ projectId, links, onUpdate }: Props) {
       devUrl: links.devUrl ?? "",
       externalUrl: links.externalUrl ?? "",
     });
+    setSaveError(null);
     setEditing(true);
   }
 
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
     setSaving(true);
+    setSaveError(null);
     try {
       await updateProject(projectId, form);
       onUpdate(form);
       setEditing(false);
+    } catch {
+      // No se cierra el formulario para no perder lo escrito
+      setSaveError("No se han podido guardar los enlaces. Inténtalo de nuevo.");
     } finally {
       setSaving(false);
     }
@@ -162,6 +168,11 @@ export function ProjectLinksTab({ projectId, links, onUpdate }: Props) {
               </div>
             </div>
           ))}
+          {saveError && (
+            <p role="alert" style={{ color: "#b3261e", fontSize: 12, margin: 0 }}>
+              {saveError}
+            </p>
+          )}
           <div className={styles.editActions}>
             <button
               type="button"

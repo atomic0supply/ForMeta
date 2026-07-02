@@ -33,6 +33,7 @@ import {
   listIdeas,
 } from "@/lib/ideas";
 import { createProject } from "@/lib/projects";
+import { auth } from "@/lib/firebase";
 import { useCurrentUser } from "@/lib/useCurrentUser";
 import styles from "@/styles/intranet-ideas.module.css";
 
@@ -80,10 +81,32 @@ function padNum(n: number): string {
   return String(n).padStart(2, "0");
 }
 
-/** Converts markdown to HTML — handles ##/###, bold, italic, lists, tables and paragraphs */
+/** Cabecera Authorization con el ID token de Firebase; lanza si no hay sesión. */
+async function authHeader(): Promise<Record<string, string>> {
+  if (!auth?.currentUser) throw new Error("Sesión no iniciada. Vuelve a entrar.");
+  const token = await auth.currentUser.getIdToken();
+  return { Authorization: `Bearer ${token}` };
+}
+
+/** Escapa HTML antes de aplicar los regex de markdown (evita XSS vía dangerouslySetInnerHTML). */
+function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+/** Converts markdown to HTML — handles ##/###, bold, italic, links, lists, tables and paragraphs */
 function renderMarkdown(md: string): string {
   const inline = (s: string) =>
-    s
+    escapeHtml(s)
+      // Links [texto](url): solo se permiten esquemas http(s) y mailto.
+      .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (_m, text: string, href: string) =>
+        /^(https?:\/\/|mailto:)/i.test(href)
+          ? `<a href="${href}" target="_blank" rel="noopener noreferrer">${text}</a>`
+          : text,
+      )
       .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
       .replace(/\*(.+?)\*/g, "<em>$1</em>");
 
@@ -365,17 +388,35 @@ function IdeaDetail({ idea, onUpdate, onDelete, apiKeyOverride }: IdeaDetailProp
   const [linkLabel, setLinkLabel]               = useState("");
   const [linkUrl, setLinkUrl]                   = useState("");
   const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const pendingAnswers = useRef<Record<string, string> | null>(null);
+  const mountedRef = useRef(true);
+
+  /* Limpieza del timer de autoguardado: al desmontar se cancela el timer y se
+     vuelca la última respuesta pendiente para no perderla. */
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+      if (saveTimer.current) clearTimeout(saveTimer.current);
+      if (pendingAnswers.current) {
+        void updateIdea(idea.id, { answers: pendingAnswers.current }).catch(() => undefined);
+        pendingAnswers.current = null;
+      }
+    };
+  }, [idea.id]);
 
   /* Auto-save answers with 1.5s debounce */
   function handleAnswerChange(qid: string, value: string) {
     const next = { ...answers, [qid]: value };
     setAnswers(next);
+    pendingAnswers.current = next;
     if (saveTimer.current) clearTimeout(saveTimer.current);
     saveTimer.current = setTimeout(() => {
+      pendingAnswers.current = null;
       setSavingAnswers(true);
       updateIdea(idea.id, { answers: next })
         .catch(() => undefined)
-        .finally(() => setSavingAnswers(false));
+        .finally(() => { if (mountedRef.current) setSavingAnswers(false); });
     }, 1500);
   }
 
@@ -389,7 +430,7 @@ function IdeaDetail({ idea, onUpdate, onDelete, apiKeyOverride }: IdeaDetailProp
 
       const res = await fetch("/api/ideas/ai-analyze", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...(await authHeader()) },
         body: JSON.stringify({
           phase: "analyze",
           title: idea.title,
@@ -432,7 +473,7 @@ function IdeaDetail({ idea, onUpdate, onDelete, apiKeyOverride }: IdeaDetailProp
     try {
       const res = await fetch("/api/ideas/ai-analyze", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...(await authHeader()) },
         body: JSON.stringify({
           phase: "report",
           title: idea.title,
@@ -794,7 +835,7 @@ function IdeaDetail({ idea, onUpdate, onDelete, apiKeyOverride }: IdeaDetailProp
                   <div className={styles.answersProgressBar}>
                     <div
                       className={styles.answersProgressFill}
-                      style={{ width: `${(answeredCount / totalQuestions) * 100}%` }}
+                      style={{ width: `${totalQuestions ? (answeredCount / totalQuestions) * 100 : 0}%` }}
                     />
                   </div>
                   <span className={styles.answersProgressLabel}>

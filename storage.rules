@@ -6,7 +6,10 @@ service firebase.storage {
     }
 
     match /tickets/{ticketId}/{allPaths=**} {
-      allow read, write: if isAuth();
+      allow read: if isAuth();
+      // Cap de tamaño para subidas desde la UI (el worker usa Admin SDK y no
+      // pasa por estas reglas).
+      allow write: if isAuth() && request.resource.size < 20 * 1024 * 1024;
     }
   }
 }

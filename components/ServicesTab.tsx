@@ -55,6 +55,7 @@ export function ServicesTab() {
   const [form, setForm] = useState<ServiceInput>(emptyForm());
   const [saving, setSaving] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [formError, setFormError] = useState("");
   const nameRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -83,6 +84,7 @@ export function ServicesTab() {
     setEditing(null);
     setForm(emptyForm());
     setConfirmDelete(false);
+    setFormError("");
     setDrawerOpen(true);
   }
 
@@ -103,12 +105,14 @@ export function ServicesTab() {
       links: service.links ?? [],
     });
     setConfirmDelete(false);
+    setFormError("");
     setDrawerOpen(true);
   }
 
   function closeDrawer() {
     setDrawerOpen(false);
     setConfirmDelete(false);
+    setFormError("");
     setTimeout(() => { setEditing(null); setForm(emptyForm()); }, 320);
   }
 
@@ -127,11 +131,16 @@ export function ServicesTab() {
     e.preventDefault();
     if (!form.name.trim()) return;
     setSaving(true);
+    setFormError("");
     try {
       const data: ServiceInput = { ...form, name: form.name.trim() };
       if (editing) await updateService(editing.id, data);
       else await createService(data);
       closeDrawer();
+    } catch (err) {
+      // El fallo debe verse: sin catch el error quedaba silenciado.
+      console.error("ServicesTab.handleSubmit:", err);
+      setFormError("No se pudo guardar el servicio. Inténtalo de nuevo.");
     } finally {
       setSaving(false);
     }
@@ -141,9 +150,13 @@ export function ServicesTab() {
     if (!editing) return;
     if (!confirmDelete) { setConfirmDelete(true); return; }
     setSaving(true);
+    setFormError("");
     try {
       await deleteService(editing.id);
       closeDrawer();
+    } catch (err) {
+      console.error("ServicesTab.handleDelete:", err);
+      setFormError("No se pudo eliminar el servicio. Inténtalo de nuevo.");
     } finally {
       setSaving(false);
     }
@@ -272,6 +285,9 @@ export function ServicesTab() {
             </div>
           </div>
         </form>
+        {formError && (
+          <p style={{ color: "var(--danger)", fontSize: "0.8rem", margin: "0 20px 8px" }}>{formError}</p>
+        )}
         <div className={styles.drawerFooter}>
           {editing && (
             <button type="button" onClick={handleDelete} className={styles.btnDelete} disabled={saving}>

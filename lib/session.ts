@@ -1,12 +1,23 @@
 "use client";
 
-const COOKIE_NAME = "formeta_session";
-const MAX_AGE = 60 * 60 * 8;
+// Sesión de intranet basada en una session cookie de Firebase firmada por
+// Google y marcada HttpOnly (la emite /api/session). El cliente nunca escribe
+// la cookie directamente: intercambia su ID token por ella. El middleware
+// verifica la firma en cada petición a /intranet.
 
-export function setSessionCookie(uid: string) {
-  document.cookie = `${COOKIE_NAME}=${uid}; path=/; max-age=${MAX_AGE}; samesite=lax`;
+export async function establishSession(idToken: string): Promise<void> {
+  const response = await fetch("/api/session", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ idToken }),
+  });
+  if (!response.ok) {
+    throw new Error("No se pudo establecer la sesión");
+  }
 }
 
-export function clearSessionCookie() {
-  document.cookie = `${COOKIE_NAME}=; path=/; max-age=0; samesite=lax`;
+export async function clearSession(): Promise<void> {
+  await fetch("/api/session", { method: "DELETE" }).catch(() => {
+    // Si la petición falla, la cookie expirará sola (max-age 8 h).
+  });
 }

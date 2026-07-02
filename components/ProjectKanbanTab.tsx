@@ -108,6 +108,7 @@ export function ProjectKanbanTab({
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [draggingId, setDraggingId] = useState<string | null>(null);
   const [dragOverCol, setDragOverCol] = useState<TaskStatus | null>(null);
+  const [boardError, setBoardError] = useState<string | null>(null);
   const [plannerInput, setPlannerInput] = useState("");
   const [plannerStatus, setPlannerStatus] = useState<TaskPlanAvailabilityResponse>({
     available: false,
@@ -235,6 +236,24 @@ export function ProjectKanbanTab({
     [tasks],
   );
 
+  // Firma estable de las tareas abiertas: evita relanzar la recomendación de
+  // foco (llamadas a Gemini) cuando solo cambia la identidad del array
+  const openTasksSignature = useMemo(
+    () => openTasks.map((t) => t.id).sort().join(","),
+    [openTasks],
+  );
+
+  // Ref con las tareas abiertas actuales para leerlas dentro del callback sin
+  // que cada edición invalide su identidad
+  const openTasksRef = useRef(openTasks);
+  useEffect(() => {
+    openTasksRef.current = openTasks;
+  }, [openTasks]);
+
+  // Id incremental de petición: descarta respuestas en vuelo tras relanzar o
+  // desmontar (evita setState sobre un componente desmontado)
+  const focusRequestIdRef = useRef(0);
+
   const recommendedTask = useMemo(
     () =>
       focusRecommendation
@@ -286,7 +305,11 @@ export function ProjectKanbanTab({
     setSaving(true);
     try {
       if (editingTask) {
-        await updateTask(projectId, editingTask.id, form);
+        await updateTask(projectId, editingTask.id, form, {
+          projectName: project.name,
+          taskTitle: form.title,
+          previousStatus: editingTask.status,
+        });
       } else {
         await createTask(projectId, form);
       }
@@ -316,13 +339,26 @@ export function ProjectKanbanTab({
   }
 
   async function handleDrop(col: TaskStatus) {
-    if (!draggingId || draggingId === "") return;
+    if (!draggingId) return;
     const task = tasks.find((t) => t.id === draggingId);
-    if (task && task.status !== col) {
-      await updateTask(projectId, draggingId, { status: col });
-    }
     setDraggingId(null);
     setDragOverCol(null);
+    if (!task || task.status === col) return;
+    setBoardError(null);
+    try {
+      await updateTask(
+        projectId,
+        task.id,
+        { status: col },
+        {
+          projectName: project.name,
+          taskTitle: task.title,
+          previousStatus: task.status,
+        },
+      );
+    } catch {
+      setBoardError("No se ha podido mover la tarea. Inténtalo de nuevo.");
+    }
   }
 
   function toggleDraft(index: number) {
@@ -436,10 +472,13 @@ export function ProjectKanbanTab({
   }
 
   const loadFocusRecommendation = useCallback(
-    async (manualRefresh: boolean, cancelled = false) => {
-      if (!plannerAvailable || openTasks.length === 0) {
+    async (manualRefresh: boolean) => {
+      const currentOpenTasks = openTasksRef.current;
+      if (!plannerAvailable || currentOpenTasks.length === 0) {
         return;
       }
+
+      const requestId = ++focusRequestIdRef.current;
 
       if (manualRefresh) {
         setFocusRefreshing(true);
@@ -468,7 +507,7 @@ export function ProjectKanbanTab({
               notes: client.notes,
             }
           : null,
-        tasks: openTasks.map((task) => ({
+        tasks: currentOpenTasks.map((task) => ({
           id: task.id,
           title: task.title,
           description: task.description,
@@ -501,12 +540,12 @@ export function ProjectKanbanTab({
           );
         }
 
-        if (!cancelled) {
+        if (focusRequestIdRef.current === requestId) {
           setFocusRecommendation(data);
           setFocusInfo("Foco sugerido por Gemini en función del tablero actual.");
         }
       } catch (error) {
-        if (!cancelled) {
+        if (focusRequestIdRef.current === requestId) {
           setFocusRecommendation(null);
           setFocusError(
             error instanceof Error
@@ -515,13 +554,13 @@ export function ProjectKanbanTab({
           );
         }
       } finally {
-        if (!cancelled) {
+        if (focusRequestIdRef.current === requestId) {
           setFocusLoading(false);
           setFocusRefreshing(false);
         }
       }
     },
-    [client, openTasks, plannerAvailable, profileGeminiApiKey, project, projectId, savedSummary],
+    [client, plannerAvailable, profileGeminiApiKey, project, projectId, savedSummary],
   );
 
   useEffect(() => {
@@ -531,23 +570,23 @@ export function ProjectKanbanTab({
       return;
     }
 
-    if (openTasks.length === 0) {
+    if (openTasksSignature.length === 0) {
       setFocusRecommendation(null);
       setFocusError(null);
       setFocusInfo(null);
       return;
     }
 
-    let cancelled = false;
     const timeoutId = window.setTimeout(() => {
-      void loadFocusRecommendation(false, cancelled);
+      void loadFocusRecommendation(false);
     }, 450);
 
     return () => {
-      cancelled = true;
+      // Invalida la petición en vuelo además de cancelar el debounce
+      focusRequestIdRef.current += 1;
       window.clearTimeout(timeoutId);
     };
-  }, [plannerAvailable, openTasks, savedSummary, loadFocusRecommendation]);
+  }, [plannerAvailable, openTasksSignature, savedSummary, loadFocusRecommendation]);
 
   async function handlePromoteRecommendedTask() {
     if (!recommendedTask || recommendedTask.status === "in_progress") {
@@ -558,7 +597,16 @@ export function ProjectKanbanTab({
     setFocusError(null);
 
     try {
-      await updateTask(projectId, recommendedTask.id, { status: "in_progress" });
+      await updateTask(
+        projectId,
+        recommendedTask.id,
+        { status: "in_progress" },
+        {
+          projectName: project.name,
+          taskTitle: recommendedTask.title,
+          previousStatus: recommendedTask.status,
+        },
+      );
       setFocusInfo(`"${recommendedTask.title}" ha pasado a En progreso.`);
     } catch {
       setFocusError("No se ha podido pasar la tarea recomendada a En progreso.");
@@ -586,15 +634,19 @@ export function ProjectKanbanTab({
       0,
     );
     const baseOrder = Math.max(currentMaxOrder + 1, Date.now());
-    const selectedIndexSet = new Set(indexes);
 
-    try {
-      for (const [offset, index] of indexes.entries()) {
-        const draft = plannerDrafts[index];
-        if (!draft) {
-          continue;
-        }
+    // Registra qué borradores se han creado para retirar solo esos del estado
+    // aunque otro falle a mitad (evita duplicados al reintentar)
+    const createdIndexes = new Set<number>();
+    let creationFailed = false;
 
+    for (const [offset, index] of indexes.entries()) {
+      const draft = plannerDrafts[index];
+      if (!draft) {
+        continue;
+      }
+
+      try {
         await createTask(projectId, {
           title: draft.title,
           description: draft.description,
@@ -603,26 +655,38 @@ export function ProjectKanbanTab({
           status: "todo",
           order: baseOrder + offset,
         });
+        createdIndexes.add(index);
+      } catch {
+        creationFailed = true;
+        break;
       }
+    }
 
+    if (createdIndexes.size > 0) {
       const remainingDrafts = plannerDrafts.filter(
-        (_, index) => !selectedIndexSet.has(index),
+        (_, index) => !createdIndexes.has(index),
       );
-
       setPlannerDrafts(remainingDrafts);
       setSelectedDrafts(
         Object.fromEntries(remainingDrafts.map((_, index) => [index, true])),
       );
-      setPlannerInfo(
-        indexes.length === 1
-          ? "Se ha creado 1 tarea nueva en el tablero."
-          : `Se han creado ${indexes.length} tareas nuevas en el tablero.`,
-      );
-    } catch {
-      setPlannerError("No se han podido crear las tareas seleccionadas.");
-    } finally {
-      setPlannerApplying(false);
     }
+
+    if (creationFailed) {
+      setPlannerError(
+        createdIndexes.size > 0
+          ? `Solo se han creado ${createdIndexes.size} de ${indexes.length} tareas. Reintenta con las restantes.`
+          : "No se han podido crear las tareas seleccionadas.",
+      );
+    } else {
+      setPlannerInfo(
+        createdIndexes.size === 1
+          ? "Se ha creado 1 tarea nueva en el tablero."
+          : `Se han creado ${createdIndexes.size} tareas nuevas en el tablero.`,
+      );
+    }
+
+    setPlannerApplying(false);
   }
 
   const { start: gStart, total: gTotal } = useMemo(() => ganttTimeline(), []);
@@ -940,6 +1004,8 @@ export function ProjectKanbanTab({
         </button>
       </div>
 
+      {boardError && <p className={styles.aiError}>{boardError}</p>}
+
       {taskCount === 0 && (
         <p className={styles.empty}>
           No hay tareas todavía. Crea la primera con el botón de arriba o deja
@@ -959,7 +1025,11 @@ export function ProjectKanbanTab({
                   e.preventDefault();
                   setDragOverCol(col);
                 }}
-                onDragLeave={() => setDragOverCol(null)}
+                onDragLeave={(e) => {
+                  // Ignora dragleave hacia hijos de la propia columna (parpadeo)
+                  if (e.currentTarget.contains(e.relatedTarget as Node | null)) return;
+                  setDragOverCol((current) => (current === col ? null : current));
+                }}
                 onDrop={() => void handleDrop(col)}
               >
                 <div className={styles.columnHeader}>

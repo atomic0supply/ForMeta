@@ -32,6 +32,7 @@ export function TaskCommentThread({ projectId, taskId }: Props) {
   const [comments, setComments] = useState<TaskComment[]>([]);
   const [text, setText] = useState("");
   const [sending, setSending] = useState(false);
+  const [sendError, setSendError] = useState<string | null>(null);
   const listRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -46,13 +47,18 @@ export function TaskCommentThread({ projectId, taskId }: Props) {
 
   async function handleSend(e: React.FormEvent) {
     e.preventDefault();
-    if (!text.trim() || !auth?.currentUser) return;
+    const trimmed = text.trim();
+    if (!trimmed || !auth?.currentUser || sending) return;
     setSending(true);
+    setSendError(null);
     try {
       const user = auth.currentUser;
       const displayName = user.displayName ?? user.email ?? "Usuario";
-      await addComment(projectId, taskId, text, user.uid, displayName);
+      await addComment(projectId, taskId, trimmed, user.uid, displayName);
+      // Solo se limpia el input cuando el envío se ha confirmado
       setText("");
+    } catch {
+      setSendError("No se ha podido enviar el comentario. Inténtalo de nuevo.");
     } finally {
       setSending(false);
     }
@@ -81,6 +87,12 @@ export function TaskCommentThread({ projectId, taskId }: Props) {
           </div>
         ))}
       </div>
+
+      {sendError && (
+        <p role="alert" style={{ color: "#b3261e", fontSize: 12, margin: 0 }}>
+          {sendError}
+        </p>
+      )}
 
       <form onSubmit={(e) => void handleSend(e)} className={styles.inputRow}>
         <textarea

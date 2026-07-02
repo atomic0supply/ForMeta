@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { subscribeToProjects, type Project } from "@/lib/projects";
 import {
@@ -23,12 +23,18 @@ export function AllApisTab() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Project names are resolved via a ref-stable map; resubscribe when it changes.
+  // Nombres de proyecto en un Map; se guarda también en un ref para que la
+  // suscripción collectionGroup no se rehaga cada vez que cambia su identidad.
   const projectNames = useMemo(() => {
     const map = new Map<string, string>();
     projects.forEach((p) => map.set(p.id, p.name));
     return map;
   }, [projects]);
+
+  const projectNamesRef = useRef(projectNames);
+  useEffect(() => {
+    projectNamesRef.current = projectNames;
+  }, [projectNames]);
 
   useEffect(() => {
     const unsub = subscribeToProjects(setProjects);
@@ -36,15 +42,16 @@ export function AllApisTab() {
   }, []);
 
   useEffect(() => {
+    // Suscripción única: los nombres se resuelven a través del ref.
     const unsub = subscribeToAllExternalApis(
       (data) => {
         setApis(data);
         setLoading(false);
       },
-      (projectId) => projectNames.get(projectId) ?? null,
+      (projectId) => projectNamesRef.current.get(projectId) ?? null,
     );
     return unsub;
-  }, [projectNames]);
+  }, []);
 
   const sorted = useMemo(() => {
     // APIs with an expiry first (soonest first), then the rest.
@@ -96,7 +103,8 @@ export function AllApisTab() {
                     <td className={styles.td}>
                       {api.projectId ? (
                         <Link href={`/intranet/proyectos/${api.projectId}`} className={styles.projectLink}>
-                          {api.projectName ?? api.projectId}
+                          {/* Resolución en render: cubre el caso de que los proyectos lleguen después de las APIs. */}
+                          {projectNames.get(api.projectId) ?? api.projectName ?? api.projectId}
                         </Link>
                       ) : (
                         <span className={styles.cellEmpty}>—</span>

@@ -68,6 +68,10 @@ export async function createTask(
   return ref.id;
 }
 
+// Contrato: para que un cambio de estado quede registrado como "task_moved"
+// en el activity log, el llamador DEBE pasar meta.projectName, meta.taskTitle
+// y meta.previousStatus (ver ProjectKanbanTab). No se lee aquí el estado
+// previo del documento para evitar una lectura extra de Firestore por update.
 export async function updateTask(
   projectId: string,
   taskId: string,

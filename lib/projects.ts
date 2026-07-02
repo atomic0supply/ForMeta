@@ -45,6 +45,34 @@ export type Project = {
 
 export type ProjectInput = Omit<Project, "id" | "createdAt">;
 
+/* ── Normalización (docs antiguos pueden carecer de campos) ────────── */
+
+function normalizeProject(id: string, raw: Record<string, unknown>): Project {
+  const data = raw as Partial<Project>;
+  return {
+    id,
+    name:        data.name        ?? "",
+    clientId:    data.clientId    ?? "",
+    clientName:  data.clientName  ?? "",
+    status:      (data.status as ProjectStatus) ?? "activo",
+    description: data.description ?? "",
+    tags:        Array.isArray(data.tags) ? data.tags : [],
+    notes:       data.notes       ?? "",
+    githubUrl:   data.githubUrl   ?? "",
+    firebaseUrl: data.firebaseUrl ?? "",
+    localPath:   data.localPath   ?? "",
+    devUrl:      data.devUrl      ?? "",
+    externalUrl: data.externalUrl ?? "",
+    hourlyRate:  data.hourlyRate,
+    budgetHours: data.budgetHours ?? null,
+    currency:    data.currency,
+    taskPlanningSummary: data.taskPlanningSummary,
+    taskPlanningUpdatedAt: (data.taskPlanningUpdatedAt as Timestamp | null) ?? null,
+    driveFolderId: data.driveFolderId,
+    createdAt:   (data.createdAt as Timestamp | null) ?? null,
+  };
+}
+
 export function subscribeToProjects(
   callback: (projects: Project[]) => void,
 ): Unsubscribe {
@@ -53,10 +81,9 @@ export function subscribeToProjects(
   const q = query(collection(db, "projects"), orderBy("createdAt", "desc"));
 
   return onSnapshot(q, (snap) => {
-    const projects = snap.docs.map((d) => ({
-      id: d.id,
-      ...(d.data() as Omit<Project, "id">),
-    }));
+    const projects = snap.docs.map((d) =>
+      normalizeProject(d.id, d.data() as Record<string, unknown>),
+    );
     callback(projects);
   });
 }
@@ -74,10 +101,9 @@ export function subscribeToProjectsByClient(
   );
 
   return onSnapshot(q, (snap) => {
-    const projects = snap.docs.map((d) => ({
-      id: d.id,
-      ...(d.data() as Omit<Project, "id">),
-    }));
+    const projects = snap.docs.map((d) =>
+      normalizeProject(d.id, d.data() as Record<string, unknown>),
+    );
     callback(projects);
   });
 }
@@ -88,7 +114,7 @@ export async function getProject(id: string): Promise<Project | null> {
   const snap = await getDoc(doc(db, "projects", id));
   if (!snap.exists()) return null;
 
-  return { id: snap.id, ...(snap.data() as Omit<Project, "id">) };
+  return normalizeProject(snap.id, snap.data() as Record<string, unknown>);
 }
 
 export async function createProject(data: ProjectInput): Promise<string> {

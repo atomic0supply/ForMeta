@@ -52,7 +52,17 @@ export function ClientsView() {
   const [form, setForm] = useState<ClientInput>(emptyForm);
   const [saving, setSaving] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
+  const [formError, setFormError] = useState<string | null>(null);
+  const [listError, setListError] = useState<string | null>(null);
   const nameRef = useRef<HTMLInputElement>(null);
+  const confirmDeleteTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Limpia el temporizador de confirmación de borrado al desmontar
+  useEffect(() => {
+    return () => {
+      if (confirmDeleteTimer.current) clearTimeout(confirmDeleteTimer.current);
+    };
+  }, []);
 
   useEffect(() => {
     const unsub = subscribeToClients((data) => {
@@ -75,6 +85,7 @@ export function ClientsView() {
   function openNew() {
     setEditing(null);
     setForm(emptyForm);
+    setFormError(null);
     setDrawerOpen(true);
   }
 
@@ -94,6 +105,7 @@ export function ClientsView() {
       tax:      client.tax,
       notes:    client.notes,
     });
+    setFormError(null);
     setDrawerOpen(true);
   }
 
@@ -101,6 +113,7 @@ export function ClientsView() {
     setDrawerOpen(false);
     setEditing(null);
     setForm(emptyForm);
+    setFormError(null);
   }
 
   function setField<K extends keyof ClientInput>(key: K, value: ClientInput[K]) {
@@ -111,6 +124,7 @@ export function ClientsView() {
     e.preventDefault();
     if (!form.name.trim()) return;
     setSaving(true);
+    setFormError(null);
     try {
       if (editing) {
         await updateClient(editing.id, form);
@@ -118,6 +132,9 @@ export function ClientsView() {
         await createClient(form);
       }
       closeDrawer();
+    } catch {
+      // No se cierra el drawer para no perder lo escrito
+      setFormError("No se han podido guardar los cambios. Inténtalo de nuevo.");
     } finally {
       setSaving(false);
     }
@@ -125,10 +142,19 @@ export function ClientsView() {
 
   async function handleDelete(id: string) {
     if (confirmDelete !== id) {
+      // Auto-reset a los 3s (el onBlur competía con el segundo clic)
       setConfirmDelete(id);
+      setListError(null);
+      if (confirmDeleteTimer.current) clearTimeout(confirmDeleteTimer.current);
+      confirmDeleteTimer.current = setTimeout(() => setConfirmDelete(null), 3000);
       return;
     }
-    await deleteClient(id);
+    if (confirmDeleteTimer.current) clearTimeout(confirmDeleteTimer.current);
+    try {
+      await deleteClient(id);
+    } catch {
+      setListError("No se ha podido eliminar el cliente. Inténtalo de nuevo.");
+    }
     setConfirmDelete(null);
   }
 
@@ -172,6 +198,12 @@ export function ClientsView() {
             );
           })}
         </div>
+      )}
+
+      {listError && (
+        <p role="alert" style={{ color: "#b3261e", fontSize: 12, margin: "0 0 8px" }}>
+          {listError}
+        </p>
       )}
 
       {loading && (
@@ -225,7 +257,6 @@ export function ClientsView() {
                   type="button"
                   onClick={() => void handleDelete(client.id)}
                   className={`${styles.btnAction} ${confirmDelete === client.id ? styles.btnDanger : ""}`}
-                  onBlur={() => setConfirmDelete(null)}
                 >
                   {confirmDelete === client.id ? "¿Seguro?" : "Eliminar"}
                 </button>
@@ -370,6 +401,12 @@ export function ClientsView() {
               />
             </div>
           </div>
+
+          {formError && (
+            <p role="alert" style={{ color: "#b3261e", fontSize: 12, margin: 0 }}>
+              {formError}
+            </p>
+          )}
 
           <div className={styles.formActions}>
             <button

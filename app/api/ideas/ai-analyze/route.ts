@@ -1,14 +1,16 @@
 import { NextResponse } from "next/server";
 
+import { AdminAuthError, requireAuth } from "@/lib/firebaseAdmin";
+
 const DEFAULT_MODEL = "gemini-2.5-flash-lite";
 const MAX_IDEA_CHARS = 8000;
+const MAX_TITLE_CHARS = 300;
+const MAX_ANSWER_CHARS = 2000;
+const MAX_QUESTIONS = 20;
+const GEMINI_TIMEOUT_MS = 30000;
 
 function getApiKey(override?: string): string {
   return override?.trim() || process.env.GEMINI_API_KEY?.trim() || "";
-}
-
-function isAvailable(override?: string): boolean {
-  return !!getApiKey(override);
 }
 
 function getModel(): string {
@@ -47,6 +49,8 @@ async function callGemini(
         },
       }),
       cache: "no-store",
+      // Corta la petición si Gemini no responde a tiempo.
+      signal: AbortSignal.timeout(GEMINI_TIMEOUT_MS),
     },
   );
 
@@ -67,6 +71,66 @@ async function callGemini(
   );
 }
 
+function isTimeoutError(err: unknown): boolean {
+  return err instanceof Error && (err.name === "TimeoutError" || err.name === "AbortError");
+}
+
+const ALLOWED_CATEGORIES = [
+  "saas",
+  "ecommerce",
+  "marketplace",
+  "consulting",
+  "app_movil",
+  "automatizacion",
+  "contenido",
+  "hardware",
+  "otro",
+] as const;
+
+type NormalizedPhase1 = {
+  category: string;
+  viabilityScore: number;
+  summary: string;
+  conclusions: string[];
+  questions: Array<{ id: string; text: string; options: string[] }>;
+};
+
+/** Valida y normaliza la respuesta de Gemini (fase 1): la IA puede devolver
+ *  campos malformados, así que no se confía en la forma del JSON parseado. */
+function normalizePhase1(parsed: unknown): NormalizedPhase1 {
+  const p = (parsed && typeof parsed === "object" ? parsed : {}) as Record<string, unknown>;
+
+  const category = ALLOWED_CATEGORIES.includes(p.category as (typeof ALLOWED_CATEGORIES)[number])
+    ? (p.category as string)
+    : "otro";
+
+  const rawScore = Number(p.viabilityScore);
+  const viabilityScore = Number.isFinite(rawScore)
+    ? Math.min(10, Math.max(1, Math.round(rawScore)))
+    : 5;
+
+  const summary = typeof p.summary === "string" ? p.summary : "";
+
+  const conclusions = Array.isArray(p.conclusions)
+    ? p.conclusions.filter((c): c is string => typeof c === "string")
+    : [];
+
+  const questions = Array.isArray(p.questions)
+    ? p.questions.flatMap((q, i) => {
+        if (!q || typeof q !== "object") return [];
+        const item = q as Record<string, unknown>;
+        if (typeof item.text !== "string" || !item.text.trim()) return [];
+        const id = typeof item.id === "string" && item.id.trim() ? item.id : `q${i + 1}`;
+        const options = Array.isArray(item.options)
+          ? item.options.filter((o): o is string => typeof o === "string")
+          : [];
+        return [{ id, text: item.text, options }];
+      })
+    : [];
+
+  return { category, viabilityScore, summary, conclusions, questions };
+}
+
 function buildPhase1Prompt(title: string, description: string): string {
   const today = new Intl.DateTimeFormat("en-CA", {
     timeZone: "Europe/Madrid",
@@ -81,7 +145,7 @@ Idioma de salida: espanol
 Analiza la siguiente idea de negocio o desarrollo y devuelve SOLO JSON valido.
 
 IDEA:
-Titulo: ${title}
+Titulo: ${title.slice(0, MAX_TITLE_CHARS)}
 Descripcion: ${description.slice(0, MAX_IDEA_CHARS)}
 
 Devuelve este JSON exacto:
@@ -143,8 +207,11 @@ function buildPhase2Prompt(
     timeZone: "Europe/Madrid",
   }).format(new Date());
 
+  // Se acota el número de preguntas y el tamaño de cada respuesta para no
+  // construir prompts sin límite con entrada del cliente.
   const qa = questions
-    .map((q) => `P: ${q.text}\nR: ${answers[q.id] || "(sin respuesta)"}`)
+    .slice(0, MAX_QUESTIONS)
+    .map((q) => `P: ${q.text.slice(0, MAX_TITLE_CHARS)}\nR: ${(answers[q.id] || "(sin respuesta)").slice(0, MAX_ANSWER_CHARS)}`)
     .join("\n\n");
 
   return `
@@ -153,7 +220,7 @@ Eres un asesor de estrategia de negocios especializado en startups y producto di
 Fecha: ${today}
 
 IDEA:
-Titulo: ${title}
+Titulo: ${title.slice(0, MAX_TITLE_CHARS)}
 Descripcion: ${description.slice(0, MAX_IDEA_CHARS)}
 
 CONTEXTO DEL FUNDADOR (preguntas y respuestas):
@@ -200,6 +267,16 @@ Devuelve SOLO el JSON, sin texto adicional ni bloques de codigo.
 }
 
 export async function POST(request: Request) {
+  // Solo usuarios autenticados y activos pueden consumir la API de Gemini.
+  try {
+    await requireAuth(request.headers.get("authorization"));
+  } catch (err) {
+    if (err instanceof AdminAuthError) {
+      return NextResponse.json({ error: err.message }, { status: err.status });
+    }
+    return NextResponse.json({ error: "No se pudo verificar la autenticación." }, { status: 500 });
+  }
+
   const model = getModel();
 
   let body: unknown;
@@ -243,16 +320,16 @@ export async function POST(request: Request) {
         "Devuelves respuestas estructuradas en JSON para analisis de ideas de negocio.",
       );
 
-      const parsed = JSON.parse(extractJson(raw)) as {
-        category: string;
-        viabilityScore: number;
-        summary: string;
-        conclusions: string[];
-        questions: Array<{ id: string; text: string }>;
-      };
+      const parsed = normalizePhase1(JSON.parse(extractJson(raw)));
 
       return NextResponse.json({ ...parsed, model }, { status: 200 });
     } catch (err) {
+      if (isTimeoutError(err)) {
+        return NextResponse.json(
+          { error: "Gemini no respondió a tiempo. Inténtalo de nuevo." },
+          { status: 504 },
+        );
+      }
       return NextResponse.json(
         { error: "No se pudo analizar la idea con Gemini.", detail: String(err).slice(0, 200) },
         { status: 502 },
@@ -281,10 +358,20 @@ export async function POST(request: Request) {
         "Generas informes de analisis de negocio detallados y estructurados en markdown.",
       );
 
-      const parsed = JSON.parse(extractJson(raw)) as { report: string };
+      const parsed = JSON.parse(extractJson(raw)) as { report?: unknown };
+      // Validación: el informe debe ser un string no vacío.
+      if (typeof parsed.report !== "string" || !parsed.report.trim()) {
+        throw new Error("Respuesta sin campo 'report' válido");
+      }
 
       return NextResponse.json({ report: parsed.report, model }, { status: 200 });
     } catch (err) {
+      if (isTimeoutError(err)) {
+        return NextResponse.json(
+          { error: "Gemini no respondió a tiempo. Inténtalo de nuevo." },
+          { status: 504 },
+        );
+      }
       return NextResponse.json(
         { error: "No se pudo generar el informe con Gemini.", detail: String(err).slice(0, 200) },
         { status: 502 },

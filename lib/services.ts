@@ -47,9 +47,17 @@ const COL = "services";
 export function subscribeToServices(callback: (services: Service[]) => void): Unsubscribe {
   if (!db) return () => {};
   const q = query(collection(db, COL), orderBy("renewalDate", "asc"));
-  return onSnapshot(q, (snap) => {
-    callback(snap.docs.map((d) => ({ id: d.id, ...(d.data() as Omit<Service, "id">) })));
-  });
+  return onSnapshot(
+    q,
+    (snap) => {
+      callback(snap.docs.map((d) => ({ id: d.id, ...(d.data() as Omit<Service, "id">) })));
+    },
+    (error) => {
+      // Sin este callback un fallo de Firestore dejaría la vista en "Cargando…" para siempre.
+      console.error("subscribeToServices:", error);
+      callback([]);
+    },
+  );
 }
 
 export async function createService(data: ServiceInput): Promise<string> {

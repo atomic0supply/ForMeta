@@ -17,9 +17,18 @@ type RouteContext = { params: Promise<{ uid: string }> };
 // PATCH /api/admin/users/:uid — update role / roleId / active / displayName.
 export async function PATCH(request: Request, { params }: RouteContext) {
   try {
-    await requireAdmin(request.headers.get("authorization"));
+    const { uid: callerUid } = await requireAdmin(request.headers.get("authorization"));
     const { uid } = await params;
     const body = (await request.json()) as UpdateUserBody;
+
+    // Anti-lockout: un admin no puede auto-degradarse ni desactivar su propia
+    // cuenta (evita dejar el sistema sin ningún administrador activo).
+    if (uid === callerUid && (body.role === "team" || body.active === false)) {
+      return NextResponse.json(
+        { error: "No puedes quitarte el rol admin ni desactivar tu propia cuenta" },
+        { status: 400 },
+      );
+    }
 
     const updates: Record<string, unknown> = {};
     if (body.role === "admin" || body.role === "team") {

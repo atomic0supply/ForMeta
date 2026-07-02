@@ -43,13 +43,21 @@ export function subscribeToEndpoints(
     orderBy("createdAt", "asc"),
   );
 
-  return onSnapshot(q, (snap) => {
-    const endpoints = snap.docs.map((d) => ({
-      id: d.id,
-      ...(d.data() as Omit<ApiEndpoint, "id">),
-    }));
-    callback(endpoints);
-  });
+  return onSnapshot(
+    q,
+    (snap) => {
+      const endpoints = snap.docs.map((d) => ({
+        id: d.id,
+        ...(d.data() as Omit<ApiEndpoint, "id">),
+      }));
+      callback(endpoints);
+    },
+    (error) => {
+      // Sin este callback un fallo de Firestore dejaría la vista en "Cargando…" para siempre.
+      console.error("subscribeToEndpoints:", error);
+      callback([]);
+    },
+  );
 }
 
 export async function createEndpoint(

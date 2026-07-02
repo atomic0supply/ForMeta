@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import path from "path";
-import fs from "fs";
+import { promises as fs } from "fs";
 
 const DESIGN_DIR = path.join(process.cwd(), "design");
 
@@ -35,15 +35,19 @@ export async function GET(
     return new NextResponse("Forbidden", { status: 403 });
   }
 
-  if (!fs.existsSync(resolved)) {
+  const ext  = path.extname(resolved).toLowerCase();
+  const mime = MIME[ext] ?? "application/octet-stream";
+
+  let body: Uint8Array;
+  try {
+    body = new Uint8Array(await fs.readFile(resolved));
+  } catch {
     return new NextResponse("Not found", { status: 404 });
   }
 
-  const ext  = path.extname(resolved).toLowerCase();
-  const mime = MIME[ext] ?? "application/octet-stream";
-  const body = fs.readFileSync(resolved);
-
-  return new NextResponse(body, {
+  // Cast: Uint8Array es un body válido en runtime; el tipo BodyInit de TS no
+  // acepta el genérico ArrayBufferLike introducido en TS 5.7.
+  return new NextResponse(body as unknown as BodyInit, {
     headers: { "Content-Type": mime },
   });
 }

@@ -3,21 +3,20 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { formatElapsed, useTimer } from "@/lib/timerContext";
 import { subscribeToProjects, type Project } from "@/lib/projects";
+import { normalize } from "@/lib/text";
 import styles from "@/styles/intranet-stop-modal.module.css";
 
-function normalize(s: string) {
-  return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-}
-
 export function StopModal() {
-  const { activeTimer, elapsed, pendingStop, confirmStop, cancelStop } = useTimer();
+  const { activeTimer, elapsed, pendingStop, confirmStop, discardTimer, cancelStop } = useTimer();
 
   const [notes, setNotes] = useState("");
   const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
   const [projects, setProjects] = useState<Project[]>([]);
   const [search, setSearch] = useState("");
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const searchRef = useRef<HTMLInputElement>(null);
+  const preselectedRef = useRef(false);
 
   // Load projects
   useEffect(() => {
@@ -25,19 +24,30 @@ export function StopModal() {
     return unsub;
   }, []);
 
-  // When modal opens, pre-select if timer already had a project
+  // When modal opens, reset fields
   useEffect(() => {
     if (!pendingStop || !activeTimer) return;
     setNotes("");
     setSearch("");
-    if (activeTimer.projectId) {
-      const found = projects.find((p) => p.id === activeTimer.projectId) ?? null;
-      setSelectedProject(found);
-    } else {
-      setSelectedProject(null);
+    setSaveError(null);
+    setSelectedProject(null);
+    preselectedRef.current = false;
+    if (!activeTimer.projectId) {
       setTimeout(() => searchRef.current?.focus(), 80);
     }
   }, [pendingStop]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Preselecciona el proyecto del timer en cuanto la lista de proyectos esté disponible
+  useEffect(() => {
+    if (!pendingStop || preselectedRef.current) return;
+    const timerProjectId = activeTimer?.projectId;
+    if (!timerProjectId) return;
+    const found = projects.find((p) => p.id === timerProjectId);
+    if (found) {
+      setSelectedProject(found);
+      preselectedRef.current = true;
+    }
+  }, [pendingStop, activeTimer?.projectId, projects]);
 
   const filtered = useMemo(() => {
     const q = search.trim();
@@ -54,23 +64,36 @@ export function StopModal() {
   async function handleSave() {
     if (!selectedProject) return;
     setSaving(true);
-    await confirmStop(notes, selectedProject.id, selectedProject.name);
-    setNotes("");
-    setSearch("");
-    setSelectedProject(null);
-    setSaving(false);
+    setSaveError(null);
+    try {
+      await confirmStop(notes, selectedProject.id, selectedProject.name);
+      setNotes("");
+      setSearch("");
+      setSelectedProject(null);
+    } catch {
+      // El timer sigue activo: la sesión no se pierde
+      setSaveError("No se pudo guardar la sesión. Comprueba la conexión e inténtalo de nuevo.");
+    } finally {
+      setSaving(false);
+    }
   }
 
-  async function handleDiscard() {
+  function handleDiscard() {
     // Stop timer without saving any entry
-    await confirmStop("__discard__", "__discard__", "__discard__");
+    discardTimer();
     setNotes("");
     setSearch("");
     setSelectedProject(null);
+  }
+
+  function handleBackdropClick() {
+    // No cerrar con click fuera si ya hay notas escritas: se perderían
+    if (notes.trim()) return;
+    cancelStop();
   }
 
   return (
-    <div className={styles.backdrop} onClick={cancelStop}>
+    <div className={styles.backdrop} onClick={handleBackdropClick}>
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         <div className={styles.header}>
           <div>
@@ -157,10 +180,16 @@ export function StopModal() {
           />
         </div>
 
+        {saveError && (
+          <p role="alert" style={{ color: "#b3261e", fontSize: "0.8rem", margin: "0 0 0.6rem" }}>
+            {saveError}
+          </p>
+        )}
+
         <div className={styles.actions}>
           <button
             type="button"
-            onClick={() => void handleDiscard()}
+            onClick={handleDiscard}
             className={styles.btnDiscard}
             disabled={saving}
           >

@@ -31,7 +31,7 @@ import { formatElapsed, useTimer } from "@/lib/timerContext";
 import { useCurrentUser } from "@/lib/useCurrentUser";
 import type { ModuleKey } from "@/lib/modules";
 import { BrandWordmark } from "@/components/BrandWordmark";
-import { clearSessionCookie } from "@/lib/session";
+import { clearSession } from "@/lib/session";
 import { openCommandPalette } from "@/lib/commandPalette";
 import styles from "@/styles/intranet-sidebar.module.css";
 
@@ -133,7 +133,7 @@ export function IntranetSidebar() {
 
   async function handleSignOut() {
     if (auth) await signOut(auth);
-    clearSessionCookie();
+    await clearSession();
     router.replace("/login");
     router.refresh();
   }

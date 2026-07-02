@@ -22,6 +22,23 @@ function fmt(ts: { seconds: number }) {
   return new Date(ts.seconds * 1000);
 }
 
+// Escapa valores interpolados en el HTML de la factura para evitar XSS / HTML roto
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+// Clave de día en horario local (getFullYear/getMonth/getDate) para que las
+// sesiones nocturnas no se agrupen en el día UTC equivocado
+function localDayKey(d: Date): string {
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const dd = String(d.getDate()).padStart(2, "0");
+  return `${d.getFullYear()}-${mm}-${dd}`;
+}
+
 export function generateInvoiceHtml(
   project: Project,
   client: Client | null,
@@ -34,7 +51,7 @@ export function generateInvoiceHtml(
 
   const byDay = new Map<string, TimeEntry[]>();
   for (const e of entries) {
-    const key = fmt(e.startedAt).toISOString().slice(0, 10);
+    const key = localDayKey(fmt(e.startedAt));
     if (!byDay.has(key)) byDay.set(key, []);
     byDay.get(key)!.push(e);
   }
@@ -59,18 +76,18 @@ export function generateInvoiceHtml(
 
   const rows = lineItems.map((item) => `
     <tr>
-      <td>${item.date}</td>
-      <td>${item.description}</td>
+      <td>${escapeHtml(item.date)}</td>
+      <td>${escapeHtml(item.description)}</td>
       <td style="text-align:right">${item.hours.toFixed(2)} h</td>
-      <td style="text-align:right">${currencySymbol}${(hourlyRate).toFixed(2)}/h</td>
-      <td style="text-align:right">${currencySymbol}${item.amount.toFixed(2)}</td>
+      <td style="text-align:right">${escapeHtml(currencySymbol)}${(hourlyRate).toFixed(2)}/h</td>
+      <td style="text-align:right">${escapeHtml(currencySymbol)}${item.amount.toFixed(2)}</td>
     </tr>`).join("");
 
   return `<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<title>Factura — ${project.name}</title>
+<title>Factura — ${escapeHtml(project.name)}</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400&display=swap');
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -89,7 +106,7 @@ export function generateInvoiceHtml(
 </head>
 <body>
   <h1>Factura</h1>
-  <p class="meta">Emitida el ${issueDate}</p>
+  <p class="meta">Emitida el ${escapeHtml(issueDate)}</p>
 
   <div class="grid">
     <div>
@@ -98,15 +115,15 @@ export function generateInvoiceHtml(
     </div>
     <div>
       <p class="label">Cliente</p>
-      <p class="value">${client?.name ?? "—"}<br>${client?.email ?? ""}</p>
+      <p class="value">${escapeHtml(client?.name ?? "—")}<br>${escapeHtml(client?.email ?? "")}</p>
     </div>
     <div>
       <p class="label">Proyecto</p>
-      <p class="value">${project.name}</p>
+      <p class="value">${escapeHtml(project.name)}</p>
     </div>
     <div>
       <p class="label">Tarifa</p>
-      <p class="value">${currencySymbol}${hourlyRate.toFixed(2)} / hora</p>
+      <p class="value">${escapeHtml(currencySymbol)}${hourlyRate.toFixed(2)} / hora</p>
     </div>
   </div>
 
@@ -126,7 +143,7 @@ export function generateInvoiceHtml(
         <td colspan="2">Total</td>
         <td style="text-align:right">${totalHours.toFixed(2)} h</td>
         <td></td>
-        <td style="text-align:right">${currencySymbol}${totalAmount.toFixed(2)}</td>
+        <td style="text-align:right">${escapeHtml(currencySymbol)}${totalAmount.toFixed(2)}</td>
       </tr>
     </tbody>
   </table>

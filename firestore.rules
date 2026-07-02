@@ -8,7 +8,8 @@ service cloud.firestore {
 
     function isAdmin() {
       return isAuth() &&
-        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "admin";
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "admin" &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.get("active", true) != false;
     }
 
     // Clientes
@@ -22,7 +23,7 @@ service cloud.firestore {
     match /projects/{projectId} {
       allow read: if isAuth();
       allow create, update: if isAuth();
-      allow delete: if isAuth();
+      allow delete: if isAdmin();
 
       match /endpoints/{endpointId} {
         allow read, write: if isAuth();
@@ -108,10 +109,18 @@ service cloud.firestore {
       // Regla general: los correos a cliente se crean como borrador y un admin los
       // aprueba. Excepción: el acuse de apertura de ticket (kind == "ticket_opened")
       // es transaccional y se crea ya aprobado para que el worker lo envíe al instante.
+      // El acuse auto-aprobado solo puede ir al email principal del cliente del
+      // ticket (evita usar el atajo para enviar correos arbitrarios).
       allow create: if isAuth() && (
         request.resource.data.status == "draft"
         || (request.resource.data.status == "approved"
-            && request.resource.data.kind == "ticket_opened")
+            && request.resource.data.kind == "ticket_opened"
+            && request.resource.data.relatedEntity.type == "ticket"
+            && request.resource.data.clientId is string
+            && request.resource.data.clientId != ""
+            && request.resource.data.to.size() == 1
+            && request.resource.data.to[0].email ==
+               get(/databases/$(database)/documents/clients/$(request.resource.data.clientId)).data.email)
       );
       allow update: if isAuth()
         && resource.data.status in ["draft", "failed"]
@@ -171,9 +180,10 @@ service cloud.firestore {
       allow read, write: if isAuth();
     }
 
-    // Correo: alias / buzones de Workspace
+    // Correo: alias / buzones de Workspace (config sensible: solo admin escribe)
     match /mailboxes/{mailboxId} {
-      allow read, write: if isAuth();
+      allow read: if isAuth();
+      allow write: if isAdmin();
     }
 
     // Log de actividad — inmutable salvo lectura
@@ -255,13 +265,17 @@ service cloud.firestore {
     }
 
     // Perfiles de usuario
-    // Cualquier usuario autenticado puede leer la lista (necesario para selector de asignados)
-    // Solo el propio usuario puede actualizar su perfil; solo admins pueden gestionar otros
+    // Cualquier usuario autenticado puede leer la lista (necesario para selector de asignados).
+    // El propio usuario solo puede tocar campos NO sensibles de su perfil;
+    // role/roleId/active quedan reservados a admins (evita auto-escalada de rol).
     match /users/{uid} {
       allow read: if isAuth();
-      allow update: if isAuth() && request.auth.uid == uid;
+      allow update: if isAdmin() || (
+        isAuth() && request.auth.uid == uid &&
+        request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(["displayName", "email", "geminiApiKey"])
+      );
       allow create, delete: if isAdmin();
-      allow update: if isAdmin();
     }
 
     // Roles dinámicos: cualquier usuario autenticado puede leerlos (para resolver

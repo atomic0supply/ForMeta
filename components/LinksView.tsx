@@ -28,6 +28,7 @@ export function LinksView() {
   const [form, setForm] = useState<LinkInput>(emptyForm);
   const [saving, setSaving] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [formError, setFormError] = useState("");
   const titleRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -60,6 +61,7 @@ export function LinksView() {
     setEditing(null);
     setForm(emptyForm);
     setConfirmDelete(false);
+    setFormError("");
     setDrawerOpen(true);
   }
 
@@ -69,6 +71,7 @@ export function LinksView() {
     setEditing(link);
     setForm({ title: link.title, url: link.url, category: link.category ?? "", description: link.description ?? "" });
     setConfirmDelete(false);
+    setFormError("");
     setDrawerOpen(true);
   }
 
@@ -76,6 +79,7 @@ export function LinksView() {
     setDrawerOpen(false);
     setEditing(null);
     setConfirmDelete(false);
+    setFormError("");
   }
 
   function handleField(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
@@ -85,24 +89,50 @@ export function LinksView() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!form.title.trim() || !form.url.trim()) return;
+
+    // Normaliza la URL: añade https:// si falta el esquema y rechaza esquemas
+    // que no sean http(s) (p. ej. javascript:).
+    const rawUrl = form.url.trim();
+    const hasScheme = /^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(rawUrl);
+    const url = hasScheme ? rawUrl : `https://${rawUrl}`;
+    if (!/^https?:\/\//i.test(url)) {
+      setFormError("La URL debe empezar por http:// o https://");
+      return;
+    }
+
     setSaving(true);
+    setFormError("");
     try {
+      const data: LinkInput = { ...form, url };
       if (editing) {
-        await updateLink(editing.id, form);
+        await updateLink(editing.id, data);
       } else {
-        await createLink(form);
+        await createLink(data);
       }
       closeDrawer();
+    } catch (err) {
+      // El fallo debe verse: sin catch el error quedaba silenciado.
+      console.error("LinksView.handleSubmit:", err);
+      setFormError("No se pudo guardar el link. Inténtalo de nuevo.");
     } finally {
       setSaving(false);
     }
   }
 
   async function handleDelete() {
-    if (!editing) return;
+    if (!editing || saving) return;
     if (!confirmDelete) { setConfirmDelete(true); return; }
-    await deleteLink(editing.id);
-    closeDrawer();
+    setSaving(true);
+    setFormError("");
+    try {
+      await deleteLink(editing.id);
+      closeDrawer();
+    } catch (err) {
+      console.error("LinksView.handleDelete:", err);
+      setFormError("No se pudo eliminar el link. Inténtalo de nuevo.");
+    } finally {
+      setSaving(false);
+    }
   }
 
   if (loading) return <main className={styles.page}><p className={styles.empty}>Cargando…</p></main>;
@@ -246,10 +276,14 @@ export function LinksView() {
             />
           </div>
 
+          {formError && (
+            <p style={{ color: "var(--danger)", fontSize: "0.8rem", margin: 0 }}>{formError}</p>
+          )}
+
           <div className={styles.formActions}>
             <div>
               {editing && (
-                <button type="button" onClick={() => void handleDelete()} className={styles.btnDelete}>
+                <button type="button" onClick={() => void handleDelete()} className={styles.btnDelete} disabled={saving}>
                   {confirmDelete ? "¿Eliminar?" : "Eliminar"}
                 </button>
               )}
